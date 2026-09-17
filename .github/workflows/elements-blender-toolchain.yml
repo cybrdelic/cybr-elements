@@ -1,0 +1,34 @@
+name: Elements Blender toolchain
+on:
+  push:
+    branches: ['fix/elements-audit-20260917']
+    paths: ['.github/workflows/elements-blender-toolchain.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Fetch and verify official Blender 4.5.3
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          curl -fL --retry 3 https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz -o blender.tar.xz
+          curl -fL --retry 3 https://download.blender.org/release/Blender4.5/blender-4.5.3.sha256 -o checksums.txt
+          grep 'blender-4.5.3-linux-x64.tar.xz' checksums.txt | sed 's/blender-4.5.3-linux-x64.tar.xz/blender.tar.xz/' | sha256sum -c -
+          mkdir toolchain
+          tar -xJf blender.tar.xz -C toolchain --strip-components=1
+          find toolchain -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname '*.woff' -o -iname '*.woff2' -o -iname '*.ttc' \) -delete
+          tar -czf blender-runtime.tar.gz -C toolchain .
+          sha256sum blender-runtime.tar.gz > blender-runtime.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: elements-blender-runtime
+          path: |
+            ${{ runner.temp }}/blender-runtime.tar.gz
+            ${{ runner.temp }}/blender-runtime.sha256
+          retention-days: 1
+          if-no-files-found: error
