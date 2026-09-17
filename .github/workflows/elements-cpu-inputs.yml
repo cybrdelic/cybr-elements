@@ -48,8 +48,10 @@ jobs:
           print('Verified',len(selected),'original inputs')
           PY
       - name: Obtain CPU color-management wheel
-        run: python -m pip download opencolorio --no-deps --only-binary=:all: --python-version 313 --implementation cp --abi cp313 --platform manylinux_2_28_x86_64 --platform manylinux2014_x86_64 --dest cpu-inputs/wheels
+        run: |
+          python -m pip download opencolorio --no-deps --only-binary=:all: --python-version 313 --implementation cp --abi cp313 --platform manylinux_2_28_x86_64 --platform manylinux_2_27_x86_64 --platform manylinux2014_x86_64 --dest cpu-inputs/wheels
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: elements-cpu-original-inputs
           path: cpu-inputs/
