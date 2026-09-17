@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\notch-0.0005-r1\\state.npz",
+  "measuredOpenFacePairs": 11,
+  "crackVerticesPreserved": 49,
+  "reconstruction": {
+    "status": "pass",
+    "method": "density-guided outer surface, measured crack walls and guard band fixed",
+    "mobileVertices": 206,
+    "crackWallsUnchanged": true,
+    "maximumDisplacementM": 0.00018762968817837963,
+    "relativeVolumeDifference": 6.148194296442107e-11,
+    "cellVolumeRelativeErrorP95": 0.2724780052993088,
+    "minimumCellVolumeM3": 1.6572620416243634e-10,
+    "limits": "Bounded subcell reconstruction, not geometric refinement or a converged fracture surface. Local volume deviations are reported and do not relax the production gate."
+  },
+  "limits": "A measured fractured laboratory specimen validates the reconstruction constraints; it is not a natural lava appearance test."
+}

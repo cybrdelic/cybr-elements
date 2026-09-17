@@ -1,0 +1,17 @@
+{
+  "frames": 135,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    480,
+    40,
+    192
+  ],
+  "elapsed": 145.875,
+  "peakGpuMiB": 1183.9501953125,
+  "source": "bake-reactive-fire.py",
+  "changes": "Short point nozzles; momentum guided stroke flow; native reactive advection and pressure; finite fuel pulses followed by release."
+}

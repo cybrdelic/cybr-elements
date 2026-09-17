@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "width": 2560,
+    "height": 1440,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  "frameSequenceComplete": true,
+  "render": {
+    "element": "earth",
+    "variant": "01",
+    "resolution": [
+      2560,
+      1440
+    ],
+    "samples": 24,
+    "triangles": 223764,
+    "frames": 450,
+    "elapsed": 784.8279999999941,
+    "model": "suspended stone fragments with gravity release"
+  }
+}

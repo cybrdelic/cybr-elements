@@ -1,0 +1,25 @@
+{
+  "captureCount": 4,
+  "finitePositions": true,
+  "irreversibleFracture": true,
+  "maxFoundationPenetrationM": 0.0,
+  "maximumSpeedMps": 0.46680258812581793,
+  "captureDisplacementQuantilesM": [
+    0.002289198795922462,
+    0.03630875396390001,
+    0.05928441771474392,
+    0.0773795072326004
+  ],
+  "brokenFractionByCapture": [
+    0.0,
+    0.056242418587291176,
+    0.09060371372585607,
+    0.10910236073528035
+  ],
+  "device": "CPU",
+  "notValidated": [
+    "Crust self-collision",
+    "Two-way fluid feedback",
+    "Photorealistic animation"
+  ]
+}

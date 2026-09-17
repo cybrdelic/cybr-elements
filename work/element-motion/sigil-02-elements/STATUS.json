@@ -1,0 +1,47 @@
+{
+  "status": "superseded-rejected-versions-retained-for-comparison",
+  "delivered": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/?element=water",
+  "artifacts": [
+    {
+      "element": "water",
+      "frames": 270,
+      "duration": 9.0,
+      "sha256": "97d1bbce83f33a0c1ed747c85140039e5f8d21fe8d76721cdc8e7fccd2c7bd73",
+      "maxCorner": 1,
+      "visualStatus": "user-rejected",
+      "reason": "User rejected: static glass-like cutout, insufficient fluid momentum and depth; worst of the three."
+    },
+    {
+      "element": "earth",
+      "frames": 294,
+      "duration": 9.8,
+      "sha256": "e7c0055f6311ebc83840a827575ea3385b17c606f6ac13350ab0a20c3a81224a",
+      "maxCorner": 0,
+      "visualStatus": "user-rejected",
+      "reason": "User rejected: gravel arranged as typography, target-pinned movement instead of convincing stone transport."
+    },
+    {
+      "element": "air",
+      "frames": 294,
+      "duration": 9.8,
+      "sha256": "80d89a5bd8ccb347da1659b5dcc8f8417db156bffe66759498adab4cb40b7120",
+      "maxCorner": 0,
+      "visualStatus": "reviewed"
+    },
+    {
+      "element": "lightning",
+      "frames": 294,
+      "duration": 9.8,
+      "sha256": "0b76a57d98a9d3807deba2ed378c0b51c093d6e9cd36edae5f737e582061a324",
+      "maxCorner": 0,
+      "visualStatus": "user-rejected",
+      "reason": "User rejected: persistent wire drawing and overly uniform small branches."
+    }
+  ],
+  "remaining": [
+    "water",
+    "earth",
+    "lightning"
+  ],
+  "successorReview": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\sigil-02-repair\\STATUS.json"
+}

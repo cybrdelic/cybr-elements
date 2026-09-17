@@ -1,0 +1,35 @@
+{
+  "state": "published-for-user-review",
+  "currentPlayerRevision": "r4 water, earth, lightning; original approved fire and air",
+  "artifacts": [
+    {
+      "element": "water",
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\water-02-r4.mp4",
+      "sha256": "9f220fd378afd7eac8996ce3c763d0da4224fc24fd762d3ac8d2d39b377bfe56",
+      "duration": 10
+    },
+    {
+      "element": "earth",
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\earth-02-r4.mp4",
+      "sha256": "fa4b694ef92901112ee7b31a5458ad560e5776e39cf54a0b50b7137edbf6e507",
+      "duration": 10
+    },
+    {
+      "element": "lightning",
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\lightning-02-r4.mp4",
+      "sha256": "7aaa7b1cf31f485396509c5fcd77f17775d6d1f0d141e8fe964c9dd17b535391",
+      "duration": 10
+    }
+  ],
+  "allFilmsDecoded": true,
+  "nativeWaterFinite": true,
+  "nativeWaterPressureConverged": true,
+  "sourceVolumeBalanceMax": 0,
+  "waterUnresolvedMarkerFractionDuringHold": 0.0010433119357783542,
+  "blackCornersVerified": true,
+  "browserPlaybackVerified": true,
+  "predecessorsPreserved": true,
+  "userAccepted": false,
+  "methodsAndLimitations": "README.md",
+  "latestUserFeedback": "Formation still reads as a reveal; water and earth need visible floors and collisions."
+}

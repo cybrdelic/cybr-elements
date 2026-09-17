@@ -1,0 +1,63 @@
+{
+  "priority": [
+    "Original material quality and momentum",
+    "Approved sigil identity and stroke geometry",
+    "Textual readability"
+  ],
+  "legibility": "Secondary. Closed counters, broken strokes and temporary obscuration alone are not rejection reasons.",
+  "blackBackdrop": true,
+  "variants": [
+    "01",
+    "02"
+  ],
+  "elements": [
+    "earth",
+    "fire",
+    "water",
+    "air",
+    "lightning"
+  ],
+  "fireTrial": {
+    "duration": 8.5,
+    "writeEnd": 4.35,
+    "gasSupplyEnd": 6.3,
+    "sourceWidth": "Original .23 across / .12 along",
+    "persistenceRate": 2.0,
+    "radianceSha256": "bcf221093b1edce4049319209c572cd40e57445589b8ae16392f1ffb8f505a4b"
+  },
+  "prohibited": [
+    "Glyph clipping",
+    "Invisible letter-shaped water walls",
+    "Carved flat stone letters",
+    "Filled lightning font",
+    "Readability-driven velocity pinning",
+    "Image fades"
+  ],
+  "review": [
+    "Original material detail survives at the delivered scale",
+    "Motion remains volumetric and unconstrained away from the active source",
+    "No boundary crops or detached graphic overlays",
+    "Release uses the material model"
+  ],
+  "trialBudget": 1,
+  "status": "Fire02 approved and unchanged; air/smoke retained unchanged. Coherent water, earth and lightning r3 published for user review. User acceptance pending.",
+  "elementDirection": {
+    "fire": "Full nozzle scale; rolling reaction sheets; only a subdued persistent fuel line, with no velocity target along the completed letters.",
+    "water": "Round native FLIP/APIC jet and detached spray; no invisible glyph-shaped walls or mesh fitted back to a silhouette.",
+    "air": "Original advected tracer strands and volumetric lighting; allow diffusion and overlap outside the sigil.",
+    "earth": "Original layered stone meshes, broad size distribution and collision response; do not carve stones into letters or require every fragment to remain on the path.",
+    "lightning": "Branching discharge growth, brief flashes and secondary illuminated aerosol; allow forks outside the gesture and remove a filled typography corona."
+  },
+  "brandIdentity": "Required: approved 01/02 artwork proportions, tapered stroke widths and designed negative spaces must inform emission. A uniform-width skeleton is not the sigil.",
+  "selectedVariant": "02",
+  "currentSourceGeometry": "work/element-motion/sigil-02-v2/source-report.json",
+  "completedArtifact": "outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-02.mp4",
+  "completedArtifacts": [
+    "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\fire-02.mp4",
+    "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\water-02-r3.mp4",
+    "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\earth-02-r3.mp4",
+    "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\air-02.mp4",
+    "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\lightning-02-r3.mp4"
+  ],
+  "deliveryEvidence": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\sigil-02-coherent\\STATUS.json"
+}

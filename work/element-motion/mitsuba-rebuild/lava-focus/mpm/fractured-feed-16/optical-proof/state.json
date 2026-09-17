@@ -1,0 +1,20 @@
+{
+  "status": "unreviewed CPU material proof; not a final shot",
+  "renderer": "Mitsuba 3.9.1",
+  "variant": "scalar_rgb",
+  "device": "CPU",
+  "threads": 2,
+  "width": 640,
+  "height": 400,
+  "samples": 8,
+  "exposure": 3.0,
+  "seconds": 34.336628437042236,
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-16\\state-surface.npz",
+  "sourceSha256": "ef816bc441a43aab524f3e14f67220a7d8a1c81834363e141739894977255b99",
+  "image": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-16\\optical-proof\\state.png",
+  "geometry": "Embedded initial clast boundaries with measured affine fits to MPM material displacement; conservative free-melt kernel reconstruction",
+  "temperature": "Interpolated simulated enthalpy temperatures; Planck radiance with grey emissivity 0.94",
+  "optics": "Nominal rough dielectric basalt and melt. Filtered subgrid pore bump is an optical approximation, not simulated fracture geometry.",
+  "background": "Exact black; black absorbing ground; no environment or bloom overlay",
+  "limits": "Existing spatial refinement failure and coarse crust geometry remain. This still does not validate motion, gas, or photorealism."
+}

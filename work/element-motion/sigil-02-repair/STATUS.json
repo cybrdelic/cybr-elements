@@ -1,0 +1,56 @@
+{
+  "status": "r2 versions rejected by user; retained as comparison",
+  "delivered": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/?element=water",
+  "artifacts": [
+    {
+      "element": "water",
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\water-02-r2.mp4",
+      "frames": 240,
+      "duration": 8.0,
+      "sha256": "0c4a01a3f26b42134fc54520442ff8165f5aed9738b26af1120738a3e5dea790",
+      "visualStatus": "agent-reviewed; user acceptance pending",
+      "limitations": [
+        "The bending phase uses authored reduced gravity.",
+        "Fine spray uses a volume-normalized subgrid fragment model, not resolved atomization.",
+        "After bulk exit, sparse native parcels use ballistic gravity/drag because the under-resolved grid projection stalled them.",
+        "Strong specular highlights remain in larger connected drops; final aesthetic acceptance is pending user review."
+      ]
+    },
+    {
+      "element": "earth",
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\earth-02-r2.mp4",
+      "frames": 192,
+      "duration": 6.4,
+      "sha256": "651ade50616bfaef5aaf1120019e148cf754ea87a1e0f55b6b629acb126ee02e",
+      "visualStatus": "agent-reviewed; user acceptance pending",
+      "limitations": []
+    },
+    {
+      "element": "lightning",
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\elements\\motion\\bending\\sigils\\02\\lightning-02-r2.mp4",
+      "frames": 168,
+      "duration": 5.6,
+      "sha256": "495b4ddc41a1077c628691f85fcb9c29a8eb239896e93120f334f3670c431c12",
+      "visualStatus": "agent-reviewed; user acceptance pending",
+      "limitations": [
+        "Authored electrical growth approximation; not calibrated plasma physics.",
+        "Still a stylized sigil discharge. Secondary aerosol is subtle and does not resemble a large smoke plume.",
+        "User acceptance remains pending."
+      ]
+    }
+  ],
+  "preserved": {
+    "fire": "3bb0dd50aa6c2f4ce55edbf18753fc9db27b656d83d4efbcd29a4a33282e83f6",
+    "air": "80d89a5bd8ccb347da1659b5dcc8f8417db156bffe66759498adab4cb40b7120"
+  },
+  "previousVersionToggle": true,
+  "technicalChecks": "technical-checks.json",
+  "browserVerification": "browser-verification.json",
+  "userAccepted": false,
+  "waterReopened": {
+    "feedback": "Does not hold its form long enough; drops look like particles",
+    "successor": "../sigil-02-water-hold/STATUS.json",
+    "status": "rejected by user; successor CPU pilots running"
+  },
+  "successorReview": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\sigil-02-coherent\\STATUS.json"
+}

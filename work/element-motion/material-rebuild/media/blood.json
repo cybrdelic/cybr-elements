@@ -1,0 +1,25 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "avg_frame_rate": "30/1",
+  "duration": "4.000000",
+  "nb_frames": "120",
+  "id": "blood",
+  "sha256": "0b1d146d952e994b270fe982790b71c016cddd56faea55eaff32cc833a3c4c57",
+  "frameDigest": "f55565d18df20be6acfc2afafe8699875b83111b45013e419979e7e3af8cf6cc",
+  "decodedFrames": 120,
+  "minimumBlackFraction": 0.8910889274691358,
+  "posterFrame": 69,
+  "selectedReviewFrames": [
+    10,
+    20,
+    30,
+    45,
+    57,
+    65,
+    80,
+    95
+  ],
+  "maximumFrameDifference": 3.3728125,
+  "status": "Technical checks pass; manual motion review is still required"
+}

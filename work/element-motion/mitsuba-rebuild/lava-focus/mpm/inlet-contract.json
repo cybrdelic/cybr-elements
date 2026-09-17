@@ -1,0 +1,9 @@
+{
+  "target": "A molten inlet loads, advects and breaks a cooled lava sample; replace the static cooling-lump experiment",
+  "scope": ["conservative particle source", "nonzero inlet boundary", "moving-contact offsets", "CPU caches and surface review"],
+  "capture": "lava_mpm_surface.py on saved inlet frames, followed by a small CPU Mitsuba proof only if motion and geometry are usable",
+  "audit": ["mass and enthalpy source ledgers", "inlet and ground velocity constraints", "moving-boundary contact", "no fragment trajectories or painted cracks", "pitch-black backdrop"],
+  "budget": "Two CPU cores, under 3 GiB, checkpointed jobs under 180 seconds; no GPU or full movie batch",
+  "iterations": 5,
+  "limits": "Nominal material parameters and coarse-grid accuracy remain unresolved. A source experiment is not proof of a production lava solver."
+}

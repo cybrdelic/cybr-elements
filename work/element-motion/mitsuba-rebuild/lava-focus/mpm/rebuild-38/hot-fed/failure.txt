@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_feed38.py", line 28, in run
+    if s.time>=next_emission-1e-9:emit(s,config,.5);next_emission+=.5
+                                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_inlet.py", line 82, in emit
+    s.rest[-len(x):]=np.c_[np.full(len(x),config['plane']-(layer+.5)*s.sample_size[0]),yz]
+    ~~~~~~^^^^^^^^^^
+ValueError: could not broadcast input array from shape (0,3) into shape (120,3)

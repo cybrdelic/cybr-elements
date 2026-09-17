@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "frames": 390,
+  "particles": 24698,
+  "allFinite": true,
+  "allPressureConverged": true,
+  "constantCount": true,
+  "bounds": [
+    [
+      -5.041987858178291,
+      0.014609423535951262,
+      -4.211153473062376
+    ],
+    [
+      4.767084807463841,
+      0.1157270378968708,
+      4.156259359775039
+    ]
+  ],
+  "floorContacts": 24698,
+  "edgeFraction": 0.0034415742165357518,
+  "visualStatus": "reviewed-for-production",
+  "visualEvidence": [
+    "earth-ground-check-v4",
+    "cpu/impact-final",
+    "water-first-cpu.jpg",
+    "earth-first-cpu.jpg"
+  ],
+  "limits": "CPU impact has 0.34 percent of markers near a distant simulation boundary; these are not a visible rectangular wall in the inspected puddle. Full-resolution collision and rendered frames still require review."
+}

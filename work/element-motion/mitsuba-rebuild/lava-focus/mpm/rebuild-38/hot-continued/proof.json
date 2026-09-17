@@ -1,0 +1,25 @@
+{
+  "status": "complete",
+  "error": null,
+  "time": 40.0,
+  "particles": 228,
+  "broken": 0,
+  "maximumDamage": 0.7713831063224004,
+  "solidPoints": 228,
+  "rejects": 0,
+  "wallSeconds": 132.23400000002584,
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "gravity": [
+    0,
+    0,
+    0
+  ],
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\hot-start\\state.npz",
+    "sha256": "e502b3660a9844bb3426d647a819cb0c5b61defd1ef7cfee46fcf2d9a8e94c02"
+  },
+  "scope": "Coupled thermal/mechanical mechanism test; no production or visual acceptance"
+}

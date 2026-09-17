@@ -1,0 +1,47 @@
+{
+  "status": "pass",
+  "cases": [
+    {
+      "seed": 0,
+      "velocityError": 2.1467203015212988e-17,
+      "warmIterations": 2,
+      "coldIterations": 17,
+      "residual": 8.065884528673302e-14
+    },
+    {
+      "seed": 1,
+      "velocityError": 7.914675859144182e-18,
+      "warmIterations": 2,
+      "coldIterations": 15,
+      "residual": 6.424135625116816e-14
+    },
+    {
+      "seed": 2,
+      "velocityError": 5.030698080332741e-16,
+      "warmIterations": 2,
+      "coldIterations": 15,
+      "residual": 1.6955727663224056e-13
+    },
+    {
+      "seed": 3,
+      "velocityError": 5.637851296924623e-18,
+      "warmIterations": 2,
+      "coldIterations": 25,
+      "residual": 1.577489700014961e-13
+    },
+    {
+      "seed": 4,
+      "velocityError": 1.8539857149502126e-17,
+      "warmIterations": 2,
+      "coldIterations": 20,
+      "residual": 6.570162061398075e-14
+    },
+    {
+      "seed": 5,
+      "velocityError": 1.1293049828609014e-15,
+      "warmIterations": 2,
+      "coldIterations": 22,
+      "residual": 4.642632495107571e-13
+    }
+  ]
+}

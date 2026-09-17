@@ -1,0 +1,12 @@
+from pathlib import Path
+m=Path('work/intro_motion.py').read_text().replace('WRITE=3.1','WRITE=7.2')
+Path('work/intro_hq_motion.py').write_text(m)
+s=Path('work/render_cybrdelic.py').read_text().replace('from intro_motion import','from intro_hq_motion import')
+s=s.replace("ROOT/'fire-only-frames'","ROOT/'fire-hq-frames'")
+s=s.replace("'cybrdelic-fire-only.mp4'","'cybrdelic-fire-hq.mp4'")
+s=s.replace("'fire-only-report.json'","'fire-hq-report.json'")
+s=s.replace("'6.5'","'9.5'")
+s=s.replace('across/.115','across/.085').replace('along/.065','along/.060')
+s=s.replace("'-crf','17'","'-crf','15'")
+Path('work/render_fire_hq.py').write_text(s)
+print('HQ: 768 x 80 x 308 grid, 8 substeps; writing 7.2 seconds; narrower moving nozzle.')

@@ -1,0 +1,27 @@
+{
+  "target": "Refine the user-preferred rough lava baseline without flattening the crust or adding decorative glowing lines",
+  "baseline": "iterations/01/surface-0059.npz",
+  "device": "CPU only, two logical processors",
+  "stages": [
+    "Unchanged baseline geometry with corrected light sampling",
+    "Improve macro form and clustered crust structure if necessary",
+    "Visually review one small render before final still"
+  ],
+  "budget": {
+    "iterations": 4,
+    "perRenderSeconds": 180,
+    "previewWidth": 640,
+    "finalWidth": 960
+  },
+  "acceptance": [
+    "Black backdrop",
+    "Retains dense crust structure",
+    "No salt-and-pepper noise",
+    "Actual occlusion and incandescent depth",
+    "No regular grooves or floating linework"
+  ],
+  "status": "Completed bounded still study",
+  "controlRenders": 1,
+  "candidateIterations": 4,
+  "activeCandidate": "active-candidate.json"
+}

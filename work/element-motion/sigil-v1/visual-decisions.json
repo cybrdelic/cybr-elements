@@ -1,0 +1,32 @@
+{
+  "lightning-01": {
+    "hold": "Reviewed at 4s and timeline at 0.67,2,3.2,4,5,6,6.5,7,8,9,9.97s",
+    "decision": "retain",
+    "notes": "Both counters and i-dot are visible. Guided branching channels and soft corona, stylized rather than a calibrated plasma simulation."
+  },
+  "lightning-02": {
+    "hold": "Reviewed at 4s",
+    "decision": "retain",
+    "notes": "Angular original silhouette, separate l/i, bright channel structure contained mostly within the strokes."
+  },
+  "fire-01": {
+    "hold": "Reviewed R6 at 4s",
+    "decision": "retain",
+    "notes": "Turbulent interior flame structure remains; counters, l/i gap and i dot are open. Earlier unbounded combustion obscured the mark; uniform depth flow looked flat. Authored oxidizer boundary resolved the two requirements."
+  },
+  "earth-01": {
+    "hold": "CPU Cycles preview at 4s and 6s",
+    "release": "CPU preview at 7s",
+    "decision": "retain revised relief; full render still to review",
+    "notes": "Closed fragments, visible surface relief and self-shadowing, counters and l/i preserved. Depth enlarged for chunkier release geometry; exact silhouette retained."
+  },
+  "water-01": {
+    "hold": "Reviewed at 3.2s and 4s, plus formation at 1s and 2s",
+    "decision": "retain",
+    "notes": "Original silhouette and counters preserved, i dot separate, moving clear-water reflections with thin liquid surface. Broad studio highlights remain on the outside Cs. Native volume balance zero and pressure convergence below 1e-5. Release still rendering."
+  },
+  "user-review": {
+    "decision": "reject entire approach",
+    "reason": "New materials significantly worse than accepted original bending effects; stop ongoing renders. Confinement produces stencil, sheet and plaque appearance. Return to accepted material renderers and adapt motion/emission only."
+  }
+}

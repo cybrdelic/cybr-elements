@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_newton28_flow.py", line 111, in run
+    state=save(f'frame-{round(clock*1000):06d}');next_frame+=.5
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_newton28_flow.py", line 87, in save
+    if not all(np.isfinite(v).all() for v in state.values()):raise RuntimeError('Nonfinite state; cache rejected')
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Nonfinite state; cache rejected

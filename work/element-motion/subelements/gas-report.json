@@ -1,0 +1,17 @@
+{
+  "frames": 120,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    480,
+    96,
+    288
+  ],
+  "elapsed": 275.7659999999996,
+  "peakGpuMiB": 3295.9296875,
+  "source": "sub-gas.py",
+  "changes": "Shared moving source; three-dimensional advection, pressure projection and buoyancy. Steam and smoke scattering; luminous interpretations for energy and projection; integrated temperature refraction for heat."
+}

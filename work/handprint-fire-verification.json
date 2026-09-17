@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "30/1",
+        "duration": "15.000000",
+        "nb_read_frames": "450"
+      }
+    ]
+  },
+  "allFramesDecoded": true,
+  "fullViewHoldSeconds": 3.55,
+  "valveClosesAt": 11.0,
+  "opacityFade": false,
+  "brightness": {
+    "holdBrightnessRatio": 1.046232988213844,
+    "endBrightnessRatio": 0.0,
+    "lastPeak": 0
+  },
+  "physicalDiagnostics": [
+    {
+      "frame": 300,
+      "time": 10.0,
+      "gasInventory": 16797.27734375,
+      "fuelInFluid": 20849.58203125,
+      "reaction": 5788.49755859375,
+      "maxTemperature": 1.2843852043151855
+    },
+    {
+      "frame": 315,
+      "time": 10.5,
+      "gasInventory": 16797.27734375,
+      "fuelInFluid": 21891.93359375,
+      "reaction": 5850.1435546875,
+      "maxTemperature": 1.7136110067367554
+    },
+    {
+      "frame": 330,
+      "time": 11.0,
+      "gasInventory": 14993.98046875,
+      "fuelInFluid": 22858.68359375,
+      "reaction": 5882.8544921875,
+      "maxTemperature": 1.1471105813980103
+    },
+    {
+      "frame": 345,
+      "time": 11.5,
+      "gasInventory": 2729.52587890625,
+      "fuelInFluid": 23125.939453125,
+      "reaction": 1351.1505126953125,
+      "maxTemperature": 0.9450648427009583
+    },
+    {
+      "frame": 360,
+      "time": 12.0,
+      "gasInventory": 496.88677978515625,
+      "fuelInFluid": 24010.025390625,
+      "reaction": 123.1793212890625,
+      "maxTemperature": 0.6486396193504333
+    },
+    {
+      "frame": 375,
+      "time": 12.5,
+      "gasInventory": 90.4539794921875,
+      "fuelInFluid": 24825.41015625,
+      "reaction": 8.287646293640137,
+      "maxTemperature": 0.44006121158599854
+    },
+    {
+      "frame": 390,
+      "time": 13.0,
+      "gasInventory": 16.466371536254883,
+      "fuelInFluid": 25495.310546875,
+      "reaction": 0.22499778866767883,
+      "maxTemperature": 0.20930218696594238
+    },
+    {
+      "frame": 405,
+      "time": 13.5,
+      "gasInventory": 2.9975621700286865,
+      "fuelInFluid": 26093.29296875,
+      "reaction": 0.0,
+      "maxTemperature": 0.05934622138738632
+    },
+    {
+      "frame": 420,
+      "time": 14.0,
+      "gasInventory": 0.5456805229187012,
+      "fuelInFluid": 26650.828125,
+      "reaction": 0.0,
+      "maxTemperature": 0.017566153779625893
+    },
+    {
+      "frame": 435,
+      "time": 14.5,
+      "gasInventory": 0.09933646768331528,
+      "fuelInFluid": 27200.6640625,
+      "reaction": 0.0,
+      "maxTemperature": 0.005976586136966944
+    }
+  ]
+}

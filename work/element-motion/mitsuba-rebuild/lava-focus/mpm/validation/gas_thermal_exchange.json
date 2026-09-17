@@ -1,0 +1,51 @@
+{
+  "status": "pass",
+  "evidence": {
+    "exchangeMismatchJ": 0.0,
+    "material": {
+      "time": 0.02,
+      "dt": 0.02,
+      "particles": 18,
+      "mass": 0.04860000000000001,
+      "volume": 1.7999952913105226e-05,
+      "temperatureRange": [
+        1449.86432051198,
+        1449.9286419978507
+      ],
+      "meanSolidFraction": 0.0,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0,
+      "thermalBalanceRelative": 3.014077781415072e-16,
+      "stepHeatResidualJ": 7.148948100166308e-12,
+      "mechanicalResidual": 0.0,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 0.0,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.49530911445617676,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "massBalanceErrorKg": 0.0
+    },
+    "gas": {
+      "time": 0.02,
+      "substeps": 1,
+      "maxProjectionResidual": 1.4418349575905098e-08,
+      "massErrorKg": -4.336808689942018e-19,
+      "waterErrorKg": -3.3881317890172014e-21,
+      "temperatureRange": [
+        293.1499245610986,
+        315.32953561162014
+      ],
+      "maximumSpeed": 0.007612237295993845,
+      "dustMassErrorKg": 0.0,
+      "dustHeatErrorJ": 0.0,
+      "dustMassKg": 0.0
+    }
+  },
+  "seconds": 0.53305983543396
+}

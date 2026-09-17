@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "width": 3840,
+    "height": 2160,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  "frameSequenceComplete": true,
+  "render": {
+    "element": "water",
+    "variant": "01",
+    "resolution": [
+      3840,
+      2160
+    ],
+    "samples": 64,
+    "triangles": 223764,
+    "frames": 450,
+    "elapsed": 6078.953000000009,
+    "model": "capillary sheet and ballistic droplets",
+    "streamExitRefinement": {
+      "frames": [
+        232,
+        252
+      ],
+      "elapsed": 133.06299999999464,
+      "hideAfterSeconds": 8.4
+    }
+  }
+}

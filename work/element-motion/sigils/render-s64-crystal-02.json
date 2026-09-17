@@ -1,0 +1,13 @@
+{
+  "kind": "crystal",
+  "variant": "02",
+  "frames": [
+    240
+  ],
+  "configuration": "7c71b4e38deb1b7e9f0371c1472d1171f8e5b60587fc4dd32c89dcdb86b44275",
+  "seconds": 7.913332223892212,
+  "reusedSettledFrames": 0,
+  "sourceSha256": "6edc246a61a309f016185de92fbfe9a742eff3c65d91fc8e3b88c657b223341a",
+  "method": "Original source geometry, reviewed shader recipes, supported damped motion and gravity release",
+  "limits": "Authored bending support; this retargeting pass does not rerun the earlier FLIP/MPM solves"
+}

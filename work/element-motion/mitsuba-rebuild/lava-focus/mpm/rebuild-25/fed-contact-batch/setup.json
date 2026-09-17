@@ -1,0 +1,50 @@
+{
+  "sceneKind": "natural_lava_flow",
+  "config": {
+    "plane": -0.01,
+    "half_width": 0.003,
+    "height": 0.003,
+    "peak_speed": 0.001,
+    "temperature": 1450.0
+  },
+  "period": 1.0,
+  "nextEmission": 11.0,
+  "emissions": 10,
+  "bedTemperatureK": 1450.0,
+  "initialCondition": "Initially molten 1450 K lobe and conduit. Zero initial damage, cracks and crust; prescribed parabolic flow only at the upstream inlet.",
+  "source": "Conservative inlet quadrature, positive mass/enthalpy/momentum and boundary-work ledgers. No interior attractors or timed fractures.",
+  "references": "Farrell dry experimental melt; Violay glass-free basalt creep reference. Mixed constitutive references, not calibrated free-surface basalt.",
+  "sourceHashes": {
+    "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "23b87eb9fed4a2f1f78562f748f826d8f434f790ccfcf09b3e2533442c1226c3",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "a81843ad329c444f915cd649dfda826335ef5d7b3a37503d72cb7ba04ca3e2ae"
+  },
+  "continuation": {
+    "parentState": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\fed-basalt\\state.npz",
+    "parentStateSha256": "bf3ae6a89a74da951ebae30ada7f60d419b6da4a6fb71f3c7b91858130bcdf0a",
+    "parentSourceHashes": {
+      "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+      "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+      "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+      "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+      "lava_mpm_friction.py": "23b87eb9fed4a2f1f78562f748f826d8f434f790ccfcf09b3e2533442c1226c3",
+      "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+      "lava_mpm_sparse_pressure.py": "a81843ad329c444f915cd649dfda826335ef5d7b3a37503d72cb7ba04ca3e2ae"
+    },
+    "startTime": 8.591375079117432,
+    "change": "Equivalent contact response evaluated in bounded RHS batches; all material equations, states and boundary conditions retained.",
+    "sourceHashes": {
+      "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+      "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+      "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+      "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+      "lava_mpm_friction.py": "bb756fab066adb11121ff3b978a304192b1f1bf8a31329de239cc892e5dea9bd",
+      "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+      "lava_mpm_sparse_pressure.py": "a81843ad329c444f915cd649dfda826335ef5d7b3a37503d72cb7ba04ca3e2ae"
+    }
+  }
+}

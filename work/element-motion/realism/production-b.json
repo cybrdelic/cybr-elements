@@ -1,0 +1,29 @@
+[
+  {
+    "name": "crystal-black-full",
+    "script": "solids.py",
+    "args": [
+      "--kind",
+      "crystal",
+      "--full"
+    ]
+  },
+  {
+    "name": "metal-black-full",
+    "script": "metal.py",
+    "args": [
+      "--kind",
+      "metal",
+      "--full"
+    ]
+  },
+  {
+    "name": "glass-black-full",
+    "script": "fracture.py",
+    "args": [
+      "--kind",
+      "glass",
+      "--full"
+    ]
+  }
+]

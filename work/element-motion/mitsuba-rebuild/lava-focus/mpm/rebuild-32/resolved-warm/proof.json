@@ -1,0 +1,71 @@
+{
+  "status": "incomplete",
+  "error": "TimeoutError('CPU friction deadline reached')",
+  "time": 0.04,
+  "target": 0.1,
+  "steps": 4,
+  "wallSeconds": 300.3440000000119,
+  "particles": 4032,
+  "maximumDamage": 2.2736728494875298e-05,
+  "brokenEdges": 0,
+  "temperatureRange": [
+    921.1952407862217,
+    1449.8734074020979
+  ],
+  "sourceHashes": {
+    "lava_mpm.py": "5f52d833d305326eff6246575fbbff76db88886527ea0c4f18205b0d3b9f9ff4",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "7439d8a6d226e739da7dcdb911969dc72608c1c246972e095b66b5ffab9eaedd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "3f067a7490b2e85e93373d15693bc6583df12f15e02bbc7c035c184468b561a0",
+    "lava_mpm_cuda_contact27.py": "a1bf79691b8b1015e8dd886929a85f399c2cfe1eca944404dd9ff5f9f421a52f"
+  },
+  "massErrorKg": 0.0,
+  "ledger": {
+    "radiation": 21.75331329157336,
+    "convection": 2.5141636529559426,
+    "bed": -16.342109878992844,
+    "viscous_heat": 0.00013719794990556874,
+    "fracture": 2.2007351870580943e-11,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0,
+    "friction_work": 1.7437503719757838e-07,
+    "conduit_impulse_norm": 0.0,
+    "solid_floor_impulse_norm": 0.029600857223251505,
+    "contact_objective_loss": 6.909019957989168e-06,
+    "inlet_boundary_work": 0.00014274112711097197,
+    "friction_heat": 1.7437503719757838e-07,
+    "interface_heat": 1.281707498339444e-06
+  },
+  "visualStatus": "unreviewed; geometry must demonstrate open fractures before a beauty render",
+  "linearBackend": {
+    "cpuFactors": 0,
+    "gpuFactors": 59,
+    "cpuTriangularSolves": 115,
+    "factorSeconds": 45.193974499969045,
+    "solveSeconds": 1.877189099934185,
+    "maximumDofs": 4833,
+    "maximumAllocatedBytes": 725199872,
+    "fallbacks": [],
+    "backend": "cuda_dense",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "Unilateral pressure factorization and CPU substitutions only. Friction routing is recorded separately in frictionBackend; these counters exclude its factors."
+  },
+  "frictionBackend": {
+    "gpuFactors": 57,
+    "seconds": 195.6949597001949,
+    "maximumDofs": 4833,
+    "maximumDirections": 1008,
+    "maximumTorchBytes": 725199872,
+    "fallbacks": [],
+    "backend": "cuda_batched",
+    "precision": "float64",
+    "scope": "CUDA dense contact factorization and batched response; Coulomb iteration, residual acceptance and all physics remain unchanged on CPU. Torch bytes exclude driver/context and other applications."
+  }
+}

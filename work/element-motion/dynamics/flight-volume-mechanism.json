@@ -1,0 +1,11 @@
+{
+  "source": "integrated counter-rotating wake particles",
+  "rasterization": "trilinear particle-to-volume transfer and fixed reconstruction kernel",
+  "lighting": "accepted air model: directional phase function, Beer-Lambert transmission, approximate top/back self-shadowing",
+  "frames": [
+    30,
+    45,
+    65
+  ],
+  "limits": "One-way tracer-density reconstruction with approximate single scattering; not a fully pressure-projected flight solve"
+}

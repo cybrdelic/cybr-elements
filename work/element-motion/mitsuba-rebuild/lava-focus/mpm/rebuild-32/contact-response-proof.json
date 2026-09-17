@@ -1,0 +1,20 @@
+{
+  "dofs": 4833,
+  "directions": 1008,
+  "cpuSeconds": 1.574573899997631,
+  "freeRelativeError": 2.8124361481289846e-11,
+  "responseRelativeError": 3.5741682150635845e-13,
+  "freeStationarity": 1.0439135064379514e-15,
+  "gpu": {
+    "gpuFactors": 1,
+    "seconds": 4.594963799987454,
+    "maximumDofs": 4833,
+    "maximumDirections": 1008,
+    "maximumTorchBytes": 725199872,
+    "fallbacks": [],
+    "backend": "cuda_batched",
+    "precision": "float64",
+    "scope": "CUDA dense contact factorization and batched response; Coulomb iteration, residual acceptance and all physics remain unchanged on CPU. Torch bytes exclude driver/context and other applications."
+  },
+  "pass": true
+}

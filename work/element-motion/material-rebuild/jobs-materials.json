@@ -1,0 +1,23 @@
+[
+  {
+    "kind": "ice",
+    "script": "render_frozen.py",
+    "frames": "30,45,65,90",
+    "minimumFreeGB": 1.35
+  },
+  {
+    "kind": "lava",
+    "script": "render_liquid_materials.py",
+    "minimumFreeGB": 1.35
+  },
+  {
+    "kind": "foam",
+    "script": "render_liquid_materials.py",
+    "minimumFreeGB": 2.0
+  },
+  {
+    "kind": "metal",
+    "script": "render_solids-r1.py",
+    "minimumFreeGB": 1.35
+  }
+]

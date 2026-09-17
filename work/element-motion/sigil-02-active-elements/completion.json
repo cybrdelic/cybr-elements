@@ -1,0 +1,50 @@
+{
+  "movies": {
+    "water": {
+      "movie": "water-02-r8.mp4",
+      "decodedFrames": 336,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "sha256": "cf65de990127cea71f0dcf30cc14dcab6f8d02fad5c9a32d1294d9afc839e476",
+      "browserVerified": true
+    },
+    "ice": {
+      "movie": "ice-02.mp4",
+      "decodedFrames": 300,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "sha256": "9c011321e936c11051fd02f45d834b41bbc5f65ce3a20d1cbb781e0da1e37702",
+      "browserVerified": true
+    },
+    "lava": {
+      "movie": "lava-02.mp4",
+      "decodedFrames": 300,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "sha256": "4230d8b13ee3909cc532f99e823fab7f3214b73012378a6e2212f892a2e407c8",
+      "browserVerified": true
+    },
+    "lightning": {
+      "movie": "lightning-02-r5.mp4",
+      "decodedFrames": 300,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "sha256": "ad8661997eec512d5e9710acbaadb976da226c1a30881837fe34992af635095a",
+      "browserVerified": true
+    }
+  },
+  "protectedOriginalsUnchanged": true,
+  "userAccepted": false
+}

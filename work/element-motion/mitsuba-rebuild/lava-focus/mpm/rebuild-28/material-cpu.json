@@ -1,0 +1,27 @@
+{
+  "status": "fail",
+  "device": "CPU",
+  "checks": {
+    "bulk": true,
+    "deviatoricStress": false,
+    "tensionDamage": true,
+    "compressionIntact": true,
+    "restIntact": true,
+    "plasticWork": true
+  },
+  "bulkModuliPa": [
+    20000018432.0,
+    20000012288.0,
+    19999993856.0,
+    20000000000.0,
+    20000000000.0
+  ],
+  "stressRelativeError": 0.01819626539531193,
+  "tensileDamage": 0.21338093280792236,
+  "analyticDamage": 0.21337213893344664,
+  "accountedPlasticWorkPerM3": [
+    8000.3740234375,
+    7999.89697265625,
+    0.0
+  ]
+}

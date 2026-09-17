@@ -1,0 +1,24 @@
+{
+  "method": "CPU editorial revision: reverse existing native FLIP and Bullet breakup for entrances; preserve forward falls.",
+  "newForwardSimulation": false,
+  "gpuUsed": false,
+  "sourceReverseFrames": [
+    330,
+    210
+  ],
+  "sourceForwardFrames": [
+    211,
+    389
+  ],
+  "totalFrames": 300,
+  "fps": 30,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "durationSeconds": 10,
+  "cpuTests": 2,
+  "selectedTest": "Shortened floor lift; longer test rejected for idle puddle/pile lead-in.",
+  "preferenceDefault": "Irregular lift from the floor",
+  "userAccepted": false
+}

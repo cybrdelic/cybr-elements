@@ -1,0 +1,8 @@
+{
+  "solver": "Bullet rigid bodies and breakable fixed connections",
+  "pieces": 75,
+  "connections": 159,
+  "thickness": 0.016,
+  "formation": "Persistent fragments throughout; guided before dynamic release, with no geometry substitution",
+  "limits": "Authored fragment guidance and pre-fracture topology; not thermomechanical glass blowing"
+}

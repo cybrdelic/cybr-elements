@@ -1,0 +1,59 @@
+{
+  "decodedFrames": 30,
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 768,
+        "height": 432,
+        "avg_frame_rate": "375/73",
+        "nb_frames": "30"
+      }
+    ],
+    "format": {
+      "duration": "5.840000"
+    }
+  },
+  "nativeFrames": 180,
+  "nativeFinite": true,
+  "pressureConverged": true,
+  "particleCount": 24698,
+  "minHeight": 0.03159473078591483,
+  "sha256": "87cd799c5bbfa11dc18d5193ddbb8925db88b099d27c07f27cf4837c90dff6d5",
+  "visualStatus": "agent-reviewed-improvement",
+  "userAccepted": false,
+  "frameDifferences": [
+    0,
+    0.5166358024691358,
+    0.7194804526748971,
+    0.887770061728395,
+    1.421872427983539,
+    2.3166383744855965,
+    4.7197762345679015,
+    5.834570473251029,
+    4.11210133744856,
+    6.895959362139918,
+    7.477412551440329,
+    5.174850823045268,
+    3.3400360082304528,
+    3.317337962962963,
+    4.184598765432098,
+    3.4336574074074075,
+    3.4909362139917697,
+    4.040357510288066,
+    4.221772119341564,
+    3.86056841563786,
+    3.4769984567901235,
+    3.8891075102880657,
+    3.9316460905349793,
+    3.6846090534979425,
+    3.371517489711934,
+    3.2628472222222222,
+    2.4994984567901235,
+    2.064778806584362,
+    1.9163374485596707,
+    1.947476851851852
+  ],
+  "review": "Changed silhouette and depth: floor crescent, asymmetric hooked rise, forward bank, accelerating cast, sequential arrival into 02. No timed birth. Bright front-facing reflection persists briefly during turn; fine surface detail requires full grid. Coarse preview stayed connected without a separate bead cloud."
+}

@@ -1,0 +1,12 @@
+from pathlib import Path
+R=Path(__file__).resolve().parent;p=R/'combustion.py';s=p.read_text(encoding='utf-8')
+s=s.replace('elif t<1.68:on*=.7 if math.sin(t*38)>.1 else .15','elif t<1.68:on*=1.')
+s=s.replace('radius=.36 if blast else .05','radius=.36 if blast else .075')
+s=s.replace('torch.clamp(.6+.22*torch.sin(px*31+y*19)*torch.sin(pz*27-y*23)+.18*torch.cos(px*53-pz*41),.05,1)','torch.clamp(.45+.36*torch.sin(px*29+pz*19+y*17)+.32*torch.sin(pz*39-y*23)*torch.cos(px*37-y*11),0,1)')
+s=s.replace('*(2.8 if blast else 1.5)','*(2.8 if blast else 2.0)')
+s=s.replace('hot=((temp-.28)/1.8).clamp(0,1)','hot=((temp-.20)/2.8).clamp(0,1)')
+s=s.replace('front*1.6+soot*hot.pow(4)*7','front*1.1+soot*hot.pow(5)*.65')
+s=s.replace('torch.tensor([1.4,1.10,.85],device=device)','torch.tensor([.80,.82,.87],device=device)')
+s=s.replace('torch.tensor([2.2,.55,.08],device=device)','torch.tensor([.8,.16,.015],device=device)')
+s=s.replace('def render(frame):\n    rgb,sigma=radiance()', "def render(frame):\n    # Retain material state so exposure/optical review does not require another solve.\n    cache_dir=ROOT/'realism/combustion-state';cache_dir.mkdir(exist_ok=True)\n    np.savez_compressed(cache_dir/f'{frame:04}.npz',fields=state[0,[5,6,7]].cpu().numpy().astype('<f2'))\n    rgb,sigma=radiance()")
+p.write_text(s,encoding='utf-8');print('Reduced white-hot bulk, preserved cool self-shaded soot, and added material-state caching')

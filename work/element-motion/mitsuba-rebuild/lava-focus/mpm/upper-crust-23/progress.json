@@ -1,0 +1,25 @@
+{
+  "status": "mechanism study, not accepted artwork",
+  "metrics": {
+    "time": 18.0,
+    "particles": 2304,
+    "topMeanTemperatureK": 1164.1602636434839,
+    "bottomMeanTemperatureK": 1383.6158126492535,
+    "topCoherentFraction": 1.0,
+    "bottomCoherentFraction": 0.010416666666666666,
+    "upperDamagedParticles": 92,
+    "bottomDamagedParticles": 0,
+    "upperBrokenBonds": 0,
+    "bottomBrokenBonds": 0,
+    "maximumDamage": 0.8161519967792523,
+    "maximumSpeed": 4.269051588233926e-07,
+    "thermalBalanceRelative": 9.550227254653549e-12
+  },
+  "wallSeconds": 107.86257338523865,
+  "complete": false,
+  "sources": {
+    "lava_mpm.py": "e554601fab37fae09cbe45c117bff49f7e1de45648cc6bf59ff3c0d160d078bc",
+    "lava_mpm_fracture.py": "796b726ddb06783b542509fd4135079fb22c188f77635aa7aa1e2ccfe1420722",
+    "lava_mpm_upper_crust.py": "d9d869d19d5b27ac7df87b7adcc8a07bee0d6c327042fa6570256355191f282e"
+  }
+}

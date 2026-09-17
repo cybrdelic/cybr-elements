@@ -1,0 +1,24 @@
+{
+  "target": "Replace flat slab morphology with thick overlapping lava lobes, compressed crust folds, recessed molten breakouts and visibly solid crust edges on exact black.",
+  "baseline": "renders/basalt-04-hero-0059-896-16spp.png",
+  "capture": "CPU geometry raster first; bounded scalar_rgb Mitsuba stills next",
+  "audit": "Direct inspection of silhouette, fold scale, shell thickness, molten depth, microstructure and black background",
+  "safety": "CPU only, 2 logical cores, 3 GiB process-tree memory cap, 180-second per-command wall limit",
+  "scope": [
+    "lava_lobes_cpu.py",
+    "lava_lobes_render.py",
+    "lava-focus/lobes",
+    "lava-focus/renders",
+    "lava gallery after visual verification"
+  ],
+  "iterationBudget": 5,
+  "status": "Five geometry/material iterations plus a verified emission interpolation correction; new stills published with earlier passes preserved",
+  "finalHero": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\renders\\lava-continuous-hero-0059-1280-8spp.png",
+  "finalDetail": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\renders\\lava-continuous-detail-0059-1024-8spp.png",
+  "remaining": [
+    "The layout and folds are authored; a new physically validated moving flow is not implemented",
+    "Some fold families and breakup patches still show a procedural character",
+    "A moving sigil shot and temporal surface stability have not been verified"
+  ],
+  "validationExtension": "High-resolution review exposed per-face temperature bands; a CPU analytic test and continuous-emission correction were necessary before publication"
+}

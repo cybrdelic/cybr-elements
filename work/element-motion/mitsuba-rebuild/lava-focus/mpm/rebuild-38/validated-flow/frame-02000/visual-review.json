@@ -1,0 +1,38 @@
+{
+  "accepted": false,
+  "geometryAccepted": false,
+  "motionAccepted": false,
+  "resolutionChecked": false,
+  "stateSha256": "0b8d91fe68d0ee62dc222c6eccc8802a572971ae707be3552e59b6e4bc8b6faf",
+  "evidenceImages": [
+    {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\adaptive-early-review.png",
+      "sha256": "2da377f3c7e3181263cef1e1b9652399f357a05677e91330367ed75a7c9cf9c0"
+    }
+  ],
+  "frames": [
+    {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\validated-flow\\frame-00200\\state.npz",
+      "sha256": "a35651edd308ff4567044737e9beb3e4e527b34b0d23b8a3ccad34fb2df5adbc"
+    },
+    {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\validated-flow\\frame-01000\\state.npz",
+      "sha256": "2bd35116ff1d2319b2ac625fdef2d41f620f6c3343382e330182eee990ac0bcd"
+    },
+    {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\validated-flow\\frame-01500\\state.npz",
+      "sha256": "610900c62c7da39ef2347ee3ef0f59437a618d4afc831cffb61e65cc76c3800f"
+    },
+    {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\validated-flow\\frame-02000\\state.npz",
+      "sha256": "0b8d91fe68d0ee62dc222c6eccc8802a572971ae707be3552e59b6e4bc8b6faf"
+    }
+  ],
+  "observations": [
+    "Cohesive body without detached particle beads in these views.",
+    "Visible reconstruction bands and faceting remain.",
+    "No open fractures at these times.",
+    "Four stills do not establish full motion or spatial convergence."
+  ],
+  "decision": "Rejected for final presentation; CPU mechanism diagnostic only."
+}

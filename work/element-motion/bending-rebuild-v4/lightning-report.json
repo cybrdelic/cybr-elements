@@ -1,0 +1,96 @@
+{
+  "model": "3D point-charge Laplacian growth; authored guiding field; approximate exposed radiance and aerosol scattering",
+  "events": [
+    0.19,
+    0.403,
+    0.713,
+    0.972,
+    1.271,
+    1.568,
+    1.827
+  ],
+  "frames": 120,
+  "seconds": 170.6377396583557,
+  "aerosol": [
+    {
+      "frame": 0,
+      "finite": true,
+      "aerosolMass": 0.0,
+      "maxSpeed": 1.660546064376831
+    },
+    {
+      "frame": 20,
+      "finite": true,
+      "aerosolMass": 0.005753349989941045,
+      "maxSpeed": 1.0057086944580078
+    },
+    {
+      "frame": 40,
+      "finite": true,
+      "aerosolMass": 0.009300957786615638,
+      "maxSpeed": 0.7403407096862793
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "aerosolMass": 0.007306442810186364,
+      "maxSpeed": 0.5971400737762451
+    },
+    {
+      "frame": 80,
+      "finite": true,
+      "aerosolMass": 0.0034882973185555916,
+      "maxSpeed": 0.5163410902023315
+    },
+    {
+      "frame": 100,
+      "finite": true,
+      "aerosolMass": 0.0016725606214259498,
+      "maxSpeed": 0.46639102697372437
+    }
+  ],
+  "networks": [
+    {
+      "nodes": 47,
+      "depthRange": 0.6335432091552289,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 374,
+      "depthRange": 1.2912433803752563,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 910,
+      "depthRange": 1.4118525636824868,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 2391,
+      "depthRange": 2.2300158194150486,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 2951,
+      "depthRange": 3.0598403990776224,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 2380,
+      "depthRange": 2.4415495123707855,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 2482,
+      "depthRange": 1.8389389529858464,
+      "finite": true,
+      "connected": true
+    }
+  ]
+}

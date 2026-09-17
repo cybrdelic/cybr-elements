@@ -1,0 +1,28 @@
+{
+  "source": "lava-focus\\mpm\\rebuild-38\\validated-flow\\frame-01000\\state.npz",
+  "sourceSha256": "2bd35116ff1d2319b2ac625fdef2d41f620f6c3343382e330182eee990ac0bcd",
+  "physicalSeconds": 1.0,
+  "vertices": 4988,
+  "triangles": 9972,
+  "solverParticleVolumeM3": 2.3934211040384563e-06,
+  "reconstructedVolumeM3": 2.393428070833488e-06,
+  "relativeVolumeDifference": 2.9108103959607237e-06,
+  "kernelSigmaRenderCells": [
+    1.4285714285714286,
+    1.4285714285714286,
+    1.4285714285714286
+  ],
+  "kernelSigmaM": [
+    0.00075,
+    0.00075,
+    0.00075
+  ],
+  "renderCellSizeM": [
+    0.000525,
+    0.000525,
+    0.000525
+  ],
+  "method": "density reconstruction",
+  "fractureTopologyPreserved": true,
+  "limits": "Unfractured material reconstruction. Solidification does not switch the exterior to voxel cells. Explicit --method kernel on a fractured state does not preserve fracture topology. Material coordinates use local inverse deformation gradients."
+}

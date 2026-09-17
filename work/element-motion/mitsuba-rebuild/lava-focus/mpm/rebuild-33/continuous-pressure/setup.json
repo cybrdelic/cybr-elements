@@ -1,0 +1,43 @@
+{
+  "sceneKind": "resolved_continuous_crust_under_renewed_feed",
+  "initialCondition": "Stress-free 9 x 6 x 2.25 cm continuous lobe, zero damage and zero cracks. 2.5 mm isotropic particles resolve the cooled shell through its thickness. Temperature comes from a 1D cooling solve mapped by depth; prior 3D thermal stress history is not represented.",
+  "thermalProfile": {
+    "ageSeconds": 600.0,
+    "depthM": 0.04,
+    "cells": 160,
+    "minimumTemperatureK": 921.4026860263563,
+    "relativeEnergyResidual": 3.968190515262538e-12,
+    "method": "1D finite-volume enthalpy; radiation and convection at the top; metered 1450 K reservoir at depth."
+  },
+  "reservoirInitialization": "Enthalpy blends to 1450 K across x=-20 to -40 mm in the upstream pipe; fluid inlet does not grip a cold solid plug.",
+  "config": {
+    "plane": -0.045,
+    "half_width": 0.015,
+    "height": 0.0125,
+    "peak_speed": 0.008,
+    "temperature": 1450.0,
+    "pipe_end": -0.025
+  },
+  "period": 0.2,
+  "nextEmission": 0.2,
+  "emissions": 0,
+  "sourceQuadrature": "Conservative partial-width source layers at a declared interval. This resolves mass influx before a full particle spacing has crossed the inlet; source volume is flux times elapsed interval, never a full cell per emission.",
+  "sourceHashes": {
+    "lava_mpm.py": "5f52d833d305326eff6246575fbbff76db88886527ea0c4f18205b0d3b9f9ff4",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "7439d8a6d226e739da7dcdb911969dc72608c1c246972e095b66b5ffab9eaedd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "3f067a7490b2e85e93373d15693bc6583df12f15e02bbc7c035c184468b561a0",
+    "lava_mpm_cuda_contact27.py": "a1bf79691b8b1015e8dd886929a85f399c2cfe1eca944404dd9ff5f9f421a52f"
+  },
+  "driverSha256": "7d8027fe9ff926ea2e2c0c8e99a21f6120f0a4c31939b8f19dddd02ceebc3f43",
+  "limits": "Coarse mechanism screen. Nominal mixed constitutive references, no convergence or photorealism claim. No authored fracture geometry.",
+  "continuationSource": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-32\\resolved-warm\\state.npz",
+    "sha256": "25ce77913fd601cd0e27fa0316c31affd3f5a8ea6235bdee6c946e8b4efc6408",
+    "reason": "Same physical equations and unchanged acceptance thresholds; active contact reduction validated against the unreduced solver."
+  }
+}

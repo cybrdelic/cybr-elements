@@ -1,0 +1,145 @@
+{
+  "error": null,
+  "seconds": 5.312999999994645,
+  "dt": 0.05,
+  "records": [
+    {
+      "dt": 0.05,
+      "seconds": 2.2030000000086147,
+      "damageError": 0.019937794884245297,
+      "creepError": 0.1507209074155662,
+      "creepNorm": 0.23242977160227066,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.4539999999979045,
+      "damageError": 0.001382778828277087,
+      "creepError": 0.012923864232447624,
+      "creepNorm": 0.02509393553039998,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.4370000000053551,
+      "damageError": 0.0001855803078308349,
+      "creepError": 0.0018816993225552192,
+      "creepNorm": 0.0033203271252930594,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.46899999998277053,
+      "damageError": 4.00658526983344e-06,
+      "creepError": 5.4458729053408206e-05,
+      "creepNorm": 9.423631852369587e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.4220000000204891,
+      "damageError": 1.0499420760590183e-07,
+      "creepError": 5.689941785735897e-06,
+      "creepNorm": 7.3428116847158104e-06,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.42199999999138527,
+      "damageError": 7.3031201086593e-09,
+      "creepError": 1.8678032126899502e-06,
+      "creepNorm": 3.881712938609853e-06,
+      "creepIndex": 762,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.46799999999348074,
+      "damageError": 2.8835150933659293e-09,
+      "creepError": 1.102540741457908e-06,
+      "creepNorm": 2.3436325590221456e-06,
+      "creepIndex": 762,
+      "friction": {}
+    },
+    {
+      "dt": 0.05,
+      "seconds": 0.4379999999946449,
+      "damageError": 8.182129973555163e-10,
+      "creepError": 5.783636303213768e-07,
+      "creepNorm": 1.0485055638559896e-06,
+      "creepIndex": 750,
+      "friction": {}
+    }
+  ],
+  "row": {
+    "time": 5.05,
+    "dt": 0.05,
+    "particles": 1028,
+    "mass": 0.006501861298828125,
+    "volume": 2.4038453910924805e-06,
+    "temperatureRange": [
+      939.5667055823133,
+      1450.0000005994575
+    ],
+    "meanSolidFraction": 0.22934435458315208,
+    "solidParticles": 48,
+    "damagedParticles": 14,
+    "maximumDamage": 0.48335679682935256,
+    "maximumSpeed": 0.00018440843098930645,
+    "thermalBalanceRelative": 3.097002145843128e-12,
+    "stepHeatResidualJ": 1.5677397158242456e-09,
+    "mechanicalResidual": 9.355703022144773e-14,
+    "heatNewtonIterations": 7,
+    "viscousHeatJ": 6.564791057922082e-08,
+    "fractureEnergyJ": 1.3514404217264556e-06,
+    "seconds": 0.4370427131652832,
+    "materialVelocityFields": 7,
+    "brokenConnectivityEdges": 0,
+    "contactImpulses": 59,
+    "contactMomentumError": 3.410553037019251e-24,
+    "splitGridNodes": 287,
+    "fracturedSolidEdges": 0,
+    "meltReleasedEdges": 0,
+    "massBalanceErrorKg": 1.0909784360635388e-18,
+    "heatTransfer": {
+      "flipFraction": 0.9953761355156562,
+      "unlimitedMaximumOvershootJPerKg": 68.67146765126381,
+      "transferEnergyErrorJ": 4.03470718952372e-15
+    },
+    "frictionContact": {
+      "iterations": 5,
+      "naturalResidual": 2.625528978320258e-11,
+      "stationarity": 9.355703022144773e-14,
+      "slidingDissipationJ": 2.0569732605093677e-10,
+      "maximumConeViolation": 0.0,
+      "acceptedAccelerationSteps": 0,
+      "pressureActiveIterations": 1,
+      "condensedNormalRows": 408,
+      "frictionRows": 4,
+      "candidateFrictionRows": 74,
+      "physicalRows": 246
+    },
+    "damageCouplingIterations": 8,
+    "damageCouplingResidual": 8.182129973555163e-10,
+    "damageCouplingVelocityResidual": 1.8746456348821564e-10,
+    "damageAcceleration": "anderson",
+    "accelerationRestarts": 0,
+    "creepCouplingLogStressResidual": 5.783636303213768e-07,
+    "phaseField": {
+      "kktResidual": 2.98356147987762e-14,
+      "iterations": 2,
+      "fractureEnergyJ": 1.2660266911697213e-05,
+      "previousFractureEnergyJ": 1.1308826489970757e-05,
+      "incrementalEnergyBeforeJ": 4.60421953999321e-05,
+      "incrementalEnergyAfterJ": 4.598127479086334e-05,
+      "lengthM": 0.003,
+      "model": "reference finite-volume AT2",
+      "maximumDamageIncrement": 0.020127418511365402
+    }
+  }
+}

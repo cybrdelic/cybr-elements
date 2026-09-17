@@ -1,0 +1,16 @@
+{
+  "status": "failed",
+  "error": "ValueError('could not broadcast input array from shape (0,3) into shape (120,3)')",
+  "time": 0.5,
+  "particles": 120,
+  "broken": 0,
+  "maximumDamage": 0.0,
+  "solidPoints": 0,
+  "rejects": 0,
+  "wallSeconds": 2.5780000000086147,
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

@@ -1,0 +1,59 @@
+{
+  "status": "pass",
+  "old1200KRelaxationSeconds": 9.746693583604604e-05,
+  "new1200KRelaxation": "elastic below failure",
+  "rows": [
+    {
+      "temperatureK": 1450.0,
+      "solidFraction": 0.0,
+      "initialShearPa": 0.0,
+      "afterOneSecondPa": 0.0,
+      "analyticAfterOneSecondPa": 0.0,
+      "networkFluidity": 0.006666666666666667
+    },
+    {
+      "temperatureK": 1370.0,
+      "solidFraction": 0.21260000000000037,
+      "initialShearPa": 100000.0,
+      "afterOneSecondPa": 1.5715674747235185e-251,
+      "analyticAfterOneSecondPa": 0.0,
+      "networkFluidity": 0.00031258088164061985
+    },
+    {
+      "temperatureK": 1300.0,
+      "solidFraction": 0.49260000000000037,
+      "initialShearPa": 100000.0,
+      "afterOneSecondPa": 7.039944669730662e-187,
+      "analyticAfterOneSecondPa": 0.0,
+      "networkFluidity": 5.616977237582093e-06
+    },
+    {
+      "temperatureK": 1200.0,
+      "solidFraction": 0.8926000000000004,
+      "initialShearPa": 100000.0,
+      "afterOneSecondPa": 100000.0,
+      "analyticAfterOneSecondPa": 100000.0,
+      "networkFluidity": 0.0
+    },
+    {
+      "temperatureK": 1050.0,
+      "solidFraction": 1.0,
+      "initialShearPa": 100000.0,
+      "afterOneSecondPa": 100000.0,
+      "analyticAfterOneSecondPa": 100000.0,
+      "networkFluidity": 0.0
+    }
+  ],
+  "maxwellTimestepErrors": [
+    0.0001233589067946017,
+    6.17257409554206e-05,
+    3.0874457191631954e-05
+  ],
+  "interfaceDrag": {
+    "relativeVelocityError": 1.3877787807814457e-17,
+    "momentumError": 5.551115123125783e-17,
+    "heatJ": 0.05183063209316243,
+    "kineticLossJ": 0.21180171880045387
+  },
+  "limits": "Nominal crystal-packing and one-cell viscous interface closures; not composition-calibrated basalt rheology"
+}

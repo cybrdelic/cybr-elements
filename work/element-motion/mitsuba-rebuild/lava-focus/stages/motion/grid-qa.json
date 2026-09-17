@@ -1,0 +1,12 @@
+{
+  "device": "CPU",
+  "timestepComparisonSeconds": 3,
+  "dtSeconds": [
+    0.01,
+    0.005
+  ],
+  "relativeHeightL2Difference": 0.0010500022903567306,
+  "normalizedInteriorLaplacianRMS": 0.0029254828114062548,
+  "seconds": 4.18,
+  "limits": "Numerical stability and timestep sensitivity checks, not material realism or validation against measured lava"
+}

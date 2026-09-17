@@ -1,0 +1,759 @@
+{
+  "device": "CPU",
+  "seconds": 5.49,
+  "materials": [
+    {
+      "id": "lava",
+      "hardErrors": [],
+      "warnings": [
+        "One-way thermal carrier; viscosity feedback still needs a new coupled solve"
+      ],
+      "checks": {
+        "30": {
+          "vertices": 9934,
+          "triangles": 19860,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.41645145138602485,
+          "extent": [
+            3.4008240401744834,
+            0.5224766135215758,
+            2.7037766408175226
+          ]
+        },
+        "45": {
+          "vertices": 15935,
+          "triangles": 31862,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6440854582110402,
+          "extent": [
+            3.6764021515846252,
+            0.8811855912208557,
+            2.6084686685353518
+          ]
+        },
+        "65": {
+          "vertices": 24318,
+          "triangles": 48688,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6884661071751541,
+          "extent": [
+            4.9797894805669785,
+            1.6881437301635742,
+            1.9488211758434772
+          ]
+        },
+        "90": {
+          "vertices": 27587,
+          "triangles": 55282,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6885823527161038,
+          "extent": [
+            6.7082401514053345,
+            2.2071183174848557,
+            0.19409475289285177
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "ice",
+      "hardErrors": [],
+      "warnings": [
+        "Whole-body freeze transition is a rejected limitation pending progressive phase solve"
+      ],
+      "checks": {
+        "30": {
+          "vertices": 12566,
+          "triangles": 25120,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.2857937514781952,
+          "extent": [
+            3.023141384124756,
+            0.41373389959335327,
+            2.641531229019165
+          ]
+        },
+        "45": {
+          "vertices": 20996,
+          "triangles": 41964,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 1,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.34487393498420715,
+          "extent": [
+            2.8135974407196045,
+            0.7876671552658081,
+            2.6484360694885254
+          ]
+        },
+        "65": {
+          "vertices": 8844,
+          "triangles": 17364,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.08608809858560562,
+          "extent": [
+            5.927545547485352,
+            1.940334439277649,
+            3.2360126972198486
+          ]
+        },
+        "90": {
+          "vertices": 0,
+          "triangles": 0,
+          "finite": true
+        },
+        "fractureVolumeCoverage": 0.9993934631851986,
+        "fracturePieces": 46,
+        "closedPieces": 46
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "foam",
+      "hardErrors": [],
+      "warnings": [
+        "Carrier attachment exists; explicit shared films and drainage are incomplete"
+      ],
+      "checks": {
+        "30": {
+          "vertices": 24716,
+          "triangles": 49432,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.4156684079695117,
+          "extent": [
+            3.4492102861404423,
+            0.5743190199136736,
+            2.7104601301252838
+          ]
+        },
+        "45": {
+          "vertices": 49779,
+          "triangles": 99558,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6338371433226334,
+          "extent": [
+            3.4144428223371506,
+            1.5130465775728226,
+            2.617166457697749
+          ]
+        },
+        "65": {
+          "vertices": 117351,
+          "triangles": 235078,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 16,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.623283845418859,
+          "extent": [
+            5.312084823846817,
+            4.3698101551271975,
+            2.359166912734508
+          ]
+        },
+        "90": {
+          "vertices": 125495,
+          "triangles": 250302,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.5508299634009609,
+          "extent": [
+            8.678301773965359,
+            4.384092469699681,
+            0.9644312001764774
+          ]
+        },
+        "cells": {
+          "count": 26534,
+          "radiusQuantiles": [
+            0.004200070630759001,
+            0.0051705604419112206,
+            0.010363493021577597,
+            0.010999999940395355
+          ],
+          "severeOverlapFraction": 0.8443129569608804,
+          "filmRange": [
+            0.6669778227806091,
+            1.1948856115341187
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "metal",
+      "hardErrors": [],
+      "warnings": [
+        "Cached deformation needs an independent yield and springback check"
+      ],
+      "checks": {
+        "30": {
+          "vertices": 21000,
+          "triangles": 24300,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 60,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.19385766983032227,
+          "extent": [
+            4.563227653503418,
+            0.4281570017337799,
+            2.153811454772949
+          ]
+        },
+        "45": {
+          "vertices": 21000,
+          "triangles": 37380,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 60,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.11224845796823502,
+          "extent": [
+            3.892834424972534,
+            0.43726450204849243,
+            2.266914129257202
+          ]
+        },
+        "65": {
+          "vertices": 21000,
+          "triangles": 41940,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 60,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.05055790767073631,
+          "extent": [
+            3.592393159866333,
+            0.7063902616500854,
+            2.2913737297058105
+          ]
+        },
+        "90": {
+          "vertices": 21000,
+          "triangles": 41940,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 60,
+          "nonmanifoldEdges": 0,
+          "signedVolume": -0.18789227306842804,
+          "extent": [
+            3.9832777976989746,
+            1.2656371593475342,
+            0.40017759799957275
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "glass",
+      "hardErrors": [],
+      "warnings": [
+        "Optical fill and prefracture appearance require visual review"
+      ],
+      "checks": {
+        "pieces": 75,
+        "closedPieces": 75,
+        "connections": 159,
+        "finite": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "crystal",
+      "hardErrors": [],
+      "warnings": [
+        "Growth geometry retained; no new crystal-growth solver"
+      ],
+      "checks": {
+        "sourceExists": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "sand",
+      "hardErrors": [],
+      "warnings": [
+        "Render children inherit continuum deformation; no separate child-grain solve"
+      ],
+      "checks": {
+        "30": {
+          "particles": 70000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.9992028474807739,
+            1.0,
+            1.000502825975418,
+            1.0008066892623901
+          ]
+        },
+        "45": {
+          "particles": 70000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.7399301528930664,
+            0.9999668598175049,
+            1.0005105757713317,
+            1.000768780708313
+          ]
+        },
+        "65": {
+          "particles": 70000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.9195411801338196,
+            0.9999651610851288,
+            1.0005155801773071,
+            1.0007715225219727
+          ]
+        },
+        "90": {
+          "particles": 70000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.27563777565956116,
+            0.9999696016311646,
+            1.000519038438797,
+            1.0008105039596558
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "snow",
+      "hardErrors": [],
+      "warnings": [
+        "Cached MPM response must be compared with material test"
+      ],
+      "checks": {
+        "30": {
+          "particles": 42000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.982123613357544,
+            1.0024009346961975,
+            1.0126610016822815,
+            1.0171034336090088
+          ]
+        },
+        "45": {
+          "particles": 42000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.9780533909797668,
+            1.0019457340240479,
+            1.0104308378696443,
+            1.0167638063430786
+          ]
+        },
+        "65": {
+          "particles": 42000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.9698537588119507,
+            1.001731276512146,
+            1.00947048664093,
+            1.013979196548462
+          ]
+        },
+        "90": {
+          "particles": 42000,
+          "finite": true,
+          "invertedDeformations": 0,
+          "JQuantiles": [
+            0.9751750230789185,
+            1.0000824928283691,
+            1.0081187295913696,
+            1.016095757484436
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "mud",
+      "hardErrors": [],
+      "warnings": [
+        "Existing viscous carrier lacks verified yield-stress response"
+      ],
+      "checks": {
+        "30": {
+          "vertices": 9934,
+          "triangles": 19860,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.41645145138602485,
+          "extent": [
+            3.4008240401744834,
+            0.5224766135215758,
+            2.7037766408175226
+          ]
+        },
+        "45": {
+          "vertices": 15935,
+          "triangles": 31862,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6440854582110402,
+          "extent": [
+            3.6764021515846252,
+            0.8811855912208557,
+            2.6084686685353518
+          ]
+        },
+        "65": {
+          "vertices": 24318,
+          "triangles": 48688,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6884661071751541,
+          "extent": [
+            4.9797894805669785,
+            1.6881437301635742,
+            1.9488211758434772
+          ]
+        },
+        "90": {
+          "vertices": 27587,
+          "triangles": 55282,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6885823527161038,
+          "extent": [
+            6.7082401514053345,
+            2.2071183174848557,
+            0.19409475289285177
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "blood",
+      "hardErrors": [],
+      "warnings": [
+        "Existing carrier lacks independently calibrated rheology"
+      ],
+      "checks": {
+        "30": {
+          "vertices": 24716,
+          "triangles": 49432,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.4156684079695117,
+          "extent": [
+            3.4492102861404423,
+            0.5743190199136736,
+            2.7104601301252838
+          ]
+        },
+        "45": {
+          "vertices": 49779,
+          "triangles": 99558,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.6338371433226334,
+          "extent": [
+            3.4144428223371506,
+            1.5130465775728226,
+            2.617166457697749
+          ]
+        },
+        "65": {
+          "vertices": 117351,
+          "triangles": 235078,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 16,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.623283845418859,
+          "extent": [
+            5.312084823846817,
+            4.3698101551271975,
+            2.359166912734508
+          ]
+        },
+        "90": {
+          "vertices": 125495,
+          "triangles": 250302,
+          "finite": true,
+          "validIndices": true,
+          "degenerateFaces": 0,
+          "boundaryEdges": 0,
+          "nonmanifoldEdges": 0,
+          "signedVolume": 0.5508299634009609,
+          "extent": [
+            8.678301773965359,
+            4.384092469699681,
+            0.9644312001764774
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "plants",
+      "hardErrors": [],
+      "warnings": [
+        "Scanned leaves do not replace a botanical attachment audit"
+      ],
+      "checks": {
+        "rods": {
+          "points": 522,
+          "edges": 1025,
+          "finite": true,
+          "stretchQuantiles": [
+            0.9981265482042171,
+            1.000006782304743,
+            1.002188824511303,
+            1.0043156602423366
+          ]
+        }
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "healing",
+      "hardErrors": [],
+      "warnings": [
+        "Designed fictional restoration, not a medical model"
+      ],
+      "checks": {
+        "sourceExists": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "lightning",
+      "hardErrors": [],
+      "warnings": [
+        "Authored slow-motion discharge; not calibrated electromagnetics"
+      ],
+      "checks": {
+        "sourceExists": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "lightning-redirection",
+      "hardErrors": [],
+      "warnings": [
+        "Authored routing and temporal scale"
+      ],
+      "checks": {
+        "sourceExists": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "combustion",
+      "hardErrors": [],
+      "warnings": [
+        "Current cache has a restrained burst; lighting alone cannot enlarge its physics"
+      ],
+      "checks": {
+        "resolution": [
+          3,
+          224,
+          128,
+          480
+        ],
+        "finite": true,
+        "minimum": 0.0,
+        "maximum": 5.51171875
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "spirit",
+      "hardErrors": [],
+      "warnings": [
+        "Art-directed fictional field"
+      ],
+      "checks": {
+        "frames": 120,
+        "particles": 7500,
+        "finite": true,
+        "positiveRadii": true,
+        "temperatureAvailable": false
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "energy",
+      "hardErrors": [],
+      "warnings": [
+        "Art-directed fictional field"
+      ],
+      "checks": {
+        "frames": 120,
+        "particles": 7500,
+        "finite": true,
+        "positiveRadii": true,
+        "temperatureAvailable": false
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "spirit-projection",
+      "hardErrors": [],
+      "warnings": [
+        "Luminous membrane is a design interpretation"
+      ],
+      "checks": {
+        "sourceExists": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "sound",
+      "hardErrors": [],
+      "warnings": [
+        "Amplified slow-motion witness"
+      ],
+      "checks": {
+        "frames": 120,
+        "particles": 18000,
+        "finite": true,
+        "positiveRadii": true,
+        "temperatureAvailable": false
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "pressure",
+      "hardErrors": [],
+      "warnings": [
+        "Reduced pressure-force witness"
+      ],
+      "checks": {
+        "frames": 120,
+        "particles": 18000,
+        "finite": true,
+        "positiveRadii": true,
+        "temperatureAvailable": false
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "heat",
+      "hardErrors": [],
+      "warnings": [
+        "Visible witness, not self-luminous unlit air"
+      ],
+      "checks": {
+        "frames": 120,
+        "particles": 7500,
+        "finite": true,
+        "positiveRadii": true,
+        "temperatureAvailable": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "flight",
+      "hardErrors": [],
+      "warnings": [
+        "One-way integrated tracer wake"
+      ],
+      "checks": {
+        "frames": 120,
+        "particles": 18000,
+        "finite": true,
+        "positiveRadii": true,
+        "temperatureAvailable": true
+      },
+      "technicalStatus": "inspect"
+    },
+    {
+      "id": "seismic",
+      "hardErrors": [],
+      "warnings": [
+        "Reduced elastic-wave witness, not tomography"
+      ],
+      "checks": {
+        "sourceExists": true
+      },
+      "technicalStatus": "inspect"
+    }
+  ],
+  "protectedSources": {
+    "work\\brand-fire-01.npz": "daa4f6ee0737c9f645cd5e4becf31f8223f6c032dbfcc937d162b72669ad025e",
+    "work\\brand-fire-02.npz": "6edc246a61a309f016185de92fbfe9a742eff3c65d91fc8e3b88c657b223341a",
+    "work\\element-motion\\shared-trail.json": "31c5b92889f212c7792848e04865f605d1431d5c487f478c9c4bc02c37b2ecc0",
+    "outputs\\cybrdelic-type\\typefaces\\vector\\CybrdelicCut-Regular-wordmark.svg": "134ae99d5876c896da1a9669e4034d1c6c2834345a26799381598b77d5ba09ab",
+    "outputs\\cybrdelic-type\\typefaces\\vector\\CybrdelicSigil-Regular-wordmark.svg": "f6abead9bedb21a93bf8a2d6c87bed2664dcd8eb8f5264cefed83a89797c6b5a"
+  },
+  "meaning": "Technical inspect status does not imply physical or visual acceptance"
+}

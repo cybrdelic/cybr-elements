@@ -1,0 +1,21 @@
+{
+  "status": "unreviewed CPU material proof; not a final shot",
+  "renderer": "Mitsuba 3.9.1",
+  "variant": "scalar_rgb",
+  "device": "CPU",
+  "threads": 2,
+  "width": 640,
+  "height": 400,
+  "samples": 6,
+  "exposure": 0.6,
+  "lightMultiplier": 0.35,
+  "seconds": 20.14468741416931,
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\continuous-21\\state-surface.npz",
+  "sourceSha256": "00e20a9b79988d8e5c1c487b087aed9089b2edc76c1e5c49419626c854d0ca28",
+  "image": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\continuous-21\\optical-proof\\state.png",
+  "geometry": "Kernel reconstruction of the actual MPM volume",
+  "temperature": "Interpolated simulated enthalpy temperatures; Planck radiance with grey emissivity 0.94",
+  "optics": "Continuous blend of nominal molten and solid rough dielectrics using solved vertex solid fraction; no pore bump or authored crack texture.",
+  "background": "Exact black; black absorbing ground; no environment or bloom overlay",
+  "limits": "Existing spatial refinement failure and coarse crust geometry remain. This still does not validate motion, gas, or photorealism."
+}

@@ -1,0 +1,17 @@
+{
+  "status": "failed",
+  "error": "TimeoutError('Pressure solve deadline reached; trial must roll back')",
+  "time": 1.9000000000000001,
+  "particles": 5874,
+  "broken": 0,
+  "maximumDamage": 0.0,
+  "solidPoints": 0,
+  "rejects": 2,
+  "wallSeconds": 300.625,
+  "source": null,
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

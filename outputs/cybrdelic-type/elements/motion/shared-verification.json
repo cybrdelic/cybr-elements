@@ -1,0 +1,78 @@
+{
+  "videos": [
+    {
+      "file": "fire-shared.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    {
+      "file": "water-shared.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120",
+          "side_data_list": [
+            {}
+          ]
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    {
+      "file": "air-shared.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    {
+      "file": "earth-shared.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    }
+  ],
+  "sharedTrailSHA256": "31c5b92889f212c7792848e04865f605d1431d5c487f478c9c4bc02c37b2ecc0",
+  "sourcePlaneProjectionMaxErrorPixels": 2.2737367544323206e-13,
+  "waterFrames": 120,
+  "waterAllFinite": true,
+  "waterPressureConverged": true,
+  "waterCapacityRejected": 0,
+  "note": "Projection agreement is at the source plane; perspective depth and simulated wakes may deviate."
+}

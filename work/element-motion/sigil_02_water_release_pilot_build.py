@@ -1,0 +1,15 @@
+from pathlib import Path
+r=Path(__file__).resolve().parent
+s=(r/'sigil_02_water_hold_mesh.py').read_text()
+s=s.replace("out=O/'mesh'", "out=O/'release-pilot-mesh'")
+s=s.replace("[45,75,120,165] if pilot", "[200,225,260] if pilot")
+(r/'sigil_02_water_release_pilot_mesh.py').write_text(s)
+s=(r/'sigil_02_water_hold_render.py').read_text()
+s=s.replace("cache=R/'sigil-02-water-hold/mesh'", "cache=R/'sigil-02-water-hold/release-pilot-mesh'")
+s=s.replace("out=R/('sigil-02-water-hold/frames' if '--full' in sys.argv else 'sigil-02-water-hold/pilot')", "out=R/'sigil-02-water-hold/release-pilot'")
+s=s.replace("frames=range(300) if '--full' in args else [45,75,120,165]", "frames=[200,225,260]")
+s=s.replace("s.render.resolution_x=1920 if '--full' in sys.argv else 1280", "s.render.resolution_x=960")
+s=s.replace("s.render.resolution_y=1080 if '--full' in sys.argv else 720", "s.render.resolution_y=540")
+s=s.replace("s.cycles.samples=96 if '--full' in sys.argv else 24", "s.cycles.samples=16")
+(r/'sigil_02_water_release_pilot_render.py').write_text(s)
+print('CPU release samples prepared: 6.67s, 7.5s, 8.67s')

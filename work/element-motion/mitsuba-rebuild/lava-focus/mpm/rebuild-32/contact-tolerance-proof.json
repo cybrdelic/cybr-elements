@@ -1,0 +1,19 @@
+{
+  "comparison": {
+    "1e-07": {
+      "iterations": 1455,
+      "residual": 9.971793362388048e-08,
+      "seconds": 1.278787299990654,
+      "maximumVelocityDifferenceMPerS": 0.0002161151047354774
+    },
+    "2e-08": {
+      "iterations": 5320,
+      "residual": 1.9999704800484234e-08,
+      "seconds": 2.9177550000022165,
+      "maximumVelocityDifferenceMPerS": 3.475734029073265e-05
+    }
+  },
+  "referenceResidual": 4.639230730901067e-09,
+  "referenceIterations": 20000,
+  "pass": false
+}

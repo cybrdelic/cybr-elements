@@ -1,0 +1,23 @@
+{
+  "cpuReviewed": true,
+  "frames": [
+    30,
+    66,
+    102,
+    150,
+    192,
+    228,
+    258,
+    294
+  ],
+  "notes": "Approved 02 geometry, materially distinct solid surface, bounded rotations, native Bullet floor release, final camera retreat. Lava atmosphere extended to 8.1 world units. Full encoded motion still requires review.",
+  "userAccepted": false,
+  "additionalCpuReview": {
+    "image": "material-refine/0150.jpg",
+    "sha256": "16a220425e9e7b98d1736c51cce82a1a457fff9d284ddd6729c2bb0bb46e9534",
+    "changes": "Spatially varied interior emission and stronger crust illumination; same fracture geometry and dynamics",
+    "observation": "Dark crust has readable relief with uneven hot seams. Still a fractured-solid interpretation, not a liquid surface."
+  },
+  "fullResolutionHeroReviewed": true,
+  "fullResolutionNotes": "Basalt relief and hot depth beneath the crust are visible, with local smoke and black exterior."
+}

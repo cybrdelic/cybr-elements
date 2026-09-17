@@ -1,0 +1,82 @@
+{
+  "grid": [
+    112,
+    36,
+    72
+  ],
+  "lo": [
+    -5.5,
+    -1.8,
+    0.0
+  ],
+  "extent": [
+    11.0,
+    3.6,
+    5.4
+  ],
+  "frames": 300,
+  "finite": true,
+  "method": "CPU incompressible advection for the three new local atmospheres.\n\nPeriodic FFT pressure projection with padded, absorbing outer boundaries.\nAuthored emission/curl force, semi-Lagrangian transport, buoyancy, dissipation.\nPNG atlases retain the 3D density; they are sampled as a volume in Cycles.\n",
+  "rows": [
+    {
+      "frame": 0,
+      "maxDensity": 0.0,
+      "densitySum": 0.0,
+      "maxSpeed": 0.007973771542310715
+    },
+    {
+      "frame": 30,
+      "maxDensity": 0.12847395241260529,
+      "densitySum": 847.7515258789062,
+      "maxSpeed": 0.29197555780410767
+    },
+    {
+      "frame": 60,
+      "maxDensity": 0.5131717324256897,
+      "densitySum": 3904.1630859375,
+      "maxSpeed": 0.5639423131942749
+    },
+    {
+      "frame": 90,
+      "maxDensity": 0.7476189732551575,
+      "densitySum": 7363.724609375,
+      "maxSpeed": 0.769941508769989
+    },
+    {
+      "frame": 120,
+      "maxDensity": 0.9195979833602905,
+      "densitySum": 9959.47265625,
+      "maxSpeed": 0.8778813481330872
+    },
+    {
+      "frame": 150,
+      "maxDensity": 0.9065422415733337,
+      "densitySum": 11832.5166015625,
+      "maxSpeed": 0.9703195691108704
+    },
+    {
+      "frame": 180,
+      "maxDensity": 0.8498843908309937,
+      "densitySum": 13103.34765625,
+      "maxSpeed": 1.0757660865783691
+    },
+    {
+      "frame": 210,
+      "maxDensity": 0.8082107901573181,
+      "densitySum": 13968.2021484375,
+      "maxSpeed": 1.155181646347046
+    },
+    {
+      "frame": 240,
+      "maxDensity": 0.708220899105072,
+      "densitySum": 13290.6611328125,
+      "maxSpeed": 1.275296688079834
+    },
+    {
+      "frame": 270,
+      "maxDensity": 0.423252671957016,
+      "densitySum": 10044.6376953125,
+      "maxSpeed": 1.3729870319366455
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bulkBatch": "stopped; do not resume or publish",
+  "completedOldEncodes": 16,
+  "requestedFinalFilms": 52,
+  "publishedNewFilms": 0,
+  "geometry": "Poisson pressure cross-section removes medial-axis seams; retained as a useful geometry correction, not a realism certification",
+  "lavaLookDevelopment": "Three static trials rejected: polygon crack pattern, repeated photographic hot patches, then stone-like material with isolated orange regions",
+  "bloodLookDevelopment": "Improved cross-section and deeper liquid color, but still reads as a manufactured letter without physical fluid shape evolution",
+  "iceLookDevelopment": "Still reads as glass or chrome; reject as finished ice",
+  "nextMechanism": "Native liquid simulation driven by original drawing trajectory, beginning with one bounded motion test; keep the source sigils and black backdrop",
+  "remaining": "Rebuild and validate material behavior before any bulk rendering; all 26 materials on 01 and 02 remain unfinished",
+  "nativeLiquid": {
+    "status": "Rejected and stopped before final mesh/full movie rendering",
+    "iteration1": "Stopped after particle preview exposed severe angular chords from per-frame source sampling",
+    "iteration2": "Finer 240 Hz source restores curves, but actual frame-60 FLIP particles reconstruct into torn, overlapping gel-like strokes before the word is complete",
+    "evidence": [
+      "native-sampling-comparison.jpg",
+      "source-sampling-audit.json",
+      "native-surface-review.jpg",
+      "native-word-review.jpg"
+    ],
+    "required": "Calibrate source momentum and fluid scale, establish a convincing material close-up and restrained stroke evolution before another whole-word bake",
+    "cache": "Partial diagnostic cache only; not a completed native liquid simulation"
+  },
+  "qualityOutcome": "No convincing high-quality replacement achieved. No new sigil gallery published. Existing accepted core films and source artwork preserved."
+}

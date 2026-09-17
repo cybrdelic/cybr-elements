@@ -1,0 +1,17 @@
+{
+  "frames": 210,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    640,
+    64,
+    256
+  ],
+  "elapsed": 300.2350000000006,
+  "peakGpuMiB": 2600.2578125,
+  "source": "bake-reactive-fire.py",
+  "changes": "Overlapping moving fuel nozzles and broad entrance/exit gestures; native reactive fluid transport and pressure; scaled lift during small letter jets; slow-motion timing and hot-gas exit force. No text overlay or stationary letter fuel mask."
+}

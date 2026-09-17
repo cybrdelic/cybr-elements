@@ -1,0 +1,28 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23\\kernel-comparison.npz",
+  "sourceSha256": "a094131655a5366040dbc1bb0017902ec336c5fd243f97a4c23c40207374cf64",
+  "physicalSeconds": 18.08,
+  "vertices": 2390,
+  "triangles": 4776,
+  "solverParticleVolumeM3": 1.4368352071186643e-07,
+  "reconstructedVolumeM3": 1.437085199076446e-07,
+  "relativeVolumeDifference": 0.0001739879121440529,
+  "kernelSigmaRenderCells": [
+    0.7,
+    0.7,
+    0.7
+  ],
+  "kernelSigmaM": [
+    0.000245,
+    0.000245,
+    0.0001225
+  ],
+  "renderCellSizeM": [
+    0.00035,
+    0.00035,
+    0.000175
+  ],
+  "method": "density reconstruction",
+  "fractureTopologyPreserved": false,
+  "limits": "Unfractured liquid reconstruction only. Explicit --method kernel is a diagnostic override that does not preserve fractures."
+}

@@ -1,0 +1,22 @@
+{
+  "status": "fail",
+  "comparisonStart": 2.333333333333333,
+  "duration": 0.025,
+  "cflFactors": [
+    0.22,
+    0.5
+  ],
+  "gradientFactors": [
+    0.2,
+    0.5
+  ],
+  "steps": [
+    6,
+    2
+  ],
+  "massWeightedVelocityRelativeError": 0.16032322934728294,
+  "maximumPositionDifferenceM": 6.258493678765409e-05,
+  "maximumTemperatureDifferenceK": 0.8134156855180663,
+  "seconds": 19.58471703529358,
+  "limits": "A short exact-state timestep check, not spatial convergence or long-term fracture validation."
+}

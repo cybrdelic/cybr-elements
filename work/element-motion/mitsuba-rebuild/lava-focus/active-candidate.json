@@ -1,0 +1,211 @@
+{
+  "status": "Reviewed material stills; not a completed fluid simulation or final quality acceptance",
+  "defaultView": "Basalt volume",
+  "image": "lava-basalt-volume.png",
+  "detail": "lava-basalt-volume-detail.png",
+  "render": {
+    "renderer": "Mitsuba 3.9.1",
+    "variant": "scalar_rgb",
+    "device": "CPU",
+    "threads": 2,
+    "affinity": [
+      0,
+      1
+    ],
+    "samplesPerPixel": 16,
+    "size": [
+      1024,
+      576
+    ],
+    "renderSeconds": 153.99,
+    "denoiseSeconds": 1.71,
+    "totalSeconds": 158.52,
+    "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+    "exposure": 8.5,
+    "background": "exact black",
+    "radianceQuantiles": [
+      0.0,
+      0.01105292118154466,
+      0.05296795085072546,
+      0.1507632588744185,
+      0.21173501014709473
+    ],
+    "meshSha256": "83bbd715d5e3106ef0b843a7b16d9013a5c82a86696a239848447a7a73ecd41f",
+    "imageSha256": "737c18ee264872f8ab1aa1e16af536b5e2f6a4ee319c5cea4f46d52170388b0d",
+    "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+    "normalAov": "world geometric normal",
+    "lightSampling": {
+      "mode": "luminance times emitter area",
+      "emitters": 20,
+      "keyProbability": 0.9129825107960631
+    },
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\breakout\\basalt-depth-01.npz",
+    "matteCrust": false,
+    "rakingLight": false,
+    "geometryModel": "Preserved rough-basalt mesh, with an authored thicker coarse volume and curved underside",
+    "normalSmoothingIterations": 2,
+    "lightGain": 0.09,
+    "surfaceMix": true,
+    "bumpTexture": "basalt-vesicles.png",
+    "bumpScale": 0.0022,
+    "camera": {
+      "eye": [
+        0.92,
+        -2.18,
+        1.28
+      ],
+      "target": [
+        -0.17,
+        0.0,
+        0.13
+      ],
+      "fov": 35.0
+    },
+    "status": "candidate; direct visual review required",
+    "backLight": false,
+    "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+    "temperatureModel": "Original authored temperature field preserved from the rough-basalt baseline; no new cooling solve is claimed for this mesh",
+    "blackPixelFraction": 0.5951588948567709
+  },
+  "detailRender": {
+    "renderer": "Mitsuba 3.9.1",
+    "variant": "scalar_rgb",
+    "device": "CPU",
+    "threads": 2,
+    "affinity": [
+      0,
+      1
+    ],
+    "samplesPerPixel": 8,
+    "size": [
+      960,
+      672
+    ],
+    "renderSeconds": 83.17,
+    "denoiseSeconds": 1.68,
+    "totalSeconds": 88.47,
+    "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+    "exposure": 8.5,
+    "background": "exact black",
+    "radianceQuantiles": [
+      0.00482210167683661,
+      0.030599912349134673,
+      0.08694231346249565,
+      0.17352432911098048,
+      0.21828575432300568
+    ],
+    "meshSha256": "83bbd715d5e3106ef0b843a7b16d9013a5c82a86696a239848447a7a73ecd41f",
+    "imageSha256": "8d928c6b54908dceec76d44c421ae35bde4490ea5eb2c3368c1a4ccf27055787",
+    "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+    "normalAov": "world geometric normal",
+    "lightSampling": {
+      "mode": "luminance times emitter area",
+      "emitters": 20,
+      "keyProbability": 0.9129825107960631
+    },
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\breakout\\basalt-depth-01.npz",
+    "matteCrust": false,
+    "rakingLight": false,
+    "geometryModel": "Preserved rough-basalt mesh, with an authored thicker coarse volume and curved underside",
+    "normalSmoothingIterations": 2,
+    "lightGain": 0.09,
+    "surfaceMix": true,
+    "bumpTexture": "basalt-vesicles.png",
+    "bumpScale": 0.0022,
+    "camera": {
+      "eye": [
+        0.37,
+        -1.07,
+        0.83
+      ],
+      "target": [
+        -0.06,
+        -0.035,
+        0.235
+      ],
+      "fov": 37.0
+    },
+    "status": "candidate; direct visual review required",
+    "backLight": false,
+    "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+    "temperatureModel": "Original authored temperature field preserved from the rough-basalt baseline; no new cooling solve is claimed for this mesh",
+    "blackPixelFraction": 0.31071583581349205
+  },
+  "geometry": {
+    "device": "CPU",
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\refined-lobed-02.npz",
+    "sourceSha256": "50de5d3510c0c5db0f4dca5ea2200be94c130c020c237624b69acd3586a7e44e",
+    "meshSha256": "83bbd715d5e3106ef0b843a7b16d9013a5c82a86696a239848447a7a73ecd41f",
+    "seconds": 5.37,
+    "method": "Original rough-basalt surface and temperature field preserved; coarse volume made thicker and less oval",
+    "limits": [
+      "Authored coarse deformation, not a new fluid solve",
+      "Existing temperature field remains authored from baseline crust exposure",
+      "No motion or sigil acceptance is claimed"
+    ]
+  },
+  "meshQA": {
+    "device": "CPU",
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\breakout\\basalt-depth-01.npz",
+    "sourceSha256": "83bbd715d5e3106ef0b843a7b16d9013a5c82a86696a239848447a7a73ecd41f",
+    "vertices": 257716,
+    "triangles": 515428,
+    "coreConnectedComponents": 1,
+    "openEdges": 0,
+    "nonManifoldEdges": 0,
+    "zeroAreaTriangles": 0,
+    "collapsedTriangleMaxEdgeM": 0.0,
+    "normalMaxError": 5.960464477539063e-08,
+    "temperatureRangeK": [
+      934.7470092773438,
+      1458.2864990234375
+    ],
+    "seconds": 0.46,
+    "limits": "Checks finite closed geometry and one connected core. Does not validate collision-free crust, fluid dynamics, temporal coherence, or visual realism."
+  },
+  "preservedImages": {
+    "lava-folded.png": "8ddd925c1c2300c73017f4ea642a4db88d5417590aafb291d2d47402885923cf",
+    "lava-refined.png": "dab9d6c2f0ca2613b1643a176a2e20e4aa1500c0f87a002a5c7cfd2d0975e4be",
+    "lava-restored-first.png": "3e1eabbde8653b89b2cbae18b9f965da2b33a5c38e4e5a288aa59cf7ce26826f"
+  },
+  "kept": [
+    "Original preferred rough-basalt cracks, pores and temperature field",
+    "Thicker coarse volume with a curved underside",
+    "Continuous interpolated thermal radiance",
+    "Soft side lighting that exposes the basalt relief"
+  ],
+  "rejected": [
+    {
+      "image": "lava-rupture-01-hero-0059-640-8spp.png",
+      "reason": "Orange exposed surface reads as paint; uniformly pale rear cap"
+    },
+    {
+      "image": "lava-rupture-02-hero-0059-640-8spp.png",
+      "reason": "Repeated ridges and thin tiled strips"
+    },
+    {
+      "image": "lava-rupture-03-hero-0059-640-8spp.png",
+      "reason": "Smooth silhouette with painted-looking heat streaks"
+    },
+    {
+      "image": "lava-clinker-01-hero-0059-640-8spp.png",
+      "reason": "Isolated stones are evenly scattered over exposed melt"
+    },
+    {
+      "image": "lava-basalt-depth-hero-0059-640-8spp.png",
+      "reason": "Lighting hides too much crust"
+    }
+  ],
+  "remaining": [
+    "Some vertical creases retain the procedural character of the original mesh",
+    "Shape and temperature field are authored; no new coupled crust/melt dynamics have been validated",
+    "Still images do not establish temporal stability or moving sigil quality"
+  ],
+  "sourceFiles": {
+    "lava_basalt_depth.py": "aa6f08ac0f5ab678013e4a5bf02704ec19c56d0ea6031bdb9a5b4947335f0ff2",
+    "lava_basalt_job.py": "ee88b131b95786f60eed5152ba1955860b66b2ae925ae92bb946950bd903c24f",
+    "lava_lobes_render.py": "ecfc8a2619af2a346abc7cf0c3db2ca6237562d869119d53f20524984e50e5ed",
+    "lava_emission_io.py": "dd76b24b579fd7318a330ece2959ccd5ff66fd6cf09b11185b4f4bfe13e1057b",
+    "lava_radiation.py": "1b6b7f0c499b513f17d74f20be0b894fcf3d66db5242816a29537a9ec9d2289a"
+  }
+}

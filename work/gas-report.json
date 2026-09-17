@@ -1,0 +1,17 @@
+{
+  "frames": 300,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    512,
+    64,
+    256
+  ],
+  "elapsed": 734.1089999999967,
+  "peakGpuMiB": 2112.25732421875,
+  "source": "bake-reactive-fire.py",
+  "changes": "One moving nozzle deposits a persistent gas supply along its continuous path. Supply releases fuel until physical t=15.0, then stops by 15.7. Camera pulls back at screen t=5.55-7.45. Native combustion, pressure and transport remain active. No text overlay."
+}

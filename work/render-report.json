@@ -1,0 +1,17 @@
+{
+  "frames": 225,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    720,
+    60,
+    270
+  ],
+  "elapsed": 347.9850000000006,
+  "peakGpuMiB": 2893.794921875,
+  "source": "bake-reactive-fire.py",
+  "changes": "Letter-shaped fuel inlet with left-to-right ignition; original transport, combustion, vorticity, pressure and radiance; linear-light bloom."
+}

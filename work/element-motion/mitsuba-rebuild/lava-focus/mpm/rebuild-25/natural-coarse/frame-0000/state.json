@@ -1,0 +1,92 @@
+{
+  "material": {
+    "density": 2700.0,
+    "cp": 1200.0,
+    "solidus": 1173.15,
+    "liquidus": 1423.15,
+    "latent_heat": 400000.0,
+    "conductivity": 1.6,
+    "emissivity": 0.94,
+    "convection": 12.0,
+    "ambient": 293.15,
+    "young": 30000000000.0,
+    "poisson": 0.25,
+    "liquid_bulk": 20000000000.0,
+    "expansion": 8e-06,
+    "tensile_strength": 8000000.0,
+    "fracture_energy": 100.0,
+    "viscosity_reference": 150.0,
+    "viscosity_temperature": 1450.0,
+    "activation_over_R": 60000.0,
+    "friction": 0.6,
+    "crystal_lock_fraction": 0.65,
+    "rheology": "creeping_network",
+    "creep_viscosity_reference": 1000000000000.0,
+    "creep_temperature": 933.15,
+    "creep_activation_over_R": 60000.0,
+    "fracture_model": "phase_field",
+    "fracture_length": 0.005,
+    "melt_viscosity_law": "farrell_180719",
+    "vft_a": -4.55,
+    "vft_b": 5978.4,
+    "vft_c": 595.3
+  },
+  "dx": 0.004,
+  "spacing": 0.002,
+  "cell_size": [
+    0.004,
+    0.004,
+    0.002
+  ],
+  "sample_size": [
+    0.002,
+    0.002,
+    0.001
+  ],
+  "contact_solver": "friction",
+  "bonded_bed": false,
+  "coherent_fraction": 0.65,
+  "failure_fraction": 0.65,
+  "origin": [
+    -0.06,
+    -0.05,
+    -0.008
+  ],
+  "shape": [
+    36,
+    26,
+    25
+  ],
+  "gravity": [
+    0.8549978363545266,
+    0.0,
+    -9.772669988280024
+  ],
+  "ground": true,
+  "initial_energy": 20520.86399999995,
+  "initial_mass": 0.027216000000000004,
+  "ledger": {
+    "radiation": 0.0,
+    "convection": 0.0,
+    "bed": 0.0,
+    "viscous_heat": 0.0,
+    "fracture": 0.0,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0
+  },
+  "time": 0.0,
+  "rows": [],
+  "sourceHashes": {
+    "lava_mpm.py": "3863cf66352aff44f49dc63d8b012a5253aa0a8346af9c8aeba767f097fdf0a7",
+    "lava_mpm_coupled.py": "9ea67795098de530731274960f446efc9a62acd282a25552195a7fe4cf61e503",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+    "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "afd8b8cae790d263b500ca89c415ab26547aad2a39a3a4c51284434859334315"
+  },
+  "transfer": "apic",
+  "transfer_filter_seconds": 0.001
+}

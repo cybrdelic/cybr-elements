@@ -1,0 +1,90 @@
+{
+  "element": "lightning",
+  "variant": "01",
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "30/1",
+        "nb_read_frames": "300"
+      }
+    ],
+    "format": {
+      "duration": "10.000000"
+    }
+  },
+  "bytes": 3613027,
+  "sha256": "0f334ff2a367cc68e45903a65af476524638cd24f0d03ed75fd920502323457e",
+  "samples": [
+    {
+      "frame": 20,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 46102
+    },
+    {
+      "frame": 60,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 188190
+    },
+    {
+      "frame": 96,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 275898
+    },
+    {
+      "frame": 120,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 286505
+    },
+    {
+      "frame": 150,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 285922
+    },
+    {
+      "frame": 180,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 286767
+    },
+    {
+      "frame": 195,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 18828
+    },
+    {
+      "frame": 210,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 0
+    },
+    {
+      "frame": 240,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 0
+    },
+    {
+      "frame": 270,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 0
+    },
+    {
+      "frame": 299,
+      "cornerMean": 0.0,
+      "cornerMax": 0,
+      "litPixels": 0
+    }
+  ],
+  "decode": "complete"
+}

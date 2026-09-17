@@ -1,0 +1,14 @@
+{
+  "kind": "glass",
+  "variant": "02",
+  "frames": [
+    240,
+    360
+  ],
+  "configuration": "fc1a7b1ef9322d85c2ef6b051998771619d4ee920aa21c1fe6cfdc540d3dc394",
+  "seconds": 319.9453043937683,
+  "reusedSettledFrames": 0,
+  "sourceSha256": "6edc246a61a309f016185de92fbfe9a742eff3c65d91fc8e3b88c657b223341a",
+  "method": "Original source geometry, reviewed shader recipes, supported damped motion and gravity release",
+  "limits": "Authored bending support; this retargeting pass does not rerun the earlier FLIP/MPM solves"
+}

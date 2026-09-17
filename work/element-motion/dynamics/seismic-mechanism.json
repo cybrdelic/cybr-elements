@@ -1,0 +1,8 @@
+{
+  "method": "finite-difference damped elastic wave, granular witness",
+  "substeps": 32,
+  "waveSpeed": 5,
+  "grains": 22000,
+  "maximumDisplacement": 0.5913446461294019,
+  "limits": "Authored floating sample; grain motion follows the solved displacement, without a discrete grain-contact solve; not tomography"
+}

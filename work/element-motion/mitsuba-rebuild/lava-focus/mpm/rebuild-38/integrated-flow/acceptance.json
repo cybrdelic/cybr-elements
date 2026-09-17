@@ -1,0 +1,18 @@
+{
+  "stateSha256": "6d79c05b89dd7222229e47d63d5948acf5aa65d9f6089108bb3d9c5ef045e3bd",
+  "time": 7.155602787080807,
+  "physicalChecks": false,
+  "acceptedStateNumerics": true,
+  "requestedIntervalComplete": false,
+  "substrateChecks": true,
+  "formedFromHotMaterial": true,
+  "openFracture": false,
+  "maximumOpeningM": 0.0,
+  "visualReview": false,
+  "publishable": false,
+  "thermalResidual": 6.1468049050916004e-12,
+  "mechanicalResidual": 7.691250895001252e-10,
+  "massErrorKg": 1.3145951341386741e-18,
+  "nextGate": "Complete declared simulation interval",
+  "rule": "A new cache invalidates the prior visual review. Passing numerical checks never authorizes publication by itself."
+}

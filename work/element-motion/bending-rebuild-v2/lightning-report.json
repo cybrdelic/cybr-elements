@@ -1,0 +1,24 @@
+{
+  "model": "CPU guided 2-D dielectric-breakdown tree, mapped to the authored shared path",
+  "full3DPlasmaSimulation": false,
+  "reference": "https://gamma-web.iacs.umd.edu/LIGHTNING/lightning.pdf",
+  "networks": [
+    {
+      "nodes": 4162,
+      "trunkNodes": 541,
+      "relaxationUpdate": 9.608120276552444e-06
+    },
+    {
+      "nodes": 4554,
+      "trunkNodes": 526,
+      "relaxationUpdate": 2.2058079287721846e-05
+    },
+    {
+      "nodes": 4493,
+      "trunkNodes": 545,
+      "relaxationUpdate": 1.98240868064109e-06
+    }
+  ],
+  "frames": 120,
+  "elapsed": 80.25032591819763
+}

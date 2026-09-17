@@ -1,0 +1,18 @@
+{
+  "status": "blocked",
+  "checks": {
+    "currentSource": true,
+    "topology": true,
+    "openFractures": true,
+    "volume": true,
+    "upperCrust": false,
+    "horizontalResolution": true,
+    "noInversion": true,
+    "resolvedDeformation": true,
+    "productionScene": false,
+    "fractureTimestepConvergence": false
+  },
+  "upperShareOfDamagedParticles": 0.49480968858131485,
+  "message": "Geometric preflight only; passing still requires visual and motion review. Controlled fracture coupons are diagnostic-only.",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23\\state-surface.npz"
+}

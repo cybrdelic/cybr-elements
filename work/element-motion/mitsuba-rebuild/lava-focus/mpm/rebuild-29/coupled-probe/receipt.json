@@ -1,0 +1,40 @@
+{
+  "status": "complete",
+  "time": 0.1,
+  "particles": 25918,
+  "rocks": 33,
+  "pitch": 0.005,
+  "velocityBasis": "Q1",
+  "fluidMassKg": 8.747325000000002,
+  "bodyMassKg": 3.2121825218200684,
+  "rows": [
+    {
+      "time": 0.0,
+      "maximumFluidSpeed": 0.04500000178813934,
+      "maximumBodySpeed": 0.0,
+      "minimumBodyHeight": 0.03720381483435631,
+      "fluidHeightRange": [
+        0.0024999999441206455,
+        0.04749999940395355
+      ],
+      "thermalLossJ": 0.0,
+      "wallSeconds": 0.9679999999934807
+    },
+    {
+      "time": 0.1,
+      "maximumFluidSpeed": 0.20898017287254333,
+      "maximumBodySpeed": 0.049685824662446976,
+      "minimumBodyHeight": 0.03663458675146103,
+      "fluidHeightRange": [
+        0.0021751346066594124,
+        0.047374334186315536
+      ],
+      "thermalLossJ": 3843.630417446173,
+      "wallSeconds": 89.48399999999674
+    }
+  ],
+  "seconds": 89.48399999999674,
+  "sourceSha256": "fd6003332a26353faad5ed197388e95cfaab7c7407f8f884570bba74d6df0609",
+  "method": "Newton implicit viscous MPM, XPBD rigid contact, native bidirectional collider impulses, particle enthalpy conduction/radiation.",
+  "limitations": "Pre-existing basalt geometry and initial thermal state are authored. No new fracture formation, melting of rigid bodies, rock-fluid heat exchange or smoke solver. Finite release; nominal constitutive values; no convergence claim."
+}

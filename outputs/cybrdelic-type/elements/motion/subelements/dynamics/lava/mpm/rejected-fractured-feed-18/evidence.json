@@ -1,0 +1,827 @@
+{
+  "status": "reviewable CPU study; not a completed production lava simulation",
+  "run": "fractured-feed-18",
+  "device": "CPU",
+  "renderer": {
+    "status": "visually inspected CPU study; not accepted as world-class or production-complete",
+    "renderer": "Mitsuba 3.9.1",
+    "variant": "scalar_rgb",
+    "device": "CPU",
+    "threads": 2,
+    "width": 800,
+    "height": 500,
+    "samples": 12,
+    "exposure": 3.0,
+    "lightMultiplier": 5.0,
+    "seconds": 106.3841564655304,
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\state-surface.npz",
+    "sourceSha256": "bf8db9c38d01a10dc2f758379608beef6f5dd52d7e10ff8e1ec7955a28042c60",
+    "image": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\optical-proof\\state.png",
+    "geometry": "Embedded initial clast boundaries with measured affine fits to MPM material displacement; conservative free-melt kernel reconstruction",
+    "temperature": "Interpolated simulated enthalpy temperatures; Planck radiance with grey emissivity 0.94",
+    "optics": "Nominal rough dielectric basalt and melt. Filtered subgrid pore bump is an optical approximation, not simulated fracture geometry.",
+    "background": "Exact black; black absorbing ground; no environment or bloom overlay",
+    "limits": "Existing spatial refinement failure and coarse crust geometry remain. This still does not validate motion, gas, or photorealism.",
+    "visualReview": {
+      "status": "visually inspected CPU study; not accepted as world-class or production-complete",
+      "inspectedImage": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\optical-proof\\state.png",
+      "imageSha256": "90454061bc55dd4f0204f2e384b0043d069bdf805bb117da20d6a4d9390d401e",
+      "improved": [
+        "Actual thick, separate basalt surfaces instead of a smooth red lump",
+        "Rough relief and pores are visible in the CPU path-traced image",
+        "Fracture gaps open through solved clast motion; the larger piece moves about 8 mm",
+        "Object is framed fully against black"
+      ],
+      "remaining": [
+        "Exposed melt is too uniform in orange color and lacks resolved surface cooling detail",
+        "Several main fracture faces still look too clean and cut",
+        "Initial cracks and pores are authored initial volume, not simulated formation",
+        "The 0.658 s interval is a brief test; no full lava/gas/bed result",
+        "Affine surface fit has up to 0.863 mm residual and 3.26% per-clast volume mismatch"
+      ],
+      "blackBorderMaximum": 0,
+      "size": [
+        800,
+        500
+      ],
+      "device": "CPU",
+      "initialBoundaryAudit": {
+        "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\initial-boundaries.npz",
+        "sha256": "0d858b7bcee8e0ba19cad29c2ecc50083c3a11986158070870f7039953305dbe",
+        "note": "Hash captured during review; the boundary was generated before simulation."
+      }
+    }
+  },
+  "initialCondition": {
+    "startTime": 0.0,
+    "config": {
+      "plane": -0.09,
+      "half_width": 0.015,
+      "height": 0.015,
+      "peak_speed": 0.06,
+      "temperature": 1450.0,
+      "pipe_end": -0.075
+    },
+    "period": 0.08333333333333334,
+    "nextEmission": 0.6666666666666669,
+    "emissions": 7,
+    "description": "Six initially fractured cold basalt clasts resting in molten lava. Initial cracks are prescribed geometry, NOT generated fracture history. All subsequent velocities, contact, heating and incoming source material are solved by MPM.",
+    "initialClasts": [
+      {
+        "label": 1,
+        "particles": 268,
+        "volume": 3.331259398234249e-05,
+        "triangles": 47876
+      },
+      {
+        "label": 2,
+        "particles": 178,
+        "volume": 2.2998309964149832e-05,
+        "triangles": 31876
+      },
+      {
+        "label": 3,
+        "particles": 78,
+        "volume": 1.1167751236976054e-05,
+        "triangles": 22372
+      },
+      {
+        "label": 4,
+        "particles": 321,
+        "volume": 4.0055817366103324e-05,
+        "triangles": 51648
+      },
+      {
+        "label": 5,
+        "particles": 132,
+        "volume": 1.6598894797482748e-05,
+        "triangles": 30578
+      },
+      {
+        "label": 6,
+        "particles": 9,
+        "volume": 8.481401548927361e-07,
+        "triangles": 4192
+      }
+    ],
+    "initialHotK": 1450.0,
+    "initialColdK": [
+      890.0,
+      1040.0
+    ],
+    "boundaryResolutionM": 0.0007,
+    "porosity": "780 prescribed spherical vesicle candidates; radius 0.75\u20133.6 mm, truncated Pareto exponent 1.55. Mesh volume sets particle mass. Pore formation is not simulated.",
+    "stateSha256": "d41b4066806ac0081e5340a7469ab8d7d7d685f6c207cf626491675ad400bf3b"
+  },
+  "physicalTime": 0.6583333333333334,
+  "latest": {
+    "time": 0.6583333333333334,
+    "dt": 0.019793271626563524,
+    "particles": 1896,
+    "mass": 0.6152735077552575,
+    "volume": 0.00022786046064849082,
+    "temperatureRange": [
+      887.8304985299017,
+      1449.099524797749
+    ],
+    "meanSolidFraction": 0.520042194092827,
+    "solidParticles": 986,
+    "damagedParticles": 0,
+    "maximumDamage": 0.0,
+    "maximumSpeed": 0.02930726295490441,
+    "thermalBalanceRelative": 1.1801279686912776e-12,
+    "stepHeatResidualJ": 3.8534153645741753e-10,
+    "mechanicalResidual": 8.847631237838845e-15,
+    "heatNewtonIterations": 8,
+    "viscousHeatJ": 0.0004105848057134514,
+    "fractureEnergyJ": 0.0,
+    "seconds": 8.831379652023315,
+    "materialVelocityFields": 7,
+    "brokenConnectivityEdges": 0,
+    "contactImpulses": 171,
+    "contactMomentumError": 1.4189761285039143e-19,
+    "splitGridNodes": 543,
+    "massBalanceErrorKg": -1.0408340855860843e-17
+  },
+  "surface": {
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\state.npz",
+    "sourceSha256": "d41b4066806ac0081e5340a7469ab8d7d7d685f6c207cf626491675ad400bf3b",
+    "method": "Embedded initial clast boundaries with measured affine fits to MPM material displacement; conservative free-melt kernel reconstruction",
+    "clasts": [
+      {
+        "label": 1,
+        "affineFitMaxM": 8.68207848321073e-05,
+        "volumeDifference": 0.0013410031790916015,
+        "centroidDisplacementM": [
+          0.002943641830994971,
+          -0.002175712420864711,
+          0.0005698087935708529
+        ]
+      },
+      {
+        "label": 2,
+        "affineFitMaxM": 0.00019648208441811076,
+        "volumeDifference": 0.00022654431819374584,
+        "centroidDisplacementM": [
+          0.0034166437750537903,
+          -0.004201067190374649,
+          8.248678245601632e-05
+        ]
+      },
+      {
+        "label": 3,
+        "affineFitMaxM": 0.0005471480247185291,
+        "volumeDifference": 0.03257938100449481,
+        "centroidDisplacementM": [
+          0.001850104875080756,
+          0.0002886361157425736,
+          -0.001315315270793262
+        ]
+      },
+      {
+        "label": 4,
+        "affineFitMaxM": 5.54375568644906e-06,
+        "volumeDifference": 0.0002862065379857923,
+        "centroidDisplacementM": [
+          0.000716251788544349,
+          0.008061055887923333,
+          -0.0003467770847864586
+        ]
+      },
+      {
+        "label": 5,
+        "affineFitMaxM": 2.4021829296923856e-05,
+        "volumeDifference": 0.00028517236415430376,
+        "centroidDisplacementM": [
+          -5.353297221129044e-05,
+          0.0012475198677004713,
+          0.00034857401278678285
+        ]
+      },
+      {
+        "label": 6,
+        "affineFitMaxM": 0.0008632644615483528,
+        "volumeDifference": 0.03222658642944348,
+        "centroidDisplacementM": [
+          0.0015036933045665807,
+          0.002902777328660613,
+          -0.004386138817926229
+        ]
+      }
+    ],
+    "meltVolumeDifference": 0.00027657749081301595,
+    "limits": "Initial cracks and subgrid surface relief are specified initial geometry. No simulated crack-formation claim. Per-clast affine surface approximation; melt/solid kernel overlap at unresolved interfaces remains possible."
+  },
+  "tests": {
+    "bed_exchange": {
+      "status": "pass",
+      "evidence": {
+        "exchangeMismatchJ": 0.0,
+        "bed": {
+          "time": 0.25,
+          "storedHeatJ": 21.656472155255607,
+          "receivedHeatJ": 21.65647220637952,
+          "bottomLossJ": 4.479203244045493e-08,
+          "energyErrorJ": 6.331880797461054e-09,
+          "maximumTemperature": 294.00730811427616
+        }
+      },
+      "seconds": 0.19946074485778809
+    },
+    "contact": {
+      "status": "pass",
+      "evidence": {
+        "penetrationM": 0.0,
+        "initialMechanicalJ": 0.006115095000000001,
+        "finalMechanicalJ": 0.00447281529871141,
+        "groundImpulseNs": 0.0
+      },
+      "seconds": 1.214855432510376
+    },
+    "coupled_cooling": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.8,
+          "dt": 0.2,
+          "particles": 27,
+          "mass": 0.07289999999999999,
+          "volume": 2.6998202029988125e-05,
+          "temperatureRange": [
+            1420.4203876197473,
+            1422.3707750558758
+          ],
+          "meanSolidFraction": 0.007698960411260352,
+          "solidParticles": 0,
+          "damagedParticles": 0,
+          "maximumDamage": 0.0,
+          "maximumSpeed": 0.0,
+          "thermalBalanceRelative": 5.93621039193516e-16,
+          "stepHeatResidualJ": 4.433786671143025e-12,
+          "mechanicalResidual": 0.0,
+          "heatNewtonIterations": 3,
+          "viscousHeatJ": 0.0,
+          "fractureEnergyJ": 0.0,
+          "seconds": 0.010040044784545898,
+          "materialVelocityFields": 1,
+          "brokenConnectivityEdges": 0,
+          "contactImpulses": 0,
+          "contactMomentumError": 0.0,
+          "splitGridNodes": 0,
+          "massBalanceErrorKg": 0.0
+        },
+        "ledger": {
+          "radiation": 439.79116441989987,
+          "convection": 27.44478536674323,
+          "bed": 0.0,
+          "viscous_heat": 0.0,
+          "fracture": 0.0,
+          "pressure_cavitation": 0.0,
+          "ground_impulse": 0.0,
+          "ground_dissipation": 0.0,
+          "contact_heat": 0.0
+        }
+      },
+      "seconds": 0.050391197204589844
+    },
+    "crystal_network": {
+      "status": "pass",
+      "old1200KRelaxationSeconds": 9.746693583604604e-05,
+      "new1200KRelaxation": "elastic below failure",
+      "rows": [
+        {
+          "temperatureK": 1450.0,
+          "solidFraction": 0.0,
+          "initialShearPa": 0.0,
+          "afterOneSecondPa": 0.0,
+          "analyticAfterOneSecondPa": 0.0,
+          "networkFluidity": 0.006666666666666667
+        },
+        {
+          "temperatureK": 1370.0,
+          "solidFraction": 0.21260000000000037,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 1.5715674747235185e-251,
+          "analyticAfterOneSecondPa": 0.0,
+          "networkFluidity": 0.00031258088164061985
+        },
+        {
+          "temperatureK": 1300.0,
+          "solidFraction": 0.49260000000000037,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 7.039944669730662e-187,
+          "analyticAfterOneSecondPa": 0.0,
+          "networkFluidity": 5.616977237582093e-06
+        },
+        {
+          "temperatureK": 1200.0,
+          "solidFraction": 0.8926000000000004,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 100000.0,
+          "analyticAfterOneSecondPa": 100000.0,
+          "networkFluidity": 0.0
+        },
+        {
+          "temperatureK": 1050.0,
+          "solidFraction": 1.0,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 100000.0,
+          "analyticAfterOneSecondPa": 100000.0,
+          "networkFluidity": 0.0
+        }
+      ],
+      "maxwellTimestepErrors": [
+        0.0001233589067946017,
+        6.17257409554206e-05,
+        3.0874457191631954e-05
+      ],
+      "interfaceDrag": {
+        "relativeVelocityError": 1.3877787807814457e-17,
+        "momentumError": 5.551115123125783e-17,
+        "heatJ": 0.05183063209316243,
+        "kineticLossJ": 0.21180171880045387
+      },
+      "limits": "Nominal crystal-packing and one-cell viscous interface closures; not composition-calibrated basalt rheology"
+    },
+    "enthalpy": {
+      "status": "pass",
+      "evidence": {
+        "roundtripK": 1.7053025658242404e-13,
+        "latentHeatJPerKg": 400000.0
+      },
+      "seconds": 0.0
+    },
+    "fracture": {
+      "status": "pass",
+      "evidence": {
+        "lengthTests": [
+          {
+            "dx": 0.004,
+            "softeningEnergyJPerM2": 99.99999528864336,
+            "relativeError": 4.7113566381540295e-08
+          },
+          {
+            "dx": 0.008,
+            "softeningEnergyJPerM2": 99.99999848616366,
+            "relativeError": 1.5138363380629018e-08
+          },
+          {
+            "dx": 0.016,
+            "softeningEnergyJPerM2": 99.99999781905287,
+            "relativeError": 2.180947134888811e-08
+          }
+        ],
+        "noDamageAtUnloadedRepeat": true
+      },
+      "seconds": 0.016033649444580078
+    },
+    "fracture_topology": {
+      "status": "pass",
+      "evidence": {
+        "intactFields": 1,
+        "fracturedFields": 2,
+        "refrozenFields": 1
+      },
+      "seconds": 0.006066322326660156
+    },
+    "fragment_contact": {
+      "status": "pass",
+      "evidence": {
+        "approachingImpulses": 41,
+        "separatingImpulses": 0,
+        "momentumError": 1.0842021724855044e-19,
+        "dissipatedEnergyJ": 5.876257324218754e-05
+      },
+      "seconds": 0.05997610092163086
+    },
+    "gas_displacement": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.02,
+          "substeps": 1,
+          "maxProjectionResidual": 2.1212456748847563e-08,
+          "massErrorKg": 2.168404344971009e-19,
+          "waterErrorKg": 0.0,
+          "temperatureRange": [
+            292.53586659673294,
+            293.72310874626265
+          ],
+          "maximumSpeed": 0.038482335610036694,
+          "dustMassErrorKg": 0.0,
+          "dustHeatErrorJ": 0.0,
+          "dustMassKg": 0.0
+        },
+        "fluidVolumeChangeM3": 0.0
+      },
+      "seconds": 0.022025346755981445
+    },
+    "gas_fracture_dust": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.05,
+          "substeps": 1,
+          "maxProjectionResidual": 3.321924881940304e-10,
+          "massErrorKg": 0.0,
+          "waterErrorKg": -8.470329472543003e-22,
+          "temperatureRange": [
+            293.14999998034284,
+            300.61175275209814
+          ],
+          "maximumSpeed": 0.0025629962935540904,
+          "dustMassErrorKg": -3.308722450212111e-24,
+          "dustHeatErrorJ": 3.144186300207963e-18,
+          "dustMassKg": 9.999999999980528e-09
+        },
+        "ledger": {
+          "heat_in": 0.0,
+          "mass_out": 3.2564696674317883e-08,
+          "water_in": 0.0,
+          "water_out": 2.605175733945431e-10,
+          "heat_out": 0.009594072534240234,
+          "pressure_work_error": 0.0,
+          "dust_in": 1e-08,
+          "dust_out": 1.9468108828292865e-20,
+          "dust_enthalpy_in": -0.0008778000000000012,
+          "dust_enthalpy_out": -2.0558322922511505e-14,
+          "dust_heat_to_air": 0.009594072321957407,
+          "conduction_out": 2.7581102099887878e-11
+        }
+      },
+      "seconds": 0.07672619819641113
+    },
+    "gas_heat_plume": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.08,
+          "substeps": 1,
+          "maxProjectionResidual": 9.22402040945934e-10,
+          "massErrorKg": 0.0,
+          "waterErrorKg": -3.3881317890172014e-21,
+          "temperatureRange": [
+            293.14999996799645,
+            310.46840358438794
+          ],
+          "maximumSpeed": 0.018090451749585314,
+          "dustMassErrorKg": 0.0,
+          "dustHeatErrorJ": 0.0,
+          "dustMassKg": 0.0
+        },
+        "ledger": {
+          "heat_in": 0.025,
+          "mass_out": 8.485599081770199e-08,
+          "water_in": 0.0,
+          "water_out": 6.788479265416161e-10,
+          "heat_out": 0.024999911376828367,
+          "pressure_work_error": 0.0,
+          "dust_in": 0.0,
+          "dust_out": 0.0,
+          "dust_enthalpy_in": 0.0,
+          "dust_enthalpy_out": 0.0,
+          "dust_heat_to_air": 0.0,
+          "conduction_out": 8.852102956893176e-08
+        }
+      },
+      "seconds": 0.2619645595550537
+    },
+    "gas_still_air": {
+      "status": "pass",
+      "evidence": {
+        "time": 0.05,
+        "substeps": 1,
+        "maxProjectionResidual": 4.999305329563797e-16,
+        "massErrorKg": 0.0,
+        "waterErrorKg": 0.0,
+        "temperatureRange": [
+          293.1500000000001,
+          293.1500000000001
+        ],
+        "maximumSpeed": 0.0,
+        "dustMassErrorKg": 0.0,
+        "dustHeatErrorJ": 0.0,
+        "dustMassKg": 0.0
+      },
+      "seconds": 0.010112285614013672
+    },
+    "gas_thermal_exchange": {
+      "status": "pass",
+      "evidence": {
+        "exchangeMismatchJ": 0.0,
+        "material": {
+          "time": 0.02,
+          "dt": 0.02,
+          "particles": 18,
+          "mass": 0.04860000000000001,
+          "volume": 1.7999952913105226e-05,
+          "temperatureRange": [
+            1449.86432051198,
+            1449.9286419978507
+          ],
+          "meanSolidFraction": 0.0,
+          "solidParticles": 0,
+          "damagedParticles": 0,
+          "maximumDamage": 0.0,
+          "maximumSpeed": 0.0,
+          "thermalBalanceRelative": 3.014077781415072e-16,
+          "stepHeatResidualJ": 7.148948100166308e-12,
+          "mechanicalResidual": 0.0,
+          "heatNewtonIterations": 8,
+          "viscousHeatJ": 0.0,
+          "fractureEnergyJ": 0.0,
+          "seconds": 0.49530911445617676,
+          "materialVelocityFields": 1,
+          "brokenConnectivityEdges": 0,
+          "contactImpulses": 0,
+          "contactMomentumError": 0.0,
+          "splitGridNodes": 0,
+          "massBalanceErrorKg": 0.0
+        },
+        "gas": {
+          "time": 0.02,
+          "substeps": 1,
+          "maxProjectionResidual": 1.4418349575905098e-08,
+          "massErrorKg": -4.336808689942018e-19,
+          "waterErrorKg": -3.3881317890172014e-21,
+          "temperatureRange": [
+            293.1499245610986,
+            315.32953561162014
+          ],
+          "maximumSpeed": 0.007612237295993845,
+          "dustMassErrorKg": 0.0,
+          "dustHeatErrorJ": 0.0,
+          "dustMassKg": 0.0
+        }
+      },
+      "seconds": 0.53305983543396
+    },
+    "gravity": {
+      "status": "pass",
+      "evidence": {
+        "velocityErrorMPerS": 3.8334338058992915e-13,
+        "mechanicalResidual": 3.869864240615005e-11,
+        "massErrorKg": 0.0
+      },
+      "seconds": 0.029970407485961914
+    },
+    "implicit_fragment_contact": {
+      "status": "pass",
+      "evidence": {
+        "velocity": [
+          -0.03333333333319999,
+          -0.03333333333340001
+        ],
+        "expectedVelocity": -0.03333333333333333,
+        "residual": 0.0,
+        "stiffResidual": 0.0,
+        "objectiveLossJ": 0.01333333333333333
+      },
+      "seconds": 0.0
+    },
+    "inlet_source": {
+      "status": "pass",
+      "inletVelocityError": 4.163336342344337e-17,
+      "groundVelocityError": 0.0,
+      "movingWallVelocityError": 1.0000333894311098e-13,
+      "sourceMassErrorKg": 8.673617379884035e-19,
+      "sourceEnthalpyErrorJ": 9.094947017729282e-13,
+      "sourceQuadratureFluxM3PerS": 2.278500000000001e-05,
+      "limits": "Verifies discrete boundary and source accounting, not grid convergence or final lava quality",
+      "conduitPositionErrorM": 3.0010716134398763e-15,
+      "conduitDownstreamUnconstrained": true
+    },
+    "insulated_heat": {
+      "status": "pass",
+      "evidence": {
+        "relativeEnergyError": 1.7841551677664417e-16,
+        "rangeK": [
+          1050.0000078751248,
+          1499.9999925072682
+        ]
+      },
+      "seconds": 0.023482322692871094
+    },
+    "liquid_memory": {
+      "status": "pass",
+      "evidence": {
+        "initialKineticJ": 0.000108,
+        "finalKineticJ": 9.218402582295254e-05,
+        "storedElasticStressPa": 0.0
+      },
+      "seconds": 0.2029285430908203
+    },
+    "local_fracture": {
+      "status": "pass",
+      "globalSolidComponents": 1,
+      "locallySplitNodes": 20,
+      "uniformTranslationError": 6.245004513516506e-17,
+      "zeroLoadMaximumSpeed": 0.0,
+      "solver": {
+        "time": 0.001,
+        "dt": 0.001,
+        "particles": 768,
+        "mass": 0.032400000000000005,
+        "volume": 1.2000000000000005e-05,
+        "temperatureRange": [
+          1000.0,
+          1000.0
+        ],
+        "meanSolidFraction": 1.0,
+        "solidParticles": 768,
+        "damagedParticles": 0,
+        "maximumDamage": 0.0,
+        "maximumSpeed": 0.0,
+        "thermalBalanceRelative": 0.0,
+        "stepHeatResidualJ": 0.0,
+        "mechanicalResidual": 0.0,
+        "heatNewtonIterations": 0,
+        "viscousHeatJ": 0.0,
+        "fractureEnergyJ": 0.0,
+        "seconds": 0.5616991519927979,
+        "materialVelocityFields": 1,
+        "brokenConnectivityEdges": 310,
+        "contactImpulses": 0,
+        "contactMomentumError": 0.0,
+        "splitGridNodes": 90,
+        "massBalanceErrorKg": 0.0
+      }
+    },
+    "material_grid_refinement": {
+      "status": "fail",
+      "durationSeconds": 0.5,
+      "grids": [
+        {
+          "dx": 0.01,
+          "particles": 744,
+          "time": 0.5,
+          "centerDisplacement": [
+            0.0010485832928854464,
+            -6.65476120171872e-12,
+            -0.0010969163162758751
+          ],
+          "initialVolume": 9.300000000000004e-05,
+          "finalVolume": 9.298892764861646e-05,
+          "meanTemperature": 1445.0389030925257,
+          "rmsSpeed": 0.003937177421928846,
+          "maximumSpeed": 0.007246387248699967
+        },
+        {
+          "dx": 0.005,
+          "particles": 5860,
+          "time": 0.5,
+          "centerDisplacement": [
+            0.0009637603049027126,
+            5.673586624427829e-13,
+            -0.0008505816272133555
+          ],
+          "initialVolume": 9.156250000000004e-05,
+          "finalVolume": 9.154378259229725e-05,
+          "meanTemperature": 1441.4806222273369,
+          "rmsSpeed": 0.003293762048486981,
+          "maximumSpeed": 0.006215947120562271
+        }
+      ],
+      "relativeRmsSpeedDifference": 0.19534361133871944,
+      "centerDifferenceM": 0.0002605296879932253,
+      "scope": "Early molten flow only. Does not validate long-time fracture, gas refinement, or final render quality.",
+      "seconds": 38.688464641571045,
+      "sourceHashes": {
+        "lava_mpm.py": "da2a4e0a2c4f17c9f492a016313506b898b0e7ce99e0d201e05314485df47de9",
+        "lava_mpm_fracture.py": "df744c129d5b9dfa4ed14c6a1666032a2b7e813d5408379a077622b3157bd5b6",
+        "lava_mpm_run.py": "177a798552e72c4b4ac155549ff3c09f49588928cf4daa157dfbbce0783c01f8"
+      }
+    },
+    "melting_reset": {
+      "status": "pass",
+      "evidence": {
+        "remainingSolidStressPa": 0.0
+      },
+      "seconds": 0.01411294937133789
+    },
+    "shear_decay": {
+      "status": "pass",
+      "evidence": {
+        "analyticAmplitude": 0.35769171609909733,
+        "grids": [
+          {
+            "dx": 0.01,
+            "measuredAmplitude": 0.37458391204952335,
+            "relativeError": 0.04722557216210757
+          },
+          {
+            "dx": 0.005,
+            "measuredAmplitude": 0.3630872106669577,
+            "relativeError": 0.01508420330977295
+          },
+          {
+            "dx": 0.0025,
+            "measuredAmplitude": 0.36021755531724786,
+            "relativeError": 0.007061497665354799
+          }
+        ]
+      },
+      "seconds": 4.178696632385254
+    },
+    "solid_collision_scene": {
+      "status": "pass",
+      "evidence": {
+        "initialKineticJ": 2.16e-06,
+        "finalKineticJ": 2.265139065053595e-13,
+        "maximumSpeed": 2.8131962288862755e-05,
+        "contactConstraints": 57,
+        "maximumMomentumError": 0.0
+      },
+      "seconds": 0.9629549980163574
+    },
+    "solid_floor_contact": {
+      "status": "pass",
+      "freeFallVelocityErrorMPerS": 1.0910363360440534e-09,
+      "freeFallPositionErrorM": 2.1820726834583295e-11,
+      "minimumDomainGroundGapM": -4.14709864973023e-10,
+      "floorImpulseNs": 0.025427504143463512,
+      "limits": "Rigid translation and coarse-domain nonpenetration checked at every step; solid ground contact is normal-only, not a validated frictional collision law."
+    },
+    "stefan": {
+      "status": "pass",
+      "evidence": {
+        "analyticFrontM": 0.0028950111604503486,
+        "grids": [
+          {
+            "dx": 0.00025,
+            "front": 0.0028927058456603323,
+            "relativeError": 0.0007963060113584074
+          },
+          {
+            "dx": 0.000125,
+            "front": 0.0028942130284881564,
+            "relativeError": 0.0002756921883741854
+          }
+        ]
+      },
+      "seconds": 0.3212556838989258
+    },
+    "transfers": {
+      "status": "pass",
+      "evidence": {
+        "weight": 2.220446049250313e-16,
+        "gradient": 2.7010511882696875e-14,
+        "affineVelocity": 1.6653345369377348e-16,
+        "affineGradient": 1.8596235662471372e-14,
+        "momentum": 3.197442310920451e-14
+      },
+      "seconds": 0.5130362510681152
+    }
+  },
+  "passedChecks": 25,
+  "failedChecks": 1,
+  "kept": [
+    "Mass/enthalpy-accounted molten inlet with nonzero boundary work",
+    "Free solid floor contact replaces the remote no-slip pinning of hovering crust",
+    "Separate embedded basalt boundaries preserve actual gaps",
+    "Declared irregular, porous initial crust volume; no animated fragment paths",
+    "Mitsuba CPU path tracing on an exactly black backdrop"
+  ],
+  "limits": [
+    "Initial fractures and pores are specified; their formation is not simulated",
+    "This is a short coarse study, not the complete lava/gas/bed simulation",
+    "The last early-flow grid refinement result still fails its 15% gate",
+    "Embedded clast boundaries use fitted affine motion; reported error does not establish continuum convergence",
+    "Melt surface detail, fracture-face detail and solid contact/friction still need improvement",
+    "Pore bump is an optical approximation; melt/solid kernels may overlap at unresolved interfaces"
+  ],
+  "snapshots": [
+    {
+      "time": 0.0,
+      "image": "frame-000000-surface-diagnostic.png"
+    },
+    {
+      "time": 0.10833333333333334,
+      "image": "frame-000108-surface-diagnostic.png"
+    },
+    {
+      "time": 0.21666666666666667,
+      "image": "frame-000217-surface-diagnostic.png"
+    },
+    {
+      "time": 0.322446978235912,
+      "image": "frame-000322-surface-diagnostic.png"
+    },
+    {
+      "time": 0.3583333333333334,
+      "image": "frame-000358-surface-diagnostic.png"
+    },
+    {
+      "time": 0.47944522996598166,
+      "image": "frame-000479-surface-diagnostic.png"
+    },
+    {
+      "time": 0.5833333333333335,
+      "image": "frame-000583-surface-diagnostic.png"
+    },
+    {
+      "time": 0.6583333333333334,
+      "image": "frame-000658-surface-diagnostic.png"
+    }
+  ]
+}

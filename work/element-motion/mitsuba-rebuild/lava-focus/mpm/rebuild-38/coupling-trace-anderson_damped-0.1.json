@@ -1,0 +1,424 @@
+{
+  "error": null,
+  "seconds": 21.562999999994645,
+  "dt": 0.1,
+  "records": [
+    {
+      "dt": 0.1,
+      "seconds": 2.5,
+      "damageError": 0.033978220927121605,
+      "creepError": 0.23038639578955378,
+      "creepNorm": 0.36343126591841346,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5470000000204891,
+      "damageError": 0.019454807227385906,
+      "creepError": 0.12239402153659529,
+      "creepNorm": 0.19097067813099322,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46899999998277053,
+      "damageError": 0.002855096575646199,
+      "creepError": 0.010513848975848283,
+      "creepNorm": 0.019528214969313038,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46799999999348074,
+      "damageError": 0.00012420579989771974,
+      "creepError": 0.0006388074663652432,
+      "creepNorm": 0.0008727786345401038,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46900000001187436,
+      "damageError": 6.724114589992669e-05,
+      "creepError": 0.0004827572514143341,
+      "creepNorm": 0.0006296319372381256,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.45300000000861473,
+      "damageError": 1.6892260115697333e-05,
+      "creepError": 0.00021880345997393746,
+      "creepNorm": 0.0003985622656869624,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46899999998277053,
+      "damageError": 7.818439258233667e-07,
+      "creepError": 0.0002608153987455619,
+      "creepNorm": 0.00038988155318021855,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48399999999674037,
+      "damageError": 1.7198756946390503e-07,
+      "creepError": 2.5003034755721742e-05,
+      "creepNorm": 4.1156400312189115e-05,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5320000000065193,
+      "damageError": 6.790057544003858e-08,
+      "creepError": 5.808651083505367e-05,
+      "creepNorm": 0.00010501206838911169,
+      "creepIndex": 690,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5150000000139698,
+      "damageError": 1.0393559868315805e-07,
+      "creepError": 0.00014045119441585818,
+      "creepNorm": 0.00025715904607235835,
+      "creepIndex": 690,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46899999998277053,
+      "damageError": 5.478693437810378e-08,
+      "creepError": 0.00012139389719512117,
+      "creepNorm": 0.00018207069193686986,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48399999999674037,
+      "damageError": 6.190016699214596e-08,
+      "creepError": 0.00011196319437267732,
+      "creepNorm": 0.00019048901812863633,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.485000000015134,
+      "damageError": 1.9038524146086644e-08,
+      "creepError": 5.169321224163248e-05,
+      "creepNorm": 7.255233017570719e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.4529999999795109,
+      "damageError": 2.999170684025998e-08,
+      "creepError": 3.0136430797522706e-05,
+      "creepNorm": 5.3605539724413185e-05,
+      "creepIndex": 690,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46900000001187436,
+      "damageError": 5.215838871919232e-09,
+      "creepError": 7.5291974563906905e-06,
+      "creepNorm": 1.2878971290598573e-05,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5,
+      "damageError": 3.489496064323916e-08,
+      "creepError": 5.6559297177738443e-05,
+      "creepNorm": 9.907775399777837e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5,
+      "damageError": 1.0219158991242594e-08,
+      "creepError": 3.0983772139281385e-05,
+      "creepNorm": 3.9713149285340116e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.4840000000258442,
+      "damageError": 2.0390128863123635e-08,
+      "creepError": 3.399817927673965e-05,
+      "creepNorm": 5.897702132714261e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46899999998277053,
+      "damageError": 3.735616038724743e-09,
+      "creepError": 1.1036451374124567e-05,
+      "creepNorm": 1.2944513166343959e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5,
+      "damageError": 1.5186227608765535e-08,
+      "creepError": 2.275391907868851e-05,
+      "creepNorm": 4.072847276226988e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5309999999881256,
+      "damageError": 4.551121646212408e-09,
+      "creepError": 5.329838596468406e-06,
+      "creepNorm": 7.84279583793876e-06,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5310000000172295,
+      "damageError": 1.3310426538737374e-08,
+      "creepError": 2.3164779868967145e-05,
+      "creepNorm": 3.936771766887804e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48399999999674037,
+      "damageError": 3.9414272956506125e-09,
+      "creepError": 4.42592829519306e-06,
+      "creepNorm": 6.4288866649421584e-06,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48399999999674037,
+      "damageError": 9.119843102922687e-09,
+      "creepError": 1.680715279883671e-05,
+      "creepNorm": 2.786299939623963e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48499999998603016,
+      "damageError": 4.641893647239215e-09,
+      "creepError": 5.1221849515226126e-06,
+      "creepNorm": 7.899836923675003e-06,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.4840000000258442,
+      "damageError": 7.070920682306081e-09,
+      "creepError": 1.3624207816809175e-05,
+      "creepNorm": 2.222302150682759e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.46899999998277053,
+      "damageError": 4.1126070882135934e-09,
+      "creepError": 4.516521711961374e-06,
+      "creepNorm": 7.680669487330888e-06,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48399999999674037,
+      "damageError": 4.886570648121591e-09,
+      "creepError": 1.0305613428851501e-05,
+      "creepNorm": 1.6309050981870854e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.485000000015134,
+      "damageError": 3.823758643051178e-09,
+      "creepError": 4.378005845628863e-06,
+      "creepNorm": 7.798732665748314e-06,
+      "creepIndex": 690,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.48399999999674037,
+      "damageError": 3.5086849536902776e-09,
+      "creepError": 7.901132686116696e-06,
+      "creepNorm": 1.2239389224006765e-05,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5,
+      "damageError": 2.159635026366402e-09,
+      "creepError": 2.265767376385952e-06,
+      "creepNorm": 3.8949729892835936e-06,
+      "creepIndex": 820,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5,
+      "damageError": 2.0248218657314965e-09,
+      "creepError": 4.659925840311274e-06,
+      "creepNorm": 7.162561326132713e-06,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5,
+      "damageError": 2.114590780255554e-09,
+      "creepError": 2.3446514880731684e-06,
+      "creepNorm": 4.176158430815749e-06,
+      "creepIndex": 690,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5160000000032596,
+      "damageError": 1.5082394777543584e-09,
+      "creepError": 3.5375650475621967e-06,
+      "creepNorm": 5.411573207454185e-06,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5620000000053551,
+      "damageError": 1.6410781067399682e-09,
+      "creepError": 1.9885021289578475e-06,
+      "creepNorm": 3.555813117760745e-06,
+      "creepIndex": 690,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5629999999946449,
+      "damageError": 7.217558217753606e-10,
+      "creepError": 1.7438890609344782e-06,
+      "creepNorm": 2.6476158533312336e-06,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5629999999946449,
+      "damageError": 1.7213934722093427e-09,
+      "creepError": 2.7093085561702424e-06,
+      "creepNorm": 4.768004925177339e-06,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5620000000053551,
+      "damageError": 1.1175531611229417e-09,
+      "creepError": 3.2844856421299085e-06,
+      "creepNorm": 4.496455620181373e-06,
+      "creepIndex": 750,
+      "friction": {}
+    },
+    {
+      "dt": 0.1,
+      "seconds": 0.5159999999741558,
+      "damageError": 8.880147173151443e-10,
+      "creepError": 9.285441338047207e-07,
+      "creepNorm": 1.374487307561813e-06,
+      "creepIndex": 820,
+      "friction": {}
+    }
+  ],
+  "row": {
+    "time": 5.1,
+    "dt": 0.1,
+    "particles": 1028,
+    "mass": 0.006501861298828125,
+    "volume": 2.403813646228375e-06,
+    "temperatureRange": [
+      933.8666443198581,
+      1450.0000005994575
+    ],
+    "meanSolidFraction": 0.23135485334963796,
+    "solidParticles": 48,
+    "damagedParticles": 16,
+    "maximumDamage": 0.49734759771478165,
+    "maximumSpeed": 0.00018441775293184763,
+    "thermalBalanceRelative": 2.765635030867501e-12,
+    "stepHeatResidualJ": 3.268496584496461e-13,
+    "mechanicalResidual": 9.294387848582895e-14,
+    "heatNewtonIterations": 8,
+    "viscousHeatJ": 1.2665003056243566e-07,
+    "fractureEnergyJ": 2.4290963967955666e-06,
+    "seconds": 0.5142250061035156,
+    "materialVelocityFields": 7,
+    "brokenConnectivityEdges": 0,
+    "contactImpulses": 59,
+    "contactMomentumError": 3.699264158676972e-24,
+    "splitGridNodes": 287,
+    "fracturedSolidEdges": 0,
+    "meltReleasedEdges": 0,
+    "massBalanceErrorKg": 1.0909784360635388e-18,
+    "heatTransfer": {
+      "flipFraction": 0.9910516749306798,
+      "unlimitedMaximumOvershootJPerKg": 132.89632894983515,
+      "transferEnergyErrorJ": 2.5743503906567895e-14
+    },
+    "frictionContact": {
+      "iterations": 5,
+      "naturalResidual": 1.3956423043574986e-10,
+      "stationarity": 9.294387848582895e-14,
+      "slidingDissipationJ": 3.5915818867046157e-10,
+      "maximumConeViolation": 0.0,
+      "acceptedAccelerationSteps": 0,
+      "pressureActiveIterations": 1,
+      "condensedNormalRows": 408,
+      "frictionRows": 4,
+      "candidateFrictionRows": 74,
+      "physicalRows": 246
+    },
+    "damageCouplingIterations": 39,
+    "damageCouplingResidual": 8.880147173151443e-10,
+    "damageCouplingVelocityResidual": 4.0556558116718853e-10,
+    "damageAcceleration": "anderson_damped",
+    "accelerationRestarts": 8,
+    "creepCouplingLogStressResidual": 9.285441338047207e-07,
+    "phaseField": {
+      "kktResidual": 4.6842136922266914e-15,
+      "iterations": 2,
+      "fractureEnergyJ": 1.3737922886766324e-05,
+      "previousFractureEnergyJ": 1.1308826489970757e-05,
+      "incrementalEnergyBeforeJ": 4.869591158126519e-05,
+      "incrementalEnergyAfterJ": 4.8502684229446306e-05,
+      "lengthM": 0.003,
+      "model": "reference finite-volume AT2",
+      "maximumDamageIncrement": 0.03493333064892998
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "sceneKind": "suspended_continuous_crust_pressure_inlet",
+  "initialCondition": "Continuous 6 x 3 x 2.4 cm lobe; no initial damage or cracks. No floor. Zero net gravity represents elemental support. A mapped 180-second cooling profile sets the initial shell temperature; prior cooling stress is not included.",
+  "thermalProfile": {
+    "ageSeconds": 180.0,
+    "depthM": 0.04,
+    "cells": 160,
+    "minimumTemperatureK": 1039.5725118517812,
+    "relativeEnergyResidual": 3.6100282985435453e-12,
+    "method": "1D finite-volume enthalpy; radiation and convection at the top; metered 1450 K reservoir at depth."
+  },
+  "config": {
+    "plane": -0.03,
+    "half_width": 0.007,
+    "height": 0.018,
+    "peak_speed": 0.008,
+    "temperature": 1450.0,
+    "pipe_end": -0.02,
+    "bottom_wall": true,
+    "ground_profile": false
+  },
+  "period": 0.1,
+  "nextEmission": 2.3000000000000007,
+  "emissions": 22,
+  "sourceHashes": {
+    "lava_mpm.py": "984b1cdaf808be8f1871ae65d9cc70cf486e20f482a3aa9e10608c8fdcf4d69a",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "5b8330bde83bae6ec7dbbcbc87182e2cfd4e6df148b74c8a818b59a9b4a99e42",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "3f067a7490b2e85e93373d15693bc6583df12f15e02bbc7c035c184468b561a0",
+    "lava_mpm_cuda_contact27.py": "a1bf79691b8b1015e8dd886929a85f399c2cfe1eca944404dd9ff5f9f421a52f",
+    "lava_mpm_active_contact33.py": "b3cd58dc31025b6f787468d3a1868f535b1fe63afa5036ed861341a8a31db977",
+    "lava_mpm_inlet.py": "5ab67120e74d5564929254e075b1f1c05fe8c8892658c5637ad491ec8554f3db"
+  },
+  "driverSha256": "b94440bba565f8c55d6f5877a8179a37e28847b095aaae0548268b96465e3b05",
+  "limits": "Nominal material model and coarse mechanism screen; no convergence or visual acceptance claim.",
+  "nextSourceLatticeValidated": true,
+  "continuationSource": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-33\\suspended-warm-pressure\\state.npz",
+    "sha256": "00d7a591e03bb986e309b1401648d9b566c3e697a9160af17e22858dfbb359f4",
+    "reason": "Same physical equations and unchanged acceptance thresholds; active contact reduction validated against the unreduced solver."
+  }
+}

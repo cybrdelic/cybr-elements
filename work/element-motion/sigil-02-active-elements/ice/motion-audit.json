@@ -1,0 +1,11 @@
+{
+  "frames": 300,
+  "rigidFragments": 174,
+  "finite": true,
+  "maxQuaternionNormError": 1.1920928955078125e-07,
+  "centerHeightAtHold": 1.978654146194458,
+  "centerHeightAtLanding": 0.311663419008255,
+  "fragmentsNearFloorAtLanding": 128,
+  "releaseFrame": 219,
+  "authoring": "Kinematic assembly and hold; native Bullet after release; CPU gas emission uses these same matrices"
+}

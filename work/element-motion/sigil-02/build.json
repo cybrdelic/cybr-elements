@@ -1,0 +1,19 @@
+{
+  "base": "bending-fire.py",
+  "radianceSha256": "bcf221093b1edce4049319209c572cd40e57445589b8ae16392f1ffb8f505a4b",
+  "changed": "Source geometry, source scheduling and source momentum only; full-frustum simulation domain retained",
+  "preserved": [
+    "Advection and pressure solve",
+    "Reaction and cooling coefficients",
+    "Native buoyancy",
+    "Vorticity confinement",
+    "Original radiance and exposure"
+  ],
+  "frames": 294,
+  "reviewGateFrame": 135,
+  "grid": [
+    768,
+    64,
+    432
+  ]
+}

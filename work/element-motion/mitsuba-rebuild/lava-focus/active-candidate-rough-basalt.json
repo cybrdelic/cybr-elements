@@ -1,0 +1,129 @@
+{
+  "id": "lava-rough-basalt-refinement",
+  "status": "Visually reviewed material still; not a finished animation or user-approved replacement baseline",
+  "image": "lava-refined.png",
+  "renderer": {
+    "renderer": "Mitsuba 3.9.1",
+    "variant": "scalar_rgb",
+    "device": "CPU",
+    "threads": 2,
+    "affinity": [
+      0,
+      1
+    ],
+    "samplesPerPixel": 16,
+    "size": [
+      896,
+      672
+    ],
+    "renderSeconds": 94.71,
+    "denoiseSeconds": 3.61,
+    "totalSeconds": 104.7,
+    "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+    "exposure": 8.5,
+    "background": "exact black",
+    "radianceQuantiles": [
+      0.0,
+      0.008450547698885202,
+      0.021853954717516808,
+      0.1291010644286874,
+      0.24808549880981445
+    ],
+    "meshSha256": "50de5d3510c0c5db0f4dca5ea2200be94c130c020c237624b69acd3586a7e44e",
+    "imageSha256": "dab9d6c2f0ca2613b1643a176a2e20e4aa1500c0f87a002a5c7cfd2d0975e4be",
+    "emission": "Planck spectrum integrated against Mitsuba CIE functions, then traced in RGB",
+    "normalAov": "world geometric normal",
+    "lightSampling": {
+      "mode": "luminance times emitter area",
+      "emitters": 25,
+      "keyProbability": 0.9132008668385303
+    },
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\refined-lobed-02.npz",
+    "normalSmoothingIterations": 1,
+    "lightGain": 0.12,
+    "surfaceMix": true,
+    "bumpTexture": "basalt-vesicles.png",
+    "bumpScale": 0.004,
+    "camera": {
+      "eye": [
+        0.82,
+        -2.43,
+        1.58
+      ],
+      "target": [
+        -0.17,
+        0,
+        0.12
+      ],
+      "fov": 35.0
+    },
+    "status": "candidate; direct visual review required"
+  },
+  "baseline": {
+    "id": "lava-earlier-rough-pass",
+    "status": "Restored visual baseline; not a finished film",
+    "restoredAt": "2026-09-14T11:52:45.479853+00:00",
+    "referenceComment": "The first view is too flat and too busy\u2014it reads as a granular puddle.",
+    "referenceCommentTimestamp": "2026-09-14T10:49:54.056Z",
+    "image": "renders/hero-0059-640-24spp.png",
+    "imageSha256": "3e1eabbde8653b89b2cbae18b9f965da2b33a5c38e4e5a288aa59cf7ce26826f",
+    "sourceSnapshot": "iterations/01",
+    "surfaceSha256": "abd4b1f011dcaf764b75c7b7ee0d16fb161180f9b754fad27407f5bf506feaf3",
+    "flowSha256": "3f48a0c60e89e74e1899f15db1b6d3e4d0feb052c8163f2df5c9246d3fe7d855",
+    "rejectedReplacement": "renders/clean-light-detail-0029-640-16spp.png",
+    "restorationUsedRendering": false,
+    "preserve": [
+      "Dense rough structure",
+      "Scattered incandescent openings",
+      "Local contrast and depth"
+    ],
+    "scope": "This selects an immutable saved baseline. Later experimental scripts and renderer fixes are retained separately; they have not been applied to or used to regenerate this image."
+  },
+  "geometry": {
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\iterations\\01\\surface-0059.npz",
+    "sourceSha256": "abd4b1f011dcaf764b75c7b7ee0d16fb161180f9b754fad27407f5bf506feaf3",
+    "output": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\refined-lobed-02.npz",
+    "vertices": 257716,
+    "triangles": 515428,
+    "volumeRelativeError": 0.0,
+    "bounds": [
+      [
+        -1.0568672185691705,
+        -0.6043556405898382,
+        -0.01008366695888055
+      ],
+      [
+        0.7231216215872509,
+        0.6381671754842444,
+        0.3292014967089263
+      ]
+    ],
+    "temperatureK": [
+      934.7470092773438,
+      989.9161987304688,
+      1058.702472763063,
+      1390.5022583007812,
+      1458.2864990234375
+    ],
+    "seconds": 5.79,
+    "device": "CPU",
+    "limitation": "Authored morphology and crust exposure; not a resolved crust-fracture simulation"
+  },
+  "changes": [
+    "Corrected emitter selection without removing crust geometry",
+    "Thicker irregular lobes",
+    "Deeper strain-modulated hot openings",
+    "Spatial variation between matte and glassy basalt",
+    "Explicit vesicle relief"
+  ],
+  "remaining": [
+    "The crust morphology is authored rather than a coupled fracture simulation",
+    "Small-scale structure still repeats in places",
+    "No motion validation or sigil film export in this pass"
+  ],
+  "checks": {
+    "blackTopAndBottom": true,
+    "baselineHashUnchanged": true,
+    "originalSigilCachesUnchanged": true
+  }
+}

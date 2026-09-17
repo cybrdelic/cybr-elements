@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "method": "Actual existing in-app browser tab 5, after reloading the published player; accessibility state and read-only video DOM metadata",
+  "videos": {
+    "water": {"source": "water-02-r2.mp4", "width": 1920, "height": 1080, "duration": 8, "paused": false, "readyState": 4, "error": null},
+    "earth": {"source": "earth-02-r2.mp4", "width": 1920, "height": 1080, "duration": 6.4, "paused": false, "readyState": 4, "error": null},
+    "lightning": {"source": "lightning-02-r2.mp4", "width": 1920, "height": 1080, "duration": 5.6, "paused": false, "readyState": 4, "error": null}
+  },
+  "previousComparison": {"element": "water", "oldSource": "water-02.mp4", "oldDuration": 9, "returnedSource": "water-02-r2.mp4", "returnedDuration": 8, "previousDownloadName": "cybrdelic-02-water-previous.mp4", "working": true},
+  "fire": {"source": "fire-02.mp4", "previousControlHidden": true, "error": null},
+  "air": {"source": "air-02.mp4", "duration": 9.8, "previousControlAbsentFromAccessibilityTree": true},
+  "artworkComparison": {"imageLoaded": true, "opensAndPausesVideo": true, "elementSelectionClosesAndResumesVideo": true},
+  "downloadLinks": "Verified updated media targets through visible player links; no redundant download performed",
+  "leftPlaying": "water-02-r2.mp4",
+  "deliverableTab": "5"
+}

@@ -1,0 +1,61 @@
+{
+  "started": 1789161677.0899644,
+  "status": "complete",
+  "current": null,
+  "completed": [
+    {
+      "element": "water",
+      "variant": "01",
+      "video": "water-01-native.mp4",
+      "poster": "water-01-native.jpg",
+      "width": 3840,
+      "height": 2160,
+      "seconds": 8,
+      "fps": 24,
+      "scene": "water/?variant=01"
+    },
+    {
+      "element": "air",
+      "variant": "01",
+      "video": "cybrdelic-air-01.mp4",
+      "poster": "air-01-poster.jpg",
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "element": "earth",
+      "variant": "01",
+      "video": "cybrdelic-earth-01.mp4",
+      "poster": "earth-01-poster.jpg",
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "element": "water",
+      "variant": "02",
+      "video": "water-02-native.mp4",
+      "poster": "water-02-native.jpg",
+      "width": 3840,
+      "height": 2160,
+      "seconds": 8,
+      "fps": 24,
+      "scene": "water/?variant=02"
+    },
+    {
+      "element": "air",
+      "variant": "02",
+      "video": "cybrdelic-air-02.mp4",
+      "poster": "air-02-poster.jpg",
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "element": "earth",
+      "variant": "02",
+      "video": "cybrdelic-earth-02.mp4",
+      "poster": "earth-02-poster.jpg",
+      "width": 2560,
+      "height": 1440
+    }
+  ]
+}

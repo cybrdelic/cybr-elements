@@ -1,0 +1,480 @@
+{
+  "revision": "bending-v5-controlled-comparison",
+  "selection": {
+    "earth": {
+      "previous": "earth",
+      "rebuilt": "earth-v5",
+      "selected": "rebuilt"
+    },
+    "fire": {
+      "previous": "fire",
+      "rebuilt": "fire-v5",
+      "selected": "previous"
+    },
+    "water": {
+      "previous": "water-v4",
+      "rebuilt": "water-v5",
+      "selected": "rebuilt"
+    },
+    "air": {
+      "previous": "air",
+      "rebuilt": "air-v5",
+      "selected": "rebuilt"
+    },
+    "lightning": {
+      "previous": "lightning-v4",
+      "rebuilt": "lightning-v5",
+      "selected": "rebuilt"
+    }
+  },
+  "changes": {
+    "earth": "Same 660 Bullet emission states, rigid body parents and camera. Sharper fracture normals, restrained bump, varied roughness, revised lighting and less obscuring dust.",
+    "fire": "Same simulation. Extinction/emission trial retained for comparison; original remains the default because the visual gain was too small.",
+    "air": "Same simulation. Revised volume extinction and side illumination reveal thin wisps and overlapping curls.",
+    "water": "Same native APIC/FLIP solver, shared source centre, camera and optical render. Area-preserving variable nozzle aspect and axial momentum; Weber/support-loss gating of volume-accounted spray.",
+    "lightning": "Moving local 3D point-charge networks, spatially advancing leaders and repeated strokes along established channels. Same camera, optics and approximate aerosol model."
+  },
+  "validation": {
+    "earth": {
+      "file": "earth-v5.mp4",
+      "frames": 120,
+      "sha256": "bb5f2754a8b1b45ab77138c09e4f2b3d2038d6ee4ed7d5634182836e23ea226e",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "fire": {
+      "file": "fire-v5.mp4",
+      "frames": 120,
+      "sha256": "96cdf41e0c30cee3d275a22a05d835128af6eee79a1609d7486bc6ceb95a5c17",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "water": {
+      "file": "water-v5.mp4",
+      "frames": 120,
+      "sha256": "75a9955cadb3725b44a80e4cf8c90890ebbe9d1a422bb5f6dc00ac49c831beff",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "air": {
+      "file": "air-v5.mp4",
+      "frames": 120,
+      "sha256": "694664388bb6b360c06284b1b13bd63a7b2dc3d2774af68fd30abd0a7f47bf52",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "lightning": {
+      "file": "lightning-v5.mp4",
+      "frames": 120,
+      "sha256": "958c1a6e717aaf0668f3af1a4e13182df280b6e9eb3acd12f47782531e97fe5b",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    }
+  },
+  "waterValidation": {
+    "completeFrames": 120,
+    "finitePositionsAndVelocities": true,
+    "pressureFailures": 0,
+    "maxPressureRelativeResidual": 9.473607612370522e-06,
+    "sourceVolumeBalanceMax": 0,
+    "totalParticles": 65956,
+    "caveat": "Nominal particle volume accounting is not a proof of local incompressibility or resolved atomization.",
+    "meshFrames": 120,
+    "maxMeshVolumeError": 0.004936657052471489,
+    "maxSprayVolumeError": 5.579459544843078e-08
+  },
+  "unchangedBaselineFiles": 35,
+  "baselineManifest": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\bending-rebuild-v5\\baseline\\manifest.json",
+  "limitations": [
+    "Bending trajectories, forces, lighting and timing are art directed.",
+    "Water secondary breakup is a resolution-dependent, volume-accounted model; it is not directly resolved atomization.",
+    "Water is less uniform but still reads as a controlled jet; some late spray clumping remains visible.",
+    "Lightning uses guided Laplacian growth and approximate aerosol transport, not full plasma electrodynamics.",
+    "Earth and air improvements are restrained. Fire trial was not promoted.",
+    "All five baseline versions remain playable and downloadable."
+  ],
+  "priorRevision": {
+    "created": "2026-09-16",
+    "delivery": {
+      "size": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "duration": 4,
+      "background": "black",
+      "trailSha256": "31c5b92889f212c7792848e04865f605d1431d5c487f478c9c4bc02c37b2ecc0",
+      "camera": {
+        "earthFireAir": "Original camera preserved",
+        "water": "Oblique perspective",
+        "lightning": "Perspective; 3D growth and volume"
+      }
+    },
+    "elements": {
+      "earth": {
+        "dynamics": "Bullet rigid bodies with authored bending lift; integrated secondary grit",
+        "render": "Cycles OptiX, 32 samples, layered fracture geometry",
+        "changes": [
+          "Larger hero stones and finer secondary grit",
+          "Restored fracture face materials",
+          "Darker rough earth shading",
+          "Collision plane below camera; black world",
+          "Existing shared-path dust volume composited at 22 percent"
+        ]
+      },
+      "fire": {
+        "dynamics": "Existing 3D projected reactive gas solver, resimulated",
+        "grid": [
+          576,
+          112,
+          336
+        ],
+        "previousGrid": [
+          480,
+          96,
+          288
+        ],
+        "changes": [
+          "63 percent more simulation cells",
+          "Preserved shared nozzle and reaction model"
+        ]
+      },
+      "water": {
+        "file": "water-v4.mp4",
+        "previous": "water-v3.mp4",
+        "dynamics": "234 x 157 x 84 APIC/FLIP, h 0.018; rounded source with 3D centre and tangent, pressure/capillary solve; authored lift and steering",
+        "particles": 65992,
+        "render": "Cycles OptiX 96 samples at 2560 x 1440; downsampled to 1080p; 0.65-frame motion-blur shutter",
+        "spray": "Connected marker clusters remain coherent drops. Isolated single markers become persistent, volume-normalized 24-fragment parcels with a lognormal size distribution, inherited momentum, a bounded capillary-scale dispersion closure, gravity and quadratic air drag.",
+        "surface": "Persistent sparse/bulk classification; broader reconstruction support with an expanded isovalue root bracket, non-shrinking Taubin smoothing and a volume-error gate",
+        "limitations": [
+          "Spray breakup is a subgrid graphics closure; it is not directly resolved atomization.",
+          "Global surface volume matching does not prove local incompressibility.",
+          "The bending trajectory and near-nozzle steering force remain authored."
+        ],
+        "validation": {
+          "frames": 120,
+          "complete": true,
+          "particles": 65992,
+          "seconds": 752.8282025999999,
+          "finite": true,
+          "pressureFailures": 0,
+          "maxSourceVolumeBalance": 0,
+          "meshFrames": 120,
+          "maxRepresentedVolumeError": 0.004734031298821408
+        },
+        "camera": "Perspective, 45mm, oblique view at [2.8,-13,3.3]",
+        "lighting": "Camera-black world with studio reflection/refraction illumination and area lights"
+      },
+      "air": {
+        "dynamics": "Existing 3D projected advected tracer solver, resimulated",
+        "grid": [
+          576,
+          112,
+          336
+        ],
+        "changes": [
+          "63 percent more simulation cells",
+          "Higher light exposure for readable filaments",
+          "Preserved shared movement and extinction"
+        ]
+      },
+      "lightning": {
+        "file": "lightning-v4.mp4",
+        "previous": "lightning-v3.mp4",
+        "dynamics": "3D point-charge Laplacian growth with authored sequential electrodes and competing off-axis attraction",
+        "atmosphere": "200 x 112 x 48 advected aerosol, buoyancy, FFT projection and approximate channel scattering through a perspective camera",
+        "render": "Subpixel Gaussian channel profile, lattice-scale smoothing at nonbranching nodes, hierarchical exposure, irregular return-stroke events",
+        "limitations": [
+          "This is a point-charge graphics growth model, not a full plasma or shock solver.",
+          "The bending controls and aerosol source are authored.",
+          "Channel scattering uses a nearest-channel approximation."
+        ],
+        "reference": "https://faculty.cc.gatech.edu/~turk/bio_sim/articles/laplacian_growth.pdf",
+        "validation": {
+          "model": "3D point-charge Laplacian growth; authored guiding field; approximate exposed radiance and aerosol scattering",
+          "events": [
+            0.19,
+            0.403,
+            0.713,
+            0.972,
+            1.271,
+            1.568,
+            1.827
+          ],
+          "frames": 120,
+          "seconds": 170.6377396583557,
+          "aerosol": [
+            {
+              "frame": 0,
+              "finite": true,
+              "aerosolMass": 0.0,
+              "maxSpeed": 1.660546064376831
+            },
+            {
+              "frame": 20,
+              "finite": true,
+              "aerosolMass": 0.005753349989941045,
+              "maxSpeed": 1.0057086944580078
+            },
+            {
+              "frame": 40,
+              "finite": true,
+              "aerosolMass": 0.009300957786615638,
+              "maxSpeed": 0.7403407096862793
+            },
+            {
+              "frame": 60,
+              "finite": true,
+              "aerosolMass": 0.007306442810186364,
+              "maxSpeed": 0.5971400737762451
+            },
+            {
+              "frame": 80,
+              "finite": true,
+              "aerosolMass": 0.0034882973185555916,
+              "maxSpeed": 0.5163410902023315
+            },
+            {
+              "frame": 100,
+              "finite": true,
+              "aerosolMass": 0.0016725606214259498,
+              "maxSpeed": 0.46639102697372437
+            }
+          ],
+          "networks": [
+            {
+              "nodes": 47,
+              "depthRange": 0.6335432091552289,
+              "finite": true,
+              "connected": true
+            },
+            {
+              "nodes": 374,
+              "depthRange": 1.2912433803752563,
+              "finite": true,
+              "connected": true
+            },
+            {
+              "nodes": 910,
+              "depthRange": 1.4118525636824868,
+              "finite": true,
+              "connected": true
+            },
+            {
+              "nodes": 2391,
+              "depthRange": 2.2300158194150486,
+              "finite": true,
+              "connected": true
+            },
+            {
+              "nodes": 2951,
+              "depthRange": 3.0598403990776224,
+              "finite": true,
+              "connected": true
+            },
+            {
+              "nodes": 2380,
+              "depthRange": 2.4415495123707855,
+              "finite": true,
+              "connected": true
+            },
+            {
+              "nodes": 2482,
+              "depthRange": 1.8389389529858464,
+              "finite": true,
+              "connected": true
+            }
+          ]
+        }
+      }
+    },
+    "limitations": [
+      "Guided effects with authored bending forces and controlled release.",
+      "Water atomization is a volume-accounted subgrid parcel closure.",
+      "Lightning is 3D Laplacian growth with approximate exposure and aerosol transport; not full plasma electrodynamics.",
+      "Water is still quite uniform early in the shot; lightning remains a guided stylized discharge."
+    ],
+    "renderRuns": [
+      {
+        "element": "fire",
+        "exitCode": 0,
+        "seconds": 271.2
+      },
+      {
+        "element": "air",
+        "exitCode": 0,
+        "seconds": 282.4
+      },
+      {
+        "element": "earth",
+        "exitCode": 0,
+        "seconds": 145.9
+      },
+      {
+        "element": "water",
+        "exitCode": 0,
+        "seconds": 197.6
+      }
+    ],
+    "validation": {
+      "framesPerClip": 120,
+      "decodedAllFrames": true,
+      "visualReview": "delivery-review.jpg plus element-specific temporal sheets",
+      "browser": "All five solo controls and synchronized playback verified"
+    },
+    "revision": "water-lightning-rebuild-3",
+    "rebuildValidation": {
+      "water": {
+        "frames": 120,
+        "particles": 96288,
+        "pressureSolves": 953,
+        "pressureFailures": 0,
+        "maxSurfaceVolumeError": 0.0038062665881946752,
+        "maxSprayVolumeError": 1.6241717975684225e-08,
+        "maxSprayFragments": 464856
+      },
+      "videos": [
+        {
+          "element": "water",
+          "file": "water-v3.mp4",
+          "metadata": {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "duration": "4.000000",
+            "nb_frames": "120"
+          },
+          "decodedFrames": 120,
+          "sha256": "6d26b0255b51b2b4256f7cc8e87230141644c56dd3933a5d4043fc375715b1da",
+          "bytes": 6896139,
+          "backgroundCornerMaximum": 0.0,
+          "cornerCrossingFrames": [
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ]
+        },
+        {
+          "element": "lightning",
+          "file": "lightning-v3.mp4",
+          "metadata": {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "pix_fmt": "yuv420p",
+            "r_frame_rate": "30/1",
+            "duration": "4.000000",
+            "nb_frames": "120"
+          },
+          "decodedFrames": 120,
+          "sha256": "6225db06b4ede34af56cedcbc79826f06b8051496dc8aca9f5f2845d73e43714",
+          "bytes": 409136,
+          "backgroundCornerMaximum": 0.0,
+          "cornerCrossingFrames": []
+        }
+      ],
+      "unchangedAcceptedClips": {
+        "earth": "9729b4932cadba10eb359bdef74ae89c187346e91806da20eb339f9b1b2b5d81",
+        "fire": "bbe8da91282845a8f42abb1d17958fb4a00c8f77714a575f00b85a52c8092bdc",
+        "air": "4fdb8973db391c06236b495a93d6ec178ab9021e8e0eee9ea384887ac3d8e415"
+      }
+    }
+  },
+  "browserValidation": {
+    "url": "http://127.0.0.1:8767/elements/motion/bending/",
+    "defaultVideoMetadata": "All five: 1920x1080, 4 seconds, no media error",
+    "versionSwitches": "All five switched to the alternate version and back; each preserved 1.5 seconds and updated the download target",
+    "soloChecks": [
+      "earth only",
+      "fire only",
+      "water only",
+      "air only",
+      "lightning only"
+    ],
+    "synchronizedPlayback": "All five started together and reached 4 seconds with ended=true",
+    "completedSwitchRegression": "After synchronized completion, changing lightning to Previous left all five paused at 4 seconds",
+    "consoleWarningsOrErrors": [],
+    "horizontalOverflow": false,
+    "finalState": "Paused at 1.3 seconds; one selected version per element; original fire and four v5 trials; tab retained as deliverable"
+  }
+}

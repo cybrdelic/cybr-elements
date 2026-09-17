@@ -1,0 +1,103 @@
+{
+  "comparisons": [
+    {
+      "original": {
+        "time": 1,
+        "file": "fire-shared.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "fire-material-v2.mp4"
+      }
+    },
+    {
+      "original": {
+        "time": 1,
+        "file": "water-shared.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "water-material.mp4"
+      }
+    },
+    {
+      "original": {
+        "time": 1,
+        "file": "air-shared.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "air-material-v2.mp4"
+      }
+    },
+    {
+      "original": {
+        "time": 1,
+        "file": "earth-packed.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "earth-material.mp4"
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "src": "fire-material-v2.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "water-material.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "air-material-v2.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "earth-material.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "seekTimes": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "playTimes": [
+    1.580308,
+    1.579922,
+    1.57994,
+    1.57995
+  ],
+  "solo": [
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": false,
+      "time": 0.752919
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    }
+  ],
+  "overlays": 4,
+  "mobileOverflow": false,
+  "errors": []
+}

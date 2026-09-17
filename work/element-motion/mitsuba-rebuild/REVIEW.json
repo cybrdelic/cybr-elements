@@ -1,0 +1,32 @@
+{
+  "status": "rejected",
+  "latestUserFeedback": "these all look horrible",
+  "productionReady": false,
+  "gpuUsedByThisPass": false,
+  "published": false,
+  "completed": {
+    "renderer": "Mitsuba 3.9.1 scalar_spectral CPU integration",
+    "ice": "Reduced enthalpy MPM, phase-activated XPBD bonds, cold-humid-air solve; no approved image",
+    "lava": "Reduced thermal MPM, local thermal skin columns, implicit membrane coupon; no approved image"
+  },
+  "visualFailures": [
+    "Full lava trail still reads as a smooth orange strand partly coated in dark material.",
+    "Ice full trail remained smooth transparent tubing with excessive white scatter.",
+    "The membrane coupon has a rectangular slab silhouette and cloth-like regular folds; it is not convincing lava.",
+    "The new renderer does not repair weak source geometry, missing two-way coupling, or inappropriate material scale."
+  ],
+  "numericalLimits": [
+    "Passing enthalpy or closed-volume checks does not validate material appearance or motion.",
+    "Bulk flow still uses a reduced explicit stress/projection approximation.",
+    "The lava crust does not feed mechanical contact forces back to the bulk.",
+    "Ice fracture uses a regularized graph threshold; crack-tip mechanics and outer-surface separation remain incomplete.",
+    "Most other requested families have not been rebuilt in the Mitsuba pipeline."
+  ],
+  "reference": "https://www.nps.gov/articles/000/lava-flow-forms.htm",
+  "nextRequiredEvidence": "A material-scale sample must demonstrate coherent mass, appropriate scale, genuine material deformation, and reference-matched geometry before any further full trail or video render.",
+  "acceptedReferencesUnchanged": [
+    "fire",
+    "smoke",
+    "water"
+  ]
+}

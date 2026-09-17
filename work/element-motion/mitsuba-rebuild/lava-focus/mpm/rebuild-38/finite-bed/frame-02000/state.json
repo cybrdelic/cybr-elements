@@ -1,0 +1,2741 @@
+{
+  "material": {
+    "density": 2700.0,
+    "cp": 1200.0,
+    "solidus": 1173.15,
+    "liquidus": 1423.15,
+    "latent_heat": 400000.0,
+    "conductivity": 1.6,
+    "emissivity": 0.94,
+    "convection": 12.0,
+    "ambient": 293.15,
+    "young": 30000000000.0,
+    "poisson": 0.25,
+    "liquid_bulk": 20000000000.0,
+    "expansion": 8e-06,
+    "tensile_strength": 8000000.0,
+    "fracture_energy": 100.0,
+    "viscosity_reference": 150.0,
+    "viscosity_temperature": 1450.0,
+    "activation_over_R": 60000.0,
+    "friction": 0.6,
+    "crystal_lock_fraction": 0.65,
+    "rheology": "basalt_power_creep",
+    "creep_viscosity_reference": 1000000000000.0,
+    "creep_temperature": 933.15,
+    "creep_activation_over_R": 60000.0,
+    "fracture_model": "phase_field",
+    "fracture_length": 0.003,
+    "melt_viscosity_law": "farrell_180719",
+    "vft_a": -4.55,
+    "vft_b": 5978.4,
+    "vft_c": 595.3,
+    "rock_creep_a": 610000000.0,
+    "rock_creep_n": 3.6,
+    "rock_creep_q": 456000.0
+  },
+  "dx": 0.003,
+  "spacing": 0.0015,
+  "cell_size": [
+    0.003,
+    0.003,
+    0.003
+  ],
+  "sample_size": [
+    0.0015,
+    0.0015,
+    0.0015
+  ],
+  "contact_solver": "friction",
+  "bonded_bed": false,
+  "coherent_fraction": 0.65,
+  "failure_fraction": 0.65,
+  "origin": [
+    -0.018,
+    -0.015,
+    -0.009
+  ],
+  "shape": [
+    25,
+    13,
+    15
+  ],
+  "gravity": [
+    0.0,
+    0.0,
+    -9.81
+  ],
+  "ground": true,
+  "initial_energy": 4777.4060009999985,
+  "initial_mass": 0.006524549999999999,
+  "ledger": {
+    "radiation": 229.14436595577226,
+    "convection": 14.405870368803832,
+    "bed": 221.56389106900056,
+    "viscous_heat": 3.388977611236841e-05,
+    "fracture": 0.0,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0,
+    "conduit_heat": -4.014900342936151,
+    "conduit_impulse_norm": 0.0,
+    "solid_floor_impulse_norm": 0.0,
+    "contact_objective_loss": 7.200608001126506e-05,
+    "inlet_boundary_work": 6.786336539435284e-07,
+    "source_mass": 1.3462294921875003e-05,
+    "source_enthalpy": 9.857361587695312,
+    "source_kinetic": 1.392648475773633e-13,
+    "inlet_particles": 48,
+    "inlet_reference_layers": 3
+  },
+  "time": 2.0,
+  "rows": [
+    {
+      "time": 0.2,
+      "dt": 0.2,
+      "particles": 716,
+      "mass": 0.006524549999999999,
+      "volume": 2.416097272442781e-06,
+      "temperatureRange": [
+        1425.1737685322298,
+        1449.9958279387818
+      ],
+      "meanSolidFraction": 0.0,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.001705298529310629,
+      "thermalBalanceRelative": 1.5037021643612022e-16,
+      "stepHeatResidualJ": -7.105427357601002e-15,
+      "mechanicalResidual": 8.319028694534008e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 7.437320148569234e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 3.979341506958008,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 0.0,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 1,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.2,
+        "storedHeatJ": 21.769785799703616,
+        "receivedHeatJ": 21.769790379519318,
+        "bottomLossJ": 4.5783627489981886e-06,
+        "energyErrorJ": 1.4529533132190409e-09,
+        "maximumTemperature": 306.43979874659095
+      }
+    },
+    {
+      "time": 0.4,
+      "dt": 0.2,
+      "particles": 716,
+      "mass": 0.006524549999999999,
+      "volume": 2.4157752751715106e-06,
+      "temperatureRange": [
+        1413.4743368599495,
+        1449.9864037391962
+      ],
+      "meanSolidFraction": 0.0017142020562780761,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0015737156549619972,
+      "thermalBalanceRelative": 1.5124410143216163e-16,
+      "stepHeatResidualJ": 1.4210854715202004e-14,
+      "mechanicalResidual": 5.527154057062128e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 5.408921181431756e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1267237663269043,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 0.0,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.4,
+        "storedHeatJ": 43.81792822830868,
+        "receivedHeatJ": 43.81795511191342,
+        "bottomLossJ": 2.6880857960304642e-05,
+        "energyErrorJ": 2.7467805807646073e-09,
+        "maximumTemperature": 319.20610007099606
+      }
+    },
+    {
+      "time": 0.5,
+      "dt": 0.09999999999999998,
+      "particles": 716,
+      "mass": 0.006524549999999999,
+      "volume": 2.4156555586575537e-06,
+      "temperatureRange": [
+        1408.0020053157432,
+        1449.9851585503552
+      ],
+      "meanSolidFraction": 0.003677204622995485,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0013176901505335874,
+      "thermalBalanceRelative": 1.4555146137811673e-16,
+      "stepHeatResidualJ": 1.7763568394002505e-14,
+      "mechanicalResidual": 2.5504172849596353e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 2.3200188479189106e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1448068618774414,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 0.0,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.5,
+        "storedHeatJ": 55.09457083555079,
+        "receivedHeatJ": 55.09461559884893,
+        "bottomLossJ": 4.476029771378762e-05,
+        "energyErrorJ": 3.000430126576248e-09,
+        "maximumTemperature": 325.512507212121
+      }
+    },
+    {
+      "time": 0.653559958934992,
+      "dt": 0.15355995893499194,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.4171313561209156e-06,
+      "temperatureRange": [
+        1399.8576888654572,
+        1449.992968598512
+      ],
+      "meanSolidFraction": 0.007399588073914199,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0012534425449343043,
+      "thermalBalanceRelative": 3.280065590481451e-16,
+      "stepHeatResidualJ": 2.7711166694643907e-13,
+      "mechanicalResidual": 4.411522269586509e-10,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 3.108265762407946e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1603076457977295,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.653559958934992,
+        "storedHeatJ": 72.30090580893534,
+        "receivedHeatJ": 72.30100673404873,
+        "bottomLossJ": 0.00010091773284791092,
+        "energyErrorJ": 7.3805352940325974e-09,
+        "maximumTemperature": 334.89660077449673
+      }
+    },
+    {
+      "time": 0.7864108859965548,
+      "dt": 0.13285092706156282,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.416985461718542e-06,
+      "temperatureRange": [
+        1392.7949612044665,
+        1449.9858640732514
+      ],
+      "meanSolidFraction": 0.011489238576812414,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0007796968460562282,
+      "thermalBalanceRelative": 4.219244538698798e-14,
+      "stepHeatResidualJ": 1.9952750562879373e-10,
+      "mechanicalResidual": 3.106381968813502e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 2.354359171663603e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.17255783081054688,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.7864108859965548,
+        "storedHeatJ": 87.25576086066606,
+        "receivedHeatJ": 87.25594308012873,
+        "bottomLossJ": 0.00018221054601962874,
+        "energyErrorJ": 8.916657634472358e-09,
+        "maximumTemperature": 342.8321931093455
+      }
+    },
+    {
+      "time": 0.9864108859965548,
+      "dt": 0.2,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.416773110922931e-06,
+      "temperatureRange": [
+        1382.5934311095148,
+        1449.9720328056353
+      ],
+      "meanSolidFraction": 0.01825338299892455,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0006715958717870724,
+      "thermalBalanceRelative": 4.4407262583805194e-14,
+      "stepHeatResidualJ": 1.0174971976084635e-11,
+      "mechanicalResidual": 4.670673797226082e-10,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 3.054842725235863e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.15898919105529785,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.9864108859965548,
+        "storedHeatJ": 109.53265235117644,
+        "receivedHeatJ": 109.53308677534216,
+        "bottomLossJ": 0.00043441435066146893,
+        "energyErrorJ": 9.815053658712714e-09,
+        "maximumTemperature": 354.3053296468628
+      }
+    },
+    {
+      "time": 1.0,
+      "dt": 0.013589114003445202,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.416769671535931e-06,
+      "temperatureRange": [
+        1381.8152195200416,
+        1449.9712593207344
+      ],
+      "meanSolidFraction": 0.018758808492736527,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0007356869974009372,
+      "thermalBalanceRelative": 4.450668327928686e-14,
+      "stepHeatResidualJ": 1.7967849430533533e-12,
+      "mechanicalResidual": 3.222873329225167e-11,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 2.0106851537341574e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1569199562072754,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.0,
+        "storedHeatJ": 111.09106210331225,
+        "receivedHeatJ": 111.0915142808108,
+        "bottomLossJ": 0.00045216766079337164,
+        "energyErrorJ": 9.837748393692891e-09,
+        "maximumTemperature": 355.0932360156115
+      }
+    },
+    {
+      "time": 1.2,
+      "dt": 0.2,
+      "particles": 748,
+      "mass": 0.006533524863281249,
+      "volume": 2.4182326472572722e-06,
+      "temperatureRange": [
+        1371.7617529022893,
+        1449.9833697642246
+      ],
+      "meanSolidFraction": 0.025781235914241033,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0006506802545619459,
+      "thermalBalanceRelative": 4.4313877642423114e-14,
+      "stepHeatResidualJ": 3.339550858072471e-13,
+      "mechanicalResidual": 4.5287904665641757e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.620503201836552e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.15378713607788086,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 4.37069000783219e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.2,
+        "storedHeatJ": 133.31959653716194,
+        "receivedHeatJ": 133.3205200742712,
+        "bottomLossJ": 0.0009235264852998956,
+        "energyErrorJ": 1.0623949719956727e-08,
+        "maximumTemperature": 366.1329426896808
+      }
+    },
+    {
+      "time": 1.4,
+      "dt": 0.2,
+      "particles": 748,
+      "mass": 0.006533524863281249,
+      "volume": 2.4180492425817423e-06,
+      "temperatureRange": [
+        1361.8399358164988,
+        1449.9647921872702
+      ],
+      "meanSolidFraction": 0.03366957821880626,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00051514627265788,
+      "thermalBalanceRelative": 6.973964272823596e-14,
+      "stepHeatResidualJ": 1.213251721310371e-10,
+      "mechanicalResidual": 2.7563880470599286e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.2217934679478135e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.15060710906982422,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 4.37069000783219e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.4,
+        "storedHeatJ": 155.47411023626609,
+        "receivedHeatJ": 155.4758126235215,
+        "bottomLossJ": 0.0017023759348882652,
+        "energyErrorJ": 1.1320537396386499e-08,
+        "maximumTemperature": 376.7845680921452
+      }
+    },
+    {
+      "time": 1.5,
+      "dt": 0.10000000000000009,
+      "particles": 748,
+      "mass": 0.006533524863281249,
+      "volume": 2.4179687531772366e-06,
+      "temperatureRange": [
+        1356.6426571177067,
+        1449.962523518002
+      ],
+      "meanSolidFraction": 0.03774564963891278,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0004634542382856498,
+      "thermalBalanceRelative": 9.215030413606977e-14,
+      "stepHeatResidualJ": 1.0591705290607933e-10,
+      "mechanicalResidual": 1.9122638441297607e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.0137013306275424e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1668694019317627,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 4.37069000783219e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.5,
+        "storedHeatJ": 166.67761172634835,
+        "receivedHeatJ": 166.67979394720925,
+        "bottomLossJ": 0.0021822093755762915,
+        "energyErrorJ": 1.1485326467663981e-08,
+        "maximumTemperature": 382.0535656348361
+      }
+    },
+    {
+      "time": 1.7,
+      "dt": 0.2,
+      "particles": 764,
+      "mass": 0.006538012294921874,
+      "volume": 2.4194585219212365e-06,
+      "temperatureRange": [
+        1346.9308518422295,
+        1449.9827060330817
+      ],
+      "meanSolidFraction": 0.044966574283731554,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00041296917656204353,
+      "thermalBalanceRelative": 1.4935465803689334e-13,
+      "stepHeatResidualJ": 2.7402080604588264e-10,
+      "mechanicalResidual": 2.7098486181061566e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.7765897296311856e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.146622896194458,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.556035011748285e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.7,
+        "storedHeatJ": 188.66613677166498,
+        "receivedHeatJ": 188.66977130992942,
+        "bottomLossJ": 0.0036345261928194183,
+        "energyErrorJ": 1.2071609489794355e-08,
+        "maximumTemperature": 392.1491254313292
+      }
+    },
+    {
+      "time": 1.9,
+      "dt": 0.2,
+      "particles": 764,
+      "mass": 0.006538012294921874,
+      "volume": 2.419294626077708e-06,
+      "temperatureRange": [
+        1337.6375760115059,
+        1449.982706064369
+      ],
+      "meanSolidFraction": 0.05303076044228463,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00040736011262808617,
+      "thermalBalanceRelative": 2.73876580405963e-13,
+      "stepHeatResidualJ": 5.965574700894649e-10,
+      "mechanicalResidual": 2.922410437786694e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.6118620686189503e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13366007804870605,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.556035011748285e-19,
+      "heatTransfer": {
+        "flipFraction": 0.993352680543925,
+        "unlimitedMaximumOvershootJPerKg": 30.45696826989297,
+        "transferEnergyErrorJ": -7.655197691906431e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.9,
+        "storedHeatJ": 210.52102349186526,
+        "receivedHeatJ": 210.52675741408498,
+        "bottomLossJ": 0.005733909617046981,
+        "energyErrorJ": 1.2602669130501454e-08,
+        "maximumTemperature": 401.8943415975044
+      }
+    },
+    {
+      "time": 2.0,
+      "dt": 0.10000000000000009,
+      "particles": 764,
+      "mass": 0.006538012294921874,
+      "volume": 2.4192213159944455e-06,
+      "temperatureRange": [
+        1332.8357453535903,
+        1449.9827060942216
+      ],
+      "meanSolidFraction": 0.05713629537290249,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00040718115010762945,
+      "thermalBalanceRelative": 3.0169252222319037e-13,
+      "stepHeatResidualJ": 1.283204653645953e-10,
+      "mechanicalResidual": 1.6796863459091104e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 7.605299611056302e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.12206435203552246,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.556035011748285e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9950476306333553,
+        "unlimitedMaximumOvershootJPerKg": 25.1927339930553,
+        "transferEnergyErrorJ": 4.082734804665986e-16
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.0,
+        "storedHeatJ": 221.55692490508488,
+        "receivedHeatJ": 221.56389106900056,
+        "bottomLossJ": 0.006966151171262584,
+        "energyErrorJ": 1.2744408195430879e-08,
+        "maximumTemperature": 406.720257472088
+      }
+    }
+  ],
+  "sourceHashes": {
+    "lava_mpm.py": "a36bdc6d59c734e6133f0856c1c3e6e678b4343eb3a65ba0f8e4ef977aeddc38",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "19d168a6bf1d4c46bc4831d63a68f73645e14de33c85915eeaa7d172f03f2ee5",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "6c02705565ec9e71476e7221ca44a2fdd40e44c39cd4f3cd9128dd543bd06e0a",
+    "lava_mpm_linear27.py": "75db2a18102f05446c4edbe2a75d95b49ed279d195bc2701997210471fbba27a",
+    "lava_mpm_cuda_contact27.py": "a1bf79691b8b1015e8dd886929a85f399c2cfe1eca944404dd9ff5f9f421a52f",
+    "lava_mpm_active_contact33.py": "156370ad217d3e0de2f6427d9db66688c0b74657b07878ba0fc6d7fd11f3915d",
+    "lava_mpm_inlet.py": "7517d6aba31e57e908097cecf230a3f346fc309231d411c9bb980de7ad288fb5"
+  },
+  "pressureSolver": {
+    "lineSearch": "exact",
+    "newtonSystem": "primal"
+  },
+  "linearBackend": {
+    "cpuFactors": 79,
+    "gpuFactors": 0,
+    "cpuTriangularSolves": 0,
+    "factorSeconds": 0.0,
+    "solveSeconds": 0.0,
+    "maximumDofs": 0,
+    "maximumAllocatedBytes": 0,
+    "fallbacks": [],
+    "backend": "cpu",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "Unilateral pressure factorization and CPU substitutions only. Friction routing is recorded separately in frictionBackend; these counters exclude its factors."
+  },
+  "frictionBackend": {
+    "gpuFactors": 0,
+    "seconds": 0.0,
+    "maximumDofs": 0,
+    "maximumDirections": 0,
+    "maximumTorchBytes": 0,
+    "fallbacks": [],
+    "backend": "cpu",
+    "precision": "float64",
+    "scope": "CUDA dense contact factorization and batched response; Coulomb iteration, residual acceptance and all physics remain unchanged on CPU. Torch bytes exclude driver/context and other applications."
+  },
+  "transfer": "apic",
+  "transfer_filter_seconds": 0.001,
+  "driver_state": {
+    "config": {
+      "plane": -0.012,
+      "half_width": 0.003,
+      "height": 0.006,
+      "peak_speed": 0.0004,
+      "temperature": 1450.0,
+      "pipe_end": -0.006,
+      "wall_temperature": 1450.0
+    },
+    "nextFrame": 2.5,
+    "nextEmission": 2.0,
+    "period": 0.5,
+    "bedKind": "finite",
+    "bed": {
+      "origin": [
+        -0.018,
+        -0.015,
+        -0.012
+      ],
+      "shape": [
+        24,
+        12,
+        4
+      ],
+      "dx": 0.003,
+      "temperature": [
+        [
+          [
+            293.15000023629864,
+            293.15000306800937,
+            293.15002740707587,
+            293.1501437619852
+          ],
+          [
+            293.1500012373806,
+            293.15001690300664,
+            293.1501605084408,
+            293.15090100959185
+          ],
+          [
+            293.15000402836085,
+            293.1500560772546,
+            293.1505436248855,
+            293.1531139822091
+          ],
+          [
+            293.1500079062514,
+            293.15011075923536,
+            293.1510805603143,
+            293.156223122167
+          ],
+          [
+            293.1500108307484,
+            293.1501521536091,
+            293.1514884718876,
+            293.1585914834034
+          ],
+          [
+            293.15001083074776,
+            293.15015215360364,
+            293.1514884718517,
+            293.15859148326285
+          ],
+          [
+            293.1500079062414,
+            293.1501107591298,
+            293.1510805595644,
+            293.1562231190747
+          ],
+          [
+            293.15000402820203,
+            293.1500560754771,
+            293.1505436115668,
+            293.1531139242133
+          ],
+          [
+            293.15000123519525,
+            293.15001687732405,
+            293.1501603045281,
+            293.15090006683465
+          ],
+          [
+            293.15000021167657,
+            293.1500027632038,
+            293.15002483388935,
+            293.15013107100305
+          ],
+          [
+            293.15000002456975,
+            293.1500003046414,
+            293.15000257360333,
+            293.1500126941216
+          ],
+          [
+            293.15000000233044,
+            293.1500000273854,
+            293.15000021706845,
+            293.1500010007557
+          ]
+        ],
+        [
+          [
+            293.1500029650166,
+            293.1500414336344,
+            293.1504050993616,
+            293.1523575958026
+          ],
+          [
+            293.15001625107675,
+            293.1502409142539,
+            293.1525340872652,
+            293.16609594639175
+          ],
+          [
+            293.1500532955877,
+            293.15080628735484,
+            293.1586719301319,
+            293.2063352882779
+          ],
+          [
+            293.15010393829743,
+            293.15158294095914,
+            293.16713661149237,
+            293.2619337337851
+          ],
+          [
+            293.15014155181757,
+            293.15216234952845,
+            293.17347782553765,
+            293.30371402109546
+          ],
+          [
+            293.15014155181257,
+            293.1521623494736,
+            293.17347782514764,
+            293.3037140194861
+          ],
+          [
+            293.15010393819546,
+            293.1515829398136,
+            293.16713660288474,
+            293.2619336962588
+          ],
+          [
+            293.15005329386736,
+            293.15080626704076,
+            293.1586717679493,
+            293.20633453438495
+          ],
+          [
+            293.15001622619917,
+            293.1502406038562,
+            293.1525314410727,
+            293.16608275373835
+          ],
+          [
+            293.1500026698971,
+            293.1500375282075,
+            293.1503693783671,
+            293.15216520704826
+          ],
+          [
+            293.15000029494155,
+            293.15000390592195,
+            293.1500357297538,
+            293.1501924291144
+          ],
+          [
+            293.15000002652295,
+            293.1500003304275,
+            293.15000280837546,
+            293.1500139498997
+          ]
+        ],
+        [
+          [
+            293.15003074380826,
+            293.150464510752,
+            293.15502239304845,
+            293.1832679721594
+          ],
+          [
+            293.150175921763,
+            293.1528511173054,
+            293.1837978973937,
+            293.40385024324314
+          ],
+          [
+            293.15057663012544,
+            293.1595547418378,
+            293.26612885094954,
+            294.0464440338102
+          ],
+          [
+            293.15110849481704,
+            293.1685024445728,
+            293.37653063458487,
+            294.91020223792157
+          ],
+          [
+            293.1514925328768,
+            293.1750021945227,
+            293.4572142890729,
+            295.5448740341971
+          ],
+          [
+            293.15149253283437,
+            293.1750021940505,
+            293.45721428554174,
+            295.54487401899934
+          ],
+          [
+            293.15110849393824,
+            293.16850243423164,
+            293.3765305524999,
+            294.9102018606618
+          ],
+          [
+            293.15057661463266,
+            293.1595545488574,
+            293.26612720905246,
+            294.0464358756333
+          ],
+          [
+            293.15017568685346,
+            293.1528480029727,
+            293.18376932693485,
+            293.40369572035553
+          ],
+          [
+            293.1500278155907,
+            293.1504229963568,
+            293.1546088176278,
+            293.1808039933233
+          ],
+          [
+            293.15000292843314,
+            293.1500415245464,
+            293.15041366415744,
+            293.1524644118959
+          ],
+          [
+            293.1500002501451,
+            293.1500033071013,
+            293.1500302200082,
+            293.15016278311214
+          ]
+        ],
+        [
+          [
+            293.15021846717565,
+            293.15358448537864,
+            293.1935275792689,
+            293.4979822401451
+          ],
+          [
+            293.1512920749364,
+            293.1730881973413,
+            293.4675630102906,
+            296.32593564462064
+          ],
+          [
+            293.15415086599353,
+            293.2260415990795,
+            294.2284803918204,
+            304.4082971544063
+          ],
+          [
+            293.15770080621166,
+            293.292332275794,
+            295.18980059516707,
+            314.74528596888
+          ],
+          [
+            293.16009309203463,
+            293.3374863581079,
+            295.8536551089685,
+            322.02944074342173
+          ],
+          [
+            293.16009309178946,
+            293.3374863552556,
+            295.85365508676773,
+            322.02944064666474
+          ],
+          [
+            293.15770080091727,
+            293.2923322106636,
+            295.18980005169124,
+            314.7452833997424
+          ],
+          [
+            293.1541507688357,
+            293.22604032413926,
+            294.2284688503374,
+            304.4082362205344
+          ],
+          [
+            293.1512905374171,
+            293.17306654854474,
+            293.4673489663471,
+            296.32467079996655
+          ],
+          [
+            293.1501984399312,
+            293.153279921215,
+            293.19020204045177,
+            293.47560422392803
+          ],
+          [
+            293.1500200319502,
+            293.150304634139,
+            293.1533261637808,
+            293.1723817376265
+          ],
+          [
+            293.1500016343534,
+            293.15002292905535,
+            293.1502257251829,
+            293.15132864801694
+          ]
+        ],
+        [
+          [
+            293.1508147958957,
+            293.1640386946934,
+            293.33265171288633,
+            294.7932848371194
+          ],
+          [
+            293.15468735265017,
+            293.23775186159986,
+            294.4364656900342,
+            307.37126661906194
+          ],
+          [
+            293.1636688542806,
+            293.40986694719817,
+            297.0232929455184,
+            336.7557835094101
+          ],
+          [
+            293.1723209508087,
+            293.5737005923797,
+            299.43748193511976,
+            363.2148748809168
+          ],
+          [
+            293.17630397309,
+            293.6477526286019,
+            300.50024363670025,
+            374.3748877554123
+          ],
+          [
+            293.17630397224497,
+            293.6477526185214,
+            300.5002435566348,
+            374.37488742079444
+          ],
+          [
+            293.1723209321672,
+            293.57370035606624,
+            299.43747990225523,
+            363.21486534137614
+          ],
+          [
+            293.1636685047309,
+            293.4098621961369,
+            297.0232481762859,
+            336.75554021035003
+          ],
+          [
+            293.1546817124057,
+            293.23766921418985,
+            294.43560731532176,
+            307.3658933981844
+          ],
+          [
+            293.15074027548934,
+            293.1628536596477,
+            293.3189349560173,
+            294.6934046159736
+          ],
+          [
+            293.1500745396375,
+            293.15118530273645,
+            293.1637194323511,
+            293.24990324450323
+          ],
+          [
+            293.15000599058686,
+            293.1500874424776,
+            293.150904352747,
+            293.15564726515447
+          ]
+        ],
+        [
+          [
+            293.15144913890765,
+            293.1753034296218,
+            293.48517335825073,
+            296.25451759603607
+          ],
+          [
+            293.15810513729843,
+            293.30337816564275,
+            295.4282835291401,
+            318.77448251155175
+          ],
+          [
+            293.1720451012395,
+            293.5713784833347,
+            299.46720654898604,
+            364.7078298983236
+          ],
+          [
+            293.1832554336479,
+            293.78168761486916,
+            302.51986321471065,
+            397.2326928267177
+          ],
+          [
+            293.1867418877485,
+            293.84330062723495,
+            303.338002668506,
+            404.67399349223393
+          ],
+          [
+            293.1867418862448,
+            293.8433006091593,
+            303.33800252406706,
+            404.67399289620334
+          ],
+          [
+            293.18325540032737,
+            293.78168718850924,
+            302.5198595151424,
+            397.23267555228654
+          ],
+          [
+            293.17204447402503,
+            293.5713698666017,
+            299.4671244348389,
+            364.70738171204727
+          ],
+          [
+            293.15809499865674,
+            293.30322782735306,
+            295.42670019759504,
+            318.76442156087
+          ],
+          [
+            293.15131546030335,
+            293.17315021482415,
+            293.4598496155572,
+            296.06636193480597
+          ],
+          [
+            293.1501337141369,
+            293.1521537122765,
+            293.17532899433326,
+            293.33820752132465
+          ],
+          [
+            293.15001076852843,
+            293.15015905962923,
+            293.15166836098854,
+            293.16058516254463
+          ]
+        ],
+        [
+          [
+            293.15148298427624,
+            293.1758517163071,
+            293.49175294254985,
+            296.3076725981188
+          ],
+          [
+            293.15830576422934,
+            293.30671944602176,
+            295.46835264350267,
+            319.0495703772168
+          ],
+          [
+            293.17276277578594,
+            293.58344317643827,
+            299.6122002373449,
+            365.67444864247744
+          ],
+          [
+            293.1845516501571,
+            293.80345490167855,
+            302.7820503256669,
+            399.0374127903586
+          ],
+          [
+            293.18821918269026,
+            293.8679052368107,
+            303.6322703790981,
+            406.720257472088
+          ],
+          [
+            293.1882191811537,
+            293.8679052183455,
+            303.6322702316539,
+            406.72025686425144
+          ],
+          [
+            293.18455161609194,
+            293.8034544660575,
+            302.78204654852425,
+            399.03739517822163
+          ],
+          [
+            293.1727621344299,
+            293.58343437138706,
+            299.61211638878,
+            365.6739913789392
+          ],
+          [
+            293.15829539504415,
+            293.30656581717676,
+            295.46673607668697,
+            319.0393073962406
+          ],
+          [
+            293.1513462344391,
+            293.17365151334144,
+            293.4659088486657,
+            296.1159061595161
+          ],
+          [
+            293.1501367861215,
+            293.1522007122078,
+            293.1758494815667,
+            293.3418200194938
+          ],
+          [
+            293.150011013242,
+            293.15016254192955,
+            293.15170342621354,
+            293.1607987206596
+          ]
+        ],
+        [
+          [
+            293.150995420942,
+            293.1671143800877,
+            293.37184550937127,
+            295.1295674281735
+          ],
+          [
+            293.1559188026891,
+            293.2605079513015,
+            294.76282354089375,
+            310.8243361235037
+          ],
+          [
+            293.16845469937937,
+            293.50067166238586,
+            298.36820631020646,
+            351.6325948366075
+          ],
+          [
+            293.1812838373412,
+            293.7429798717021,
+            301.92232994854487,
+            390.2112092310042
+          ],
+          [
+            293.1867824461827,
+            293.8431419594219,
+            303.3149793202342,
+            404.0073838915203
+          ],
+          [
+            293.18678244520305,
+            293.84314194775055,
+            303.3149792278757,
+            404.007383514769
+          ],
+          [
+            293.18128381559234,
+            293.74297959615126,
+            301.9223275823186,
+            390.21119825807807
+          ],
+          [
+            293.16845428837314,
+            293.50066607844684,
+            298.3681537287397,
+            351.63230965804
+          ],
+          [
+            293.1559121079282,
+            293.26040992764143,
+            294.7618065615473,
+            310.8179801118699
+          ],
+          [
+            293.1509058645215,
+            293.16569221890217,
+            293.35541879105847,
+            295.0103731626636
+          ],
+          [
+            293.1500895787294,
+            293.15142247350855,
+            293.1664298436118,
+            293.2692213510828
+          ],
+          [
+            293.1500071066545,
+            293.15010365951935,
+            293.1510710014851,
+            293.15667820668676
+          ]
+        ],
+        [
+          [
+            293.1504487444098,
+            293.1574836531578,
+            293.24268735466256,
+            293.90809413414456
+          ],
+          [
+            293.15298110900636,
+            293.2044097008255,
+            293.9197535242846,
+            301.1799844930402
+          ],
+          [
+            293.16151107407956,
+            293.3677079793376,
+            296.3742607229635,
+            329.1164746063704
+          ],
+          [
+            293.17348307841655,
+            293.597069673042,
+            299.8113722786006,
+            367.8039394568906
+          ],
+          [
+            293.18077585417376,
+            293.7346378945767,
+            301.82292273427277,
+            389.47027907603206
+          ],
+          [
+            293.1807758537739,
+            293.734637889902,
+            301.82292269799643,
+            389.4702789291664
+          ],
+          [
+            293.1734830695215,
+            293.59706956273493,
+            299.8113713532225,
+            367.8039352174897
+          ],
+          [
+            293.1615109048578,
+            293.36770573540724,
+            296.37424017706513,
+            329.116365529515
+          ],
+          [
+            293.1529783124921,
+            293.20436985205225,
+            293.91935401082293,
+            301.1775883793202
+          ],
+          [
+            293.1504102736775,
+            293.15689060885774,
+            293.2361069557189,
+            293.86300710911866
+          ],
+          [
+            293.15003847894263,
+            293.15059316297993,
+            293.1565814738289,
+            293.19509378024685
+          ],
+          [
+            293.1500029653959,
+            293.1500421032001,
+            293.1504203545413,
+            293.1525123315997
+          ]
+        ],
+        [
+          [
+            293.15013351236144,
+            293.15213117767337,
+            293.17480230139324,
+            293.3319711380027
+          ],
+          [
+            293.15099429622205,
+            293.1674367146261,
+            293.3828853082202,
+            295.348192402809
+          ],
+          [
+            293.1548055094321,
+            293.23941170460836,
+            294.44726495490625,
+            307.200245433384
+          ],
+          [
+            293.16217999755924,
+            293.3816785123443,
+            296.6063582390979,
+            332.09426881756247
+          ],
+          [
+            293.16813567415073,
+            293.4967783677803,
+            298.35331553531495,
+            352.1640543370952
+          ],
+          [
+            293.16813567404193,
+            293.49677836653774,
+            298.35331552580533,
+            352.16405429445047
+          ],
+          [
+            293.1621799951463,
+            293.38167848331466,
+            296.60635800315237,
+            332.0942677354525
+          ],
+          [
+            293.15480546339086,
+            293.2394111149378,
+            294.4472597719711,
+            307.20021888706475
+          ],
+          [
+            293.15099352607353,
+            293.16742615511544,
+            293.3827844236671,
+            295.3476214609785
+          ],
+          [
+            293.15012262461795,
+            293.15197022674465,
+            293.17311252590633,
+            293.3212438018857
+          ],
+          [
+            293.15001088920343,
+            293.1501609805409,
+            293.1516900291847,
+            293.1607285964312
+          ],
+          [
+            293.15000081574465,
+            293.1500111495428,
+            293.15010609535653,
+            293.1505980565626
+          ]
+        ],
+        [
+          [
+            293.15002488385824,
+            293.1503740120601,
+            293.15401609944155,
+            293.1763245136065
+          ],
+          [
+            293.1501984662441,
+            293.1532592763003,
+            293.1894720945143,
+            293.45984348002764
+          ],
+          [
+            293.1511252360815,
+            293.1699747244632,
+            293.42130135864056,
+            295.77844682588
+          ],
+          [
+            293.15353216028916,
+            293.2158293522848,
+            294.10880202463596,
+            303.61392688766
+          ],
+          [
+            293.1559473912488,
+            293.26274377668585,
+            294.83028108996115,
+            312.14839450258205
+          ],
+          [
+            293.15594739122815,
+            293.2627437764592,
+            294.83028108820724,
+            312.1483944922315
+          ],
+          [
+            293.1535321598462,
+            293.2158293471469,
+            294.1088019844697,
+            303.613926702819
+          ],
+          [
+            293.1511252277096,
+            293.16997462179444,
+            293.42130050123586,
+            295.77844264837614
+          ],
+          [
+            293.15019832682134,
+            293.15325745537604,
+            293.1894556956019,
+            293.4597566740042
+          ],
+          [
+            293.15002290137636,
+            293.1503462543499,
+            293.15374394666975,
+            293.17473588113376
+          ],
+          [
+            293.15000198224254,
+            293.15002776204494,
+            293.15027219438707,
+            293.15158882484053
+          ],
+          [
+            293.15000014757373,
+            293.15000192303233,
+            293.1500172573785,
+            293.15009100287784
+          ]
+        ],
+        [
+          [
+            293.1500031318445,
+            293.15004405656634,
+            293.1504346159712,
+            293.15255802171487
+          ],
+          [
+            293.15002535366403,
+            293.150385884677,
+            293.15420961561193,
+            293.17815506801617
+          ],
+          [
+            293.15015202163795,
+            293.15249057066956,
+            293.1800454401767,
+            293.38375254900393
+          ],
+          [
+            293.1505272990779,
+            293.15916433687966,
+            293.2707413529656,
+            294.257378334892
+          ],
+          [
+            293.1509415198496,
+            293.16674491236347,
+            293.3781696936543,
+            295.3712199659223
+          ],
+          [
+            293.150941519847,
+            293.1667449123337,
+            293.3781696934299,
+            295.37121996463657
+          ],
+          [
+            293.15052729901856,
+            293.15916433622215,
+            293.2707413480622,
+            294.25737831332157
+          ],
+          [
+            293.1501520205438,
+            293.15249055786666,
+            293.1800453390038,
+            293.38375208359946
+          ],
+          [
+            293.15002533578536,
+            293.1503856630847,
+            293.15420774147293,
+            293.178145804487
+          ],
+          [
+            293.15000288121945,
+            293.150040748214,
+            293.1504044412756,
+            293.1523960082445
+          ],
+          [
+            293.1500002504071,
+            293.1500033082679,
+            293.15003017935106,
+            293.1501620352217
+          ],
+          [
+            293.15000001890866,
+            293.15000023411733,
+            293.1500019749873,
+            293.1500097293682
+          ]
+        ],
+        [
+          [
+            293.150000295133,
+            293.1500038943234,
+            293.1500354908475,
+            293.1501904692587
+          ],
+          [
+            293.15000236268,
+            293.1500334209832,
+            293.1503318584419,
+            293.151967455188
+          ],
+          [
+            293.1500143152824,
+            293.15021621827947,
+            293.1523357361215,
+            293.16541647801074
+          ],
+          [
+            293.1500515157623,
+            293.15082215153836,
+            293.1595718834224,
+            293.2202801695441
+          ],
+          [
+            293.1500942111112,
+            293.1515361282166,
+            293.1683963601111,
+            293.2903201453169
+          ],
+          [
+            293.15009421111097,
+            293.1515361282136,
+            293.1683963600897,
+            293.29032014522335
+          ],
+          [
+            293.1500515157562,
+            293.150822151473,
+            293.15957188295783,
+            293.2202801676234
+          ],
+          [
+            293.1500143151717,
+            293.15021621704346,
+            293.1523357268708,
+            293.1654164377843
+          ],
+          [
+            293.15000236091953,
+            293.150033400258,
+            293.1503316935527,
+            293.15196669130887
+          ],
+          [
+            293.1500002710626,
+            293.15000359433185,
+            293.1500329379317,
+            293.1501777679596
+          ],
+          [
+            293.150000024014,
+            293.15000029977074,
+            293.15000255299253,
+            293.15001270313604
+          ],
+          [
+            293.1500000018589,
+            293.1500000218935,
+            293.15000017397045,
+            293.1500008040043
+          ]
+        ],
+        [
+          [
+            293.15000002240185,
+            293.1500002785682,
+            293.1500023626424,
+            293.1500117100593
+          ],
+          [
+            293.15000017527046,
+            293.150002318162,
+            293.15002118156025,
+            293.1501139736544
+          ],
+          [
+            293.15000105229046,
+            293.1500147475311,
+            293.1501448051742,
+            293.15084736575767
+          ],
+          [
+            293.1500038208593,
+            293.1500562537076,
+            293.15058846378867,
+            293.15372664513393
+          ],
+          [
+            293.1500070533776,
+            293.15010586390986,
+            293.1511342365761,
+            293.15739087806304
+          ],
+          [
+            293.15000705337764,
+            293.1501058639096,
+            293.15113423657436,
+            293.1573908780564
+          ],
+          [
+            293.150003820859,
+            293.1500562537019,
+            293.15058846375223,
+            293.15372664499154
+          ],
+          [
+            293.1500010522815,
+            293.1500147474335,
+            293.15014480447866,
+            293.1508473628884
+          ],
+          [
+            293.1500001751291,
+            293.1500023165774,
+            293.15002116965667,
+            293.1501139216989
+          ],
+          [
+            293.15000002052665,
+            293.15000025642513,
+            293.1500021859202,
+            293.1500108889735
+          ],
+          [
+            293.15000000186626,
+            293.15000002209456,
+            293.1500001766103,
+            293.15000082112226
+          ],
+          [
+            293.1500000001487,
+            293.1500000016719,
+            293.15000001256305,
+            293.15000005477594
+          ]
+        ],
+        [
+          [
+            293.15000000143795,
+            293.15000001693517,
+            293.1500001346193,
+            293.15000062253455
+          ],
+          [
+            293.150000010938,
+            293.1500001361294,
+            293.1500011554637,
+            293.15000573051157
+          ],
+          [
+            293.1500000645071,
+            293.1500008450693,
+            293.1500076350074,
+            293.1500405832148
+          ],
+          [
+            293.15000023325695,
+            293.1500031924827,
+            293.1500304608927,
+            293.1501724721384
+          ],
+          [
+            293.1500004316719,
+            293.15000601084853,
+            293.1500585599277,
+            293.1503393587393
+          ],
+          [
+            293.1500004316718,
+            293.1500060108485,
+            293.15005855992763,
+            293.15033935873873
+          ],
+          [
+            293.15000023325695,
+            293.1500031924822,
+            293.15003046089015,
+            293.15017247212944
+          ],
+          [
+            293.15000006450634,
+            293.15000084506283,
+            293.1500076349628,
+            293.1500405830386
+          ],
+          [
+            293.15000001092835,
+            293.1500001360261,
+            293.1500011547275,
+            293.1500057274678
+          ],
+          [
+            293.1500000013138,
+            293.15000001554307,
+            293.1500001241425,
+            293.150000576744
+          ],
+          [
+            293.15000000012276,
+            293.150000001386,
+            293.15000001045547,
+            293.15000004576285
+          ],
+          [
+            293.15000000001004,
+            293.1500000001086,
+            293.15000000077595,
+            293.1500000032111
+          ]
+        ],
+        [
+          [
+            293.1500000000805,
+            293.1500000009042,
+            293.1500000067797,
+            293.1500000294969
+          ],
+          [
+            293.1500000005955,
+            293.1500000070148,
+            293.1500000557547,
+            293.15000025776357
+          ],
+          [
+            293.15000000343633,
+            293.1500000423725,
+            293.15000035577714,
+            293.15000174458453
+          ],
+          [
+            293.15000001229544,
+            293.1500001576275,
+            293.15000138802094,
+            293.150007175186
+          ],
+          [
+            293.1500000227293,
+            293.15000029594717,
+            293.1500026545525,
+            293.15001399678675
+          ],
+          [
+            293.1500000227293,
+            293.15000029594694,
+            293.15000265455234,
+            293.1500139967867
+          ],
+          [
+            293.1500000122955,
+            293.1500001576273,
+            293.15000138802066,
+            293.15000717518535
+          ],
+          [
+            293.1500000034363,
+            293.1500000423722,
+            293.1500003557746,
+            293.1500017445747
+          ],
+          [
+            293.15000000059484,
+            293.1500000070089,
+            293.1500000557146,
+            293.15000025760514
+          ],
+          [
+            293.1500000000734,
+            293.15000000082716,
+            293.15000000623104,
+            293.15000002722644
+          ],
+          [
+            293.1500000000069,
+            293.15000000007643,
+            293.15000000054624,
+            293.1500000022654
+          ],
+          [
+            293.15000000000043,
+            293.150000000006,
+            293.1500000000423,
+            293.1500000001667
+          ]
+        ],
+        [
+          [
+            293.15000000000424,
+            293.15000000004335,
+            293.15000000030864,
+            293.15000000127196
+          ],
+          [
+            293.1500000000288,
+            293.15000000032524,
+            293.15000000243555,
+            293.1500000105893
+          ],
+          [
+            293.15000000016335,
+            293.1500000019095,
+            293.15000001501994,
+            293.1500000687181
+          ],
+          [
+            293.150000000577,
+            293.15000000697626,
+            293.1500000572359,
+            293.15000027393813
+          ],
+          [
+            293.1500000010633,
+            293.1500000130383,
+            293.15000010875616,
+            293.15000052958874
+          ],
+          [
+            293.1500000010633,
+            293.15000001303827,
+            293.15000010875616,
+            293.1500005295886
+          ],
+          [
+            293.150000000577,
+            293.15000000697614,
+            293.15000005723584,
+            293.1500002739381
+          ],
+          [
+            293.15000000016335,
+            293.1500000019094,
+            293.1500000150196,
+            293.15000006871776
+          ],
+          [
+            293.1500000000289,
+            293.15000000032506,
+            293.1500000024335,
+            293.15000001058206
+          ],
+          [
+            293.1500000000035,
+            293.15000000003994,
+            293.1500000002828,
+            293.1500000011698
+          ],
+          [
+            293.15000000000015,
+            293.1500000000039,
+            293.150000000026,
+            293.15000000010156
+          ],
+          [
+            293.14999999999986,
+            293.15000000000015,
+            293.15000000000174,
+            293.1500000000076
+          ]
+        ],
+        [
+          [
+            293.15000000000055,
+            293.15000000000185,
+            293.1500000000128,
+            293.15000000005074
+          ],
+          [
+            293.15000000000106,
+            293.15000000001373,
+            293.15000000009803,
+            293.1500000004031
+          ],
+          [
+            293.15000000000697,
+            293.15000000007865,
+            293.1500000005843,
+            293.15000000251644
+          ],
+          [
+            293.1500000000244,
+            293.15000000028255,
+            293.1500000021751,
+            293.1500000097409
+          ],
+          [
+            293.1500000000452,
+            293.150000000525,
+            293.1500000041042,
+            293.1500000186622
+          ],
+          [
+            293.1500000000452,
+            293.15000000052504,
+            293.1500000041042,
+            293.1500000186621
+          ],
+          [
+            293.1500000000245,
+            293.15000000028243,
+            293.1500000021751,
+            293.1500000097409
+          ],
+          [
+            293.15000000000697,
+            293.15000000007876,
+            293.15000000058427,
+            293.1500000025165
+          ],
+          [
+            293.15000000000106,
+            293.150000000014,
+            293.1500000000981,
+            293.15000000040277
+          ],
+          [
+            293.15,
+            293.150000000002,
+            293.1500000000122,
+            293.15000000004653
+          ],
+          [
+            293.14999999999986,
+            293.1500000000005,
+            293.1500000000014,
+            293.1500000000039
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1500000000001
+          ]
+        ],
+        [
+          [
+            293.15000000000043,
+            293.14999999999986,
+            293.1500000000003,
+            293.1500000000018
+          ],
+          [
+            293.14999999999986,
+            293.1500000000008,
+            293.15000000000384,
+            293.15000000001424
+          ],
+          [
+            293.1500000000001,
+            293.1500000000032,
+            293.1500000000213,
+            293.15000000008644
+          ],
+          [
+            293.150000000001,
+            293.1500000000108,
+            293.1500000000772,
+            293.15000000032603
+          ],
+          [
+            293.15000000000174,
+            293.15000000001993,
+            293.1500000001448,
+            293.150000000619
+          ],
+          [
+            293.1500000000017,
+            293.15000000001993,
+            293.1500000001448,
+            293.15000000061895
+          ],
+          [
+            293.15000000000094,
+            293.1500000000107,
+            293.15000000007734,
+            293.1500000003261
+          ],
+          [
+            293.15000000000015,
+            293.1500000000032,
+            293.1500000000213,
+            293.1500000000865
+          ],
+          [
+            293.14999999999986,
+            293.15000000000083,
+            293.1500000000039,
+            293.1500000000144
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000008,
+            293.1500000000015
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ]
+        ],
+        [
+          [
+            293.15000000000043,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.15000000000043,
+            293.15000000000026
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.150000000001,
+            293.15000000000265
+          ],
+          [
+            293.14999999999986,
+            293.15000000000055,
+            293.1500000000029,
+            293.15000000001015
+          ],
+          [
+            293.14999999999986,
+            293.15000000000094,
+            293.1500000000049,
+            293.1500000000194
+          ],
+          [
+            293.14999999999986,
+            293.15000000000094,
+            293.150000000005,
+            293.1500000000194
+          ],
+          [
+            293.14999999999986,
+            293.15000000000055,
+            293.1500000000028,
+            293.1500000000102
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.15000000000094,
+            293.15000000000265
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.15000000000043,
+            293.15000000000026
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ]
+        ],
+        [
+          [
+            293.15000000000043,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.15000000000043,
+            293.1500000000001
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000005,
+            293.15000000000043
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000005,
+            293.1500000000005
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.15000000000043,
+            293.1500000000001
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ]
+        ],
+        [
+          [
+            293.15000000000043,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ]
+        ],
+        [
+          [
+            293.15000000000043,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1500000000004,
+            293.1500000000004,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986
+          ]
+        ],
+        [
+          [
+            293.14999999999986,
+            293.1499999999999,
+            293.1499999999999,
+            293.1499999999998
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.1499999999999
+          ],
+          [
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986
+          ],
+          [
+            293.14999999999986,
+            293.1499999999999,
+            293.14999999999986,
+            293.14999999999975
+          ]
+        ]
+      ],
+      "received": 221.56389106900056,
+      "bottom_loss": 0.006966151171262584,
+      "time": 2.0
+    }
+  }
+}

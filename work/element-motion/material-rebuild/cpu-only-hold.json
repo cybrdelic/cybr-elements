@@ -1,0 +1,11 @@
+{
+  "mode": "cpu_validation_and_stills",
+  "gpuAllowed": false,
+  "fullMoviesAllowed": false,
+  "reason": "User requested CPU validation and CPU images before spending compute on full production.",
+  "threads": 2,
+  "previewResolution": [512, 384],
+  "previewSamples": 24,
+  "maximumSecondsPerImage": 100,
+  "maximumResidentGB": 3.0
+}

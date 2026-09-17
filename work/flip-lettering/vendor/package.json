@@ -1,0 +1,28 @@
+{
+  "name": "cybr-flip-iii-detail-repair",
+  "version": "3.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Detail-preserving Three.js FLIP repair with locked quality profiles, reproducible new simulations and frame-verified captures",
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node tests/solver-iii.test.mjs && node tests/repair-profile.test.mjs && node tests/gpu-reduction.test.mjs && node tests/webgpu-pressure.test.mjs",
+    "build": "node tools/build-vendor.mjs && python3 tools/build_standalone.py",
+    "simulate": "node tools/simulate_release.mjs",
+    "graph": "node tools/run_graph.mjs",
+    "calibrate": "node tools/calibrate.mjs",
+    "test:gpu": "python tools/verify_gpu_solver_iii.py",
+    "test:browser": "python tools/verify_repair_browser.py",
+    "test:reproduction": "node tools/reproduce_repair.mjs",
+    "test:cache": "python tools/audit_repair.py",
+    "mesh": "python tools/mesh_repair.py",
+    "record": "python tools/record_repair.py"
+  },
+  "devDependencies": {
+    "three": "0.180.0",
+    "esbuild": "0.28.1"
+  }
+}

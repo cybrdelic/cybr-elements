@@ -1,0 +1,31 @@
+{
+  "status": "geometry coupon; not a final effect",
+  "reference": "https://www.nps.gov/articles/000/lava-flow-forms.htm",
+  "solver": "Implicit sparse projective membrane solve, pressure foundation, compression and tensile rupture",
+  "vertices": 3549,
+  "frames": 100,
+  "seconds": 5.674,
+  "compression": 0.3,
+  "maximumSpeed": 0.2600953293318708,
+  "heightRange": [
+    0.011980944552955635,
+    0.018389229778371124,
+    0.026320544128665805,
+    0.03997525888418209,
+    0.05743473059954243
+  ],
+  "brokenConstraints": 62,
+  "removedTriangles": 85,
+  "thermalBalanceRelativeError": 4.172038635683016e-13,
+  "temperatureK": [
+    1046.6173373058587,
+    1069.8510976480188,
+    1097.9164502081735
+  ],
+  "limitations": [
+    "Foundation is prescribed; bulk and skin momentum are not two-way coupled",
+    "Distance bending is a reduced shell model",
+    "Crack aperture is limited by mesh resolution",
+    "Thermal columns include an explicit bending heat sink"
+  ]
+}

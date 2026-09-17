@@ -1,0 +1,19 @@
+{
+  "frames": 300,
+  "rigidFragments": 174,
+  "finite": true,
+  "maxQuaternionNormError": 1.1920928955078125e-07,
+  "centerHeightAtHold": 1.978654146194458,
+  "centerHeightAtLanding": 0.5233950614929199,
+  "fragmentsWithCentersBelowHalfUnit": 87,
+  "landingCenterHeightQuantiles": [
+    0.008528469130396843,
+    0.15383920073509216,
+    0.4898667484521866,
+    0.8165617883205414,
+    1.2953824996948242
+  ],
+  "maximumVerticalChangeLastNineFrames": 0.029828131198883057,
+  "observation": "Basalt fragments stack on each other; a criterion requiring 100 centers below 0.5 does not describe this taller pile. Final image review remains required.",
+  "releaseFrame": 219
+}

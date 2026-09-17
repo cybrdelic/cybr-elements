@@ -1,0 +1,43 @@
+{
+  "pressure": {
+    "coupledDenseDifference": 3.677613769070831e-16,
+    "pistons": 2048,
+    "analyticError": 2.7755575615628914e-17,
+    "wallSeconds": 0.15229463577270508,
+    "iterations": 2
+  },
+  "mixed_contact": {
+    "denseVelocityDifference": 4.146869573423695e-09,
+    "unloadedVelocityDifference": 1.7767176618832536e-12,
+    "pressureRows": 40,
+    "frictionRows": 1,
+    "pressureActiveIterations": 2,
+    "stationarity": 9.378208826512864e-17
+  },
+  "rock_creep": {
+    "temperatureK": 1173.15,
+    "initialEquivalentStressPa": 100000000.0,
+    "strainRatePerS": 4.8114203290873326e-05,
+    "backwardEulerStressPa": 88735241.45960175,
+    "stressRelativeError": 1.5916202717572567e-07,
+    "couplingIterations": 5,
+    "hydrostaticCreep": false,
+    "source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008884",
+    "scope": "GFB power law reported for 850\u2013950 C and 300 MPa confinement. Surface lava use is an extrapolation; crystal fractions and fracture constants remain nominal."
+  },
+  "backend": {
+    "cpuFactors": 0,
+    "gpuFactors": 20,
+    "gpuSolves": 106,
+    "factorSeconds": 0.2159332001756411,
+    "solveSeconds": 0.041106099903117865,
+    "maximumDofs": 2048,
+    "maximumAllocatedBytes": 67142144,
+    "fallbacks": [],
+    "backend": "cuda_dense",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "Linear factorization and triangular solves only; CPU assembles and advances the MPM equations."
+  },
+  "seconds": 8.626547399995616
+}

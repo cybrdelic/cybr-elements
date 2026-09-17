@@ -1,0 +1,18 @@
+{
+  "frames": 120,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    576,
+    112,
+    336
+  ],
+  "elapsed": 364.89099999997416,
+  "peakGpuMiB": 5377.8955078125,
+  "source": "air-filaments.py",
+  "simulationStepSha256": "e6522ffa34ee6095670a5770370836f5a049f325d848d8bc81753072127393a3",
+  "changes": "Moving tracer filaments with projected velocity and advection; extinction and directional volumetric lighting; no combustion or image fade."
+}

@@ -1,0 +1,1 @@
+[{"name": "ice-connected-pilot", "script": "fracture.py", "args": ["--kind", "ice"]}, {"name": "glass-connected-pilot", "script": "fracture.py", "args": ["--kind", "glass"]}, {"name": "lava-thermal-pilot", "script": "lava.py", "args": ["--kind", "lava"]}, {"name": "crystal-refine-pilot", "script": "solids.py", "args": ["--kind", "crystal"]}]

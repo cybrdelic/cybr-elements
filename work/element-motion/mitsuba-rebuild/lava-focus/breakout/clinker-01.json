@@ -1,0 +1,19 @@
+{
+  "device": "CPU",
+  "sourceSha256": "8c7522bc0aab7c4256bb304c94967547e316e14ba3a2668cf1fffb18892dc3e3",
+  "vertices": 647398,
+  "triangles": 1293352,
+  "fragments": 360,
+  "fragmentRadiusRangeM": [
+    0.017001552509012967,
+    0.08292361887460226
+  ],
+  "columnEnergyResidual": 3.798937768676173e-14,
+  "seconds": 14.45,
+  "method": "Connected melt and solid irregular vesicular basalt fragments with real underfaces; temperature-dependent optical surfaces",
+  "limits": [
+    "Rubble placement, contact cooling age and temperatures are authored; there is no two-way mechanics or rigid-body collision solve",
+    "The natural cooling column is solved in 1D only",
+    "Still material study; motion is not validated"
+  ]
+}

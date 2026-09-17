@@ -1,0 +1,134 @@
+{
+  "status": "pass",
+  "cases": [
+    {
+      "seed": 0,
+      "load": 0,
+      "velocityError": 1.9337742936022945e-08,
+      "activeFriction": 4,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 0,
+      "load": 1,
+      "velocityError": 1.0588006161497271e-08,
+      "activeFriction": 5,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 1,
+      "load": 0,
+      "velocityError": 6.9395557772411465e-09,
+      "activeFriction": 3,
+      "candidates": 8,
+      "outer": 1
+    },
+    {
+      "seed": 1,
+      "load": 1,
+      "velocityError": 1.669539823750954e-08,
+      "activeFriction": 4,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 2,
+      "load": 0,
+      "velocityError": 9.212392276108927e-09,
+      "activeFriction": 6,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 2,
+      "load": 1,
+      "velocityError": 1.969259059465822e-08,
+      "activeFriction": 2,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 3,
+      "load": 0,
+      "velocityError": 1.444531999572618e-08,
+      "activeFriction": 5,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 3,
+      "load": 1,
+      "velocityError": 1.4666110326189141e-08,
+      "activeFriction": 5,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 4,
+      "load": 0,
+      "velocityError": 4.644092046687809e-09,
+      "activeFriction": 4,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 4,
+      "load": 1,
+      "velocityError": 4.919606753223116e-09,
+      "activeFriction": 5,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 5,
+      "load": 0,
+      "velocityError": 1.3413769922934748e-08,
+      "activeFriction": 5,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 5,
+      "load": 1,
+      "velocityError": 7.740588878202281e-09,
+      "activeFriction": 3,
+      "candidates": 8,
+      "outer": 1
+    },
+    {
+      "seed": 6,
+      "load": 0,
+      "velocityError": 1.0258620546793606e-08,
+      "activeFriction": 1,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 6,
+      "load": 1,
+      "velocityError": 3.923185543791563e-10,
+      "activeFriction": 4,
+      "candidates": 8,
+      "outer": 2
+    },
+    {
+      "seed": 7,
+      "load": 0,
+      "velocityError": 7.107375937787097e-10,
+      "activeFriction": 3,
+      "candidates": 8,
+      "outer": 1
+    },
+    {
+      "seed": 7,
+      "load": 1,
+      "velocityError": 7.889490831469725e-10,
+      "activeFriction": 2,
+      "candidates": 8,
+      "outer": 2
+    }
+  ],
+  "maximumVelocityDifference": 1.969259059465822e-08
+}

@@ -1,0 +1,10 @@
+{
+  "status": "rejected",
+  "reason": "User rejected all latest material images. Current lava remains a coated tube; ice remains smooth transparent tubing. Named solvers and a path tracer do not establish visual quality.",
+  "gpuAllowed": false,
+  "fullMoviesAllowed": false,
+  "publishAllowed": false,
+  "nextGate": "Material-scale geometry and motion, judged against real references before another full-trail image.",
+  "approvalRequired": false,
+  "releaseCondition": "Agent must record direct visual evidence that a material-scale coupon matches reference morphology; then update this local quality state. This is not a user permission gate."
+}

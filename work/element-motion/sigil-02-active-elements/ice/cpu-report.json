@@ -1,0 +1,68 @@
+{
+  "element": "ice",
+  "frames": 300,
+  "renderedFrameCount": 1,
+  "rendered": [
+    150
+  ],
+  "resolution": [
+    768,
+    432
+  ],
+  "engine": "CYCLES",
+  "samples": 12,
+  "method": "Cycles material studies, native Bullet release, CPU-solved local gas.\nThe powered assembly is authored. Ice and basalt are rigid fractures, not a\nthermodynamic phase-change/viscoelastic lava solver. Electrical channels are\nan authored branching discharge visualization, not calibrated plasma.\n",
+  "rows": [
+    {
+      "frame": 0,
+      "finite": true,
+      "nearFloor": 174
+    },
+    {
+      "frame": 30,
+      "finite": true,
+      "nearFloor": 57
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "nearFloor": 2
+    },
+    {
+      "frame": 90,
+      "finite": true,
+      "nearFloor": 1
+    },
+    {
+      "frame": 120,
+      "finite": true,
+      "nearFloor": 2
+    },
+    {
+      "frame": 150,
+      "finite": true,
+      "nearFloor": 2
+    },
+    {
+      "frame": 180,
+      "finite": true,
+      "nearFloor": 1
+    },
+    {
+      "frame": 210,
+      "finite": true,
+      "nearFloor": 1
+    },
+    {
+      "frame": 240,
+      "finite": true,
+      "nearFloor": 69
+    },
+    {
+      "frame": 270,
+      "finite": true,
+      "nearFloor": 114
+    }
+  ],
+  "userAccepted": false
+}

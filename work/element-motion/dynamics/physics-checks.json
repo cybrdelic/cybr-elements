@@ -1,0 +1,14 @@
+{
+  "gravityDrag": {
+    "seconds": 0.2,
+    "expectedDrop": -0.18674710885300833,
+    "measuredDrop": -0.1883772313594818,
+    "error": 0.0016301274299621582,
+    "passed": true
+  },
+  "plantConstraints": {
+    "relativeErrorMedian": 0.00013509761712593438,
+    "relativeErrorP95": 0.0010496418850381775,
+    "max": 0.004777387264231381
+  }
+}

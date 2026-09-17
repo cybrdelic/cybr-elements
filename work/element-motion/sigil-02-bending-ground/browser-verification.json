@@ -1,0 +1,27 @@
+{
+  "water": {
+    "source": "water-02-r5.mp4",
+    "width": 1920,
+    "height": 1080,
+    "duration": 13,
+    "readyState": 4,
+    "playing": true,
+    "error": null,
+    "previous": "water-02-r4.mp4",
+    "previousVerified": true
+  },
+  "earth": {
+    "source": "earth-02-r5.mp4",
+    "width": 1920,
+    "height": 1080,
+    "duration": 13,
+    "readyState": 4,
+    "playing": true,
+    "error": null,
+    "previous": "earth-02-r4.mp4",
+    "previousVerified": true
+  },
+  "existingPlayer": true,
+  "downloadTargetsVerified": true,
+  "approvedOtherMediaHashesPreserved": true
+}

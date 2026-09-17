@@ -1,0 +1,19 @@
+# Water and lightning revision 4
+
+Request: lightning still looks bad; water looks 2D.
+
+Baseline: water-v3.mp4 and lightning-v3.mp4 remain available in the same player under Previous. Earth, fire, and air are unchanged.
+
+Water changes: replaced the fixed-depth elliptical sheet source with a rounded jet emitted along a moving 3D centre. The native FLIP/APIC solver handles its positions, velocities, pressure and capillary evolution. Camera is perspective at a slight oblique angle. Studio reflection/refraction lighting fills the previously black interior while camera rays remain black. Spray uses floating-point positions so droplets cannot be clamped to the cache domain. The existing volume-accounted subgrid spray closure is retained.
+
+Water validation: 120 native states and rendered frames, 65,992 primary particles, zero pressure failures, zero nominal source volume discrepancy, maximum represented surface-volume error 0.004734 (0.474%). Rendered at 2560x1440 with 96 Cycles OptiX samples and velocity motion blur, delivered at 1920x1080/30fps/4 seconds. Simulation wall time 752.8 seconds; final reconstruction 461.8 seconds (concurrent streaming render).
+
+Lightning changes: 3D point-charge Laplacian growth with authored sequential control targets and competing off-axis attraction. Hierarchical return-stroke radiance, nonperiodic event timing, a narrower subpixel core, and illumination of a transported 3D aerosol projected through the perspective camera. A point-charge model is a graphics approximation, not a full plasma-electrodynamics simulation. Unconnected growth was rejected. Unrestricted growth that short-circuited the bending loop was rejected. The fixed-width optical pass and lattice-scale corners were also rejected; the retained optical pass removes grid-scale steps at degree-two vertices without changing branch connectivity.
+
+References: Kim et al. Fast Simulation of Laplacian Growth (2007), equations 10–13, https://faculty.cc.gatech.edu/~turk/bio_sim/articles/laplacian_growth.pdf . NWS slow-motion discharge explanations: https://www.weather.gov/safety/lightning-science-slow-motion-flashes . The NWS low-resolution animated reference loaded in-browser, but screenshots did not provide a useful detailed channel comparison; no claim of footage matching is made.
+
+Visual evidence: water-v3-v4.jpg, water-sequence.jpg, water-end.jpg, lightning-optics-pilot.jpg, and the final clips. New water shows actual depth crossings and a rounded cross-section, with reduced foil-like front reflections. It still forms a quite uniform jet early in the shot. Lightning still follows an authored bending gesture; the guided loop is intentionally unlike a free atmospheric strike. Its light transport, heating and fine branching are approximations. Smoke/aerosol is an authored medium; clean-air lightning is not modeled as creating smoke.
+
+Other limitations: spray atomization remains a subgrid parcel closure, not resolved droplet breakup; global volume matching is not a proof of local incompressibility. The fluid uses a coarser cell size (0.018 versus 0.015) over a substantially deeper domain; the rounded jet has more cells through its narrow dimension than the old thin source. Both use gravity release after the controlled bending beat. No claim of photorealism or physical validation beyond the checks above.
+
+Final delivery verification: both videos decode all 120 frames at 1920x1080, 30fps, 4 seconds, BT.709 video range. Top corners decode to exact black. Existing earth/fire/air video hashes match. Browser loaded all five videos without media errors; Previous switches water/lightning to v3 while preserving the 1.27-second position and download links. Restoring Rebuilt selects v4. Group playback and shared seeking work; final page left on both v4 clips at 1.585 seconds. Final comparison: lightning-v3-v4.jpg.

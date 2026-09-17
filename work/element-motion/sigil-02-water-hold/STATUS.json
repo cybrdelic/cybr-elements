@@ -1,0 +1,20 @@
+{
+  "status": "Published water-r3 for user review",
+  "scope": "Water 02 only",
+  "rejectedInput": "water-02-r2.mp4",
+  "userFeedback": "Water does not hold its form long enough, and drops look like particles.",
+  "changes": [
+    "Full rounded artwork volume and exterior bending force",
+    "Hold to5.8s, gradual field/gravity release to6.65s",
+    "Resolved native surface, no analytic sphere spray",
+    "Analytic subgrid capillary optical normals and broad studio refraction fill"
+  ],
+  "limits": [
+    "The sustained hold uses an authored bending force",
+    "Isolated under-resolved fluid markers remain in accounting but are not rendered as spheres",
+    "No claim of user acceptance or photorealism"
+  ],
+  "otherElementsChanged": false,
+  "deliveryEvidence": "../sigil-02-coherent/STATUS.json",
+  "userAccepted": false
+}

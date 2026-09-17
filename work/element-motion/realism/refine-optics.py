@@ -1,0 +1,12 @@
+from pathlib import Path
+R=Path(__file__).resolve().parent;p=R/'fracture.py';s=p.read_text(encoding='utf-8')
+s=s.replace("plane_context(rock_material(gain=.018),y=.85)","plane_context(rock_material(gain=.008),y=.85)")
+s=s.replace("if K=='ice':\n bump=", "if K=='ice':\n p.inputs['Base Color'].default_value=(.72,.84,.91,1);p.inputs['Transmission Weight'].default_value=.60;p.inputs['Subsurface Weight'].default_value=.22;p.inputs['Subsurface Radius'].default_value=(.055,.075,.10);p.inputs['Roughness'].default_value=.18\n bump=")
+s=s.replace("if K=='glass':c[1]=0", "if K=='glass':c[1]=.03*math.sin(u*7)")
+s=s.replace("rr*.8*math.sin(a+phase)","rr*(.8 if K=='ice' else .32)*math.sin(a+phase)")
+s=s.replace("if K=='ice':born=64","if K in ['ice','glass']:born=64")
+s=s.replace("if K=='ice':\n  ring=rings[i]+rings[i+1]", "if K in ['ice','glass']:\n  ring=rings[i]+rings[i+1]")
+s=s.replace("mat,K=='ice');ob.location=center", "mat,True);ob.location=center")
+s=s.replace("if K=='ice' and f in take:","if K in ['ice','glass'] and f in take:")
+s=s.replace("shell=mesh('Continuous unbroken ice skin',vv,fa,mat,True)", "shell=mesh('Continuous optical skin',vv,fa,mat,True);sub=shell.modifiers.new('Optical surface continuity','SUBSURF');sub.levels=2;sub.render_levels=2")
+p.write_text(s,encoding='utf-8');print('Clouded ice and lens-section cast glass')

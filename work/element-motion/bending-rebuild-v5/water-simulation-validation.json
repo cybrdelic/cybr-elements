@@ -1,0 +1,12 @@
+{
+  "completeFrames": 120,
+  "finitePositionsAndVelocities": true,
+  "pressureFailures": 0,
+  "maxPressureRelativeResidual": 9.473607612370522e-06,
+  "sourceVolumeBalanceMax": 0,
+  "totalParticles": 65956,
+  "caveat": "Nominal particle volume accounting is not a proof of local incompressibility or resolved atomization.",
+  "meshFrames": 120,
+  "maxMeshVolumeError": 0.004936657052471489,
+  "maxSprayVolumeError": 5.579459544843078e-08
+}

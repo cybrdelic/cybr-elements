@@ -1,0 +1,20 @@
+[
+  {
+    "kind": "ice",
+    "script": "render_frozen.py",
+    "frames": "45,65"
+  },
+  {
+    "kind": "metal",
+    "script": "render_solids-r1.py",
+    "frames": "45"
+  },
+  {
+    "kind": "blood",
+    "script": "render_solids-r1.py"
+  },
+  {
+    "kind": "mud",
+    "script": "render_solids-r1.py"
+  }
+]

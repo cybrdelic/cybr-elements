@@ -1,0 +1,75 @@
+{
+  "videos": [
+    {
+      "file": "fire-material-v2.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    {
+      "file": "water-material.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120",
+          "side_data_list": [
+            {}
+          ]
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    {
+      "file": "air-material-v2.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    {
+      "file": "earth-material.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    }
+  ],
+  "waterMaxRelativeVolumeError": 0.003324087090872937,
+  "waterFrames": 120,
+  "emptyWaterFrames": 3,
+  "acceptedVideoHashesPreserved": true
+}

@@ -1,0 +1,11 @@
+{
+  "variant": "01",
+  "bodies": 892,
+  "radiusRange": [
+    0.009469356768828463,
+    0.11428280147138414
+  ],
+  "minSphereClearance": 0.0020564534826687936,
+  "geometry": "Existing accepted convex stones and layered fracture meshes; no glyph-shaped carving",
+  "guide": "Per-body spring anchors with physical Bullet contacts; constraints disabled at release"
+}

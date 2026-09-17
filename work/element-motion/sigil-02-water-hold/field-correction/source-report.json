@@ -1,0 +1,14 @@
+{
+  "particles": 110029,
+  "previousParticles": 134592,
+  "unionSampling": true,
+  "spacing": 0.009,
+  "noDuplicateLatticeCells": true,
+  "medianSpeed": 0.08179742842912674,
+  "writeEnds": 1.9934908151626587,
+  "holdUntil": 5.8,
+  "releaseEnds": 6.65,
+  "forceBoundary": "Union of variable-radius source tubes, zero force inside, exterior spring160, radial damping5",
+  "iteration": 3,
+  "reason": "CPU images revealed a persistent left breakup patch; previous field squeezed intersections and retained excessive input energy"
+}

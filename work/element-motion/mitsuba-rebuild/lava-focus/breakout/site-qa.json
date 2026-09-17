@@ -1,0 +1,54 @@
+{
+  "url": "http://127.0.0.1:8767/elements/motion/subelements/dynamics/lava/?v=basalt-depth",
+  "pageMatchesDisk": true,
+  "defaultImage": "lava-basalt-volume.png",
+  "assets": [
+    {
+      "name": "lava-basalt-volume.png",
+      "size": [
+        1024,
+        576
+      ],
+      "bytes": 465851,
+      "sha256": "737c18ee264872f8ab1aa1e16af536b5e2f6a4ee319c5cea4f46d52170388b0d"
+    },
+    {
+      "name": "lava-basalt-volume-detail.png",
+      "size": [
+        960,
+        672
+      ],
+      "bytes": 915072,
+      "sha256": "8d928c6b54908dceec76d44c421ae35bde4490ea5eb2c3368c1a4ccf27055787"
+    },
+    {
+      "name": "lava-folded.png",
+      "size": [
+        1280,
+        720
+      ],
+      "bytes": 513956,
+      "sha256": "8ddd925c1c2300c73017f4ea642a4db88d5417590aafb291d2d47402885923cf"
+    },
+    {
+      "name": "lava-refined.png",
+      "size": [
+        896,
+        672
+      ],
+      "bytes": 409841,
+      "sha256": "dab9d6c2f0ca2613b1643a176a2e20e4aa1500c0f87a002a5c7cfd2d0975e4be"
+    },
+    {
+      "name": "lava-restored-first.png",
+      "size": [
+        640,
+        480
+      ],
+      "bytes": 294418,
+      "sha256": "3e1eabbde8653b89b2cbae18b9f965da2b33a5c38e4e5a288aa59cf7ce26826f"
+    }
+  ],
+  "previousImagesPreserved": true,
+  "limits": "HTTP, file integrity, dimensions and static selection wiring checked; not an automated browser interaction test."
+}

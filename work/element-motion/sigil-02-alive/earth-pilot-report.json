@@ -1,0 +1,57 @@
+{
+  "frames": 300,
+  "pieces": 266,
+  "method": "Authored rigid assembly and correlated stress-wave hold; native Bullet collisions and gravity for released chips and final collapse; unchanged photogrammetry stone material",
+  "rows": [
+    {
+      "frame": 30,
+      "finite": true,
+      "minZ": 0.09430083632469177
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "minZ": 0.4041164219379425
+    },
+    {
+      "frame": 90,
+      "finite": true,
+      "minZ": 0.28503069281578064
+    },
+    {
+      "frame": 120,
+      "finite": true,
+      "minZ": -8.337605476379395
+    },
+    {
+      "frame": 150,
+      "finite": true,
+      "minZ": -26.09278678894043
+    },
+    {
+      "frame": 180,
+      "finite": true,
+      "minZ": -52.965938568115234
+    },
+    {
+      "frame": 210,
+      "finite": true,
+      "minZ": -88.07717895507812
+    },
+    {
+      "frame": 240,
+      "finite": true,
+      "minZ": -130.9965362548828
+    },
+    {
+      "frame": 270,
+      "finite": true,
+      "minZ": -181.33358764648438
+    },
+    {
+      "frame": 300,
+      "finite": true,
+      "minZ": -238.7174835205078
+    }
+  ]
+}

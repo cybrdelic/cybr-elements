@@ -1,0 +1,13 @@
+{
+  "target": "Resolve why cooled lava cannot retain a coherent brittle crust, then inspect the actual simulated fracture geometry",
+  "baseline": "coupled-implicit-07/state-surface-diagnostic.png; rounded 744-point lump with no broken connectivity edges",
+  "scope": ["lava_mpm.py crystal-network rheology", "CPU crust regression and reconstruction", "separate review artifacts"],
+  "capture": "CPU reconstructed surface and solved temperature/damage contact sheet; one small Mitsuba study only after its local physics checks",
+  "audit": ["solid stress survives below failure", "molten material retains no elastic memory", "surface topology matches actual fragments", "black background", "no invented cracks, fragment trajectories, or hot seams"],
+  "budget": "CPU only, two cores, 3 GiB, jobs at most 180 s; no movie or production batch",
+  "iterations": 5,
+  "acceptance": "Local mechanism and visual evidence only. Existing early-flow grid refinement failure remains a production blocker. A preview is not evidence of a converged lava simulation.",
+  "outcome": "Mechanics changes retained after component validation. Corotated domain reconstruction rejected visually and by volume error. Finer CPU kernel surface remains too smooth. No new beauty-render batch.",
+  "checks": "23 component checks pass; fresh early-flow grid comparison fails at 19.5344% RMS speed change against the original 15% gate.",
+  "remaining": "Sustained molten inflow, resolved crust geometry and opening, convergence, interfragment friction, coupled long gas/bed run, and calibrated material properties. World-class visual target not achieved."
+}

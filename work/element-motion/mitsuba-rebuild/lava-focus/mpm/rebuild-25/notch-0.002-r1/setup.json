@@ -1,0 +1,22 @@
+{
+  "sceneKind": "notched_tensile_specimen",
+  "lengthM": 0.02,
+  "crossSectionM": [
+    0.002,
+    0.001
+  ],
+  "notch": "2 mm long, 1 mm deep geometric side notch at the centre",
+  "fractureLengthM": 0.002,
+  "gripSpeedMPerS": 0.001,
+  "initialDamage": 0,
+  "initialBrokenEdges": 0,
+  "sourceHashes": {
+    "lava_mpm.py": "83ad22ac3e2ce73d0fc2110eb407f848bf526bc3ef225ab9acd52c63669609ed",
+    "lava_mpm_coupled.py": "a20826ae7b85b151928f72c727ab288c814256ee1312fb73e1877ac19fd688d2",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "98d4715c7a3f27482c6b813fb7d38a61bd601b5759c1e331be1ea0b727281716",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "7db796316dccb802c72991cb2135d68774d5d9acba31007e9c3486ab74475330"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "status": "paused",
+  "error": "TimeoutError('Active mixed contact deadline')",
+  "time": 7.155602787080807,
+  "targetTime": 10.0,
+  "particles": 1108,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.8022963870614289,
+  "solidPoints": 172,
+  "rejects": 0,
+  "wallSeconds": 240.09399999998277,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\integrated-coarse",
+    "sha256": "21c798d423901e316f194234c100d7dfcb9353f597233939503d5dbdb441d983"
+  },
+  "bedKind": "finite",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

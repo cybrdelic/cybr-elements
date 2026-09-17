@@ -1,0 +1,17 @@
+{
+  "scope": "Water 02 formation only; preserve r3 hold, material and every other element",
+  "defect": "Fluid was born at its finished position with negligible travel, making a mechanical left-to-right wipe",
+  "change": "Curved inlets start upstream along the stroke tangents. Increased tangential source momentum carries the fluid into the mark; normal damping catches overshoot. Native pressure, free surface and parcel motion remain active.",
+  "limits": "Authored static bending potential and momentum damping, not unforced natural formation of typography. No particle teleporting, animated guide pose or render-only morph.",
+  "iterations": 4,
+  "capture": "CPU native simulation, reconstruction, reduced Cycles motion frames; full render only after visual review",
+  "gates": [
+    "Finite and converged native solve",
+    "Conserved source volume",
+    "Visible transport before settling",
+    "Retained full silhouette and long hold",
+    "No point-cloud droplets",
+    "Black backdrop"
+  ],
+  "baseline": "baseline-formation.jpg"
+}

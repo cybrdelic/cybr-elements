@@ -1,0 +1,301 @@
+{
+  "frames": 390,
+  "pieces": 266,
+  "method": "All fractures visible on the ground at frame one; authored curved powered lift and hold; native Bullet inter-body and floor collisions after release. Ground gravel is dynamic throughout. Same scanned rock material.",
+  "rows": [
+    {
+      "frame": 30,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 266,
+      "maxRise": -0.025452182347284302
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 92,
+      "maxRise": 1.6035605811529292
+    },
+    {
+      "frame": 90,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 92,
+      "maxRise": 2.1224373865541155
+    },
+    {
+      "frame": 120,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 92,
+      "maxRise": 0.8457004118379292
+    },
+    {
+      "frame": 150,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 0.009305816010830137
+    },
+    {
+      "frame": 180,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 0.015707909741402792
+    },
+    {
+      "frame": 210,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94,
+      "maxRise": 0.017947652323681895
+    },
+    {
+      "frame": 240,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 0.0004442790202419111
+    },
+    {
+      "frame": 241,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 1.166715386524686e-07
+    },
+    {
+      "frame": 242,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 1.166715386524686e-07
+    },
+    {
+      "frame": 243,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 1.166715386524686e-07
+    },
+    {
+      "frame": 244,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93,
+      "maxRise": 1.166715386524686e-07
+    },
+    {
+      "frame": 245,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94,
+      "maxRise": -0.005785504172473921
+    },
+    {
+      "frame": 246,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94,
+      "maxRise": -0.022440793667816816
+    },
+    {
+      "frame": 247,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94,
+      "maxRise": -0.0499357049229423
+    },
+    {
+      "frame": 248,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94,
+      "maxRise": -0.08824026838400334
+    },
+    {
+      "frame": 249,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94,
+      "maxRise": -0.13732421651937932
+    },
+    {
+      "frame": 250,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 96,
+      "maxRise": -0.1971576239214179
+    },
+    {
+      "frame": 251,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 96,
+      "maxRise": -0.26771092668631047
+    },
+    {
+      "frame": 252,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 97,
+      "maxRise": -0.3349142155594692
+    },
+    {
+      "frame": 253,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 99,
+      "maxRise": -0.3951622552223072
+    },
+    {
+      "frame": 254,
+      "finite": true,
+      "minZ": 0.005214355420321226,
+      "nearFloor": 102,
+      "maxRise": -0.4066760178640053
+    },
+    {
+      "frame": 255,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 106,
+      "maxRise": -0.4025270107186899
+    },
+    {
+      "frame": 256,
+      "finite": true,
+      "minZ": -0.014858745038509369,
+      "nearFloor": 118,
+      "maxRise": -0.3848461636751038
+    },
+    {
+      "frame": 257,
+      "finite": true,
+      "minZ": 0.005654480308294296,
+      "nearFloor": 127,
+      "maxRise": -0.37750419764212195
+    },
+    {
+      "frame": 258,
+      "finite": true,
+      "minZ": -0.0055412957444787025,
+      "nearFloor": 134,
+      "maxRise": -0.38106841383865897
+    },
+    {
+      "frame": 259,
+      "finite": true,
+      "minZ": 0.001342784147709608,
+      "nearFloor": 145,
+      "maxRise": -0.3901369103639466
+    },
+    {
+      "frame": 260,
+      "finite": true,
+      "minZ": 0.0017910723108798265,
+      "nearFloor": 149,
+      "maxRise": -0.3918879681675774
+    },
+    {
+      "frame": 261,
+      "finite": true,
+      "minZ": -0.001376658328808844,
+      "nearFloor": 150,
+      "maxRise": -0.3879498296826226
+    },
+    {
+      "frame": 262,
+      "finite": true,
+      "minZ": -0.00011015495692845434,
+      "nearFloor": 151,
+      "maxRise": -0.38511445163181846
+    },
+    {
+      "frame": 263,
+      "finite": true,
+      "minZ": 0.0013560026418417692,
+      "nearFloor": 152,
+      "maxRise": -0.38648804812124793
+    },
+    {
+      "frame": 264,
+      "finite": true,
+      "minZ": 0.00042219413444399834,
+      "nearFloor": 154,
+      "maxRise": -0.3935178720801217
+    },
+    {
+      "frame": 265,
+      "finite": true,
+      "minZ": 5.13964805577416e-05,
+      "nearFloor": 155,
+      "maxRise": -0.39726844219854895
+    },
+    {
+      "frame": 266,
+      "finite": true,
+      "minZ": 0.00332304323092103,
+      "nearFloor": 157,
+      "maxRise": -0.40255179228107785
+    },
+    {
+      "frame": 267,
+      "finite": true,
+      "minZ": 0.0020321125630289316,
+      "nearFloor": 158,
+      "maxRise": -0.4025943900443182
+    },
+    {
+      "frame": 268,
+      "finite": true,
+      "minZ": 0.0027879388071596622,
+      "nearFloor": 160,
+      "maxRise": -0.4025833315200672
+    },
+    {
+      "frame": 269,
+      "finite": true,
+      "minZ": 0.0008831436280161142,
+      "nearFloor": 161,
+      "maxRise": -0.4025335662982926
+    },
+    {
+      "frame": 270,
+      "finite": true,
+      "minZ": 0.0010750931687653065,
+      "nearFloor": 162,
+      "maxRise": -0.4025530886821017
+    },
+    {
+      "frame": 300,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 210,
+      "maxRise": -0.40253639472495173
+    },
+    {
+      "frame": 330,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 237,
+      "maxRise": -0.4025569592587218
+    },
+    {
+      "frame": 360,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 255,
+      "maxRise": -0.40254782950352286
+    },
+    {
+      "frame": 390,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 261,
+      "maxRise": -0.4025483864344225
+    }
+  ]
+}

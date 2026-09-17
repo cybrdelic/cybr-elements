@@ -1,0 +1,1177 @@
+{
+  "element": "water",
+  "frames": 192,
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "30/1",
+        "nb_frames": "192"
+      }
+    ],
+    "format": {
+      "duration": "6.400000"
+    }
+  },
+  "sha256": "19f8f99837ba88659271ececd30bdccc05cc0f047248d9abba9a2ac61f2b3607",
+  "visualStatus": "pending",
+  "endLuma": 2.625431560763889,
+  "maxCorner": 8,
+  "rows": [
+    {
+      "frame": 0,
+      "meanLuma": 0.0008767361111111111,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 1,
+      "meanLuma": 0.0009244791666666667,
+      "cornerMax": 0,
+      "frameDifference": 4.774305555555556e-05
+    },
+    {
+      "frame": 2,
+      "meanLuma": 0.0009244791666666667,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 3,
+      "meanLuma": 0.0009244791666666667,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 4,
+      "meanLuma": 0.0009114583333333333,
+      "cornerMax": 0,
+      "frameDifference": 1.3020833333333334e-05
+    },
+    {
+      "frame": 5,
+      "meanLuma": 0.0009201388888888889,
+      "cornerMax": 0,
+      "frameDifference": 8.680555555555556e-06
+    },
+    {
+      "frame": 6,
+      "meanLuma": 0.0009201388888888889,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 7,
+      "meanLuma": 0.0009201388888888889,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 8,
+      "meanLuma": 0.11396702604166666,
+      "cornerMax": 0,
+      "frameDifference": 0.11322627314814815
+    },
+    {
+      "frame": 9,
+      "meanLuma": 0.1598718350694444,
+      "cornerMax": 0,
+      "frameDifference": 0.21431278935185186
+    },
+    {
+      "frame": 10,
+      "meanLuma": 0.25383898350694445,
+      "cornerMax": 0,
+      "frameDifference": 0.26502314814814815
+    },
+    {
+      "frame": 11,
+      "meanLuma": 0.4259754444444444,
+      "cornerMax": 0,
+      "frameDifference": 0.34099681712962965
+    },
+    {
+      "frame": 12,
+      "meanLuma": 0.524512657986111,
+      "cornerMax": 0,
+      "frameDifference": 0.4238165509259259
+    },
+    {
+      "frame": 13,
+      "meanLuma": 0.8220203038194444,
+      "cornerMax": 0,
+      "frameDifference": 0.6537355324074074
+    },
+    {
+      "frame": 14,
+      "meanLuma": 0.9454587491319443,
+      "cornerMax": 0,
+      "frameDifference": 0.7204759837962963
+    },
+    {
+      "frame": 15,
+      "meanLuma": 1.070390261284722,
+      "cornerMax": 0,
+      "frameDifference": 0.645384837962963
+    },
+    {
+      "frame": 16,
+      "meanLuma": 1.2204408654513887,
+      "cornerMax": 0,
+      "frameDifference": 0.7445905671296297
+    },
+    {
+      "frame": 17,
+      "meanLuma": 1.354267834201389,
+      "cornerMax": 0,
+      "frameDifference": 0.7933998842592592
+    },
+    {
+      "frame": 18,
+      "meanLuma": 1.5088820607638886,
+      "cornerMax": 0,
+      "frameDifference": 0.906478587962963
+    },
+    {
+      "frame": 19,
+      "meanLuma": 1.635392518229167,
+      "cornerMax": 0,
+      "frameDifference": 0.9663570601851852
+    },
+    {
+      "frame": 20,
+      "meanLuma": 1.8094592013888888,
+      "cornerMax": 0,
+      "frameDifference": 1.0908521412037038
+    },
+    {
+      "frame": 21,
+      "meanLuma": 2.062290248263889,
+      "cornerMax": 0,
+      "frameDifference": 1.2981206597222221
+    },
+    {
+      "frame": 22,
+      "meanLuma": 2.2555045755208334,
+      "cornerMax": 0,
+      "frameDifference": 1.4431336805555555
+    },
+    {
+      "frame": 23,
+      "meanLuma": 2.4023706484374996,
+      "cornerMax": 0,
+      "frameDifference": 1.5495732060185186
+    },
+    {
+      "frame": 24,
+      "meanLuma": 2.6670298802083323,
+      "cornerMax": 0,
+      "frameDifference": 1.7245572916666667
+    },
+    {
+      "frame": 25,
+      "meanLuma": 2.9040969852430556,
+      "cornerMax": 0,
+      "frameDifference": 1.8140002893518519
+    },
+    {
+      "frame": 26,
+      "meanLuma": 3.127234871527778,
+      "cornerMax": 0,
+      "frameDifference": 2.0218258101851854
+    },
+    {
+      "frame": 27,
+      "meanLuma": 3.3007584887152777,
+      "cornerMax": 0,
+      "frameDifference": 2.1049609375
+    },
+    {
+      "frame": 28,
+      "meanLuma": 3.4434801475694443,
+      "cornerMax": 0,
+      "frameDifference": 2.225853587962963
+    },
+    {
+      "frame": 29,
+      "meanLuma": 3.582089991319444,
+      "cornerMax": 0,
+      "frameDifference": 2.327841435185185
+    },
+    {
+      "frame": 30,
+      "meanLuma": 3.7447400998263882,
+      "cornerMax": 0,
+      "frameDifference": 2.3934056712962963
+    },
+    {
+      "frame": 31,
+      "meanLuma": 3.916675041666666,
+      "cornerMax": 0,
+      "frameDifference": 2.4974855324074072
+    },
+    {
+      "frame": 32,
+      "meanLuma": 4.079778720486111,
+      "cornerMax": 0,
+      "frameDifference": 2.5663816550925924
+    },
+    {
+      "frame": 33,
+      "meanLuma": 4.329803995659722,
+      "cornerMax": 0,
+      "frameDifference": 2.6762109375
+    },
+    {
+      "frame": 34,
+      "meanLuma": 4.537523579861111,
+      "cornerMax": 0,
+      "frameDifference": 2.7675072337962963
+    },
+    {
+      "frame": 35,
+      "meanLuma": 4.751832911458333,
+      "cornerMax": 0,
+      "frameDifference": 2.9212543402777778
+    },
+    {
+      "frame": 36,
+      "meanLuma": 4.946184877604168,
+      "cornerMax": 0,
+      "frameDifference": 3.0685315393518517
+    },
+    {
+      "frame": 37,
+      "meanLuma": 5.147478404513888,
+      "cornerMax": 0,
+      "frameDifference": 3.1878211805555554
+    },
+    {
+      "frame": 38,
+      "meanLuma": 5.41877240798611,
+      "cornerMax": 0,
+      "frameDifference": 3.2952879050925925
+    },
+    {
+      "frame": 39,
+      "meanLuma": 5.768607927083331,
+      "cornerMax": 0,
+      "frameDifference": 3.514564525462963
+    },
+    {
+      "frame": 40,
+      "meanLuma": 6.0221637065972216,
+      "cornerMax": 0,
+      "frameDifference": 3.6113773148148147
+    },
+    {
+      "frame": 41,
+      "meanLuma": 6.295745422743054,
+      "cornerMax": 0,
+      "frameDifference": 3.7109505208333333
+    },
+    {
+      "frame": 42,
+      "meanLuma": 6.492664337673609,
+      "cornerMax": 0,
+      "frameDifference": 3.7888888888888888
+    },
+    {
+      "frame": 43,
+      "meanLuma": 6.645292715277779,
+      "cornerMax": 0,
+      "frameDifference": 3.888531539351852
+    },
+    {
+      "frame": 44,
+      "meanLuma": 6.842684169270833,
+      "cornerMax": 0,
+      "frameDifference": 3.9960344328703705
+    },
+    {
+      "frame": 45,
+      "meanLuma": 7.077889973958335,
+      "cornerMax": 0,
+      "frameDifference": 4.130176504629629
+    },
+    {
+      "frame": 46,
+      "meanLuma": 7.292991618055555,
+      "cornerMax": 0,
+      "frameDifference": 4.272455150462963
+    },
+    {
+      "frame": 47,
+      "meanLuma": 7.606278518229169,
+      "cornerMax": 0,
+      "frameDifference": 4.482980324074074
+    },
+    {
+      "frame": 48,
+      "meanLuma": 7.964759924479167,
+      "cornerMax": 0,
+      "frameDifference": 4.576938657407408
+    },
+    {
+      "frame": 49,
+      "meanLuma": 8.405570440104167,
+      "cornerMax": 0,
+      "frameDifference": 4.793580729166667
+    },
+    {
+      "frame": 50,
+      "meanLuma": 8.697514918402778,
+      "cornerMax": 0,
+      "frameDifference": 4.939688946759259
+    },
+    {
+      "frame": 51,
+      "meanLuma": 9.00010234722222,
+      "cornerMax": 0,
+      "frameDifference": 5.0905960648148145
+    },
+    {
+      "frame": 52,
+      "meanLuma": 9.480838045138889,
+      "cornerMax": 0,
+      "frameDifference": 5.421258680555556
+    },
+    {
+      "frame": 53,
+      "meanLuma": 10.01030870920139,
+      "cornerMax": 0,
+      "frameDifference": 5.677514467592593
+    },
+    {
+      "frame": 54,
+      "meanLuma": 10.623275571180555,
+      "cornerMax": 0,
+      "frameDifference": 5.989542824074074
+    },
+    {
+      "frame": 55,
+      "meanLuma": 11.247573835069444,
+      "cornerMax": 0,
+      "frameDifference": 6.232298900462963
+    },
+    {
+      "frame": 56,
+      "meanLuma": 11.71314086631944,
+      "cornerMax": 0,
+      "frameDifference": 6.2881047453703705
+    },
+    {
+      "frame": 57,
+      "meanLuma": 12.26811443576389,
+      "cornerMax": 0,
+      "frameDifference": 6.647935474537037
+    },
+    {
+      "frame": 58,
+      "meanLuma": 12.73305001736111,
+      "cornerMax": 0,
+      "frameDifference": 6.76056712962963
+    },
+    {
+      "frame": 59,
+      "meanLuma": 13.125138697048607,
+      "cornerMax": 0,
+      "frameDifference": 7.021189236111111
+    },
+    {
+      "frame": 60,
+      "meanLuma": 13.416494135416665,
+      "cornerMax": 0,
+      "frameDifference": 7.291558159722222
+    },
+    {
+      "frame": 61,
+      "meanLuma": 13.86665518489583,
+      "cornerMax": 0,
+      "frameDifference": 7.514040798611111
+    },
+    {
+      "frame": 62,
+      "meanLuma": 14.292567534722222,
+      "cornerMax": 0,
+      "frameDifference": 7.636297743055556
+    },
+    {
+      "frame": 63,
+      "meanLuma": 14.79398305642361,
+      "cornerMax": 0,
+      "frameDifference": 7.941032986111111
+    },
+    {
+      "frame": 64,
+      "meanLuma": 15.189384932291665,
+      "cornerMax": 0,
+      "frameDifference": 8.237274305555555
+    },
+    {
+      "frame": 65,
+      "meanLuma": 15.675333889756942,
+      "cornerMax": 0,
+      "frameDifference": 8.482413194444444
+    },
+    {
+      "frame": 66,
+      "meanLuma": 16.060878145833332,
+      "cornerMax": 0,
+      "frameDifference": 8.682489872685185
+    },
+    {
+      "frame": 67,
+      "meanLuma": 16.45022304600694,
+      "cornerMax": 0,
+      "frameDifference": 8.832026909722222
+    },
+    {
+      "frame": 68,
+      "meanLuma": 16.936881857638888,
+      "cornerMax": 0,
+      "frameDifference": 9.16132667824074
+    },
+    {
+      "frame": 69,
+      "meanLuma": 17.449482046006946,
+      "cornerMax": 0,
+      "frameDifference": 9.440228587962963
+    },
+    {
+      "frame": 70,
+      "meanLuma": 17.816538760416666,
+      "cornerMax": 0,
+      "frameDifference": 9.648774594907408
+    },
+    {
+      "frame": 71,
+      "meanLuma": 18.20794258246528,
+      "cornerMax": 0,
+      "frameDifference": 9.936414930555555
+    },
+    {
+      "frame": 72,
+      "meanLuma": 18.668014538194445,
+      "cornerMax": 0,
+      "frameDifference": 10.118057002314815
+    },
+    {
+      "frame": 73,
+      "meanLuma": 19.09656691753472,
+      "cornerMax": 0,
+      "frameDifference": 10.50995804398148
+    },
+    {
+      "frame": 74,
+      "meanLuma": 19.615137604166662,
+      "cornerMax": 0,
+      "frameDifference": 10.787698206018518
+    },
+    {
+      "frame": 75,
+      "meanLuma": 20.02409485677083,
+      "cornerMax": 0,
+      "frameDifference": 11.021079282407408
+    },
+    {
+      "frame": 76,
+      "meanLuma": 20.55582224045139,
+      "cornerMax": 0,
+      "frameDifference": 11.325557002314815
+    },
+    {
+      "frame": 77,
+      "meanLuma": 21.062379745659722,
+      "cornerMax": 0,
+      "frameDifference": 11.477763310185185
+    },
+    {
+      "frame": 78,
+      "meanLuma": 21.50292525868055,
+      "cornerMax": 0,
+      "frameDifference": 11.741241319444445
+    },
+    {
+      "frame": 79,
+      "meanLuma": 22.049737092013892,
+      "cornerMax": 0,
+      "frameDifference": 12.087314814814814
+    },
+    {
+      "frame": 80,
+      "meanLuma": 22.549157083333334,
+      "cornerMax": 0,
+      "frameDifference": 12.375377604166667
+    },
+    {
+      "frame": 81,
+      "meanLuma": 22.993377382812497,
+      "cornerMax": 0,
+      "frameDifference": 12.59279369212963
+    },
+    {
+      "frame": 82,
+      "meanLuma": 23.538563321180558,
+      "cornerMax": 0,
+      "frameDifference": 12.832197627314814
+    },
+    {
+      "frame": 83,
+      "meanLuma": 24.134766263888892,
+      "cornerMax": 0,
+      "frameDifference": 13.193600983796296
+    },
+    {
+      "frame": 84,
+      "meanLuma": 24.648393794270824,
+      "cornerMax": 0,
+      "frameDifference": 13.407517361111111
+    },
+    {
+      "frame": 85,
+      "meanLuma": 25.114947095486116,
+      "cornerMax": 0,
+      "frameDifference": 13.743621238425925
+    },
+    {
+      "frame": 86,
+      "meanLuma": 25.55358139670139,
+      "cornerMax": 0,
+      "frameDifference": 13.96931712962963
+    },
+    {
+      "frame": 87,
+      "meanLuma": 26.044365848090273,
+      "cornerMax": 0,
+      "frameDifference": 14.329136284722223
+    },
+    {
+      "frame": 88,
+      "meanLuma": 26.554278453125,
+      "cornerMax": 0,
+      "frameDifference": 14.566458333333333
+    },
+    {
+      "frame": 89,
+      "meanLuma": 26.917829908854163,
+      "cornerMax": 0,
+      "frameDifference": 14.77138599537037
+    },
+    {
+      "frame": 90,
+      "meanLuma": 27.36775311371528,
+      "cornerMax": 0,
+      "frameDifference": 15.086471354166667
+    },
+    {
+      "frame": 91,
+      "meanLuma": 27.88080036458333,
+      "cornerMax": 0,
+      "frameDifference": 15.295423900462962
+    },
+    {
+      "frame": 92,
+      "meanLuma": 28.196921130208327,
+      "cornerMax": 0,
+      "frameDifference": 15.458708043981481
+    },
+    {
+      "frame": 93,
+      "meanLuma": 28.57169236458334,
+      "cornerMax": 0,
+      "frameDifference": 15.711370081018519
+    },
+    {
+      "frame": 94,
+      "meanLuma": 28.890272830729174,
+      "cornerMax": 0,
+      "frameDifference": 15.992336516203704
+    },
+    {
+      "frame": 95,
+      "meanLuma": 29.217649848090275,
+      "cornerMax": 0,
+      "frameDifference": 16.14541232638889
+    },
+    {
+      "frame": 96,
+      "meanLuma": 29.545846559895836,
+      "cornerMax": 0,
+      "frameDifference": 16.241880787037037
+    },
+    {
+      "frame": 97,
+      "meanLuma": 29.977913921874997,
+      "cornerMax": 0,
+      "frameDifference": 16.453544560185186
+    },
+    {
+      "frame": 98,
+      "meanLuma": 30.14662900173611,
+      "cornerMax": 0,
+      "frameDifference": 16.69581886574074
+    },
+    {
+      "frame": 99,
+      "meanLuma": 30.433546545138892,
+      "cornerMax": 0,
+      "frameDifference": 16.729254918981482
+    },
+    {
+      "frame": 100,
+      "meanLuma": 30.485858120659724,
+      "cornerMax": 0,
+      "frameDifference": 16.848470775462964
+    },
+    {
+      "frame": 101,
+      "meanLuma": 30.76258450434027,
+      "cornerMax": 0,
+      "frameDifference": 16.943971354166667
+    },
+    {
+      "frame": 102,
+      "meanLuma": 31.048331985243056,
+      "cornerMax": 0,
+      "frameDifference": 17.288097511574072
+    },
+    {
+      "frame": 103,
+      "meanLuma": 31.05692635329861,
+      "cornerMax": 0,
+      "frameDifference": 17.497787905092594
+    },
+    {
+      "frame": 104,
+      "meanLuma": 31.164659789062494,
+      "cornerMax": 0,
+      "frameDifference": 17.535925925925927
+    },
+    {
+      "frame": 105,
+      "meanLuma": 31.419884020833326,
+      "cornerMax": 0,
+      "frameDifference": 17.572805266203705
+    },
+    {
+      "frame": 106,
+      "meanLuma": 31.444894503472213,
+      "cornerMax": 0,
+      "frameDifference": 17.575402199074073
+    },
+    {
+      "frame": 107,
+      "meanLuma": 31.629489972222217,
+      "cornerMax": 0,
+      "frameDifference": 17.741022858796295
+    },
+    {
+      "frame": 108,
+      "meanLuma": 31.7012984782986,
+      "cornerMax": 0,
+      "frameDifference": 17.77857638888889
+    },
+    {
+      "frame": 109,
+      "meanLuma": 31.930475924479158,
+      "cornerMax": 0,
+      "frameDifference": 17.88337962962963
+    },
+    {
+      "frame": 110,
+      "meanLuma": 32.113983155381945,
+      "cornerMax": 0,
+      "frameDifference": 17.962620081018517
+    },
+    {
+      "frame": 111,
+      "meanLuma": 32.151331256944445,
+      "cornerMax": 0,
+      "frameDifference": 17.810849247685184
+    },
+    {
+      "frame": 112,
+      "meanLuma": 32.31235648437501,
+      "cornerMax": 0,
+      "frameDifference": 17.839405381944445
+    },
+    {
+      "frame": 113,
+      "meanLuma": 32.55488040017361,
+      "cornerMax": 0,
+      "frameDifference": 17.94817997685185
+    },
+    {
+      "frame": 114,
+      "meanLuma": 32.78963319618055,
+      "cornerMax": 0,
+      "frameDifference": 18.097045717592593
+    },
+    {
+      "frame": 115,
+      "meanLuma": 32.93967766666667,
+      "cornerMax": 0,
+      "frameDifference": 18.16337818287037
+    },
+    {
+      "frame": 116,
+      "meanLuma": 33.1065068576389,
+      "cornerMax": 0,
+      "frameDifference": 18.196796875
+    },
+    {
+      "frame": 117,
+      "meanLuma": 33.19798894010416,
+      "cornerMax": 0,
+      "frameDifference": 18.3145703125
+    },
+    {
+      "frame": 118,
+      "meanLuma": 33.27828153993055,
+      "cornerMax": 0,
+      "frameDifference": 18.36577690972222
+    },
+    {
+      "frame": 119,
+      "meanLuma": 33.38971602517361,
+      "cornerMax": 0,
+      "frameDifference": 18.711617476851853
+    },
+    {
+      "frame": 120,
+      "meanLuma": 33.46956935416667,
+      "cornerMax": 0,
+      "frameDifference": 19.265795717592592
+    },
+    {
+      "frame": 121,
+      "meanLuma": 33.51035912586805,
+      "cornerMax": 0,
+      "frameDifference": 19.86825810185185
+    },
+    {
+      "frame": 122,
+      "meanLuma": 33.515674431423605,
+      "cornerMax": 0,
+      "frameDifference": 20.34459056712963
+    },
+    {
+      "frame": 123,
+      "meanLuma": 33.6987704609375,
+      "cornerMax": 0,
+      "frameDifference": 20.601578414351852
+    },
+    {
+      "frame": 124,
+      "meanLuma": 33.640046495659725,
+      "cornerMax": 0,
+      "frameDifference": 20.986611689814815
+    },
+    {
+      "frame": 125,
+      "meanLuma": 33.50570183420139,
+      "cornerMax": 0,
+      "frameDifference": 21.30918258101852
+    },
+    {
+      "frame": 126,
+      "meanLuma": 33.549144256944444,
+      "cornerMax": 0,
+      "frameDifference": 21.522178819444445
+    },
+    {
+      "frame": 127,
+      "meanLuma": 33.384676072916655,
+      "cornerMax": 0,
+      "frameDifference": 21.757216435185185
+    },
+    {
+      "frame": 128,
+      "meanLuma": 33.08811502690973,
+      "cornerMax": 0,
+      "frameDifference": 21.915810185185187
+    },
+    {
+      "frame": 129,
+      "meanLuma": 32.80769042447917,
+      "cornerMax": 1,
+      "frameDifference": 21.91775028935185
+    },
+    {
+      "frame": 130,
+      "meanLuma": 32.593271781249996,
+      "cornerMax": 0,
+      "frameDifference": 21.830554108796296
+    },
+    {
+      "frame": 131,
+      "meanLuma": 32.17450220225694,
+      "cornerMax": 0,
+      "frameDifference": 21.58888599537037
+    },
+    {
+      "frame": 132,
+      "meanLuma": 31.754831924479163,
+      "cornerMax": 0,
+      "frameDifference": 21.297866030092592
+    },
+    {
+      "frame": 133,
+      "meanLuma": 31.49733694184028,
+      "cornerMax": 0,
+      "frameDifference": 21.075366030092592
+    },
+    {
+      "frame": 134,
+      "meanLuma": 31.159842772569444,
+      "cornerMax": 0,
+      "frameDifference": 20.83322482638889
+    },
+    {
+      "frame": 135,
+      "meanLuma": 30.75590402430556,
+      "cornerMax": 0,
+      "frameDifference": 20.821809895833333
+    },
+    {
+      "frame": 136,
+      "meanLuma": 30.38314143229167,
+      "cornerMax": 0,
+      "frameDifference": 20.70837818287037
+    },
+    {
+      "frame": 137,
+      "meanLuma": 29.889318309895824,
+      "cornerMax": 0,
+      "frameDifference": 20.424897280092594
+    },
+    {
+      "frame": 138,
+      "meanLuma": 29.344727265625004,
+      "cornerMax": 0,
+      "frameDifference": 20.048687789351852
+    },
+    {
+      "frame": 139,
+      "meanLuma": 28.871711739583326,
+      "cornerMax": 0,
+      "frameDifference": 19.869822048611113
+    },
+    {
+      "frame": 140,
+      "meanLuma": 28.19159677430555,
+      "cornerMax": 0,
+      "frameDifference": 19.613443287037036
+    },
+    {
+      "frame": 141,
+      "meanLuma": 27.582123783854158,
+      "cornerMax": 0,
+      "frameDifference": 19.16226707175926
+    },
+    {
+      "frame": 142,
+      "meanLuma": 26.91196605208334,
+      "cornerMax": 0,
+      "frameDifference": 18.69681712962963
+    },
+    {
+      "frame": 143,
+      "meanLuma": 26.25450628472223,
+      "cornerMax": 0,
+      "frameDifference": 18.395697337962964
+    },
+    {
+      "frame": 144,
+      "meanLuma": 25.54885893576389,
+      "cornerMax": 0,
+      "frameDifference": 18.002122395833332
+    },
+    {
+      "frame": 145,
+      "meanLuma": 24.699377464409725,
+      "cornerMax": 2,
+      "frameDifference": 17.65911892361111
+    },
+    {
+      "frame": 146,
+      "meanLuma": 23.75012045746527,
+      "cornerMax": 1,
+      "frameDifference": 17.276530671296296
+    },
+    {
+      "frame": 147,
+      "meanLuma": 23.009145848090274,
+      "cornerMax": 0,
+      "frameDifference": 16.676124131944444
+    },
+    {
+      "frame": 148,
+      "meanLuma": 22.088526811631944,
+      "cornerMax": 0,
+      "frameDifference": 16.300186631944445
+    },
+    {
+      "frame": 149,
+      "meanLuma": 21.226458677083333,
+      "cornerMax": 0,
+      "frameDifference": 15.823020833333333
+    },
+    {
+      "frame": 150,
+      "meanLuma": 20.38274756944444,
+      "cornerMax": 0,
+      "frameDifference": 15.24025173611111
+    },
+    {
+      "frame": 151,
+      "meanLuma": 19.394669913194445,
+      "cornerMax": 0,
+      "frameDifference": 14.681222511574074
+    },
+    {
+      "frame": 152,
+      "meanLuma": 18.535193314236118,
+      "cornerMax": 0,
+      "frameDifference": 14.023624131944445
+    },
+    {
+      "frame": 153,
+      "meanLuma": 17.61426483940972,
+      "cornerMax": 0,
+      "frameDifference": 13.506291956018519
+    },
+    {
+      "frame": 154,
+      "meanLuma": 16.525490157986113,
+      "cornerMax": 0,
+      "frameDifference": 12.762570891203703
+    },
+    {
+      "frame": 155,
+      "meanLuma": 15.658321499999998,
+      "cornerMax": 1,
+      "frameDifference": 12.184713541666667
+    },
+    {
+      "frame": 156,
+      "meanLuma": 14.682368585069442,
+      "cornerMax": 3,
+      "frameDifference": 11.69595630787037
+    },
+    {
+      "frame": 157,
+      "meanLuma": 13.732719967881943,
+      "cornerMax": 0,
+      "frameDifference": 11.215558449074074
+    },
+    {
+      "frame": 158,
+      "meanLuma": 12.520111362847224,
+      "cornerMax": 0,
+      "frameDifference": 10.59837818287037
+    },
+    {
+      "frame": 159,
+      "meanLuma": 11.394822257812498,
+      "cornerMax": 0,
+      "frameDifference": 9.937129629629629
+    },
+    {
+      "frame": 160,
+      "meanLuma": 10.565717469618052,
+      "cornerMax": 0,
+      "frameDifference": 9.240425347222223
+    },
+    {
+      "frame": 161,
+      "meanLuma": 9.872107284722222,
+      "cornerMax": 0,
+      "frameDifference": 8.67368923611111
+    },
+    {
+      "frame": 162,
+      "meanLuma": 9.208373980902776,
+      "cornerMax": 2,
+      "frameDifference": 8.01347945601852
+    },
+    {
+      "frame": 163,
+      "meanLuma": 8.466609816840279,
+      "cornerMax": 3,
+      "frameDifference": 7.465629340277777
+    },
+    {
+      "frame": 164,
+      "meanLuma": 7.937567503472222,
+      "cornerMax": 5,
+      "frameDifference": 6.985011574074074
+    },
+    {
+      "frame": 165,
+      "meanLuma": 7.167221303819443,
+      "cornerMax": 3,
+      "frameDifference": 6.417006655092592
+    },
+    {
+      "frame": 166,
+      "meanLuma": 6.2887809435763895,
+      "cornerMax": 1,
+      "frameDifference": 5.836604456018518
+    },
+    {
+      "frame": 167,
+      "meanLuma": 5.071775822048611,
+      "cornerMax": 1,
+      "frameDifference": 4.852024016203703
+    },
+    {
+      "frame": 168,
+      "meanLuma": 4.022736365451388,
+      "cornerMax": 7,
+      "frameDifference": 4.105248842592593
+    },
+    {
+      "frame": 169,
+      "meanLuma": 3.0474865312499992,
+      "cornerMax": 3,
+      "frameDifference": 3.2191044560185187
+    },
+    {
+      "frame": 170,
+      "meanLuma": 2.397730144965278,
+      "cornerMax": 8,
+      "frameDifference": 2.447634548611111
+    },
+    {
+      "frame": 171,
+      "meanLuma": 1.761431206597222,
+      "cornerMax": 1,
+      "frameDifference": 1.7778067129629629
+    },
+    {
+      "frame": 172,
+      "meanLuma": 1.4225669253472222,
+      "cornerMax": 1,
+      "frameDifference": 1.2561284722222221
+    },
+    {
+      "frame": 173,
+      "meanLuma": 1.203056800347222,
+      "cornerMax": 0,
+      "frameDifference": 0.9456814236111111
+    },
+    {
+      "frame": 174,
+      "meanLuma": 0.9943175885416666,
+      "cornerMax": 0,
+      "frameDifference": 0.7836053240740741
+    },
+    {
+      "frame": 175,
+      "meanLuma": 1.0579901137152776,
+      "cornerMax": 0,
+      "frameDifference": 0.6588773148148148
+    },
+    {
+      "frame": 176,
+      "meanLuma": 1.1734206718749998,
+      "cornerMax": 0,
+      "frameDifference": 0.7006032986111111
+    },
+    {
+      "frame": 177,
+      "meanLuma": 1.3312447916666665,
+      "cornerMax": 0,
+      "frameDifference": 0.7670746527777778
+    },
+    {
+      "frame": 178,
+      "meanLuma": 1.5346717803819445,
+      "cornerMax": 0,
+      "frameDifference": 0.8699392361111111
+    },
+    {
+      "frame": 179,
+      "meanLuma": 1.7541186944444445,
+      "cornerMax": 0,
+      "frameDifference": 1.0080656828703705
+    },
+    {
+      "frame": 180,
+      "meanLuma": 1.965074366319444,
+      "cornerMax": 0,
+      "frameDifference": 1.1313990162037038
+    },
+    {
+      "frame": 181,
+      "meanLuma": 2.1499259036458334,
+      "cornerMax": 0,
+      "frameDifference": 1.1956828703703704
+    },
+    {
+      "frame": 182,
+      "meanLuma": 2.2920147743055557,
+      "cornerMax": 0,
+      "frameDifference": 1.2422222222222221
+    },
+    {
+      "frame": 183,
+      "meanLuma": 2.408728965277778,
+      "cornerMax": 0,
+      "frameDifference": 1.2763744212962962
+    },
+    {
+      "frame": 184,
+      "meanLuma": 2.5804031892361112,
+      "cornerMax": 3,
+      "frameDifference": 1.3329904513888888
+    },
+    {
+      "frame": 185,
+      "meanLuma": 2.6717754305555554,
+      "cornerMax": 1,
+      "frameDifference": 1.3930830439814814
+    },
+    {
+      "frame": 186,
+      "meanLuma": 2.7306212092013893,
+      "cornerMax": 0,
+      "frameDifference": 1.4192361111111111
+    },
+    {
+      "frame": 187,
+      "meanLuma": 2.7513469861111104,
+      "cornerMax": 2,
+      "frameDifference": 1.419212962962963
+    },
+    {
+      "frame": 188,
+      "meanLuma": 2.7561723333333332,
+      "cornerMax": 7,
+      "frameDifference": 1.4373017939814814
+    },
+    {
+      "frame": 189,
+      "meanLuma": 2.7074440434027776,
+      "cornerMax": 2,
+      "frameDifference": 1.4165017361111112
+    },
+    {
+      "frame": 190,
+      "meanLuma": 2.661468449652778,
+      "cornerMax": 1,
+      "frameDifference": 1.3976316550925927
+    },
+    {
+      "frame": 191,
+      "meanLuma": 2.625431560763889,
+      "cornerMax": 0,
+      "frameDifference": 1.4250737847222221
+    }
+  ]
+}

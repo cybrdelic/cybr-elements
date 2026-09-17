@@ -1,0 +1,19 @@
+{
+  "device": "CPU",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\breakout\\basalt-depth-01.npz",
+  "sourceSha256": "83bbd715d5e3106ef0b843a7b16d9013a5c82a86696a239848447a7a73ecd41f",
+  "meshSha256": "f0db4ce41b02b93747912bac9211e095016d5bdf1be3e6055c17fe85cbf8c147",
+  "vertices": 805998,
+  "triangles": 1614500,
+  "coarseVolumeRelativeError": 6.661338147750939e-16,
+  "exposedAreaFraction": 0.052873053116280884,
+  "columnEnergyResidual": 2.938994748172138e-14,
+  "surfaceSeeds": 440,
+  "smoothIterations": 120,
+  "seconds": 22.18,
+  "limits": [
+    "Authored fracture layout and retained coarse volume; no new fracture or flow solver",
+    "Natural 1D cooling only; not a globally coupled energy solve",
+    "No motion validation"
+  ]
+}

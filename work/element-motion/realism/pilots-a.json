@@ -1,0 +1,6 @@
+[
+ {"name":"metal-rebuild-pilot","script":"metal.py"},
+ {"name":"foam-rebuild-pilot","script":"foam.py","args":["--kind","foam"]},
+ {"name":"mud-rebuild-pilot","script":"fluids.py","args":["--kind","mud"]},
+ {"name":"blood-rebuild-pilot","script":"fluids.py","args":["--kind","blood"]}
+]

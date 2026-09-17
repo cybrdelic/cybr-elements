@@ -1,0 +1,106 @@
+{
+  "status": "pass",
+  "tests": {
+    "pressure": {
+      "status": "pass",
+      "details": {
+        "coupledDenseDifference": 3.677613769070831e-16,
+        "pistons": 2048,
+        "analyticError": 2.7755575615628914e-17,
+        "wallSeconds": 0.00400853157043457,
+        "iterations": 2
+      }
+    },
+    "transaction": {
+      "status": "pass",
+      "details": {
+        "acceptedRows": 12000,
+        "rollback": true,
+        "twentyRoundTripsSeconds": 0.006091594696044922
+      }
+    },
+    "material": {
+      "status": "pass",
+      "details": {
+        "coreTemperatureK": 1468.15,
+        "log10ViscosityPaS": 2.299286819041071,
+        "reportedLog10Range": [
+          2.1,
+          2.5
+        ],
+        "shearHeatingRelativeError": 0.0,
+        "source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2019JB018815",
+        "scope": "Published dry melt VFT relation, flow 180719. Not a calibration of crystal kinetics, basalt fracture or rock creep."
+      }
+    },
+    "crack_bridge": {
+      "status": "pass",
+      "details": {
+        "components": 3,
+        "brokenEdges": 56,
+        "oppositeSidesDisconnected": true,
+        "tangentialBondsPreserved": true
+      }
+    },
+    "acceleration": {
+      "status": "pass",
+      "details": {
+        "damageDifference": 2.2252620518470323e-07,
+        "workRelativeDifference": 3.470467585448316e-05,
+        "couplingIterations": {
+          "relaxed": 114,
+          "anderson": 23
+        },
+        "timeoutRollsBackWholeTrial": true
+      }
+    },
+    "rock_creep": {
+      "status": "pass",
+      "details": {
+        "temperatureK": 1173.15,
+        "initialEquivalentStressPa": 100000000.0,
+        "strainRatePerS": 4.8114203290873326e-05,
+        "backwardEulerStressPa": 88735241.45960175,
+        "stressRelativeError": 1.5916202717572567e-07,
+        "couplingIterations": 5,
+        "hydrostaticCreep": false,
+        "source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008884",
+        "scope": "GFB power law reported for 850\u2013950 C and 300 MPa confinement. Surface lava use is an extrapolation; crystal fractions and fracture constants remain nominal."
+      }
+    },
+    "mixed_contact": {
+      "status": "pass",
+      "details": {
+        "denseVelocityDifference": 4.146869377399942e-09,
+        "unloadedVelocityDifference": 1.7767454174588693e-12,
+        "pressureRows": 40,
+        "frictionRows": 1,
+        "pressureActiveIterations": 2,
+        "stationarity": 9.614813431917819e-17
+      }
+    },
+    "heat_bounds": {
+      "status": "pass",
+      "details": {
+        "twoParticleResult": [
+          20.0,
+          100.0
+        ],
+        "energyErrorJ": 0.0,
+        "zeroTimeIdentity": true,
+        "mpmMaximumTemperatureK": 1450.0,
+        "maximumAllowedTemperatureK": 1450.0,
+        "thermalBalanceRelative": 5.868277296751434e-13
+      }
+    }
+  },
+  "sourceHashes": {
+    "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "bb756fab066adb11121ff3b978a304192b1f1bf8a31329de239cc892e5dea9bd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "a81843ad329c444f915cd649dfda826335ef5d7b3a37503d72cb7ba04ca3e2ae"
+  }
+}

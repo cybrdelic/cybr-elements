@@ -1,0 +1,66 @@
+{
+  "model": "World-space guided DBM discharges and a transported, illuminated aerosol.\n\nThe electrodes and conductivity corridor are authored bending controls. Trees\ngrow in image/world space, rather than being warped from a straight strip.\nThis is a graphics model, not a calibrated plasma or shock-wave solver.\n",
+  "nodes": [
+    175,
+    531,
+    948,
+    1445,
+    1422,
+    1830,
+    1803,
+    1527,
+    1508
+  ],
+  "haze": [
+    {
+      "frame": 0,
+      "aerosolMass": 0.0,
+      "maximumSpeed": 0.4628799557685852,
+      "finite": true
+    },
+    {
+      "frame": 15,
+      "aerosolMass": 0.0206648431014927,
+      "maximumSpeed": 0.403410941362381,
+      "finite": true
+    },
+    {
+      "frame": 30,
+      "aerosolMass": 0.0368090599747604,
+      "maximumSpeed": 0.36285555362701416,
+      "finite": true
+    },
+    {
+      "frame": 45,
+      "aerosolMass": 0.0501881125408717,
+      "maximumSpeed": 0.33595016598701477,
+      "finite": true
+    },
+    {
+      "frame": 60,
+      "aerosolMass": 0.03960496167594894,
+      "maximumSpeed": 0.3152363896369934,
+      "finite": true
+    },
+    {
+      "frame": 75,
+      "aerosolMass": 0.027853176902367924,
+      "maximumSpeed": 0.30233773589134216,
+      "finite": true
+    },
+    {
+      "frame": 90,
+      "aerosolMass": 0.019587208685463806,
+      "maximumSpeed": 0.3040635585784912,
+      "finite": true
+    },
+    {
+      "frame": 105,
+      "aerosolMass": 0.013776060075735678,
+      "maximumSpeed": 0.30696651339530945,
+      "finite": true
+    }
+  ],
+  "frames": 120,
+  "elapsed": 134.6662414073944
+}

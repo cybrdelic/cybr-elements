@@ -1,0 +1,16 @@
+{
+  "status": "pass",
+  "device": "cuda:0",
+  "particles": 512,
+  "newtonVersion": "1.6.0",
+  "warpVersion": "1.17.0",
+  "gravityVelocityError": 1.191295496028033e-06,
+  "gravityPositionError": 7.424259185564736e-09,
+  "stepSeconds": [
+    1.193118900002446,
+    0.05856320000020787,
+    0.03555079997749999,
+    0.03425359999528155
+  ],
+  "totalSeconds": 2.452643700002227
+}

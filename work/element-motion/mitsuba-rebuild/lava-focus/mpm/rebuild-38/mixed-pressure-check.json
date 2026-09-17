@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "directionCases": [
+    {
+      "constraintScale": 1.0,
+      "relativeDirectionError": 5.361464787103265e-15
+    },
+    {
+      "constraintScale": 100.0,
+      "relativeDirectionError": 5.378360249963111e-12
+    },
+    {
+      "constraintScale": 10000.0,
+      "relativeDirectionError": 2.9431918646300008e-08
+    }
+  ],
+  "complementarityResidual": 1.5272159166655277e-15
+}

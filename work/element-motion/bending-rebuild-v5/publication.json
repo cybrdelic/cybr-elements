@@ -1,0 +1,132 @@
+{
+  "baselineHashesUnchanged": true,
+  "files": {
+    "earth": {
+      "file": "earth-v5.mp4",
+      "frames": 120,
+      "sha256": "bb5f2754a8b1b45ab77138c09e4f2b3d2038d6ee4ed7d5634182836e23ea226e",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "fire": {
+      "file": "fire-v5.mp4",
+      "frames": 120,
+      "sha256": "96cdf41e0c30cee3d275a22a05d835128af6eee79a1609d7486bc6ceb95a5c17",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "water": {
+      "file": "water-v5.mp4",
+      "frames": 120,
+      "sha256": "75a9955cadb3725b44a80e4cf8c90890ebbe9d1a422bb5f6dc00ac49c831beff",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "air": {
+      "file": "air-v5.mp4",
+      "frames": 120,
+      "sha256": "694664388bb6b360c06284b1b13bd63a7b2dc3d2774af68fd30abd0a7f47bf52",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    },
+    "lightning": {
+      "file": "lightning-v5.mp4",
+      "frames": 120,
+      "sha256": "958c1a6e717aaf0668f3af1a4e13182df280b6e9eb3acd12f47782531e97fe5b",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 1080,
+            "avg_frame_rate": "30/1",
+            "nb_frames": "120"
+          }
+        ],
+        "format": {
+          "duration": "4.000000"
+        }
+      }
+    }
+  },
+  "selection": {
+    "earth": {
+      "previous": "earth",
+      "rebuilt": "earth-v5",
+      "selected": "rebuilt"
+    },
+    "fire": {
+      "previous": "fire",
+      "rebuilt": "fire-v5",
+      "selected": "previous"
+    },
+    "water": {
+      "previous": "water-v4",
+      "rebuilt": "water-v5",
+      "selected": "rebuilt"
+    },
+    "air": {
+      "previous": "air",
+      "rebuilt": "air-v5",
+      "selected": "rebuilt"
+    },
+    "lightning": {
+      "previous": "lightning-v4",
+      "rebuilt": "lightning-v5",
+      "selected": "rebuilt"
+    }
+  }
+}

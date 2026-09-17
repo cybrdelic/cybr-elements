@@ -1,0 +1,32 @@
+[
+  {
+    "test": "Ice shader-only versions",
+    "decision": "reject",
+    "reason": "Rounded liquid topology and excessive interior scattering read as glass or a milky gel."
+  },
+  {
+    "test": "Ice global rest-position hulls",
+    "decision": "reject",
+    "reason": "Grains bridged empty space and generated giant planes. Replaced by bounded local clusters."
+  },
+  {
+    "test": "Local ice grain reconstruction and grain-cohesion solve",
+    "decision": "reject",
+    "reason": "Visible chips scatter before the hold. Density and continuity do not read as a frozen body."
+  },
+  {
+    "test": "First metal optical revision",
+    "decision": "reject",
+    "reason": "Quad faces were truncated to one triangle. Fixed by triangulating every face corner."
+  },
+  {
+    "test": "Foam with optional subdivision",
+    "decision": "reject",
+    "reason": "Unnecessary OpenSubdiv allocation failed during later mesh topology. Removed optional subdivision and retained native FLIP geometry."
+  },
+  {
+    "test": "First high-resolution phase-optics pass",
+    "decision": "reject",
+    "reason": "Finite-domain boundaries appeared in the image and uniform depth quadrature aliased thin wavefronts. Expanded the view, padded diffraction, and replaced uniform sampling with adaptive Abel quadrature."
+  }
+]

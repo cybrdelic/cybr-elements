@@ -1,0 +1,15 @@
+{
+  "video": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-sans-water.mp4",
+  "metadata": {
+    "width": 1920,
+    "height": 1080,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  "allFramesDecoded": true,
+  "source": "sans_motion.py",
+  "waterModel": "Reduced suspended liquid-jet dynamics, axial tension, viscous momentum exchange, cross-sectional volume conservation, breakup threshold, ballistic spray and gravity release. Not original FLIP solver.",
+  "renderer": "Blender Cycles OPTIX; 24 samples, refractive IOR 1.333; 1920x1080 native frames",
+  "fullViewHoldSeconds": 3.55
+}

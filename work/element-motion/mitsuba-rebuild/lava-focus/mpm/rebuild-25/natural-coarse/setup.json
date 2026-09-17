@@ -1,0 +1,17 @@
+{
+  "sceneKind": "natural_lava_flow",
+  "initialCondition": "Single 40 x 24 x 20 mm molten half-ellipsoid at 1468.15 K, initially at rest.",
+  "slopeDegrees": 5,
+  "bedTemperatureK": 1173.15,
+  "viscositySource": "Farrell 2020 equation 3, experimental dry melt 180719",
+  "limits": "Nominal equilibrium crystal fraction and rock creep/fracture parameters; not a calibrated natural basalt composition.",
+  "sourceHashes": {
+    "lava_mpm.py": "3863cf66352aff44f49dc63d8b012a5253aa0a8346af9c8aeba767f097fdf0a7",
+    "lava_mpm_coupled.py": "9ea67795098de530731274960f446efc9a62acd282a25552195a7fe4cf61e503",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+    "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "afd8b8cae790d263b500ca89c415ab26547aad2a39a3a4c51284434859334315"
+  }
+}

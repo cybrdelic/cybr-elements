@@ -1,0 +1,23 @@
+{
+  "variant": "02",
+  "approvedFire": "../sigil-02-v2/fire-02.mp4",
+  "elements": [
+    "water",
+    "earth",
+    "air",
+    "lightning"
+  ],
+  "duration": 9.8,
+  "fps": 30,
+  "blackBackground": true,
+  "geometry": "Full approved tapered source, no output-image mask",
+  "reviewFrames": [
+    60,
+    135,
+    180,
+    240,
+    293
+  ],
+  "iterationsPerElement": 3,
+  "gpuJobsAtOnce": 1
+}

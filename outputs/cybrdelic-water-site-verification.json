@@ -1,0 +1,27 @@
+{
+  "sources": [
+    "water-01-native.mp4",
+    "water-02-native.mp4",
+    "cybrdelic-air-01.mp4",
+    "cybrdelic-air-02.mp4",
+    "cybrdelic-earth-01.mp4",
+    "cybrdelic-earth-02.mp4"
+  ],
+  "errors": [],
+  "scene": {
+    "backend": "Three.js r180",
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A7A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "resolution": [
+      1280,
+      900
+    ],
+    "vertices": 67317,
+    "triangles": 134434,
+    "programs": 13,
+    "glError": 0,
+    "mode": "water",
+    "build": "CYBR FLIP III.1",
+    "rasterProfile": "repair",
+    "optics": "stable 2-step screen-space transmission / environment reflection / Beer-Lambert; raster approximation"
+  }
+}

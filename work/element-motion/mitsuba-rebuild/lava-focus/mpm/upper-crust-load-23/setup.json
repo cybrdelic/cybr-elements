@@ -1,0 +1,41 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-23\\state.npz",
+  "sourceSha256": "a039f78aca0397a7ad7159a0de7c2002658cde7db5b6d09b61dbec1688ed3e1c",
+  "coolingSetup": {
+    "description": "Initially molten 8 x 6 x 3 mm specimen on a 1450 K reservoir; gravity and all exposed-surface heat losses active. No initial solid, seeded damage or imposed crack opening.",
+    "initialTemperatureK": 1450.0,
+    "bedTemperatureK": 1450.0,
+    "cellSizeM": [
+      0.001,
+      0.001,
+      0.0005
+    ],
+    "sampleSizeM": [
+      0.0005,
+      0.0005,
+      0.00025
+    ],
+    "initialParticles": 2304,
+    "refinement": 1
+  },
+  "time": 18.0,
+  "metrics": {
+    "time": 18.0,
+    "particles": 2304,
+    "topMeanTemperatureK": 1164.1602636434839,
+    "bottomMeanTemperatureK": 1383.6158126492535,
+    "topCoherentFraction": 1.0,
+    "bottomCoherentFraction": 0.010416666666666666,
+    "upperDamagedParticles": 92,
+    "bottomDamagedParticles": 0,
+    "upperBrokenBonds": 0,
+    "bottomBrokenBonds": 0,
+    "maximumDamage": 0.8161519967792523,
+    "maximumSpeed": 4.269051588233926e-07,
+    "thermalBalanceRelative": 9.550227254653549e-12
+  },
+  "load": "Opposed horizontal end grips on the cooled upper crust. This is a laboratory fracture validation, not free-flow lava motion.",
+  "gripSpeedMPerS": 0.001,
+  "seededDamage": false,
+  "prescribedCracks": false
+}

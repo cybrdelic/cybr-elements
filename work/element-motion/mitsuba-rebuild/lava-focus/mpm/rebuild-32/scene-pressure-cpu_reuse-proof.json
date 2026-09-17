@@ -1,0 +1,79 @@
+{
+  "status": "pass",
+  "time": 0.8999999999999999,
+  "seconds": 33.26500000001397,
+  "pressure": {
+    "solves": 3,
+    "iterations": 11,
+    "maximumIterations": 7,
+    "warmSolves": 2
+  },
+  "row": {
+    "time": 0.8999999999999999,
+    "dt": 0.1,
+    "particles": 3432,
+    "mass": 0.06505307319727892,
+    "volume": 2.4091413328582952e-05,
+    "temperatureRange": [
+      1027.1603521616394,
+      1446.658183884535
+    ],
+    "meanSolidFraction": 0.6097720016348227,
+    "solidParticles": 1554,
+    "damagedParticles": 0,
+    "maximumDamage": 0.00345576567185707,
+    "maximumSpeed": 0.0068433519929022805,
+    "thermalBalanceRelative": 1.884232437489962e-12,
+    "stepHeatResidualJ": 1.4098233691584028e-09,
+    "mechanicalResidual": 7.1131011635897764e-12,
+    "heatNewtonIterations": 7,
+    "viscousHeatJ": 1.6702344054227772e-05,
+    "fractureEnergyJ": 7.120182184352985e-08,
+    "seconds": 3.6387879848480225,
+    "materialVelocityFields": 2,
+    "brokenConnectivityEdges": 0,
+    "contactImpulses": 261,
+    "contactMomentumError": 0.0,
+    "splitGridNodes": 464,
+    "massBalanceErrorKg": -1.0842021724855044e-17,
+    "heatTransfer": {
+      "flipFraction": 1.0,
+      "unlimitedMaximumOvershootJPerKg": 0.0,
+      "transferEnergyErrorJ": -5.144556780578573e-16
+    },
+    "damageCouplingIterations": 3,
+    "damageCouplingResidual": 1.874547156388573e-09,
+    "damageCouplingVelocityResidual": 3.242897558636848e-10,
+    "damageAcceleration": "anderson",
+    "accelerationRestarts": 0,
+    "creepCouplingLogStressResidual": 3.0281915452956554e-07,
+    "phaseField": {
+      "kktResidual": 1.1605180368006453e-18,
+      "iterations": 2,
+      "fractureEnergyJ": 1.8833491192221686e-07,
+      "previousFractureEnergyJ": 1.1713309007868701e-07,
+      "incrementalEnergyBeforeJ": 0.00015216121075162174,
+      "incrementalEnergyAfterJ": 0.00015215272793422564,
+      "lengthM": 0.004,
+      "model": "reference finite-volume AT2",
+      "maximumDamageIncrement": 0.000732732320615769
+    }
+  },
+  "linearBackend": {
+    "cpuFactors": 15,
+    "gpuFactors": 0,
+    "cpuTriangularSolves": 0,
+    "factorSeconds": 24.83467649994418,
+    "solveSeconds": 25.93408000000636,
+    "maximumDofs": 0,
+    "maximumAllocatedBytes": 0,
+    "fallbacks": [],
+    "iterativeSolves": 19,
+    "iterativeIterations": 436,
+    "iterativeFallbacks": 13,
+    "backend": "cpu_reuse",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "Unilateral pressure factorization and CPU substitutions only. Friction routing is recorded separately in frictionBackend; these counters exclude its factors."
+  }
+}

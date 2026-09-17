@@ -1,0 +1,18 @@
+{
+  "status": "unreviewed",
+  "frames": 181,
+  "changes": [
+    "Nozzle across radius .23 to .105, along .12 to .075",
+    "Wake source footprint .32/.30/.55 to .145/.18/.25",
+    "Deposited fuel line momentum 2.8 to .15 m/s",
+    "Authored turning acts only near the current nozzle"
+  ],
+  "preserved": [
+    "Combustion and cooling coefficients",
+    "Advection and pressure projection",
+    "Buoyancy and vorticity",
+    "Original radiance function",
+    "Exposure and optical glow"
+  ],
+  "radianceSha256": "64ae47bacfe9dff4f29bd1f73faf77960110a029d4a6f49a2669c0cbf5e1e7a4"
+}

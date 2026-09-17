@@ -1,0 +1,69 @@
+[
+  {
+    "file": "fire-v3-test.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "30/1",
+        "nb_frames": "120"
+      }
+    ],
+    "format": {
+      "duration": "4.000000"
+    }
+  },
+  {
+    "file": "water-test.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "24/1",
+        "nb_frames": "96",
+        "side_data_list": [
+          {}
+        ]
+      }
+    ],
+    "format": {
+      "duration": "4.000000"
+    }
+  },
+  {
+    "file": "air-v3-test.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "30/1",
+        "nb_frames": "120"
+      }
+    ],
+    "format": {
+      "duration": "4.000000"
+    }
+  },
+  {
+    "file": "earth-test.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1280,
+        "height": 720,
+        "avg_frame_rate": "30/1",
+        "nb_frames": "120"
+      }
+    ],
+    "format": {
+      "duration": "4.000000"
+    }
+  }
+]

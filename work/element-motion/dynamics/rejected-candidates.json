@@ -1,0 +1,17 @@
+{
+  "flight-volume": {
+    "frames": [30,45,65],
+    "decision": "Do not publish",
+    "reason": "Volume reconstruction removed the short pathline spikes but blurred the wake into a generic smoke band. It did not solve the material identity problem."
+  },
+  "glass-continuous-to-fragments": {
+    "frames": [58,59,60,61,62,63],
+    "decision": "Superseded",
+    "reason": "The forming mesh changed topology and appearance abruptly at release. The replacement keeps the same fragments throughout the shot."
+  },
+  "seismic-swept-sample": {
+    "frames": [30,45,65],
+    "decision": "Superseded",
+    "reason": "The continuous brown sample resembled a leather ribbon and concealed the wave response. The replacement uses a granular witness and stronger solved displacement."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "url": "http://127.0.0.1:8767/elements/motion/bending/",
+  "defaultVideoMetadata": "All five: 1920x1080, 4 seconds, no media error",
+  "versionSwitches": "All five switched to the alternate version and back; each preserved 1.5 seconds and updated the download target",
+  "soloChecks": ["earth only", "fire only", "water only", "air only", "lightning only"],
+  "synchronizedPlayback": "All five started together and reached 4 seconds with ended=true",
+  "completedSwitchRegression": "After synchronized completion, changing lightning to Previous left all five paused at 4 seconds",
+  "consoleWarningsOrErrors": [],
+  "horizontalOverflow": false,
+  "finalState": "Paused at 1.3 seconds; one selected version per element; original fire and four v5 trials; tab retained as deliverable"
+}

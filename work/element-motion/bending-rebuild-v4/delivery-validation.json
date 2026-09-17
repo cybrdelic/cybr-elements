@@ -1,0 +1,46 @@
+{
+  "water": {
+    "metadata": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "color_range": "tv",
+          "color_space": "bt709",
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    "decodedFrames": 120,
+    "maximumTopCornerLevel": 0,
+    "sha256": "36bfb0d01c836a8f5608ae47c48438cbcfc943690aa96970d2ce41c4aaddce87"
+  },
+  "lightning": {
+    "metadata": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "color_range": "tv",
+          "color_space": "bt709",
+          "avg_frame_rate": "30/1",
+          "nb_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "4.000000"
+      }
+    },
+    "decodedFrames": 120,
+    "maximumTopCornerLevel": 0,
+    "sha256": "2e6b7f40a8936d6332444d584910efea68c9ee3037db1a5c82e5fd9b70682a65"
+  }
+}

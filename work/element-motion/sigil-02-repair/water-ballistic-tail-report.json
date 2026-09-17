@@ -1,0 +1,393 @@
+{
+  "startFrame": 175,
+  "frames": 240,
+  "model": "Native residual parcel positions/velocities followed by gravity and quadratic sphere drag after the bulk fluid exits. Off-camera outflow, no image fade.",
+  "initialParcels": 1381,
+  "firstEmptyFrame": 222,
+  "rows": [
+    {
+      "frame": 176,
+      "parcels": 1338,
+      "outflowParcels": 43,
+      "finite": true
+    },
+    {
+      "frame": 177,
+      "parcels": 1314,
+      "outflowParcels": 67,
+      "finite": true
+    },
+    {
+      "frame": 178,
+      "parcels": 1285,
+      "outflowParcels": 96,
+      "finite": true
+    },
+    {
+      "frame": 179,
+      "parcels": 1256,
+      "outflowParcels": 125,
+      "finite": true
+    },
+    {
+      "frame": 180,
+      "parcels": 1232,
+      "outflowParcels": 149,
+      "finite": true
+    },
+    {
+      "frame": 181,
+      "parcels": 1202,
+      "outflowParcels": 179,
+      "finite": true
+    },
+    {
+      "frame": 182,
+      "parcels": 1170,
+      "outflowParcels": 211,
+      "finite": true
+    },
+    {
+      "frame": 183,
+      "parcels": 1140,
+      "outflowParcels": 241,
+      "finite": true
+    },
+    {
+      "frame": 184,
+      "parcels": 1106,
+      "outflowParcels": 275,
+      "finite": true
+    },
+    {
+      "frame": 185,
+      "parcels": 1075,
+      "outflowParcels": 306,
+      "finite": true
+    },
+    {
+      "frame": 186,
+      "parcels": 1049,
+      "outflowParcels": 332,
+      "finite": true
+    },
+    {
+      "frame": 187,
+      "parcels": 1023,
+      "outflowParcels": 358,
+      "finite": true
+    },
+    {
+      "frame": 188,
+      "parcels": 999,
+      "outflowParcels": 382,
+      "finite": true
+    },
+    {
+      "frame": 189,
+      "parcels": 974,
+      "outflowParcels": 407,
+      "finite": true
+    },
+    {
+      "frame": 190,
+      "parcels": 946,
+      "outflowParcels": 435,
+      "finite": true
+    },
+    {
+      "frame": 191,
+      "parcels": 917,
+      "outflowParcels": 464,
+      "finite": true
+    },
+    {
+      "frame": 192,
+      "parcels": 907,
+      "outflowParcels": 474,
+      "finite": true
+    },
+    {
+      "frame": 193,
+      "parcels": 871,
+      "outflowParcels": 510,
+      "finite": true
+    },
+    {
+      "frame": 194,
+      "parcels": 850,
+      "outflowParcels": 531,
+      "finite": true
+    },
+    {
+      "frame": 195,
+      "parcels": 822,
+      "outflowParcels": 559,
+      "finite": true
+    },
+    {
+      "frame": 196,
+      "parcels": 797,
+      "outflowParcels": 584,
+      "finite": true
+    },
+    {
+      "frame": 197,
+      "parcels": 773,
+      "outflowParcels": 608,
+      "finite": true
+    },
+    {
+      "frame": 198,
+      "parcels": 736,
+      "outflowParcels": 645,
+      "finite": true
+    },
+    {
+      "frame": 199,
+      "parcels": 710,
+      "outflowParcels": 671,
+      "finite": true
+    },
+    {
+      "frame": 200,
+      "parcels": 665,
+      "outflowParcels": 716,
+      "finite": true
+    },
+    {
+      "frame": 201,
+      "parcels": 621,
+      "outflowParcels": 760,
+      "finite": true
+    },
+    {
+      "frame": 202,
+      "parcels": 562,
+      "outflowParcels": 819,
+      "finite": true
+    },
+    {
+      "frame": 203,
+      "parcels": 484,
+      "outflowParcels": 897,
+      "finite": true
+    },
+    {
+      "frame": 204,
+      "parcels": 394,
+      "outflowParcels": 987,
+      "finite": true
+    },
+    {
+      "frame": 205,
+      "parcels": 326,
+      "outflowParcels": 1055,
+      "finite": true
+    },
+    {
+      "frame": 206,
+      "parcels": 242,
+      "outflowParcels": 1139,
+      "finite": true
+    },
+    {
+      "frame": 207,
+      "parcels": 162,
+      "outflowParcels": 1219,
+      "finite": true
+    },
+    {
+      "frame": 208,
+      "parcels": 128,
+      "outflowParcels": 1253,
+      "finite": true
+    },
+    {
+      "frame": 209,
+      "parcels": 103,
+      "outflowParcels": 1278,
+      "finite": true
+    },
+    {
+      "frame": 210,
+      "parcels": 86,
+      "outflowParcels": 1295,
+      "finite": true
+    },
+    {
+      "frame": 211,
+      "parcels": 68,
+      "outflowParcels": 1313,
+      "finite": true
+    },
+    {
+      "frame": 212,
+      "parcels": 59,
+      "outflowParcels": 1322,
+      "finite": true
+    },
+    {
+      "frame": 213,
+      "parcels": 50,
+      "outflowParcels": 1331,
+      "finite": true
+    },
+    {
+      "frame": 214,
+      "parcels": 46,
+      "outflowParcels": 1335,
+      "finite": true
+    },
+    {
+      "frame": 215,
+      "parcels": 35,
+      "outflowParcels": 1346,
+      "finite": true
+    },
+    {
+      "frame": 216,
+      "parcels": 24,
+      "outflowParcels": 1357,
+      "finite": true
+    },
+    {
+      "frame": 217,
+      "parcels": 16,
+      "outflowParcels": 1365,
+      "finite": true
+    },
+    {
+      "frame": 218,
+      "parcels": 7,
+      "outflowParcels": 1374,
+      "finite": true
+    },
+    {
+      "frame": 219,
+      "parcels": 4,
+      "outflowParcels": 1377,
+      "finite": true
+    },
+    {
+      "frame": 220,
+      "parcels": 2,
+      "outflowParcels": 1379,
+      "finite": true
+    },
+    {
+      "frame": 221,
+      "parcels": 1,
+      "outflowParcels": 1380,
+      "finite": true
+    },
+    {
+      "frame": 222,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 223,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 224,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 225,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 226,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 227,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 228,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 229,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 230,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 231,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 232,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 233,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 234,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 235,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 236,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 237,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 238,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    },
+    {
+      "frame": 239,
+      "parcels": 0,
+      "outflowParcels": 1381,
+      "finite": true
+    }
+  ]
+}

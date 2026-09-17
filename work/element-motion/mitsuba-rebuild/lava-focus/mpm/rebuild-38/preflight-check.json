@@ -1,0 +1,15 @@
+{
+  "status": "pass",
+  "maximumStateDifferences": {
+    "x": 1.734723475976807e-18,
+    "v": 7.204523436166177e-17,
+    "h": 2.3283064365386963e-10,
+    "damage": 0.0,
+    "deviator": 5.155698090675287e-11,
+    "bedTemperature": 0.0
+  },
+  "maximumLedgerDifference": 6.938893903907228e-18,
+  "acceptedRowsUnchanged": true,
+  "bedHeatDifference": 0.0,
+  "scope": "Thermal-preview rollback at the same accepted dt"
+}

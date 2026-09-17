@@ -1,0 +1,21 @@
+{
+  "element": "water",
+  "variant": "02",
+  "resolution": [
+    3840,
+    2160
+  ],
+  "samples": 64,
+  "triangles": 230144,
+  "frames": 450,
+  "elapsed": 3736.061999999991,
+  "model": "capillary sheet and ballistic droplets",
+  "streamExitRefinement": {
+    "frames": [
+      232,
+      252
+    ],
+    "elapsed": 145.93799999999464,
+    "hideAfterSeconds": 8.4
+  }
+}

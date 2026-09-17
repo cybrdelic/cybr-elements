@@ -1,0 +1,347 @@
+{
+  "flight": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "The wake remains within the shared framing and disperses. Short marker paths still look bristly near the source and remain below the desired realism. A volume reconstruction trial blurred into generic smoke and was excluded.",
+    "videoSha256": "a8b9bbe048e141cc120bec8579cc697d90a90ab0e08e12418eaaebef7f71df6d",
+    "sampledSequenceReviewed": true
+  },
+  "heat": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Refractive-gradient contours follow the solved hot plume and weaken as it cools and mixes. This replaces glowing particles with a numerical schlieren diagnostic; it is not a claim that warm air emits visible light.",
+    "videoSha256": "a879cbb054a9b927ef19c00dca8fe00fa2d87f6d0fa54314d0fde82cd0fa331d",
+    "sampledSequenceReviewed": true
+  },
+  "plants": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Connected stems and textured leaves are a substantial structural change from the earlier particle vegetation. Unfurling and falling remain coherent through the clip. Reuse of the scanned shoots is still noticeable.",
+    "videoSha256": "995e9b9f666858c39261bddf5317d98c04e1700a12e6dd55db4f7f66b278872b",
+    "sampledSequenceReviewed": true
+  },
+  "mud": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Retains the stronger cohesive viscous carrier and wet surface. The inherited contact line remains visible after settling; this is a restrained material refinement rather than a new fluid solve.",
+    "videoSha256": "bfe8fd36824aa0bf1d04f0f02690662e2704b969f29b57112704cb4dd38d5a36",
+    "sampledSequenceReviewed": true
+  },
+  "blood": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Thin sheets and fine breakup are retained. Saturated red highlights and the inherited fluid-domain boundaries near the end remain weaknesses; this is not a photoreal final.",
+    "videoSha256": "af5088469447cb52ecc0890b1e002855e9f838432092d3d4f342124618165829",
+    "sampledSequenceReviewed": true
+  },
+  "crystal": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Preserves the stronger faceted fragment motion. Highlights and absorption distinguish the minerals, although individual pieces are small at the shared framing.",
+    "videoSha256": "4cecfba3ab9f431ae1275b9e92cad940e3b3cbab9103994c5c52fa6d9959ec94",
+    "sampledSequenceReviewed": true
+  },
+  "foam": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Fine whitewater follows the liquid surface and separates into spray, replacing the earlier large-bead appearance. It reads as foamy water rather than a fully resolved wet foam. Inherited liquid-domain boundaries remain visible late in the clip.",
+    "videoSha256": "6571ba0ba52666926b5325183884af63355122a6252175bac375652303b33a3a",
+    "sampledSequenceReviewed": true
+  },
+  "ice": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Advected microfracture detail adds a frosted surface and the frozen phase breaks apart. The carrier still produces liquid-like contours and thin torn sections; this remains below the desired photoreal standard.",
+    "videoSha256": "23a5212f07d3ccd5520772cb6aea5f2985c730d82d4c5100e52c62e3c7d111ca",
+    "sampledSequenceReviewed": true
+  },
+  "lava": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Crust stays on the moving surface, opens gaps over hot material, and darkens as transported heat decreases. The early hot nozzle still looks too uniform, and the underlying flow is a retained viscous liquid cache with one-way crust coupling.",
+    "videoSha256": "b4711c31f1c77e729a1af107332c15b6e76d55aa1dcaaca25f1063470e05e605",
+    "sampledSequenceReviewed": true
+  },
+  "lightning": {
+    "frames": [
+      5,
+      12,
+      20,
+      26,
+      33,
+      40,
+      51,
+      90
+    ],
+    "observation": "Thin short-lived channels and restrikes read more clearly than broad glowing tubes. The later full-path discharge remains visibly art-directed, and the generator is procedural rather than an electromagnetic simulation.",
+    "videoSha256": "d9595c0277cb9d8c64c9b568c3afee4cd94c5227d2661998946164f9cc51e03c",
+    "sampledSequenceReviewed": true
+  },
+  "lightning-redirection": {
+    "frames": [
+      5,
+      12,
+      20,
+      26,
+      33,
+      40,
+      51,
+      90
+    ],
+    "observation": "Incoming, guided, and outgoing phases are visibly distinct. Narrow branches and brief exposures avoid the earlier glowing-tube look. Channel construction remains procedural and intentionally follows the authored gesture.",
+    "videoSha256": "409e3da5805f8da9de39d8896a72552f5e4b9aaeac2b2a3c7cbf9ea959f5cad5",
+    "sampledSequenceReviewed": true
+  },
+  "sound": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Depth-integrated pressure gradients produce discrete expanding wavefronts rather than particle smoke. Their speed and optical sensitivity are authored for visibility; this is a scientific-style visualization, not naked-eye photoreal sound.",
+    "videoSha256": "d7d46e718038854371b213ec4eaaa6566c5657bad0d8100cd00109d6964f8375",
+    "sampledSequenceReviewed": true
+  },
+  "pressure": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "observation": "Sparse rarefaction and rebound fronts replace the earlier dust cloud. These deliberately share the acoustic optical model; the result is a graphical diagnostic rather than a visible physical material.",
+    "videoSha256": "efdf7ad08fa345644c10a0d8b6f58847ababb5c9b7da77f5fadd08f4bd07bf80",
+    "sampledSequenceReviewed": true
+  },
+  "energy": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "Interwoven illuminated channels follow the shared gesture and decay. At gallery scale the strands merge into a pale cord, so this remains a graphic study and does not yet establish the requested energy-bending identity.",
+    "videoSha256": "0e6645b0cac496487e7f7f516badcbc59db7939a2e3533f8ecfa79a788064a11"
+  },
+  "spirit": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "Connected cyan channels narrow and relax instead of becoming smoke or water. The current silhouette still reads as a thin luminous cord and needs a stronger distinct identity.",
+    "videoSha256": "a99c4991a2e533abd424ff4d2b606a2bec107a132afaede0fe73dcb4253b8921"
+  },
+  "spirit-projection": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "The original sigil remains coherent while a second copy travels away and dissipates. This preserves the brand shape, but is an authored luminous projection rather than a photoreal material.",
+    "videoSha256": "1a9de00a5e7961bc1fca78ea0b72ba417fe3ad9b43bc3c31e7fcb24737701c9f"
+  },
+  "metal": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "A reflective sheet folds, buckles and retains deformation, then falls out of frame. Surface highlights establish metal much more clearly than the earlier particles; some folds remain unnaturally smooth.",
+    "videoSha256": "f17dc59f988eb0a880907444e78d7e60ed32a608a120631d6403664913194773"
+  },
+  "sand": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "Fine grains follow the shared emission, spread and fall. The corrected velocity support keeps the full active gesture within frame. The compact stream still has a ribbon-like outline in places.",
+    "videoSha256": "2dca26fa0466b024798797b63154345b19e7337bdd028f899289fd9eac9542db"
+  },
+  "snow": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "A cohesive granular stream holds the gesture before falling and breaking up. It is visibly finer than large white beads, but the nearly uniform bright surface lacks convincing varied snow clumps.",
+    "videoSha256": "b8eb081f3c9fed96cd9ff5d9c41edf1c07a9b99b1ea14af3cb0a4ce6804503a4"
+  },
+  "healing": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "Connected plant tissue carries a localized repair front, using the corrected nested material. The repair is too subtle at gallery scale and still reads primarily as the plants study.",
+    "videoSha256": "2663201d55670aa23d01489866a2e2dfc468d7df37989372155c054279b99402"
+  },
+  "glass": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "Persistent closed fragments form and release without the earlier topology swap. Internal reflections and sharp highlights establish glass, but the assembly remains dark on black and reads more as separate shards than a continuous glass body.",
+    "videoSha256": "b3d00d769176ee2b6087c73bcef72e805ff2123a120f4f7ea5218329c9eb2a94"
+  },
+  "seismic": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "Driven granular witnesses show the traveling elastic displacement and later fall. This removes the earlier leather-like surface, but is a stylized field diagnostic with no individual grain contact solve.",
+    "videoSha256": "64cd0be483ba584233017298dc393d62ad82381bf6a7cc6246337e9a2dda04c5"
+  },
+  "combustion": {
+    "frames": [
+      10,
+      24,
+      39,
+      51,
+      64,
+      78,
+      96,
+      118
+    ],
+    "sampledSequenceReviewed": true,
+    "observation": "A narrow reacting jet ends in a short outward burst, then loses luminosity as fuel is consumed and the gas cools and mixes. Reducing downward source momentum removed the smooth falling fireball. The burst still has a soft silhouette and needs more resolved small-scale structure; this low-Mach solve does not reproduce a compressible blast shock.",
+    "videoSha256": "f8395eb87796fe69f6246e6ec52c9a103789ee19178975510ed035cd51d8dc39"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "status": "pass",
+  "evidence": {
+    "final": {
+      "time": 0.08,
+      "substeps": 1,
+      "maxProjectionResidual": 9.22402040945934e-10,
+      "massErrorKg": 0.0,
+      "waterErrorKg": -3.3881317890172014e-21,
+      "temperatureRange": [
+        293.14999996799645,
+        310.46840358438794
+      ],
+      "maximumSpeed": 0.018090451749585314,
+      "dustMassErrorKg": 0.0,
+      "dustHeatErrorJ": 0.0,
+      "dustMassKg": 0.0
+    },
+    "ledger": {
+      "heat_in": 0.025,
+      "mass_out": 8.485599081770199e-08,
+      "water_in": 0.0,
+      "water_out": 6.788479265416161e-10,
+      "heat_out": 0.024999911376828367,
+      "pressure_work_error": 0.0,
+      "dust_in": 0.0,
+      "dust_out": 0.0,
+      "dust_enthalpy_in": 0.0,
+      "dust_enthalpy_out": 0.0,
+      "dust_heat_to_air": 0.0,
+      "conduction_out": 8.852102956893176e-08
+    }
+  },
+  "seconds": 0.2619645595550537
+}

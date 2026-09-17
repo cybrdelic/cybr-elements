@@ -1,0 +1,20 @@
+{
+  "kind": "ice",
+  "frame": 65,
+  "status": "complete",
+  "seconds": 10.702,
+  "peakResidentMB": 646.7,
+  "device": "CPU",
+  "threads": 2,
+  "processorAffinity": [
+    0,
+    1
+  ],
+  "samples": 24,
+  "sourceHash": "dd61bb448e47920654a04914adceaf5d9c47cae996ccbf5c6c4a4a51bedfd5b6",
+  "returncode": 0,
+  "images": [
+    "ice-0065.png"
+  ],
+  "key": "4e35d2f2c3f2916b"
+}

@@ -1,0 +1,16 @@
+{
+  "status": "pass",
+  "transfer": {
+    "partition": 3.3306690738754696e-16,
+    "gradient": 2.418065747633591e-13,
+    "velocity": 2.0816681711721685e-17,
+    "affine": 2.7429447602145274e-14,
+    "momentum": 1.1102230246251565e-15
+  },
+  "isotropicEquivalence": 0.0,
+  "finiteVolumeMetricError": 2.211772431870429e-17,
+  "topK": 1433.9211203598095,
+  "interiorK": 1445.5924067740427,
+  "heatBalance": 1.9226016279857558e-16,
+  "limits": "Metric consistency and component tests; not continuum or fracture convergence."
+}

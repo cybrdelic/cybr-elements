@@ -1,0 +1,20 @@
+{
+  "kind": "lightning-redirection",
+  "frame": 65,
+  "status": "complete",
+  "seconds": 5.872,
+  "peakResidentMB": 591.5,
+  "device": "CPU",
+  "threads": 2,
+  "processorAffinity": [
+    0,
+    1
+  ],
+  "samples": 24,
+  "sourceHash": "8c86e0fd6d91db45c04c38f8eb56f2a56c512d056d1a9f7396e23215457fe0cb",
+  "returncode": 0,
+  "images": [
+    "lightning-redirection-0065.png"
+  ],
+  "key": "a53a61c2b33ba75d"
+}

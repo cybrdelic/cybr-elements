@@ -1,0 +1,10 @@
+{
+  "target": "User-selected heavy fractured basalt, with matched magma, lava, cooling crust, basalt and separate obsidian images, plus CPU flow and buoyant plume simulation.",
+  "baseline": "renders/lava-basalt-final-hero-0059-1024-16spp.png",
+  "capture": "CPU geometry raster, 640-pixel Mitsuba scalar_rgb material proof, larger still only after visual review",
+  "audit": "Crease orientation, closed crust walls, melt-bank depth, exposed area, exact black backdrop, and direct baseline comparison",
+  "budget": "Small proofs before any larger images or sequence; CPU only, two logical cores, 3 GiB tree limit, 180 seconds maximum per bounded command. Preserve source meshes and approved media; remove regenerable PLY caches when disk-limited.",
+  "scope": ["lava crust geometry and texture", "lava stage geometry and rendering", "CPU conservative depth-averaged flow", "CPU MAC buoyant condensate plume", "lava gallery after visual review"],
+  "scientificBoundaries": ["Magma is shown as an illustrative cutaway, not a photograph of a magma chamber", "Obsidian is a separate silica-rich glass branch, not basalt cooling further", "Crust visual meshes follow the flow one-way; no coupled fracture/contact claim", "Full cooling and crystallization are represented by separate stills"],
+  "status": "Render queue stopped; authored stages and one-way crust motion do not satisfy the requested coupled lava simulation"
+}

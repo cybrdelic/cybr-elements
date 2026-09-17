@@ -1,0 +1,66 @@
+{
+  "status": "pass",
+  "pressure": {
+    "coupledDenseDifference": 3.191891195797325e-16,
+    "pistons": 2048,
+    "analyticError": 2.7755575615628914e-17,
+    "wallSeconds": 0.7389261722564697,
+    "iterations": 2
+  },
+  "mixed_contact": {
+    "denseVelocityDifference": 4.1468696341390165e-09,
+    "unloadedVelocityDifference": 1.7768009286101005e-12,
+    "pressureRows": 40,
+    "frictionRows": 1,
+    "pressureActiveIterations": 2,
+    "stationarity": 9.429409619158424e-17
+  },
+  "rock_creep": {
+    "temperatureK": 1173.15,
+    "initialEquivalentStressPa": 100000000.0,
+    "strainRatePerS": 4.8114203290873326e-05,
+    "backwardEulerStressPa": 88735241.45960175,
+    "stressRelativeError": 1.5916202717572567e-07,
+    "couplingIterations": 5,
+    "hydrostaticCreep": false,
+    "source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008884",
+    "scope": "GFB power law reported for 850\u2013950 C and 300 MPa confinement. Surface lava use is an extrapolation; crystal fractions and fracture constants remain nominal."
+  },
+  "linearBackend": {
+    "cpuFactors": 0,
+    "gpuFactors": 16,
+    "cpuTriangularSolves": 28,
+    "factorSeconds": 0.9032494000566658,
+    "solveSeconds": 0.020898000075249,
+    "maximumDofs": 2048,
+    "maximumAllocatedBytes": 67126272,
+    "fallbacks": [],
+    "backend": "cuda_dense",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "Unilateral pressure factorization and CPU substitutions only. Friction routing is recorded separately in frictionBackend; these counters exclude its factors."
+  },
+  "frictionBackend": {
+    "gpuFactors": 4,
+    "seconds": 0.2776623000681866,
+    "maximumDofs": 6,
+    "maximumDirections": 123,
+    "maximumTorchBytes": 67126272,
+    "fallbacks": [],
+    "backend": "cuda_batched",
+    "precision": "float64",
+    "scope": "CUDA dense contact factorization and batched response; Coulomb iteration, residual acceptance and all physics remain unchanged on CPU. Torch bytes exclude driver/context and other applications."
+  },
+  "sourceHashes": {
+    "lava_mpm.py": "5f52d833d305326eff6246575fbbff76db88886527ea0c4f18205b0d3b9f9ff4",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "7fe989e7a1e796e85010351966588137471f411005e0c5022a6b6369d2539534",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "3f067a7490b2e85e93373d15693bc6583df12f15e02bbc7c035c184468b561a0",
+    "lava_mpm_cuda_contact27.py": "789191e4f213a0e77376f9bec7a28fa3087af70aac16282c9d8ab5f02fd1b6a5"
+  },
+  "seconds": 29.304857099981746
+}

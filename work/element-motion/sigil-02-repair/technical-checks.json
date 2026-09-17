@@ -1,0 +1,39 @@
+{
+  "firePreservedSha256": "3bb0dd50aa6c2f4ce55edbf18753fc9db27b656d83d4efbcd29a4a33282e83f6",
+  "airPreservedSha256": "80d89a5bd8ccb347da1659b5dcc8f8417db156bffe66759498adab4cb40b7120",
+  "earthShape": [
+    192,
+    540,
+    7
+  ],
+  "earthOneSecondMotion": {
+    "medianTranslation": 0.5968795716762543,
+    "medianRotationRadians": 1.1444382071495056,
+    "stationaryBodyCount": 0
+  },
+  "water": {
+    "framesSoFar": 216,
+    "complete": true,
+    "particles": 824,
+    "allFinite": true,
+    "allPressureConverged": true,
+    "allSourceAccountingPassed": true,
+    "formationFramesUnchanged": 136,
+    "outflowParticles": 133768,
+    "outflowPlaneWorldHeight": -2.4571428571428573,
+    "formationImageHashesIdentical": true,
+    "selectedPrimaryFrames": 176,
+    "selectedFilmFrames": 240,
+    "residualTransport": "Gravity and quadratic drag on unresolved native parcels",
+    "residualFirstEmptyFrame": 222,
+    "residualAllFinite": true
+  },
+  "sprayMaximumVolumeError": 3.2516153577443992e-09,
+  "lightning": {
+    "networks": 150,
+    "allFinite": true,
+    "allConnected": true,
+    "independentFamiliesPerEvent": 5,
+    "aerosolAllFinite": true
+  }
+}

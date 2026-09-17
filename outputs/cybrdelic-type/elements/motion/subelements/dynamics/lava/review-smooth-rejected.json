@@ -1,0 +1,58 @@
+{
+  "renderer": "Mitsuba 3.9.1",
+  "variant": "scalar_rgb",
+  "device": "CPU",
+  "threads": 2,
+  "affinity": [
+    0,
+    1
+  ],
+  "samplesPerPixel": 16,
+  "size": [
+    640,
+    400
+  ],
+  "renderSeconds": 30.91,
+  "denoiseSeconds": 1.03,
+  "totalSeconds": 35.23,
+  "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+  "exposure": 7.0,
+  "background": "exact black",
+  "radianceQuantiles": [
+    0.000977564137428999,
+    0.0197178163565695,
+    0.17689135670661926,
+    0.18929395343363298,
+    0.2120055854320526
+  ],
+  "meshSha256": "58b504dc7c108298f005650bfb5fb2965897518d7c7f23f9c281fdc5762e8351",
+  "imageSha256": "7d56733e46c3668467e4f81560a129eee184a320247bb9eecddf976119c4e2ed",
+  "emission": "Planck spectrum integrated against Mitsuba CIE functions, then traced in RGB",
+  "status": "Unwanted lines corrected; material remains a prototype",
+  "removed": [
+    "Periodic grooves",
+    "Seeded crack network",
+    "Central glowing slash",
+    "Noise-selected holes",
+    "Random age patches"
+  ],
+  "lightSampling": {
+    "Mode": "Luminance times emitter area",
+    "KeyProbability": 0.9920730784056175,
+    "Emitters": 47
+  },
+  "comparison": {
+    "before": {
+      "meanLuminance": 0.00470167168327351,
+      "highFrequencyResidualRMS": 0.004088081279247167,
+      "samplesPerPixel": 16
+    },
+    "after": {
+      "meanLuminance": 0.004722514777604897,
+      "highFrequencyResidualRMS": 0.0006091135105980965,
+      "samplesPerPixel": 16
+    },
+    "residualReduction": 0.8510025929058176,
+    "scope": "One fixed cold-surface patch, same mesh, camera, illumination, and sample count. This measures noise reduction, not material realism."
+  }
+}

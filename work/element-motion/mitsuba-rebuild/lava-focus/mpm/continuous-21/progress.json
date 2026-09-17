@@ -1,0 +1,36 @@
+{
+  "run": "continuous-21",
+  "elapsed": 2.333333333333333,
+  "wallSeconds": 107.73966646194458,
+  "completed": false,
+  "latest": {
+    "time": 2.333333333333333,
+    "dt": 0.0032042069148259245,
+    "particles": 3362,
+    "mass": 0.00610658591308594,
+    "volume": 2.2570930251754938e-06,
+    "temperatureRange": [
+      1148.8008472797173,
+      1440.2932408539082
+    ],
+    "meanSolidFraction": 0.21919976187661874,
+    "solidParticles": 224,
+    "damagedParticles": 202,
+    "maximumDamage": 1.0,
+    "maximumSpeed": 0.01711010411454682,
+    "thermalBalanceRelative": 1.2040306644676313e-11,
+    "stepHeatResidualJ": 8.224663172740065e-10,
+    "mechanicalResidual": 8.707539101401665e-14,
+    "heatNewtonIterations": 6,
+    "viscousHeatJ": 9.391145694150939e-05,
+    "fractureEnergyJ": 5.104887354307598e-08,
+    "seconds": 3.3579823970794678,
+    "materialVelocityFields": 46,
+    "brokenConnectivityEdges": 228,
+    "contactImpulses": 203,
+    "contactMomentumError": 3.3881317890172014e-21,
+    "splitGridNodes": 404,
+    "massBalanceErrorKg": 5.421010862427522e-19
+  },
+  "initialCondition": "Continuous molten inlet over a declared perfectly wetting/bonded hot rock reservoir on an 8-degree slope. All material begins at 1450 K. Crust phase and damage develop from solved thermal/mechanical state. No initial crust pieces, pores or cracks. The fixed substrate is an idealized boundary, not a calibrated adhesion model."
+}

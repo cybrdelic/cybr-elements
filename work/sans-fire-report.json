@@ -1,0 +1,17 @@
+{
+  "frames": 450,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    512,
+    64,
+    256
+  ],
+  "elapsed": 398.75,
+  "peakGpuMiB": 2368.25732421875,
+  "source": "bake-reactive-fire.py",
+  "changes": "Gas supply stays open through screen t=11.0, giving 3.55 seconds in the fully zoomed-out view. After valve closure, finite gas inventory drains at the existing 1.8 per-second release rate; native fuel reaction, cooling and soot decay extinguish the fire. Constant exposure and opacity; no closing fade. Simulation checkpoints saved for future timing edits."
+}

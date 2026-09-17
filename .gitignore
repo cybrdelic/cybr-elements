@@ -1,0 +1,35 @@
+# Working simulation data is inventoried explicitly for publication.
+/work/*
+/output/
+**/__pycache__/
+**/node_modules/
+**/.venv/
+**/*.pyc
+**/*.log
+**/*.log.gz
+**/.DS_Store
+**/Thumbs.db
+.env
+.env.*
+!.env.example
+/.asset-downloads/
+/outputs/**/*.mp4
+/outputs/**/*.webm
+/outputs/**/*.mov
+/outputs/**/*.zip
+/outputs/**/*.gz
+/outputs/**/*.f32
+/outputs/**/*.bin
+/outputs/**/*.npz
+/outputs/**/*.npy
+# These are the self-contained current player and its comparison clips.
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-02.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/air-02.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r8.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r7.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r6.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r5.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/ice-02.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/lava-02.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r5.mp4
+!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r4.mp4

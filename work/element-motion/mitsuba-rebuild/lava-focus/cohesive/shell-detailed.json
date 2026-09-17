@@ -1,0 +1,14 @@
+{
+  "sourceMechanics": "shell-03-mechanics.npz",
+  "preservedDetailSource": "../refined-lobed-02.npz",
+  "device": "CPU",
+  "seconds": 3.27,
+  "vertices": 410684,
+  "triangles": 766692,
+  "method": "Cohesive crust displacement plus preserved basalt microrelief and explicit through-holes",
+  "limits": [
+    "Large tears follow the cohesive solver",
+    "Fine cooling vents remain authored from the preferred baseline",
+    "One-way foundation coupling"
+  ]
+}

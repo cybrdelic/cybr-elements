@@ -1,0 +1,14 @@
+{
+  "baselineSha256": "2b7da88526326355e9778102f19c37b1bd856b45f20a2be0036e3d5d832adc0c",
+  "balancedSha256": "46714e1bacb83fd05878cee058de9ec90b403fa3e5aef2314fdae890683c685d",
+  "samples": 64,
+  "materials": [
+    "ice",
+    "foam",
+    "lava",
+    "mud",
+    "blood",
+    "crystal"
+  ],
+  "review": "Compared 96 and 64 sample full frames and original-pixel detail crops at frame 240. Surface texture, bubbles, wet highlights and crystal reflections retained. The lower 32-sample glass trial lost detail and was rejected. Ongoing glass renders retain 96 samples. Native 1920 by 1080, 30 fps, 450 frames retained."
+}

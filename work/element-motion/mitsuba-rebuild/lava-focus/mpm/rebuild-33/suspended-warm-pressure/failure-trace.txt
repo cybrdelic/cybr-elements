@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_scene33.py", line 41, in run
+    try:r=s.step(h,bed=HotBed(1450.),boundary=setup['config']);break
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py", line 367, in step
+    return coupled_step(self,dt,thermal=thermal,mechanics=mechanics,gas=gas,bed=bed,boundary=boundary,node_velocity=node_velocity)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_coupled.py", line 57, in coupled_step
+    row=s._step(dt,**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py", line 545, in _step
+    u,mechanical_residual,multipliers,contact_objective_loss,contact_iterations=contact_solve(A,rhs,S,contactC,compliance,offset)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_sparse_pressure.py", line 45, in contact
+    fac=splu(scaled,**options);direction=-hs*fac.solve(hs*g)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_linear27.py", line 72, in factor
+    try:return CudaFactor(A)
+               ^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_linear27.py", line 43, in __init__
+    matrix=torch.as_tensor(np.ascontiguousarray(A.toarray()),device='cuda',dtype=torch.float64)
+                                                ^^^^^^^^^^^
+  File "C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py", line 1005, in toarray
+    out = self._process_toarray_args(order, out)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py", line 1523, in _process_toarray_args
+    return np.zeros(self.shape, dtype=self.dtype, order=order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 158. MiB for an array with shape (4545, 4545) and data type float64

@@ -1,0 +1,216 @@
+{
+  "status": "Reviewed CPU material stills; a new procedural morphology study, not a completed simulation film",
+  "defaultView": "Folded lava",
+  "image": "lava-folded.png",
+  "detail": "lava-folded-detail.png",
+  "render": {
+    "renderer": "Mitsuba 3.9.1",
+    "variant": "scalar_rgb",
+    "device": "CPU",
+    "threads": 2,
+    "affinity": [
+      0,
+      1
+    ],
+    "samplesPerPixel": 8,
+    "size": [
+      1280,
+      720
+    ],
+    "renderSeconds": 153.11,
+    "denoiseSeconds": 3.79,
+    "totalSeconds": 167.07,
+    "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+    "exposure": 8.0,
+    "background": "exact black",
+    "radianceQuantiles": [
+      0.0,
+      0.013238499034196117,
+      0.03097140375524631,
+      0.2683150832653045,
+      0.286861777305603
+    ],
+    "meshSha256": "143c82555a09ba13c8f6da1f4a76f5db92ad3ed1a08da96861b24647682bed45",
+    "imageSha256": "8ddd925c1c2300c73017f4ea642a4db88d5417590aafb291d2d47402885923cf",
+    "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+    "normalAov": "world geometric normal",
+    "lightSampling": {
+      "mode": "luminance times emitter area",
+      "emitters": 21,
+      "keyProbability": 0.9571324907959349
+    },
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\lobes\\lobes-05.npz",
+    "matteCrust": false,
+    "rakingLight": false,
+    "geometryModel": "Authored overlapping lava lobes and compressed crust folds; separate closed hot core and crust",
+    "normalSmoothingIterations": 1,
+    "lightGain": 0.055,
+    "surfaceMix": true,
+    "bumpTexture": "basalt-vesicles.png",
+    "bumpScale": 0.0028,
+    "camera": {
+      "eye": [
+        1.25,
+        -2.6,
+        1.55
+      ],
+      "target": [
+        0.11,
+        0.06,
+        0.13
+      ],
+      "fov": 35.0
+    },
+    "status": "candidate; direct visual review required",
+    "backLight": true,
+    "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+    "blackPixelFraction": 0.7211393229166667
+  },
+  "detailRender": {
+    "renderer": "Mitsuba 3.9.1",
+    "variant": "scalar_rgb",
+    "device": "CPU",
+    "threads": 2,
+    "affinity": [
+      0,
+      1
+    ],
+    "samplesPerPixel": 8,
+    "size": [
+      1024,
+      717
+    ],
+    "renderSeconds": 99.62,
+    "denoiseSeconds": 2.68,
+    "totalSeconds": 109.3,
+    "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+    "exposure": 8.0,
+    "background": "exact black",
+    "radianceQuantiles": [
+      0.0,
+      0.021087486948817964,
+      0.14577942103147545,
+      0.2696049716174601,
+      0.29175132513046265
+    ],
+    "meshSha256": "143c82555a09ba13c8f6da1f4a76f5db92ad3ed1a08da96861b24647682bed45",
+    "imageSha256": "7114e64b3cb7b9ae131ca5d57d92d880e2bd28a0a47b191969ac1985a6641ac9",
+    "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+    "normalAov": "world geometric normal",
+    "lightSampling": {
+      "mode": "luminance times emitter area",
+      "emitters": 21,
+      "keyProbability": 0.9571324907959349
+    },
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\lobes\\lobes-05.npz",
+    "matteCrust": false,
+    "rakingLight": false,
+    "geometryModel": "Authored overlapping lava lobes and compressed crust folds; separate closed hot core and crust",
+    "normalSmoothingIterations": 1,
+    "lightGain": 0.055,
+    "surfaceMix": true,
+    "bumpTexture": "basalt-vesicles.png",
+    "bumpScale": 0.0028,
+    "camera": {
+      "eye": [
+        1.12,
+        -1.18,
+        0.83
+      ],
+      "target": [
+        0.43,
+        0.02,
+        0.15
+      ],
+      "fov": 38.0
+    },
+    "status": "candidate; direct visual review required",
+    "backLight": true,
+    "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+    "blackPixelFraction": 0.5303320040097629
+  },
+  "geometry": {
+    "device": "CPU",
+    "seconds": 6.46,
+    "vertices": 842106,
+    "triangles": 1684568,
+    "bounds": [
+      [
+        -0.8620805144309998,
+        -0.48393604159355164,
+        -0.013886280357837677
+      ],
+      [
+        0.9460720419883728,
+        0.5735846161842346,
+        0.2804557681083679
+      ]
+    ],
+    "maxThermalEnergyResidual": 4.844033336681712e-15,
+    "meshSha256": "143c82555a09ba13c8f6da1f4a76f5db92ad3ed1a08da96861b24647682bed45",
+    "method": "Authored three-dimensional inflation lobes and compressed ropy folds, separate closed basalt crust with contour-clipped apertures, 1D enthalpy cooling and thermal emission",
+    "limits": [
+      "Geometry is a reference-led procedural material study, not a new validated flow simulation",
+      "Lobe intersections are overlapping opaque volumes; no two-way mechanics or motion has been validated",
+      "Lateral cooling near crust edges is an analytic approximation; the column energy residual is not a global 3D energy audit"
+    ],
+    "reference": "https://www.nps.gov/articles/000/lava-flow-forms.htm"
+  },
+  "previousImagesUnchanged": true,
+  "kept": [
+    "Three overlapping rounded lobes replacing the flat slab",
+    "Irregular nested crust folds with geometry and thickness",
+    "Fragmented cooling skin across fresh breakouts",
+    "World-space nose apertures without radial pinching",
+    "Cool crust banks around hotter molten centers",
+    "Back light that avoids broad pink reflections on molten faces",
+    "Continuous interpolated thermal radiance replaces hard per-face temperature bands"
+  ],
+  "rejected": [
+    "Evenly spaced manufactured ribs",
+    "Smooth blanket-like folds",
+    "Glossy bare orange tips",
+    "Radial pinching at the parameterization poles",
+    "Over-bright crust illumination"
+  ],
+  "remaining": [
+    "The layout and folds are authored; a new physically validated moving flow is not implemented",
+    "Some fold families and breakup patches still show a procedural character",
+    "A moving sigil shot and temporal surface stability have not been verified"
+  ],
+  "meshQA": {
+    "device": "CPU",
+    "vertices": 842106,
+    "triangles": 1684568,
+    "openEdges": 0,
+    "nonManifoldEdges": 0,
+    "zeroAreaTriangles": 2,
+    "unitNormalsMaxError": 5.960464477539063e-08,
+    "temperatureRangeK": [
+      970.0,
+      1475.2353515625
+    ],
+    "surfaceAreaM2": 13.917731285095215,
+    "seconds": 1.85,
+    "limits": "These checks establish finite, closed component geometry. They do not establish nonintersection between overlapping lobes, physical flow accuracy or visual realism.",
+    "collapsedTriangleMaxEdgeM": 2.3995612435322873e-07,
+    "roundoffOnlyDegeneracies": true
+  },
+  "emissionQA": {
+    "device": "CPU",
+    "barycentricRadianceMaxError": 8.082389829633385e-08,
+    "sampleRadianceOverPdfMaxError": 3.706257009628011e-09,
+    "pdfConsistencyError": 2.384185791015625e-07,
+    "occludedSampleZero": true,
+    "tests": "Three analytic ray hits, a sampled surface point, and an occluded sample",
+    "pass": true
+  },
+  "sourceFiles": {
+    "lava_lobes_cpu.py": "380330078b1c62a9f6935845b01b4460b9a3087bb51b9667cd9d5e53454ac09b",
+    "lava_lobes_render.py": "adcabcef0e80986cf471247d5b1c6aea06356044e54f5920fb0c0835e803af29",
+    "lava_emission_io.py": "dd76b24b579fd7318a330ece2959ccd5ff66fd6cf09b11185b4f4bfe13e1057b",
+    "lava_lobes_job.py": "b4180686086cef55f5b9ce2459da757c2a3dbe52c1c3688a2171f5aec7804794",
+    "lava_thermal.py": "b760688ad8b595e45c754bf48adadd8e0609e66465fc877dcc8e5c55bf48e6d3",
+    "lava_radiation.py": "1b6b7f0c499b513f17d74f20be0b894fcf3d66db5242816a29537a9ec9d2289a"
+  }
+}

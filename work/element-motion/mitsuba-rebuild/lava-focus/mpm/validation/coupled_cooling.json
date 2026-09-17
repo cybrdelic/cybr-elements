@@ -1,0 +1,63 @@
+{
+  "status": "pass",
+  "evidence": {
+    "final": {
+      "time": 0.8,
+      "dt": 0.2,
+      "particles": 27,
+      "mass": 0.07289999999999999,
+      "volume": 2.6998202029988125e-05,
+      "temperatureRange": [
+        1420.4203876197473,
+        1422.3707750558758
+      ],
+      "meanSolidFraction": 0.007698960411260352,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0,
+      "thermalBalanceRelative": 5.93621039193516e-16,
+      "stepHeatResidualJ": 4.433786671143025e-12,
+      "mechanicalResidual": 0.0,
+      "heatNewtonIterations": 3,
+      "viscousHeatJ": 0.0,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.024240493774414062,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "massBalanceErrorKg": 0.0,
+      "damageCouplingIterations": 1,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.005,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      }
+    },
+    "ledger": {
+      "radiation": 439.79116441989987,
+      "convection": 27.44478536674323,
+      "bed": 0.0,
+      "viscous_heat": 0.0,
+      "fracture": 0.0,
+      "pressure_cavitation": 0.0,
+      "ground_impulse": 0.0,
+      "ground_dissipation": 0.0,
+      "contact_heat": 0.0,
+      "conduit_impulse_norm": 0.0,
+      "solid_floor_impulse_norm": 0.0,
+      "contact_objective_loss": 0.0
+    }
+  },
+  "seconds": 0.09189724922180176
+}

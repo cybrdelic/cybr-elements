@@ -1,0 +1,185 @@
+{
+  "status": "complete",
+  "error": null,
+  "time": 16.99999999999999,
+  "target": 17.0,
+  "steps": 448,
+  "seconds": 87.5,
+  "particles": 21840,
+  "pitchM": 0.0015,
+  "voxelM": 0.003,
+  "initialEnergyJ": 109190.08280849765,
+  "ledger": {
+    "boundaryLossJ": 29170.815156675864,
+    "pairConductionResidualJ": 4.081766809618803e-07,
+    "plasticHeatJ": 1.1714909802457494,
+    "fractureWorkJ": 0.004448260973828639
+  },
+  "rows": [
+    {
+      "time": 9.99999999999999,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1268.4117431640625,
+      "maximumSpeedMPerS": 0.005968023557215929,
+      "thermalBalanceRelative": 3.0180247684783287e-10,
+      "wallSeconds": 7.734000000025844
+    },
+    {
+      "time": 10.499999999999979,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1262.4451904296875,
+      "maximumSpeedMPerS": 0.02364097721874714,
+      "thermalBalanceRelative": 1.2369797796927525e-09,
+      "wallSeconds": 13.65600000001723
+    },
+    {
+      "time": 11.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1256.652099609375,
+      "maximumSpeedMPerS": 0.012141933664679527,
+      "thermalBalanceRelative": 4.393583785809153e-10,
+      "wallSeconds": 20.187000000005355
+    },
+    {
+      "time": 11.49999999999999,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1251.0235595703125,
+      "maximumSpeedMPerS": 0.006799524649977684,
+      "thermalBalanceRelative": 1.461342936919761e-10,
+      "wallSeconds": 23.75
+    },
+    {
+      "time": 11.999999999999979,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1245.55224609375,
+      "maximumSpeedMPerS": 0.0024797471705824137,
+      "thermalBalanceRelative": 6.454266272829573e-10,
+      "wallSeconds": 28.03100000001723
+    },
+    {
+      "time": 12.499999999999968,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1240.2303466796875,
+      "maximumSpeedMPerS": 0.0013744608731940389,
+      "thermalBalanceRelative": 4.1262345275037924e-10,
+      "wallSeconds": 32.484000000025844
+    },
+    {
+      "time": 12.999999999999957,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1235.051513671875,
+      "maximumSpeedMPerS": 0.0009199997293762863,
+      "thermalBalanceRelative": 3.771715641848178e-10,
+      "wallSeconds": 36.234000000025844
+    },
+    {
+      "time": 13.499999999999947,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1230.007568359375,
+      "maximumSpeedMPerS": 0.0011001568054780364,
+      "thermalBalanceRelative": 9.224317157125657e-10,
+      "wallSeconds": 39.78100000001723
+    },
+    {
+      "time": 13.999999999999936,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 4,
+      "minimumTemperatureK": 1225.0899658203125,
+      "maximumSpeedMPerS": 0.00520415510982275,
+      "thermalBalanceRelative": 1.5925858879308305e-09,
+      "wallSeconds": 43.125
+    },
+    {
+      "time": 14.499999999999925,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 4,
+      "minimumTemperatureK": 1220.29248046875,
+      "maximumSpeedMPerS": 0.0018803209532052279,
+      "thermalBalanceRelative": 2.967643681449201e-09,
+      "wallSeconds": 47.03100000001723
+    },
+    {
+      "time": 14.999999999999915,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 7,
+      "minimumTemperatureK": 1215.6083984375,
+      "maximumSpeedMPerS": 0.0008817654452286661,
+      "thermalBalanceRelative": 3.5381883654978757e-09,
+      "wallSeconds": 52.875
+    },
+    {
+      "time": 15.5,
+      "maximumDamage": 0.9999899864196777,
+      "damagedParticles": 912,
+      "coherentParticles": 16,
+      "minimumTemperatureK": 1211.0595703125,
+      "maximumSpeedMPerS": 0.017618557438254356,
+      "thermalBalanceRelative": 1.7686703796207545e-08,
+      "wallSeconds": 70.625
+    },
+    {
+      "time": 16.0,
+      "maximumDamage": 0.9999899864196777,
+      "damagedParticles": 949,
+      "coherentParticles": 46,
+      "minimumTemperatureK": 1206.752685546875,
+      "maximumSpeedMPerS": 0.015518727712333202,
+      "thermalBalanceRelative": 2.146029265052729e-08,
+      "wallSeconds": 77.65600000001723
+    },
+    {
+      "time": 16.5,
+      "maximumDamage": 0.9999899864196777,
+      "damagedParticles": 959,
+      "coherentParticles": 96,
+      "minimumTemperatureK": 1202.578125,
+      "maximumSpeedMPerS": 0.003659916343167424,
+      "thermalBalanceRelative": 2.378988484371832e-08,
+      "wallSeconds": 83.04700000002049
+    },
+    {
+      "time": 16.99999999999999,
+      "maximumDamage": 0.9999899864196777,
+      "damagedParticles": 961,
+      "coherentParticles": 179,
+      "minimumTemperatureK": 1198.5001220703125,
+      "maximumSpeedMPerS": 0.002696472918614745,
+      "thermalBalanceRelative": 2.347693432142095e-08,
+      "wallSeconds": 87.26500000001397
+    }
+  ],
+  "sourceHashes": {
+    "lava_newton28_flow.py": "ac51a513620c1a621f2b8317b60a5e1fc28cacccdce70ec9a39e25450825036a",
+    "lava_newton28_thermal.py": "d5a76dee1cc29603165c16d75eff769015a303e8b24fc99e1ab5fbaf5735e360"
+  },
+  "newtonVersion": "1.6.0",
+  "warpVersion": "1.17.0",
+  "maxDtSeconds": 0.02,
+  "solverTolerance": 1e-07,
+  "solverMaxIterations": 500,
+  "parentCache": "lava-focus\\mpm\\rebuild-28\\flow-screen\\frame-009500.npz",
+  "parentSha256": "3d54b5334227348326e8dd2563d9847ec3e9566180d2ddf0f34c7e8e4e4aef91",
+  "ledgerEpochSeconds": 9.5,
+  "method": "3D implicit elastoviscoplastic MPM; SPH enthalpy conduction; surface radiation/convection; thermal rest strain; local energy-scaled cohesive softening; no seeded damage, moving mesh, path force or painted heat.",
+  "limitations": "Crack-band constitutive parameters are nominal, not composition calibrated. No variational fracture convergence claim. Surface heat area uses particle occupancy gradient. Semi-infinite bed is a metered reservoir. Mechanical/plastic energy transfer is approximate. One finite volume release, not a continuous inlet.",
+  "visualStatus": "unreviewed"
+}

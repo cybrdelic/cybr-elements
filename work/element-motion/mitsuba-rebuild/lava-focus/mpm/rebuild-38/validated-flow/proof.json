@@ -1,0 +1,24 @@
+{
+  "status": "paused",
+  "error": "TimeoutError('Pressure solve deadline reached; trial must roll back')",
+  "time": 4.184148210742068,
+  "targetTime": 8.0,
+  "particles": 1012,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.4741888694624511,
+  "solidPoints": 56,
+  "rejects": 2,
+  "wallSeconds": 600.0469999999914,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\adaptive-resume",
+    "sha256": "a35651edd308ff4567044737e9beb3e4e527b34b0d23b8a3ccad34fb2df5adbc"
+  },
+  "bedKind": "finite",
+  "temporalControl": "step doubling",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

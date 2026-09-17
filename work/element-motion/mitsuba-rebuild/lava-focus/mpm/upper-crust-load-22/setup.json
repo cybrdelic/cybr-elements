@@ -1,0 +1,24 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-22\\state.npz",
+  "sourceSha256": "3f48aaee8fc198ca42f99f3c4ac627e16d3d06b60a20ba2e084b8da855132050",
+  "time": 35.0,
+  "metrics": {
+    "time": 35.0,
+    "particles": 2304,
+    "topMeanTemperatureK": 1118.2581524176114,
+    "bottomMeanTemperatureK": 1370.492320254066,
+    "topCoherentFraction": 1.0,
+    "bottomCoherentFraction": 0.11458333333333333,
+    "upperDamagedParticles": 156,
+    "bottomDamagedParticles": 0,
+    "upperBrokenBonds": 0,
+    "bottomBrokenBonds": 0,
+    "maximumDamage": 0.99007582849647,
+    "maximumSpeed": 1.26733723327141e-07,
+    "thermalBalanceRelative": 9.57845972680858e-12
+  },
+  "load": "Opposed horizontal end grips on the cooled upper crust. This is a laboratory fracture validation, not free-flow lava motion.",
+  "gripSpeedMPerS": 0.001,
+  "seededDamage": false,
+  "prescribedCracks": false
+}

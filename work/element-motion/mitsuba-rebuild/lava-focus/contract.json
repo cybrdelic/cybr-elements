@@ -1,0 +1,35 @@
+{
+  "scope": "Lava only",
+  "gpuAllowed": false,
+  "renderer": "Mitsuba 3.9.1 scalar_rgb CPU with integrated Planck radiance",
+  "threads": 2,
+  "stages": [
+    "Broad cohesive volume and material transport",
+    "Surface relief and exposure of molten interior",
+    "Spectral lighting and image convergence",
+    "Temporal persistence on the established shared trajectory"
+  ],
+  "iterationBudget": 5,
+  "initialRender": [
+    640,
+    480,
+    16
+  ],
+  "promotion": "Only improve resolution after direct visual inspection; no full video batch during these trials.",
+  "reference": "https://www.nps.gov/articles/000/lava-flow-forms.htm",
+  "research": "https://graphicsinterface.org/wp-content/uploads/gi1999-26.pdf",
+  "warning": "A procedural surface model must be described honestly; it is not a resolved microphysical skin simulation.",
+  "status": "Earlier rough visual baseline restored after user rejection of smooth pass",
+  "completedStages": [
+    "Fresh bulk cache",
+    "Depth-resolved crust thermal model",
+    "CPU stills and direct visual review",
+    "Normal AOV repair and incremental render checkpoints"
+  ],
+  "remaining": [
+    "Convincing broad folded morphology",
+    "Coupled crust fracture and contact",
+    "Temporal and sigil validation"
+  ],
+  "activeBaseline": "active-baseline.json"
+}

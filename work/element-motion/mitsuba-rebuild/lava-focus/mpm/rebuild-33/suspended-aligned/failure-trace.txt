@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_scene33.py", line 41, in run
+    try:r=s.step(h,bed=HotBed(1450.),boundary=setup['config']);break
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py", line 367, in step
+    return coupled_step(self,dt,thermal=thermal,mechanics=mechanics,gas=gas,bed=bed,boundary=boundary,node_velocity=node_velocity)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_coupled.py", line 50, in coupled_step
+    raise TimeoutError('CPU solve deadline reached; trial rolled back')
+TimeoutError: CPU solve deadline reached; trial rolled back

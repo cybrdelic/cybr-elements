@@ -1,0 +1,85 @@
+{
+  "frames": 390,
+  "pieces": 266,
+  "method": "All fractures visible on the ground at frame one; authored curved powered lift and hold; native Bullet inter-body and floor collisions after release. Ground gravel is dynamic throughout. Same scanned rock material.",
+  "rows": [
+    {
+      "frame": 30,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 266
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 92
+    },
+    {
+      "frame": 90,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 92
+    },
+    {
+      "frame": 120,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 92
+    },
+    {
+      "frame": 150,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93
+    },
+    {
+      "frame": 180,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93
+    },
+    {
+      "frame": 210,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 94
+    },
+    {
+      "frame": 240,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 93
+    },
+    {
+      "frame": 270,
+      "finite": true,
+      "minZ": -0.004781508352607489,
+      "nearFloor": 192
+    },
+    {
+      "frame": 300,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 264
+    },
+    {
+      "frame": 330,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 266
+    },
+    {
+      "frame": 360,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 266
+    },
+    {
+      "frame": 390,
+      "finite": true,
+      "minZ": 0.006248509511351585,
+      "nearFloor": 266
+    }
+  ]
+}

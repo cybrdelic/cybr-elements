@@ -1,0 +1,64 @@
+{
+  "method": "density free boundary with measured coherent crack voids",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\fed-contact-batch\\state.npz",
+  "sourceSha256": "6987c1e68c61f19d1c7992806d11b39ccf435b40b85622e68e8c683b8ca88fbe",
+  "physicalSeconds": 10.536795541431223,
+  "vertices": 5883,
+  "triangles": 11232,
+  "fractureTopologyPreserved": true,
+  "openFacePairs": 0,
+  "crackWallTriangles": 0,
+  "maximumOpeningM": -2.2916118848497347e-05,
+  "solverParticleVolumeM3": 3.6420537589323135e-07,
+  "reconstructedVolumeM3": 3.64346972237598e-07,
+  "relativeVolumeDifference": 0.0003887815879142136,
+  "maximumDeformationCondition": 10.227661993574333,
+  "excludedLiquidCellInversions": 5,
+  "crackMeasurement": {
+    "method": "locally connected advected material domains",
+    "particles": 956,
+    "vertices": 1377,
+    "triangles": 1504,
+    "brokenFacePairs": 2,
+    "openFacePairs": 0,
+    "maximumOpeningM": -2.2916118848497347e-05,
+    "minimumOpeningM": -2.2960161179968895e-05,
+    "crackWallTriangles": 0,
+    "globalMaterialComponents": 1,
+    "solidMaterialComponents": 24,
+    "relativeVolumeDifference": 0.14688586073585894,
+    "cellVolumeRelativeErrorP95": 0.8949719531617313,
+    "maximumCellVolumeRelativeError": 5.260924600437049,
+    "minimumCellVolumeM3": -5.751137212408426e-11,
+    "maximumDeformationCondition": 286.48463254267864,
+    "solverParticleVolumeM3": 3.6420537589323135e-07,
+    "reconstructedVolumeM3": 4.177019960159357e-07,
+    "openingPairs": [
+      [
+        673,
+        709
+      ],
+      [
+        703,
+        739
+      ]
+    ],
+    "openingM": [
+      -2.2916118848497347e-05,
+      -2.2960161179968895e-05
+    ],
+    "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+    "unresolvedAffineCells": 0,
+    "invertedLiquidCellsExcludedFromCrackMeasurement": 5,
+    "maximumCoherentDeformationCondition": 10.227661993574333,
+    "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+  },
+  "cut": {
+    "gapPrisms": 0,
+    "measuredVoidVolumeM3": 0.0,
+    "removedVolumeM3": 0.0,
+    "watertight": true,
+    "artificialGapWideningM": 0.0
+  },
+  "limits": "Liquid cells are not rendered as solid cubes. Only actual positive face gaps are cut. This coarse surface is not spatially converged and local solid deformation remains a validation requirement."
+}

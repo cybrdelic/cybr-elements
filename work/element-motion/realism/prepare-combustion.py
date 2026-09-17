@@ -1,0 +1,16 @@
+from pathlib import Path
+R=Path(__file__).resolve().parent
+s=(R.parent/'sub-combustion.py').read_text(encoding='utf-8')
+s=s.replace('ROOT = Path(__file__).resolve().parent',"ROOT = Path(__file__).resolve().parent.parent\nimport sys\nsys.path.insert(0,str(ROOT))")
+s=s.replace("out = ROOT/'subelements/combustion-volume-frames'","out = ROOT/'realism/combustion-frames'")
+s=s.replace("ROOT.parent.parent/'outputs/cybrdelic-type/elements/motion/subelements/combustion-volume.mp4'","ROOT.parent.parent/'outputs/cybrdelic-type/elements/motion/subelements/rebuild-combustion.mp4'")
+s=s.replace("ROOT/'subelements/combustion-report.json'","ROOT/'realism/combustion-report.json'")
+s=s.replace("-.6,0],np.float32)","-1.5,0],np.float32)").replace("else 1.2,4.2]","else 3.0,4.2]")
+s=s.replace('blast=1.55<t<1.64','blast=1.68<t<1.78').replace('nozzle_pose(1.6)[0]','nozzle_pose(1.68)[0]').replace('elif t<1.55:on*=.3 if math.sin(t*38)>.5 else 0.','elif t<1.68:on*=.7 if math.sin(t*38)>.1 else .15')
+s=s.replace('radius=.24 if blast else .065','radius=.36 if blast else .05').replace('*(2.6 if blast else 1.5)','*(2.8 if blast else 1.5)').replace('rr*11+shear*1.8','rr*16+shear*1.5')
+s=s.replace('(1-math.exp(-8*dt))','(1-math.exp(-22*dt))').replace('burn*5.5','burn*4.2').replace('temp.add_(burn*4.2).mul_(math.exp(-1.15*dt))','temp.add_(burn*4.2).mul_(math.exp(-1.65*dt))').replace('soot.add_(burn*.8).mul_(math.exp(-1.15*dt))','soot.add_(burn*1.25).mul_(math.exp(-.52*dt))')
+s=s.replace('if 1.5<t<2.3:','if 1.68<t<2.7:').replace('(state[0,7]*9).clamp(0,15)','(state[0,7]*18).clamp(0,30)')
+s=s.replace('emission=colors*(front*2.2)[...,None]','emission=colors*(front*1.6+soot*hot.pow(4)*7)[...,None]')
+s=s.replace('light/(4*math.pi)','(light+hot[...,None].pow(2)*torch.tensor([2.2,.55,.08],device=device))/(4*math.pi)')
+s=s.replace("if frame%5==0 or frame==TOTAL-1:\n        Image.fromarray(pixels).resize((1280,720),Image.Resampling.LANCZOS).save(out/f'{frame:04}.jpg',quality=91)","Image.fromarray(pixels).save(out/f'{frame:04}.jpg',quality=96)")
+(R/'combustion.py').write_text(s,encoding='utf-8');print('Expanded-depth combustion, faster reaction, hot-soot emission and cooling')

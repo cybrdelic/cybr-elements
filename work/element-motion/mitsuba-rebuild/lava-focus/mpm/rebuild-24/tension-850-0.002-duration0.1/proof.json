@@ -1,0 +1,18 @@
+{
+  "name": "tension-850-0.002-duration0.1",
+  "complete": false,
+  "failure": "('Damage/momentum alternation did not converge', 0.005875472948459248, 3.629081964463285e-05)",
+  "temperatureK": 850.0,
+  "dt": 0.002,
+  "duration": 0.05800000000000004,
+  "requestedDuration": 0.1,
+  "refinement": 1,
+  "particles": 128,
+  "maximumDamage": 0.7461705536453973,
+  "meanDamage": 0.729358393902215,
+  "speed": 7.718517178082757e-05,
+  "boundaryWorkJ": 0.00023542986458653924,
+  "wallSeconds": 21.373087406158447,
+  "adaptive": {},
+  "limits": "Small laboratory tensile test; no cooling or free-flow claim."
+}

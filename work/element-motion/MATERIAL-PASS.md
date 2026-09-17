@@ -1,0 +1,1 @@
+Material-only experiment. Preserve accepted source choreography and baseline exports. Two visual iterations per material, comparing frames 20, 40, 50 and 80. Check volume error for water, finite gas states, unchanged earth base collision meshes, and video/UI integrity. Expose candidates as A/B choices; do not silently replace accepted videos.

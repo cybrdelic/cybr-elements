@@ -1,0 +1,4777 @@
+{
+  "status": "Structural mechanism demonstrated; final lava appearance unfinished",
+  "finalRenderAccepted": false,
+  "device": "CPU only",
+  "passingChecks": 28,
+  "checks": {
+    "transfers": {
+      "status": "pass",
+      "evidence": {
+        "weight": 2.220446049250313e-16,
+        "gradient": 2.7010511882696875e-14,
+        "affineVelocity": 1.6653345369377348e-16,
+        "affineGradient": 1.8596235662471372e-14,
+        "momentum": 3.197442310920451e-14
+      },
+      "seconds": 3.2542927265167236
+    },
+    "enthalpy": {
+      "status": "pass",
+      "evidence": {
+        "roundtripK": 1.7053025658242404e-13,
+        "latentHeatJPerKg": 400000.0
+      },
+      "seconds": 0.0
+    },
+    "insulated_heat": {
+      "status": "pass",
+      "evidence": {
+        "relativeEnergyError": 1.7841551677664417e-16,
+        "rangeK": [
+          1050.0000078751248,
+          1499.9999925072682
+        ]
+      },
+      "seconds": 0.012998342514038086
+    },
+    "stefan": {
+      "status": "pass",
+      "evidence": {
+        "analyticFrontM": 0.0028950111604503486,
+        "grids": [
+          {
+            "dx": 0.00025,
+            "front": 0.0028927058456603323,
+            "relativeError": 0.0007963060113584074
+          },
+          {
+            "dx": 0.000125,
+            "front": 0.0028942130284881564,
+            "relativeError": 0.0002756921883741854
+          }
+        ]
+      },
+      "seconds": 0.28139543533325195
+    },
+    "fracture": {
+      "status": "pass",
+      "evidence": {
+        "lengthTests": [
+          {
+            "dx": 0.004,
+            "softeningEnergyJPerM2": 99.99999528864336,
+            "relativeError": 4.7113566381540295e-08
+          },
+          {
+            "dx": 0.008,
+            "softeningEnergyJPerM2": 99.99999848616366,
+            "relativeError": 1.5138363380629018e-08
+          },
+          {
+            "dx": 0.016,
+            "softeningEnergyJPerM2": 99.99999781905287,
+            "relativeError": 2.180947134888811e-08
+          }
+        ],
+        "noDamageAtUnloadedRepeat": true
+      },
+      "seconds": 0.014995574951171875
+    },
+    "gravity": {
+      "status": "pass",
+      "evidence": {
+        "velocityErrorMPerS": 3.8334338058992915e-13,
+        "mechanicalResidual": 3.869864240615005e-11,
+        "massErrorKg": 0.0
+      },
+      "seconds": 0.9892268180847168
+    },
+    "shear_decay": {
+      "status": "pass",
+      "evidence": {
+        "analyticAmplitude": 0.35769171609909733,
+        "grids": [
+          {
+            "dx": 0.01,
+            "measuredAmplitude": 0.37458391204952335,
+            "relativeError": 0.04722557216210757
+          },
+          {
+            "dx": 0.005,
+            "measuredAmplitude": 0.3630872106669577,
+            "relativeError": 0.01508420330977295
+          },
+          {
+            "dx": 0.0025,
+            "measuredAmplitude": 0.36021755531724786,
+            "relativeError": 0.007061497665354799
+          }
+        ]
+      },
+      "seconds": 1.4065768718719482
+    },
+    "coupled_cooling": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.8,
+          "dt": 0.2,
+          "particles": 27,
+          "mass": 0.07289999999999999,
+          "volume": 2.6998202029988125e-05,
+          "temperatureRange": [
+            1420.4203876197473,
+            1422.3707750558758
+          ],
+          "meanSolidFraction": 0.007698960411260352,
+          "solidParticles": 0,
+          "damagedParticles": 0,
+          "maximumDamage": 0.0,
+          "maximumSpeed": 0.0,
+          "thermalBalanceRelative": 5.93621039193516e-16,
+          "stepHeatResidualJ": 4.433786671143025e-12,
+          "mechanicalResidual": 0.0,
+          "heatNewtonIterations": 3,
+          "viscousHeatJ": 0.0,
+          "fractureEnergyJ": 0.0,
+          "seconds": 0.009000301361083984,
+          "materialVelocityFields": 1,
+          "brokenConnectivityEdges": 0,
+          "contactImpulses": 0,
+          "contactMomentumError": 0.0,
+          "splitGridNodes": 0,
+          "massBalanceErrorKg": 0.0
+        },
+        "ledger": {
+          "radiation": 439.79116441989987,
+          "convection": 27.44478536674323,
+          "bed": 0.0,
+          "viscous_heat": 0.0,
+          "fracture": 0.0,
+          "pressure_cavitation": 0.0,
+          "ground_impulse": 0.0,
+          "ground_dissipation": 0.0,
+          "contact_heat": 0.0
+        }
+      },
+      "seconds": 0.03912830352783203
+    },
+    "liquid_memory": {
+      "status": "pass",
+      "evidence": {
+        "initialKineticJ": 0.000108,
+        "finalKineticJ": 9.21840258240914e-05,
+        "storedElasticStressPa": 0.0
+      },
+      "seconds": 0.1342918872833252
+    },
+    "contact": {
+      "status": "pass",
+      "evidence": {
+        "penetrationM": 0.0,
+        "initialMechanicalJ": 0.006115095000000001,
+        "finalMechanicalJ": 0.004472815298713133,
+        "groundImpulseNs": 0.0
+      },
+      "seconds": 0.8210837841033936
+    },
+    "fragment_contact": {
+      "status": "pass",
+      "evidence": {
+        "approachingImpulses": 41,
+        "separatingImpulses": 0,
+        "momentumError": 1.0842021724855044e-19,
+        "dissipatedEnergyJ": 5.876257324218754e-05
+      },
+      "seconds": 0.03335452079772949
+    },
+    "melting_reset": {
+      "status": "pass",
+      "evidence": {
+        "remainingSolidStressPa": 0.0
+      },
+      "seconds": 0.007554531097412109
+    },
+    "fracture_topology": {
+      "status": "pass",
+      "evidence": {
+        "intactFields": 1,
+        "fracturedFields": 2,
+        "refrozenFields": 1
+      },
+      "seconds": 0.001994609832763672
+    },
+    "implicit_fragment_contact": {
+      "status": "pass",
+      "evidence": {
+        "velocity": [
+          -0.03333333333319999,
+          -0.03333333333340001
+        ],
+        "expectedVelocity": -0.03333333333333333,
+        "residual": 0.0,
+        "stiffResidual": 1.2412670766236363e-16,
+        "objectiveLossJ": 0.01333333333333333
+      },
+      "seconds": 0.0025610923767089844
+    },
+    "solid_collision_scene": {
+      "status": "pass",
+      "evidence": {
+        "initialKineticJ": 2.16e-06,
+        "finalKineticJ": 2.2651392957313466e-13,
+        "maximumSpeed": 2.8131961859949676e-05,
+        "contactConstraints": 57,
+        "maximumMomentumError": 0.0
+      },
+      "seconds": 0.5555846691131592
+    },
+    "bed_exchange": {
+      "status": "pass",
+      "evidence": {
+        "exchangeMismatchJ": 0.0,
+        "bed": {
+          "time": 0.25,
+          "storedHeatJ": 21.656472155255607,
+          "receivedHeatJ": 21.65647220637952,
+          "bottomLossJ": 4.479203244045493e-08,
+          "energyErrorJ": 6.331880797461054e-09,
+          "maximumTemperature": 294.00730811427616
+        }
+      },
+      "seconds": 0.14370369911193848
+    },
+    "inlet_source": {
+      "status": "pass",
+      "inletVelocityError": 4.163336342344337e-17,
+      "groundVelocityError": 0.0,
+      "movingWallVelocityError": 1.0000333894311098e-13,
+      "sourceMassErrorKg": 8.673617379884035e-19,
+      "sourceEnthalpyErrorJ": 9.094947017729282e-13,
+      "sourceQuadratureFluxM3PerS": 2.278500000000001e-05,
+      "limits": "Verifies discrete boundary and source accounting, not grid convergence or final lava quality",
+      "conduitPositionErrorM": 3.0010716134398763e-15,
+      "conduitDownstreamUnconstrained": true,
+      "uniqueMaterialReferenceCells": true,
+      "sourceMaterialDomainVolumeErrorM3": 1.9852334701272664e-23
+    },
+    "solid_floor_contact": {
+      "status": "pass",
+      "freeFallVelocityErrorMPerS": 1.0910363360440534e-09,
+      "freeFallPositionErrorM": 2.1820726834583295e-11,
+      "minimumDomainGroundGapM": -4.05188167306586e-10,
+      "floorImpulseNs": 0.02542750411755699,
+      "limits": "Rigid translation and coarse-domain nonpenetration checked at every step; solid ground contact is normal-only, not a validated frictional collision law."
+    },
+    "rectangular_grid": {
+      "status": "pass",
+      "transfer": {
+        "partition": 3.3306690738754696e-16,
+        "gradient": 2.418065747633591e-13,
+        "velocity": 2.0816681711721685e-17,
+        "affine": 2.7429447602145274e-14,
+        "momentum": 1.1102230246251565e-15
+      },
+      "isotropicEquivalence": 0.0,
+      "finiteVolumeMetricError": 2.211772431870429e-17,
+      "topK": 1433.9211203598095,
+      "interiorK": 1445.5924067740427,
+      "heatBalance": 1.9226016279857558e-16,
+      "limits": "Metric consistency and component tests; not continuum or fracture convergence."
+    },
+    "bonded_substrate": {
+      "status": "pass",
+      "hoveringVelocityError": 1.0453603346782149e-09,
+      "bondedBaseDisplacementM": 4.261370569492534e-11,
+      "limits": "Tests the selected ideal bonded boundary, not an adhesion or friction law for arbitrary terrain."
+    },
+    "crystal_network": {
+      "status": "pass",
+      "old1200KRelaxationSeconds": 9.746693583604604e-05,
+      "new1200KRelaxation": "elastic below failure",
+      "rows": [
+        {
+          "temperatureK": 1450.0,
+          "solidFraction": 0.0,
+          "initialShearPa": 0.0,
+          "afterOneSecondPa": 0.0,
+          "analyticAfterOneSecondPa": 0.0,
+          "networkFluidity": 0.006666666666666667
+        },
+        {
+          "temperatureK": 1370.0,
+          "solidFraction": 0.21260000000000037,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 1.5715674747235185e-251,
+          "analyticAfterOneSecondPa": 0.0,
+          "networkFluidity": 0.00031258088164061985
+        },
+        {
+          "temperatureK": 1300.0,
+          "solidFraction": 0.49260000000000037,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 7.039944669730662e-187,
+          "analyticAfterOneSecondPa": 0.0,
+          "networkFluidity": 5.616977237582093e-06
+        },
+        {
+          "temperatureK": 1200.0,
+          "solidFraction": 0.8926000000000004,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 100000.0,
+          "analyticAfterOneSecondPa": 100000.0,
+          "networkFluidity": 0.0
+        },
+        {
+          "temperatureK": 1050.0,
+          "solidFraction": 1.0,
+          "initialShearPa": 100000.0,
+          "afterOneSecondPa": 100000.0,
+          "analyticAfterOneSecondPa": 100000.0,
+          "networkFluidity": 0.0
+        }
+      ],
+      "maxwellTimestepErrors": [
+        0.0001233589067946017,
+        6.17257409554206e-05,
+        3.0874457191631954e-05
+      ],
+      "interfaceDrag": {
+        "relativeVelocityError": 1.3877787807814457e-17,
+        "momentumError": 5.551115123125783e-17,
+        "heatJ": 0.05183063209316243,
+        "kineticLossJ": 0.21180171880045387
+      },
+      "limits": "Nominal crystal-packing and one-cell viscous interface closures; not composition-calibrated basalt rheology"
+    },
+    "local_fracture": {
+      "status": "pass",
+      "globalSolidComponents": 1,
+      "locallySplitNodes": 20,
+      "uniformTranslationError": 6.245004513516506e-17,
+      "zeroLoadMaximumSpeed": 0.0,
+      "solver": {
+        "time": 0.001,
+        "dt": 0.001,
+        "particles": 768,
+        "mass": 0.032400000000000005,
+        "volume": 1.2000000000000005e-05,
+        "temperatureRange": [
+          1000.0,
+          1000.0
+        ],
+        "meanSolidFraction": 1.0,
+        "solidParticles": 768,
+        "damagedParticles": 0,
+        "maximumDamage": 0.0,
+        "maximumSpeed": 0.0,
+        "thermalBalanceRelative": 0.0,
+        "stepHeatResidualJ": 0.0,
+        "mechanicalResidual": 0.0,
+        "heatNewtonIterations": 0,
+        "viscousHeatJ": 0.0,
+        "fractureEnergyJ": 0.0,
+        "seconds": 0.3333919048309326,
+        "materialVelocityFields": 1,
+        "brokenConnectivityEdges": 310,
+        "contactImpulses": 0,
+        "contactMomentumError": 0.0,
+        "splitGridNodes": 90,
+        "massBalanceErrorKg": 0.0
+      }
+    },
+    "fractured_inlet_boundary": {
+      "status": "pass",
+      "fixtureNodes": 1799,
+      "degreesOfFreedom": 3069,
+      "reflectedCornerVelocityError": 0.0,
+      "limits": "Exact failed boundary fixture and affine ghost composition; not a flow convergence test."
+    },
+    "phase_contact_transition": {
+      "status": "pass",
+      "coherentFraction": 0.65,
+      "failureFraction": 0.65,
+      "zeroLoadSpeed": 0.0,
+      "coupledContactExpansions": 2,
+      "coupledContactVelocityError": 9.199974115858822e-11,
+      "mechanicalResidual": 6.790894733931075e-16,
+      "damagedMeltVelocityRelativeError": 0.0,
+      "damagedMeltHeatJ": [
+        4.954277508675086e-08,
+        4.954277508675086e-08
+      ]
+    },
+    "continuous_phase_optics": {
+      "status": "pass",
+      "renderer": "Mitsuba 3.9.1",
+      "device": "CPU",
+      "variant": "scalar_rgb",
+      "interpolatedSolid": 0.3749999701976776,
+      "emissionAttributeError": 1.1920928966180355e-08,
+      "normalIncidenceBSDF": [
+        0.8197900652885437,
+        0.8197900652885437,
+        0.8197900652885437
+      ]
+    },
+    "material_surface": {
+      "status": "pass",
+      "intact": {
+        "method": "locally connected advected material domains",
+        "particles": 576,
+        "vertices": 845,
+        "triangles": 960,
+        "brokenFacePairs": 0,
+        "openFacePairs": 0,
+        "maximumOpeningM": 0.0,
+        "minimumOpeningM": 0.0,
+        "crackWallTriangles": 0,
+        "globalMaterialComponents": 1,
+        "solidMaterialComponents": 1,
+        "relativeVolumeDifference": 0.0,
+        "cellVolumeRelativeErrorP95": 5.583469134732937e-15,
+        "maximumCellVolumeRelativeError": 1.3234889800848441e-14,
+        "minimumCellVolumeM3": 9.99999999999988e-10,
+        "maximumDeformationCondition": 1.0000000000000016,
+        "solverParticleVolumeM3": 5.760000000000001e-07,
+        "reconstructedVolumeM3": 5.760000000000001e-07,
+        "openingPairs": [],
+        "openingM": [],
+        "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+        "unresolvedAffineCells": 0,
+        "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+      },
+      "closed": {
+        "method": "locally connected advected material domains",
+        "particles": 576,
+        "vertices": 890,
+        "triangles": 960,
+        "brokenFacePairs": 36,
+        "openFacePairs": 0,
+        "maximumOpeningM": 4.0657581468206416e-20,
+        "minimumOpeningM": -2.236166980751353e-19,
+        "crackWallTriangles": 0,
+        "globalMaterialComponents": 1,
+        "solidMaterialComponents": 1,
+        "relativeVolumeDifference": 0.0,
+        "cellVolumeRelativeErrorP95": 5.583469134732937e-15,
+        "maximumCellVolumeRelativeError": 1.3234889800848441e-14,
+        "minimumCellVolumeM3": 9.99999999999988e-10,
+        "maximumDeformationCondition": 1.0000000000000016,
+        "solverParticleVolumeM3": 5.760000000000001e-07,
+        "reconstructedVolumeM3": 5.760000000000001e-07,
+        "openingPairs": [
+          [
+            240,
+            288
+          ],
+          [
+            241,
+            289
+          ],
+          [
+            242,
+            290
+          ],
+          [
+            243,
+            291
+          ],
+          [
+            244,
+            292
+          ],
+          [
+            245,
+            293
+          ],
+          [
+            246,
+            294
+          ],
+          [
+            247,
+            295
+          ],
+          [
+            248,
+            296
+          ],
+          [
+            249,
+            297
+          ],
+          [
+            250,
+            298
+          ],
+          [
+            251,
+            299
+          ],
+          [
+            252,
+            300
+          ],
+          [
+            253,
+            301
+          ],
+          [
+            254,
+            302
+          ],
+          [
+            255,
+            303
+          ],
+          [
+            256,
+            304
+          ],
+          [
+            257,
+            305
+          ],
+          [
+            258,
+            306
+          ],
+          [
+            259,
+            307
+          ],
+          [
+            260,
+            308
+          ],
+          [
+            261,
+            309
+          ],
+          [
+            262,
+            310
+          ],
+          [
+            263,
+            311
+          ],
+          [
+            264,
+            312
+          ],
+          [
+            265,
+            313
+          ],
+          [
+            266,
+            314
+          ],
+          [
+            267,
+            315
+          ],
+          [
+            268,
+            316
+          ],
+          [
+            269,
+            317
+          ],
+          [
+            270,
+            318
+          ],
+          [
+            271,
+            319
+          ],
+          [
+            272,
+            320
+          ],
+          [
+            273,
+            321
+          ],
+          [
+            274,
+            322
+          ],
+          [
+            275,
+            323
+          ]
+        ],
+        "openingM": [
+          -3.3881317890172014e-20,
+          -8.131516293641283e-20,
+          -1.8295911660692887e-19,
+          -1.3552527156068805e-19,
+          -8.809142651444728e-20,
+          -1.3552527156068805e-20,
+          -2.0328790734103208e-20,
+          -9.486769009248166e-20,
+          -2.168404344971009e-19,
+          -2.710505431213761e-20,
+          2.710505431213761e-20,
+          -1.0842021724855044e-19,
+          -2.168404344971009e-19,
+          -2.710505431213761e-20,
+          2.710505431213761e-20,
+          -1.0842021724855044e-19,
+          -2.168404344971009e-19,
+          -2.710505431213761e-20,
+          2.710505431213761e-20,
+          -1.0842021724855044e-19,
+          -2.168404344971009e-19,
+          -2.710505431213761e-20,
+          2.710505431213761e-20,
+          -1.0842021724855044e-19,
+          -2.168404344971009e-19,
+          -2.710505431213761e-20,
+          2.710505431213761e-20,
+          -1.0842021724855044e-19,
+          -2.236166980751353e-19,
+          -1.3552527156068805e-20,
+          4.0657581468206416e-20,
+          -1.2874900798265365e-19,
+          -1.1519648082658485e-19,
+          2.3509887016445745e-35,
+          2.710505431213761e-20,
+          -7.453889935837843e-20
+        ],
+        "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+        "unresolvedAffineCells": 0,
+        "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+      },
+      "opened": {
+        "method": "locally connected advected material domains",
+        "particles": 576,
+        "vertices": 890,
+        "triangles": 1104,
+        "brokenFacePairs": 36,
+        "openFacePairs": 36,
+        "maximumOpeningM": 0.0008120489493867663,
+        "minimumOpeningM": 0.00012015364795051135,
+        "crackWallTriangles": 144,
+        "globalMaterialComponents": 1,
+        "solidMaterialComponents": 1,
+        "relativeVolumeDifference": 2.023427449614175e-05,
+        "cellVolumeRelativeErrorP95": 0.006336374538380675,
+        "maximumCellVolumeRelativeError": 0.011983954904501722,
+        "minimumCellVolumeM3": 9.935254453300184e-10,
+        "maximumDeformationCondition": 1.1425181900299817,
+        "solverParticleVolumeM3": 5.760000000000001e-07,
+        "reconstructedVolumeM3": 5.759883450578903e-07,
+        "openingPairs": [
+          [
+            240,
+            288
+          ],
+          [
+            241,
+            289
+          ],
+          [
+            242,
+            290
+          ],
+          [
+            243,
+            291
+          ],
+          [
+            244,
+            292
+          ],
+          [
+            245,
+            293
+          ],
+          [
+            246,
+            294
+          ],
+          [
+            247,
+            295
+          ],
+          [
+            248,
+            296
+          ],
+          [
+            249,
+            297
+          ],
+          [
+            250,
+            298
+          ],
+          [
+            251,
+            299
+          ],
+          [
+            252,
+            300
+          ],
+          [
+            253,
+            301
+          ],
+          [
+            254,
+            302
+          ],
+          [
+            255,
+            303
+          ],
+          [
+            256,
+            304
+          ],
+          [
+            257,
+            305
+          ],
+          [
+            258,
+            306
+          ],
+          [
+            259,
+            307
+          ],
+          [
+            260,
+            308
+          ],
+          [
+            261,
+            309
+          ],
+          [
+            262,
+            310
+          ],
+          [
+            263,
+            311
+          ],
+          [
+            264,
+            312
+          ],
+          [
+            265,
+            313
+          ],
+          [
+            266,
+            314
+          ],
+          [
+            267,
+            315
+          ],
+          [
+            268,
+            316
+          ],
+          [
+            269,
+            317
+          ],
+          [
+            270,
+            318
+          ],
+          [
+            271,
+            319
+          ],
+          [
+            272,
+            320
+          ],
+          [
+            273,
+            321
+          ],
+          [
+            274,
+            322
+          ],
+          [
+            275,
+            323
+          ]
+        ],
+        "openingM": [
+          0.0007999999999999999,
+          0.0007999999999999997,
+          0.0007999999999999997,
+          0.0007999999999999998,
+          0.0007999999999999998,
+          0.0007999999999999998,
+          0.0007999999999999999,
+          0.0007999999999999999,
+          0.0007999999999999997,
+          0.0007999999999999998,
+          0.0007999999999999999,
+          0.0007999999999999999,
+          0.0007999999999999997,
+          0.0007999999999999998,
+          0.0007999999999999999,
+          0.0007999999999999999,
+          0.0008120002896399389,
+          0.0008108269900324314,
+          0.0008108049261759863,
+          0.0008120489493867663,
+          0.0008027760331272523,
+          0.0007990343550246852,
+          0.0007990790250030847,
+          0.0008026921459170742,
+          0.0006650753238478945,
+          0.0006617364453849849,
+          0.0006615556006601644,
+          0.0006654387183283907,
+          0.00039439589135477587,
+          0.00039561501919780864,
+          0.00039524629608392667,
+          0.0003951369981893283,
+          0.00012025768056746292,
+          0.0001218873224292799,
+          0.00012194103347534865,
+          0.00012015364795051135
+        ],
+        "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+        "unresolvedAffineCells": 0,
+        "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+      },
+      "affineVolumeRelativeError": 2.220446049250313e-16,
+      "farFromTipOpeningErrorM": 3.2526065174565133e-19,
+      "creaseShadingPreservesGeometry": true,
+      "proof": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\surface-proof-22\\surface-tests.png",
+      "fixture": "prescribed geometric validation coupon, never published as simulated lava"
+    },
+    "material_boundary_topology": {
+      "status": "pass",
+      "reflectedGripComposition": true,
+      "conflictingGripsRejected": true,
+      "isolatedSolidSeparatedFromMelt": true
+    },
+    "upper_crust_fracture_export": {
+      "status": "pass",
+      "gates": {
+        "initiallyMolten": true,
+        "cooledUpperCrust": true,
+        "upperCrustDamage": true,
+        "upperFracture": true,
+        "noBasalFracture": true,
+        "exportedOpening": true,
+        "exportedCrackWalls": true,
+        "volume": true,
+        "noInversion": true,
+        "meteredLoading": true,
+        "thermalBalance": true
+      },
+      "metrics": {
+        "time": 18.08,
+        "particles": 2304,
+        "topMeanTemperatureK": 1163.4550885320316,
+        "bottomMeanTemperatureK": 1383.964410325211,
+        "topCoherentFraction": 1.0,
+        "bottomCoherentFraction": 0.010416666666666666,
+        "upperDamagedParticles": 384,
+        "bottomDamagedParticles": 0,
+        "upperBrokenBonds": 1008,
+        "bottomBrokenBonds": 0,
+        "maximumDamage": 1.0,
+        "maximumSpeed": 0.03016563340812965,
+        "thermalBalanceRelative": 2.556594365332297e-11
+      },
+      "mesh": {
+        "method": "locally connected advected material domains",
+        "particles": 2304,
+        "vertices": 3397,
+        "triangles": 3132,
+        "brokenFacePairs": 324,
+        "openFacePairs": 256,
+        "maximumOpeningM": 0.00018946089664676095,
+        "minimumOpeningM": -7.378463173154976e-05,
+        "crackWallTriangles": 1020,
+        "globalMaterialComponents": 37,
+        "solidMaterialComponents": 37,
+        "relativeVolumeDifference": 0.011512833287109779,
+        "cellVolumeRelativeErrorP95": 0.05342012924818219,
+        "maximumCellVolumeRelativeError": 0.25230017960302026,
+        "minimumCellVolumeM3": 6.039429136960924e-11,
+        "maximumDeformationCondition": 1.3079323796442435,
+        "solverParticleVolumeM3": 1.437331540565527e-07,
+        "reconstructedVolumeM3": 1.4538792989703625e-07,
+        "openingPairs": [
+          [
+            7,
+            151
+          ],
+          [
+            7,
+            19
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            152
+          ],
+          [
+            8,
+            20
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            153
+          ],
+          [
+            9,
+            21
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            154
+          ],
+          [
+            10,
+            22
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            155
+          ],
+          [
+            19,
+            20
+          ],
+          [
+            20,
+            164
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            21,
+            165
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            22,
+            34
+          ],
+          [
+            31,
+            175
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            32,
+            176
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            33,
+            177
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            34,
+            178
+          ],
+          [
+            34,
+            46
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            35,
+            179
+          ],
+          [
+            35,
+            47
+          ],
+          [
+            43,
+            187
+          ],
+          [
+            43,
+            44
+          ],
+          [
+            44,
+            188
+          ],
+          [
+            44,
+            45
+          ],
+          [
+            45,
+            189
+          ],
+          [
+            45,
+            46
+          ],
+          [
+            46,
+            190
+          ],
+          [
+            46,
+            58
+          ],
+          [
+            46,
+            47
+          ],
+          [
+            47,
+            191
+          ],
+          [
+            47,
+            59
+          ],
+          [
+            55,
+            199
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            56,
+            200
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            57,
+            201
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            58,
+            202
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            59,
+            203
+          ],
+          [
+            67,
+            211
+          ],
+          [
+            67,
+            68
+          ],
+          [
+            68,
+            212
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            69,
+            213
+          ],
+          [
+            69,
+            70
+          ],
+          [
+            70,
+            214
+          ],
+          [
+            79,
+            223
+          ],
+          [
+            79,
+            80
+          ],
+          [
+            80,
+            224
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            81,
+            225
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            82,
+            226
+          ],
+          [
+            91,
+            235
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            236
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            237
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            238
+          ],
+          [
+            94,
+            106
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            239
+          ],
+          [
+            95,
+            107
+          ],
+          [
+            103,
+            247
+          ],
+          [
+            103,
+            104
+          ],
+          [
+            104,
+            248
+          ],
+          [
+            104,
+            105
+          ],
+          [
+            105,
+            249
+          ],
+          [
+            105,
+            106
+          ],
+          [
+            106,
+            250
+          ],
+          [
+            106,
+            118
+          ],
+          [
+            106,
+            107
+          ],
+          [
+            107,
+            251
+          ],
+          [
+            107,
+            119
+          ],
+          [
+            115,
+            259
+          ],
+          [
+            115,
+            116
+          ],
+          [
+            116,
+            260
+          ],
+          [
+            116,
+            117
+          ],
+          [
+            117,
+            261
+          ],
+          [
+            117,
+            118
+          ],
+          [
+            118,
+            262
+          ],
+          [
+            118,
+            130
+          ],
+          [
+            118,
+            119
+          ],
+          [
+            119,
+            263
+          ],
+          [
+            127,
+            139
+          ],
+          [
+            127,
+            128
+          ],
+          [
+            128,
+            272
+          ],
+          [
+            128,
+            140
+          ],
+          [
+            128,
+            129
+          ],
+          [
+            129,
+            273
+          ],
+          [
+            129,
+            141
+          ],
+          [
+            129,
+            130
+          ],
+          [
+            130,
+            142
+          ],
+          [
+            139,
+            283
+          ],
+          [
+            139,
+            140
+          ],
+          [
+            140,
+            284
+          ],
+          [
+            140,
+            141
+          ],
+          [
+            141,
+            285
+          ],
+          [
+            141,
+            142
+          ],
+          [
+            142,
+            286
+          ],
+          [
+            142,
+            143
+          ],
+          [
+            143,
+            287
+          ],
+          [
+            152,
+            296
+          ],
+          [
+            153,
+            297
+          ],
+          [
+            176,
+            177
+          ],
+          [
+            177,
+            178
+          ],
+          [
+            178,
+            179
+          ],
+          [
+            179,
+            323
+          ],
+          [
+            179,
+            191
+          ],
+          [
+            188,
+            189
+          ],
+          [
+            189,
+            190
+          ],
+          [
+            190,
+            191
+          ],
+          [
+            191,
+            335
+          ],
+          [
+            191,
+            203
+          ],
+          [
+            200,
+            201
+          ],
+          [
+            201,
+            202
+          ],
+          [
+            202,
+            203
+          ],
+          [
+            203,
+            347
+          ],
+          [
+            203,
+            215
+          ],
+          [
+            211,
+            212
+          ],
+          [
+            212,
+            213
+          ],
+          [
+            213,
+            214
+          ],
+          [
+            214,
+            215
+          ],
+          [
+            215,
+            227
+          ],
+          [
+            223,
+            224
+          ],
+          [
+            224,
+            225
+          ],
+          [
+            225,
+            226
+          ],
+          [
+            226,
+            227
+          ],
+          [
+            227,
+            239
+          ],
+          [
+            236,
+            237
+          ],
+          [
+            237,
+            238
+          ],
+          [
+            238,
+            239
+          ],
+          [
+            239,
+            383
+          ],
+          [
+            239,
+            251
+          ],
+          [
+            248,
+            249
+          ],
+          [
+            249,
+            250
+          ],
+          [
+            250,
+            251
+          ],
+          [
+            251,
+            395
+          ],
+          [
+            251,
+            263
+          ],
+          [
+            260,
+            261
+          ],
+          [
+            261,
+            262
+          ],
+          [
+            262,
+            263
+          ],
+          [
+            263,
+            407
+          ],
+          [
+            284,
+            428
+          ],
+          [
+            285,
+            429
+          ],
+          [
+            299,
+            443
+          ],
+          [
+            431,
+            575
+          ],
+          [
+            443,
+            587
+          ],
+          [
+            575,
+            719
+          ],
+          [
+            1019,
+            1163
+          ],
+          [
+            1151,
+            1295
+          ],
+          [
+            1595,
+            1739
+          ],
+          [
+            1727,
+            1871
+          ],
+          [
+            1739,
+            1883
+          ],
+          [
+            1871,
+            2015
+          ],
+          [
+            1880,
+            2024
+          ],
+          [
+            1881,
+            2025
+          ],
+          [
+            1907,
+            2051
+          ],
+          [
+            1919,
+            2063
+          ],
+          [
+            1931,
+            2075
+          ],
+          [
+            1967,
+            2111
+          ],
+          [
+            1979,
+            2123
+          ],
+          [
+            1991,
+            2135
+          ],
+          [
+            2012,
+            2156
+          ],
+          [
+            2013,
+            2157
+          ],
+          [
+            2023,
+            2167
+          ],
+          [
+            2024,
+            2168
+          ],
+          [
+            2025,
+            2169
+          ],
+          [
+            2026,
+            2170
+          ],
+          [
+            2027,
+            2171
+          ],
+          [
+            2036,
+            2180
+          ],
+          [
+            2037,
+            2181
+          ],
+          [
+            2047,
+            2191
+          ],
+          [
+            2048,
+            2192
+          ],
+          [
+            2048,
+            2049
+          ],
+          [
+            2049,
+            2193
+          ],
+          [
+            2049,
+            2050
+          ],
+          [
+            2050,
+            2194
+          ],
+          [
+            2050,
+            2051
+          ],
+          [
+            2051,
+            2195
+          ],
+          [
+            2051,
+            2063
+          ],
+          [
+            2059,
+            2203
+          ],
+          [
+            2060,
+            2204
+          ],
+          [
+            2060,
+            2061
+          ],
+          [
+            2061,
+            2205
+          ],
+          [
+            2061,
+            2062
+          ],
+          [
+            2062,
+            2206
+          ],
+          [
+            2062,
+            2063
+          ],
+          [
+            2063,
+            2207
+          ],
+          [
+            2063,
+            2075
+          ],
+          [
+            2071,
+            2215
+          ],
+          [
+            2072,
+            2216
+          ],
+          [
+            2072,
+            2073
+          ],
+          [
+            2073,
+            2217
+          ],
+          [
+            2073,
+            2074
+          ],
+          [
+            2074,
+            2218
+          ],
+          [
+            2074,
+            2075
+          ],
+          [
+            2075,
+            2219
+          ],
+          [
+            2075,
+            2087
+          ],
+          [
+            2083,
+            2227
+          ],
+          [
+            2083,
+            2084
+          ],
+          [
+            2084,
+            2228
+          ],
+          [
+            2084,
+            2085
+          ],
+          [
+            2085,
+            2229
+          ],
+          [
+            2085,
+            2086
+          ],
+          [
+            2086,
+            2230
+          ],
+          [
+            2086,
+            2087
+          ],
+          [
+            2087,
+            2099
+          ],
+          [
+            2095,
+            2239
+          ],
+          [
+            2095,
+            2096
+          ],
+          [
+            2096,
+            2240
+          ],
+          [
+            2096,
+            2097
+          ],
+          [
+            2097,
+            2241
+          ],
+          [
+            2097,
+            2098
+          ],
+          [
+            2098,
+            2242
+          ],
+          [
+            2098,
+            2099
+          ],
+          [
+            2099,
+            2111
+          ],
+          [
+            2107,
+            2251
+          ],
+          [
+            2108,
+            2252
+          ],
+          [
+            2108,
+            2109
+          ],
+          [
+            2109,
+            2253
+          ],
+          [
+            2109,
+            2110
+          ],
+          [
+            2110,
+            2254
+          ],
+          [
+            2110,
+            2111
+          ],
+          [
+            2111,
+            2255
+          ],
+          [
+            2111,
+            2123
+          ],
+          [
+            2119,
+            2263
+          ],
+          [
+            2120,
+            2264
+          ],
+          [
+            2120,
+            2121
+          ],
+          [
+            2121,
+            2265
+          ],
+          [
+            2121,
+            2122
+          ],
+          [
+            2122,
+            2266
+          ],
+          [
+            2122,
+            2123
+          ],
+          [
+            2123,
+            2267
+          ],
+          [
+            2123,
+            2135
+          ],
+          [
+            2131,
+            2275
+          ],
+          [
+            2132,
+            2276
+          ],
+          [
+            2132,
+            2133
+          ],
+          [
+            2133,
+            2277
+          ],
+          [
+            2133,
+            2134
+          ],
+          [
+            2134,
+            2278
+          ],
+          [
+            2134,
+            2135
+          ],
+          [
+            2135,
+            2279
+          ],
+          [
+            2144,
+            2288
+          ],
+          [
+            2145,
+            2289
+          ],
+          [
+            2155,
+            2299
+          ],
+          [
+            2156,
+            2300
+          ],
+          [
+            2157,
+            2301
+          ],
+          [
+            2158,
+            2302
+          ],
+          [
+            2159,
+            2303
+          ],
+          [
+            2167,
+            2179
+          ],
+          [
+            2167,
+            2168
+          ],
+          [
+            2168,
+            2180
+          ],
+          [
+            2168,
+            2169
+          ],
+          [
+            2169,
+            2181
+          ],
+          [
+            2169,
+            2170
+          ],
+          [
+            2170,
+            2182
+          ],
+          [
+            2170,
+            2171
+          ],
+          [
+            2179,
+            2180
+          ],
+          [
+            2180,
+            2181
+          ],
+          [
+            2181,
+            2182
+          ],
+          [
+            2182,
+            2194
+          ],
+          [
+            2191,
+            2192
+          ],
+          [
+            2192,
+            2193
+          ],
+          [
+            2193,
+            2194
+          ],
+          [
+            2194,
+            2206
+          ],
+          [
+            2194,
+            2195
+          ],
+          [
+            2195,
+            2207
+          ],
+          [
+            2203,
+            2204
+          ],
+          [
+            2204,
+            2205
+          ],
+          [
+            2205,
+            2206
+          ],
+          [
+            2206,
+            2218
+          ],
+          [
+            2206,
+            2207
+          ],
+          [
+            2207,
+            2219
+          ],
+          [
+            2215,
+            2216
+          ],
+          [
+            2216,
+            2217
+          ],
+          [
+            2217,
+            2218
+          ],
+          [
+            2218,
+            2219
+          ],
+          [
+            2227,
+            2228
+          ],
+          [
+            2228,
+            2229
+          ],
+          [
+            2229,
+            2230
+          ],
+          [
+            2239,
+            2240
+          ],
+          [
+            2240,
+            2241
+          ],
+          [
+            2241,
+            2242
+          ],
+          [
+            2251,
+            2252
+          ],
+          [
+            2252,
+            2253
+          ],
+          [
+            2253,
+            2254
+          ],
+          [
+            2254,
+            2266
+          ],
+          [
+            2254,
+            2255
+          ],
+          [
+            2255,
+            2267
+          ],
+          [
+            2263,
+            2264
+          ],
+          [
+            2264,
+            2265
+          ],
+          [
+            2265,
+            2266
+          ],
+          [
+            2266,
+            2278
+          ],
+          [
+            2266,
+            2267
+          ],
+          [
+            2267,
+            2279
+          ],
+          [
+            2275,
+            2276
+          ],
+          [
+            2276,
+            2277
+          ],
+          [
+            2277,
+            2278
+          ],
+          [
+            2278,
+            2290
+          ],
+          [
+            2278,
+            2279
+          ],
+          [
+            2287,
+            2299
+          ],
+          [
+            2287,
+            2288
+          ],
+          [
+            2288,
+            2300
+          ],
+          [
+            2288,
+            2289
+          ],
+          [
+            2289,
+            2301
+          ],
+          [
+            2289,
+            2290
+          ],
+          [
+            2290,
+            2302
+          ],
+          [
+            2299,
+            2300
+          ],
+          [
+            2300,
+            2301
+          ],
+          [
+            2301,
+            2302
+          ],
+          [
+            2302,
+            2303
+          ]
+        ],
+        "openingM": [
+          3.863506125247218e-05,
+          -7.028112354316212e-06,
+          -2.8303740615793394e-05,
+          4.979141450436576e-05,
+          2.047638035224227e-06,
+          5.13471269116001e-05,
+          6.168526086345989e-05,
+          1.576878708427651e-05,
+          -2.488154864464672e-05,
+          6.197408846893217e-05,
+          1.427630735170555e-06,
+          0.0001684366607291984,
+          0.00011370898971905223,
+          4.334154324781507e-06,
+          1.782943057595776e-05,
+          1.239892143417401e-05,
+          2.642338158066201e-05,
+          1.1932880401889494e-05,
+          2.0078533110954748e-05,
+          3.291522804296425e-06,
+          2.217341174636984e-06,
+          1.0093590542420574e-05,
+          9.579817948121445e-06,
+          1.8562977288985844e-05,
+          1.808928764192931e-05,
+          2.121749892050038e-05,
+          -2.3624701350722075e-06,
+          -5.4860172800154495e-05,
+          2.024062086825416e-05,
+          -7.378463173154976e-05,
+          6.568646520959841e-06,
+          -1.781388322195415e-06,
+          1.1662278227111288e-05,
+          5.636909997933104e-06,
+          1.5264587319476898e-05,
+          1.1380437751020553e-05,
+          3.148262697744196e-05,
+          -2.692560297526434e-06,
+          6.914852054105227e-06,
+          4.793517789594063e-05,
+          9.814348913635595e-06,
+          6.327749047435752e-06,
+          -1.761081460449623e-06,
+          1.2895962986916162e-05,
+          6.102639508273648e-06,
+          1.3787543519134075e-05,
+          8.02881148989827e-06,
+          2.751731110735418e-05,
+          2.2376911825281396e-06,
+          3.450904988220869e-05,
+          7.809571729707737e-06,
+          7.714266391097754e-07,
+          9.689015901066057e-06,
+          8.701435293244604e-06,
+          1.2621308437386354e-05,
+          8.531697907163454e-06,
+          2.612372010379863e-05,
+          7.810123225830024e-06,
+          7.880295462174168e-07,
+          9.667495998994204e-06,
+          8.720518926265407e-06,
+          1.2597843798155539e-05,
+          8.539262332525429e-06,
+          2.6046631499908505e-05,
+          6.327508689336378e-06,
+          -1.7247340821241741e-06,
+          1.2877047771027911e-05,
+          6.12680343240107e-06,
+          1.3754476315685034e-05,
+          8.064019615348812e-06,
+          2.6820222200401e-05,
+          -2.7733934405794937e-06,
+          1.039542461018958e-06,
+          1.757870861934636e-05,
+          8.99267824206357e-06,
+          6.564863757846735e-06,
+          -1.7538284919034817e-06,
+          1.169062913618661e-05,
+          5.584097092567645e-06,
+          1.5225965489137736e-05,
+          1.141697445096944e-05,
+          3.148263310087535e-05,
+          -2.8568640238105544e-06,
+          6.914254385768397e-06,
+          4.7935133952936275e-05,
+          -2.0324066230710248e-05,
+          3.268551883938909e-06,
+          2.192559832302009e-06,
+          1.0147210557479241e-05,
+          9.53626817348429e-06,
+          1.850390780991124e-05,
+          1.8115643125495443e-05,
+          2.1217635426598383e-05,
+          1.992293744415588e-05,
+          -5.485983583851595e-05,
+          1.7279508569850636e-05,
+          -6.841299188253464e-06,
+          4.258748396339097e-06,
+          1.7839421679856682e-05,
+          1.0706532186996727e-05,
+          1.2394966707705027e-05,
+          2.641339705459566e-05,
+          3.8462984868774986e-05,
+          1.1999699888116463e-05,
+          3.465039135570508e-05,
+          3.854074459594011e-05,
+          -2.8303738337834512e-05,
+          4.979138727678305e-05,
+          5.1347082321548356e-05,
+          6.168515434219006e-05,
+          -2.488130993494644e-05,
+          6.1973598744926e-05,
+          0.00016844120107701406,
+          0.00011348070507762707,
+          4.835258908650446e-06,
+          4.754522568701175e-06,
+          1.8656452355582505e-07,
+          2.4163896278428397e-06,
+          2.901520681119697e-06,
+          3.503274249693575e-06,
+          -5.104047949078239e-06,
+          -3.739761975225384e-07,
+          5.1419198873878425e-06,
+          2.7862836220705224e-05,
+          2.030599295082413e-05,
+          1.163388012964421e-05,
+          -9.660428227679299e-07,
+          5.187185487210868e-06,
+          1.1138053095907639e-05,
+          1.108009553071825e-05,
+          5.037347540898282e-06,
+          -1.4171076577606973e-07,
+          -3.000369041431833e-07,
+          4.552011807769166e-06,
+          1.5691222883990292e-05,
+          2.4383289735662492e-26,
+          -1.5718462921386027e-07,
+          -2.979334552721121e-07,
+          4.586449019746253e-06,
+          1.5687451387772955e-05,
+          5.476506550073907e-06,
+          -9.605843764935685e-07,
+          5.23276082696964e-06,
+          1.1126019726692744e-05,
+          1.108008387462812e-05,
+          1.2141117586233904e-05,
+          -3.6869330959249636e-07,
+          5.153981371502729e-06,
+          2.7855217622384018e-05,
+          2.0305919643679564e-05,
+          -2.0859887062408406e-06,
+          1.86777583866355e-07,
+          2.3871713393824346e-06,
+          3.0061318966074467e-06,
+          3.5055844591217483e-06,
+          4.890050055536052e-06,
+          4.6981824812681e-06,
+          -1.760098825333918e-06,
+          -1.7857000378511836e-06,
+          -3.459878373156982e-06,
+          -3.5189693872172162e-06,
+          -5.166632985068559e-07,
+          -5.166804664632514e-07,
+          -3.4598643608891614e-06,
+          -3.405852598355544e-06,
+          -1.7600764435096029e-06,
+          -1.7141325980377217e-06,
+          4.835257987432487e-06,
+          4.909996267066341e-06,
+          3.5638354087669746e-06,
+          2.069019637475947e-05,
+          1.1199702589563887e-05,
+          1.1158244545777883e-05,
+          2.076537695152567e-05,
+          3.5644125011898697e-06,
+          4.774726388179106e-06,
+          4.966176215612314e-06,
+          3.749002980941937e-05,
+          7.399019415112751e-05,
+          0.00010889517849597848,
+          0.00018946089664676095,
+          0.00013948085967214568,
+          1.775023026683723e-05,
+          2.6208321592941385e-05,
+          3.2553131587526884e-06,
+          1.0250176278500664e-05,
+          1.8674527692193802e-07,
+          1.8544769957589535e-05,
+          2.405481300910581e-06,
+          2.1304962028592657e-05,
+          2.9797689946361093e-06,
+          1.6966230061813102e-05,
+          -5.10401931922858e-06,
+          6.409986701277212e-06,
+          1.1877009441073294e-05,
+          -3.6757945563121975e-07,
+          1.527441520575311e-05,
+          5.14601601401175e-06,
+          3.1599553896224284e-05,
+          2.786062769444761e-05,
+          4.734161176659623e-05,
+          1.1634022218162307e-05,
+          6.036192881470296e-06,
+          1.3151467373851268e-05,
+          -9.597649094144106e-07,
+          1.3793847648415061e-05,
+          5.196969315196446e-06,
+          2.7083637239363966e-05,
+          1.1144129375063157e-05,
+          3.9667596240921834e-05,
+          5.037355918207624e-06,
+          7.215487582749596e-06,
+          -1.4168411526738385e-07,
+          1.0263098085303156e-05,
+          -2.9917192446969283e-07,
+          1.2624903002782915e-05,
+          4.554151005304712e-06,
+          2.54996096465925e-05,
+          1.56912794939502e-05,
+          5.455383690743238e-27,
+          7.431820961648822e-06,
+          -1.5718578047390153e-07,
+          1.0034417847690187e-05,
+          -2.970664172172947e-07,
+          1.2607430301527642e-05,
+          4.588550677751074e-06,
+          2.550816937542432e-05,
+          1.5687578311567333e-05,
+          5.099965050662303e-06,
+          6.0047840712102565e-06,
+          1.3126216550919823e-05,
+          -9.542830956979523e-07,
+          1.3771840238548803e-05,
+          5.242701954915964e-06,
+          2.6981466844880802e-05,
+          1.1132104248852585e-05,
+          3.966774714691417e-05,
+          1.2141283950929592e-05,
+          6.40183207593938e-06,
+          1.1836179332231289e-05,
+          -3.6224787577531554e-07,
+          1.5243852815908983e-05,
+          5.1582305637927864e-06,
+          3.144463280142934e-05,
+          2.785307349783094e-05,
+          4.7341615467804095e-05,
+          -2.085841210200909e-06,
+          3.268552649139294e-06,
+          1.0340291176297938e-05,
+          1.869562644607853e-07,
+          1.8426363971943337e-05,
+          2.3764652411025694e-06,
+          2.117220887415286e-05,
+          3.0851694660093022e-06,
+          1.730579849692364e-05,
+          1.7748519086060363e-05,
+          2.618026770348783e-05,
+          3.699452014265112e-05,
+          7.371291277513731e-05,
+          0.0001086256569426967,
+          0.00018385454835000346,
+          0.00014206884008900595,
+          -6.959311721445298e-06,
+          -2.8303715453234837e-05,
+          2.0476429625261827e-06,
+          5.1347224473611216e-05,
+          1.5768758987148042e-05,
+          -2.4881960054764814e-05,
+          1.4274349872413934e-06,
+          0.00016843457504422631,
+          4.321240690045603e-06,
+          1.2395459802416854e-05,
+          1.1964660607898875e-05,
+          2.0092524943489194e-05,
+          2.2261121651092128e-06,
+          9.602353370884404e-06,
+          1.8076581185869844e-05,
+          -2.3624331237238735e-06,
+          -5.4860179202845156e-05,
+          -7.378437593265282e-05,
+          -1.7801427914123727e-06,
+          5.656979531612255e-06,
+          1.1448970887881568e-05,
+          -2.692541420808519e-06,
+          6.914939368708514e-06,
+          9.814461443640154e-06,
+          -1.7652599687535528e-06,
+          6.100320459337203e-06,
+          8.032166799794509e-06,
+          2.3226665900320864e-06,
+          7.700344156562962e-07,
+          8.70022785406774e-06,
+          8.5300047062899e-06,
+          7.866235955304387e-07,
+          8.71921374594932e-06,
+          8.537546283894798e-06,
+          -1.7288560957411311e-06,
+          6.124420958915926e-06,
+          8.067320350224445e-06,
+          -2.773387133424151e-06,
+          1.1250158730365434e-06,
+          8.992780676216826e-06,
+          -1.752335556336959e-06,
+          5.603494974140856e-06,
+          1.1485476171708359e-05,
+          -2.8567753426346805e-06,
+          6.914736156082197e-06,
+          -2.0323796120881582e-05,
+          2.2014007440003498e-06,
+          9.5583963344716e-06,
+          1.8103216829887262e-05,
+          1.992291416432032e-05,
+          -5.4860272113298846e-05,
+          -6.817399698368524e-06,
+          4.245065037787091e-06,
+          1.0706566644133147e-05,
+          1.2391574427647757e-05,
+          3.846301054042121e-05,
+          1.203117689197363e-05,
+          3.725157360732377e-05,
+          -2.8303734353555226e-05,
+          5.1347209400735455e-05,
+          -2.4881757988469203e-05,
+          0.0001684380782845268
+        ],
+        "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+        "unresolvedAffineCells": 72,
+        "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail.",
+        "shadingVertices": 2966,
+        "normals": "Area-weighted within smooth regions; split at resolved creases and crack walls. No displaced surface detail.",
+        "fractureTopologyPreserved": true,
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23-fine\\state.npz",
+        "sourceSha256": "0e67606896e2cc0bb69724831af0cfa8e9a5d0cb3c69338db83cc468dafda439",
+        "physicalSeconds": 18.08
+      },
+      "requestedDuration": 0.08,
+      "simulatedLoadDuration": 0.0799999999999983,
+      "boundaryWorkJ": 0.011058861354022152,
+      "source": {
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-23\\state.npz",
+        "sourceSha256": "a039f78aca0397a7ad7159a0de7c2002658cde7db5b6d09b61dbec1688ed3e1c",
+        "coolingSetup": {
+          "description": "Initially molten 8 x 6 x 3 mm specimen on a 1450 K reservoir; gravity and all exposed-surface heat losses active. No initial solid, seeded damage or imposed crack opening.",
+          "initialTemperatureK": 1450.0,
+          "bedTemperatureK": 1450.0,
+          "cellSizeM": [
+            0.001,
+            0.001,
+            0.0005
+          ],
+          "sampleSizeM": [
+            0.0005,
+            0.0005,
+            0.00025
+          ],
+          "initialParticles": 2304,
+          "refinement": 1
+        },
+        "time": 18.0,
+        "metrics": {
+          "time": 18.0,
+          "particles": 2304,
+          "topMeanTemperatureK": 1164.1602636434839,
+          "bottomMeanTemperatureK": 1383.6158126492535,
+          "topCoherentFraction": 1.0,
+          "bottomCoherentFraction": 0.010416666666666666,
+          "upperDamagedParticles": 92,
+          "bottomDamagedParticles": 0,
+          "upperBrokenBonds": 0,
+          "bottomBrokenBonds": 0,
+          "maximumDamage": 0.8161519967792523,
+          "maximumSpeed": 4.269051588233926e-07,
+          "thermalBalanceRelative": 9.550227254653549e-12
+        },
+        "load": "Opposed horizontal end grips on the cooled upper crust. This is a laboratory fracture validation, not free-flow lava motion.",
+        "gripSpeedMPerS": 0.001,
+        "maxDt": 0.01,
+        "seededDamage": false,
+        "prescribedCracks": false
+      },
+      "wallSeconds": 58.36779499053955,
+      "diagnostic": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23-fine\\state-surface-diagnostic.png",
+      "limits": "Validates thermally formed crust under explicit tensile grips. This does not validate spontaneous free-flow lava breakup or photorealism."
+    }
+  },
+  "cooling": {
+    "status": "mechanism study, not accepted artwork",
+    "metrics": {
+      "time": 18.0,
+      "particles": 2304,
+      "topMeanTemperatureK": 1164.1602636434839,
+      "bottomMeanTemperatureK": 1383.6158126492535,
+      "topCoherentFraction": 1.0,
+      "bottomCoherentFraction": 0.010416666666666666,
+      "upperDamagedParticles": 92,
+      "bottomDamagedParticles": 0,
+      "upperBrokenBonds": 0,
+      "bottomBrokenBonds": 0,
+      "maximumDamage": 0.8161519967792523,
+      "maximumSpeed": 4.269051588233926e-07,
+      "thermalBalanceRelative": 9.550227254653549e-12
+    },
+    "wallSeconds": 107.86257338523865,
+    "complete": false,
+    "sources": {
+      "lava_mpm.py": "e554601fab37fae09cbe45c117bff49f7e1de45648cc6bf59ff3c0d160d078bc",
+      "lava_mpm_fracture.py": "796b726ddb06783b542509fd4135079fb22c188f77635aa7aa1e2ccfe1420722",
+      "lava_mpm_upper_crust.py": "d9d869d19d5b27ac7df87b7adcc8a07bee0d6c327042fa6570256355191f282e"
+    }
+  },
+  "fracture": {
+    "status": "pass",
+    "gates": {
+      "initiallyMolten": true,
+      "cooledUpperCrust": true,
+      "upperCrustDamage": true,
+      "upperFracture": true,
+      "noBasalFracture": true,
+      "exportedOpening": true,
+      "exportedCrackWalls": true,
+      "volume": true,
+      "noInversion": true,
+      "meteredLoading": true,
+      "thermalBalance": true
+    },
+    "metrics": {
+      "time": 18.08,
+      "particles": 2304,
+      "topMeanTemperatureK": 1163.5244533220186,
+      "bottomMeanTemperatureK": 1383.8359143159653,
+      "topCoherentFraction": 1.0,
+      "bottomCoherentFraction": 0.010416666666666666,
+      "upperDamagedParticles": 384,
+      "bottomDamagedParticles": 0,
+      "upperBrokenBonds": 966,
+      "bottomBrokenBonds": 0,
+      "maximumDamage": 0.9999999672307159,
+      "maximumSpeed": 0.06842956729479721,
+      "thermalBalanceRelative": 1.5498257618286547e-11
+    },
+    "mesh": {
+      "method": "locally connected advected material domains",
+      "particles": 2304,
+      "vertices": 3022,
+      "triangles": 2620,
+      "brokenFacePairs": 192,
+      "openFacePairs": 127,
+      "maximumOpeningM": 1.528365419853598e-05,
+      "minimumOpeningM": -1.0412310201549314e-05,
+      "crackWallTriangles": 508,
+      "globalMaterialComponents": 1,
+      "solidMaterialComponents": 1,
+      "relativeVolumeDifference": 0.010593975755723772,
+      "cellVolumeRelativeErrorP95": 0.06173959340168265,
+      "maximumCellVolumeRelativeError": 0.08327441849647362,
+      "minimumCellVolumeM3": 5.96496199835344e-11,
+      "maximumDeformationCondition": 1.2858539613771245,
+      "solverParticleVolumeM3": 1.4368352071186643e-07,
+      "reconstructedVolumeM3": 1.4520570044678498e-07,
+      "openingPairs": [
+        [
+          7,
+          151
+        ],
+        [
+          8,
+          152
+        ],
+        [
+          9,
+          153
+        ],
+        [
+          10,
+          154
+        ],
+        [
+          20,
+          164
+        ],
+        [
+          21,
+          165
+        ],
+        [
+          22,
+          166
+        ],
+        [
+          32,
+          176
+        ],
+        [
+          33,
+          177
+        ],
+        [
+          34,
+          178
+        ],
+        [
+          35,
+          179
+        ],
+        [
+          44,
+          188
+        ],
+        [
+          45,
+          189
+        ],
+        [
+          46,
+          190
+        ],
+        [
+          47,
+          191
+        ],
+        [
+          56,
+          200
+        ],
+        [
+          57,
+          201
+        ],
+        [
+          58,
+          202
+        ],
+        [
+          59,
+          203
+        ],
+        [
+          68,
+          212
+        ],
+        [
+          69,
+          213
+        ],
+        [
+          70,
+          214
+        ],
+        [
+          80,
+          224
+        ],
+        [
+          81,
+          225
+        ],
+        [
+          82,
+          226
+        ],
+        [
+          92,
+          236
+        ],
+        [
+          93,
+          237
+        ],
+        [
+          94,
+          238
+        ],
+        [
+          95,
+          239
+        ],
+        [
+          104,
+          248
+        ],
+        [
+          105,
+          249
+        ],
+        [
+          106,
+          250
+        ],
+        [
+          107,
+          251
+        ],
+        [
+          116,
+          260
+        ],
+        [
+          117,
+          261
+        ],
+        [
+          118,
+          262
+        ],
+        [
+          119,
+          263
+        ],
+        [
+          128,
+          272
+        ],
+        [
+          129,
+          273
+        ],
+        [
+          130,
+          274
+        ],
+        [
+          139,
+          283
+        ],
+        [
+          140,
+          284
+        ],
+        [
+          141,
+          285
+        ],
+        [
+          142,
+          286
+        ],
+        [
+          152,
+          296
+        ],
+        [
+          153,
+          297
+        ],
+        [
+          178,
+          322
+        ],
+        [
+          179,
+          323
+        ],
+        [
+          191,
+          335
+        ],
+        [
+          203,
+          347
+        ],
+        [
+          215,
+          359
+        ],
+        [
+          227,
+          371
+        ],
+        [
+          239,
+          383
+        ],
+        [
+          251,
+          395
+        ],
+        [
+          262,
+          406
+        ],
+        [
+          263,
+          407
+        ],
+        [
+          284,
+          428
+        ],
+        [
+          285,
+          429
+        ],
+        [
+          299,
+          443
+        ],
+        [
+          323,
+          467
+        ],
+        [
+          335,
+          479
+        ],
+        [
+          347,
+          491
+        ],
+        [
+          359,
+          503
+        ],
+        [
+          371,
+          515
+        ],
+        [
+          383,
+          527
+        ],
+        [
+          395,
+          539
+        ],
+        [
+          407,
+          551
+        ],
+        [
+          431,
+          575
+        ],
+        [
+          443,
+          587
+        ],
+        [
+          467,
+          611
+        ],
+        [
+          479,
+          623
+        ],
+        [
+          491,
+          635
+        ],
+        [
+          527,
+          671
+        ],
+        [
+          539,
+          683
+        ],
+        [
+          551,
+          695
+        ],
+        [
+          575,
+          719
+        ],
+        [
+          587,
+          731
+        ],
+        [
+          623,
+          767
+        ],
+        [
+          683,
+          827
+        ],
+        [
+          719,
+          863
+        ],
+        [
+          767,
+          911
+        ],
+        [
+          779,
+          923
+        ],
+        [
+          815,
+          959
+        ],
+        [
+          827,
+          971
+        ],
+        [
+          875,
+          1019
+        ],
+        [
+          911,
+          1055
+        ],
+        [
+          923,
+          1067
+        ],
+        [
+          935,
+          1079
+        ],
+        [
+          947,
+          1091
+        ],
+        [
+          959,
+          1103
+        ],
+        [
+          971,
+          1115
+        ],
+        [
+          1007,
+          1151
+        ],
+        [
+          1019,
+          1163
+        ],
+        [
+          1055,
+          1199
+        ],
+        [
+          1067,
+          1211
+        ],
+        [
+          1079,
+          1223
+        ],
+        [
+          1091,
+          1235
+        ],
+        [
+          1103,
+          1247
+        ],
+        [
+          1115,
+          1259
+        ],
+        [
+          1151,
+          1295
+        ],
+        [
+          1163,
+          1307
+        ],
+        [
+          1199,
+          1343
+        ],
+        [
+          1211,
+          1355
+        ],
+        [
+          1223,
+          1367
+        ],
+        [
+          1235,
+          1379
+        ],
+        [
+          1247,
+          1391
+        ],
+        [
+          1259,
+          1403
+        ],
+        [
+          1295,
+          1439
+        ],
+        [
+          1343,
+          1487
+        ],
+        [
+          1355,
+          1499
+        ],
+        [
+          1391,
+          1535
+        ],
+        [
+          1403,
+          1547
+        ],
+        [
+          1451,
+          1595
+        ],
+        [
+          1487,
+          1631
+        ],
+        [
+          1547,
+          1691
+        ],
+        [
+          1583,
+          1727
+        ],
+        [
+          1595,
+          1739
+        ],
+        [
+          1619,
+          1763
+        ],
+        [
+          1631,
+          1775
+        ],
+        [
+          1643,
+          1787
+        ],
+        [
+          1679,
+          1823
+        ],
+        [
+          1691,
+          1835
+        ],
+        [
+          1703,
+          1847
+        ],
+        [
+          1727,
+          1871
+        ],
+        [
+          1739,
+          1883
+        ],
+        [
+          1763,
+          1907
+        ],
+        [
+          1775,
+          1919
+        ],
+        [
+          1787,
+          1931
+        ],
+        [
+          1799,
+          1943
+        ],
+        [
+          1811,
+          1955
+        ],
+        [
+          1823,
+          1967
+        ],
+        [
+          1835,
+          1979
+        ],
+        [
+          1847,
+          1991
+        ],
+        [
+          1871,
+          2015
+        ],
+        [
+          1880,
+          2024
+        ],
+        [
+          1881,
+          2025
+        ],
+        [
+          1906,
+          2050
+        ],
+        [
+          1907,
+          2051
+        ],
+        [
+          1919,
+          2063
+        ],
+        [
+          1931,
+          2075
+        ],
+        [
+          1943,
+          2087
+        ],
+        [
+          1955,
+          2099
+        ],
+        [
+          1967,
+          2111
+        ],
+        [
+          1979,
+          2123
+        ],
+        [
+          1990,
+          2134
+        ],
+        [
+          1991,
+          2135
+        ],
+        [
+          2012,
+          2156
+        ],
+        [
+          2013,
+          2157
+        ],
+        [
+          2023,
+          2167
+        ],
+        [
+          2024,
+          2168
+        ],
+        [
+          2025,
+          2169
+        ],
+        [
+          2026,
+          2170
+        ],
+        [
+          2036,
+          2180
+        ],
+        [
+          2037,
+          2181
+        ],
+        [
+          2038,
+          2182
+        ],
+        [
+          2048,
+          2192
+        ],
+        [
+          2049,
+          2193
+        ],
+        [
+          2050,
+          2194
+        ],
+        [
+          2051,
+          2195
+        ],
+        [
+          2060,
+          2204
+        ],
+        [
+          2061,
+          2205
+        ],
+        [
+          2062,
+          2206
+        ],
+        [
+          2063,
+          2207
+        ],
+        [
+          2072,
+          2216
+        ],
+        [
+          2073,
+          2217
+        ],
+        [
+          2074,
+          2218
+        ],
+        [
+          2075,
+          2219
+        ],
+        [
+          2084,
+          2228
+        ],
+        [
+          2085,
+          2229
+        ],
+        [
+          2086,
+          2230
+        ],
+        [
+          2096,
+          2240
+        ],
+        [
+          2097,
+          2241
+        ],
+        [
+          2098,
+          2242
+        ],
+        [
+          2108,
+          2252
+        ],
+        [
+          2109,
+          2253
+        ],
+        [
+          2110,
+          2254
+        ],
+        [
+          2111,
+          2255
+        ],
+        [
+          2120,
+          2264
+        ],
+        [
+          2121,
+          2265
+        ],
+        [
+          2122,
+          2266
+        ],
+        [
+          2123,
+          2267
+        ],
+        [
+          2132,
+          2276
+        ],
+        [
+          2133,
+          2277
+        ],
+        [
+          2134,
+          2278
+        ],
+        [
+          2135,
+          2279
+        ],
+        [
+          2144,
+          2288
+        ],
+        [
+          2145,
+          2289
+        ],
+        [
+          2146,
+          2290
+        ],
+        [
+          2155,
+          2299
+        ],
+        [
+          2156,
+          2300
+        ],
+        [
+          2157,
+          2301
+        ],
+        [
+          2158,
+          2302
+        ]
+      ],
+      "openingM": [
+        3.4910204135024514e-06,
+        1.1242749300893774e-05,
+        1.5259901940985654e-05,
+        7.761291201843e-06,
+        6.9084053271355254e-06,
+        1.4944269738406488e-05,
+        8.193968906735738e-06,
+        6.370044235324161e-06,
+        1.4234411478688367e-05,
+        1.021407819858634e-05,
+        3.863194385604061e-06,
+        5.8388069709548175e-06,
+        1.3087378264563512e-05,
+        1.1112843370626605e-05,
+        1.0983041801049331e-05,
+        5.496398439334648e-06,
+        1.2082275114159856e-05,
+        8.142872971013856e-06,
+        8.03149007663107e-06,
+        4.9942086546429495e-06,
+        1.08085193045809e-05,
+        5.815292721482025e-06,
+        4.995661868782747e-06,
+        1.0812926540703821e-05,
+        5.810876753202973e-06,
+        5.501306853470453e-06,
+        1.20956194283492e-05,
+        8.104172904869884e-06,
+        7.480817171624359e-06,
+        5.844085617038489e-06,
+        1.3086471637910462e-05,
+        1.1003376712093907e-05,
+        1.2210816891308326e-05,
+        6.372515999157534e-06,
+        1.4203874644028916e-05,
+        1.0260852102262407e-05,
+        3.84402838645879e-06,
+        6.9308554987935235e-06,
+        1.4943507360361063e-05,
+        8.176665656253064e-06,
+        3.603131964545911e-06,
+        1.1098307113077542e-05,
+        1.5268378967830597e-05,
+        7.770508472513611e-06,
+        2.1291534054479747e-06,
+        2.1525719820697965e-06,
+        4.3349498828212826e-19,
+        7.815538348714932e-07,
+        1.2181334865789923e-06,
+        6.595640916232966e-07,
+        3.0789802876843183e-07,
+        2.9658069431981894e-07,
+        6.400629225950001e-07,
+        1.191195612175024e-06,
+        0.0,
+        7.89230777247362e-07,
+        2.17126154994908e-06,
+        2.1494424155377684e-06,
+        6.1239539217357576e-06,
+        1.7622817865697815e-07,
+        8.208362175490512e-09,
+        -5.019211022450716e-07,
+        -5.696809717161129e-07,
+        -5.710096688414856e-07,
+        -5.105242004575664e-07,
+        -4.2553772235690427e-10,
+        1.7557478334261317e-07,
+        6.088987951851049e-06,
+        -2.915991138111568e-07,
+        -5.257647827672881e-07,
+        -1.4308238807468456e-06,
+        -9.130607114362261e-07,
+        -9.090113231446289e-07,
+        -1.438528919850275e-06,
+        -5.30840675220071e-07,
+        -2.9711812376991014e-07,
+        -1.0231928750754779e-05,
+        2.1790646017370144e-19,
+        0.0,
+        -1.0412310201549314e-05,
+        -9.339974617575481e-07,
+        -9.368874395644184e-07,
+        -9.340363185651383e-07,
+        -9.364598904609624e-07,
+        -8.716756373916124e-06,
+        -5.139375411066831e-07,
+        -6.347429957769323e-07,
+        4.1106428871227995e-08,
+        4.299738320317753e-08,
+        -6.341557956491267e-07,
+        -5.137176387588413e-07,
+        -8.347033123483411e-06,
+        -4.113420396347963e-06,
+        -4.649465548677339e-07,
+        -6.758968288029563e-07,
+        -1.495751437293302e-07,
+        -1.4957395524070462e-07,
+        -6.758914335735275e-07,
+        -4.6494958007265447e-07,
+        -4.111079868958269e-06,
+        -8.716737173247764e-06,
+        -5.134966955572977e-07,
+        -6.349785032969532e-07,
+        4.246818243952124e-08,
+        4.198452552059751e-08,
+        -6.35167156934183e-07,
+        -5.137185670901504e-07,
+        -8.819291423553173e-06,
+        -9.387402592477727e-07,
+        -9.36886563579261e-07,
+        -9.388436941342782e-07,
+        -9.364608809552901e-07,
+        -1.0231961947530963e-05,
+        -2.8392014065114373e-21,
+        -3.40584610857096e-21,
+        -9.673548048599142e-06,
+        -2.9159015431994945e-07,
+        -5.311135012928649e-07,
+        -1.4504981743813354e-06,
+        -9.130620251618053e-07,
+        -9.193885749026702e-07,
+        -1.4498402933096217e-06,
+        -5.308419479587687e-07,
+        -2.928452723767922e-07,
+        6.1239797091154295e-06,
+        1.781706684883747e-07,
+        4.4051146386819215e-09,
+        -5.093858757496007e-07,
+        -5.750597893851966e-07,
+        -5.785991059451288e-07,
+        -5.143730971736332e-07,
+        3.4610663859827496e-09,
+        1.7557998061586892e-07,
+        6.144012785983131e-06,
+        2.129149713885995e-06,
+        2.1528128389903447e-06,
+        0.0,
+        8.021732166372334e-07,
+        1.2350215854021015e-06,
+        6.662710004832222e-07,
+        3.1013215925221834e-07,
+        3.0390872437293935e-07,
+        6.521449010145485e-07,
+        1.2230586591913577e-06,
+        -4.334361747604018e-19,
+        7.892436535260003e-07,
+        2.1119569625256282e-06,
+        2.2076677518707546e-06,
+        3.491026498397535e-06,
+        1.0709955281379814e-05,
+        1.5204258216328325e-05,
+        7.799697091281616e-06,
+        6.804110311758069e-06,
+        1.4942586616042006e-05,
+        8.070079350499366e-06,
+        6.352690518381251e-06,
+        1.4257654821553568e-05,
+        1.0106235481860861e-05,
+        3.8073578943872255e-06,
+        5.809636019638804e-06,
+        1.3084812204745548e-05,
+        1.0928413904209583e-05,
+        1.2189088278280305e-05,
+        5.464690559767928e-06,
+        1.2067677014256529e-05,
+        8.013328145045371e-06,
+        8.017995234351318e-06,
+        4.976982409660971e-06,
+        1.0799426904185689e-05,
+        5.845285775931197e-06,
+        4.976882210522526e-06,
+        1.0801837516570205e-05,
+        5.8450217697521174e-06,
+        5.4686566144696165e-06,
+        1.2077410088685178e-05,
+        8.01472413946346e-06,
+        8.329923364651161e-06,
+        5.817165186979433e-06,
+        1.3085561707468903e-05,
+        1.0864695060377024e-05,
+        1.2074257549776795e-05,
+        6.357748655986415e-06,
+        1.4226589377079075e-05,
+        9.959163102829286e-06,
+        3.826722292881499e-06,
+        6.8282138629643875e-06,
+        1.4943830502258484e-05,
+        8.050715415076681e-06,
+        3.39758498978463e-06,
+        1.0962339083629396e-05,
+        1.528365419853598e-05,
+        7.802347776516943e-06
+      ],
+      "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+      "unresolvedAffineCells": 44,
+      "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail.",
+      "shadingVertices": 1813,
+      "normals": "Area-weighted within smooth regions; split at resolved creases and crack walls. No displaced surface detail.",
+      "fractureTopologyPreserved": true,
+      "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23\\state.npz",
+      "sourceSha256": "a094131655a5366040dbc1bb0017902ec336c5fd243f97a4c23c40207374cf64",
+      "physicalSeconds": 18.08
+    },
+    "boundaryWorkJ": 0.028367374217672964,
+    "source": {
+      "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-23\\state.npz",
+      "sourceSha256": "a039f78aca0397a7ad7159a0de7c2002658cde7db5b6d09b61dbec1688ed3e1c",
+      "coolingSetup": {
+        "description": "Initially molten 8 x 6 x 3 mm specimen on a 1450 K reservoir; gravity and all exposed-surface heat losses active. No initial solid, seeded damage or imposed crack opening.",
+        "initialTemperatureK": 1450.0,
+        "bedTemperatureK": 1450.0,
+        "cellSizeM": [
+          0.001,
+          0.001,
+          0.0005
+        ],
+        "sampleSizeM": [
+          0.0005,
+          0.0005,
+          0.00025
+        ],
+        "initialParticles": 2304,
+        "refinement": 1
+      },
+      "time": 18.0,
+      "metrics": {
+        "time": 18.0,
+        "particles": 2304,
+        "topMeanTemperatureK": 1164.1602636434839,
+        "bottomMeanTemperatureK": 1383.6158126492535,
+        "topCoherentFraction": 1.0,
+        "bottomCoherentFraction": 0.010416666666666666,
+        "upperDamagedParticles": 92,
+        "bottomDamagedParticles": 0,
+        "upperBrokenBonds": 0,
+        "bottomBrokenBonds": 0,
+        "maximumDamage": 0.8161519967792523,
+        "maximumSpeed": 4.269051588233926e-07,
+        "thermalBalanceRelative": 9.550227254653549e-12
+      },
+      "load": "Opposed horizontal end grips on the cooled upper crust. This is a laboratory fracture validation, not free-flow lava motion.",
+      "gripSpeedMPerS": 0.001,
+      "seededDamage": false,
+      "prescribedCracks": false
+    },
+    "wallSeconds": 13.148727416992188,
+    "diagnostic": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23\\state-surface-diagnostic.png",
+    "limits": "Validates thermally formed crust under explicit tensile grips. This does not validate spontaneous free-flow lava breakup or photorealism."
+  },
+  "surface": {
+    "method": "locally connected advected material domains",
+    "particles": 2304,
+    "vertices": 3022,
+    "triangles": 2620,
+    "brokenFacePairs": 192,
+    "openFacePairs": 127,
+    "maximumOpeningM": 1.528365419853598e-05,
+    "minimumOpeningM": -1.0412310201549314e-05,
+    "crackWallTriangles": 508,
+    "globalMaterialComponents": 1,
+    "solidMaterialComponents": 1,
+    "relativeVolumeDifference": 0.010593975755723772,
+    "cellVolumeRelativeErrorP95": 0.06173959340168265,
+    "maximumCellVolumeRelativeError": 0.08327441849647362,
+    "minimumCellVolumeM3": 5.96496199835344e-11,
+    "maximumDeformationCondition": 1.2858539613771245,
+    "solverParticleVolumeM3": 1.4368352071186643e-07,
+    "reconstructedVolumeM3": 1.4520570044678498e-07,
+    "openingPairs": [
+      [
+        7,
+        151
+      ],
+      [
+        8,
+        152
+      ],
+      [
+        9,
+        153
+      ],
+      [
+        10,
+        154
+      ],
+      [
+        20,
+        164
+      ],
+      [
+        21,
+        165
+      ],
+      [
+        22,
+        166
+      ],
+      [
+        32,
+        176
+      ],
+      [
+        33,
+        177
+      ],
+      [
+        34,
+        178
+      ],
+      [
+        35,
+        179
+      ],
+      [
+        44,
+        188
+      ],
+      [
+        45,
+        189
+      ],
+      [
+        46,
+        190
+      ],
+      [
+        47,
+        191
+      ],
+      [
+        56,
+        200
+      ],
+      [
+        57,
+        201
+      ],
+      [
+        58,
+        202
+      ],
+      [
+        59,
+        203
+      ],
+      [
+        68,
+        212
+      ],
+      [
+        69,
+        213
+      ],
+      [
+        70,
+        214
+      ],
+      [
+        80,
+        224
+      ],
+      [
+        81,
+        225
+      ],
+      [
+        82,
+        226
+      ],
+      [
+        92,
+        236
+      ],
+      [
+        93,
+        237
+      ],
+      [
+        94,
+        238
+      ],
+      [
+        95,
+        239
+      ],
+      [
+        104,
+        248
+      ],
+      [
+        105,
+        249
+      ],
+      [
+        106,
+        250
+      ],
+      [
+        107,
+        251
+      ],
+      [
+        116,
+        260
+      ],
+      [
+        117,
+        261
+      ],
+      [
+        118,
+        262
+      ],
+      [
+        119,
+        263
+      ],
+      [
+        128,
+        272
+      ],
+      [
+        129,
+        273
+      ],
+      [
+        130,
+        274
+      ],
+      [
+        139,
+        283
+      ],
+      [
+        140,
+        284
+      ],
+      [
+        141,
+        285
+      ],
+      [
+        142,
+        286
+      ],
+      [
+        152,
+        296
+      ],
+      [
+        153,
+        297
+      ],
+      [
+        178,
+        322
+      ],
+      [
+        179,
+        323
+      ],
+      [
+        191,
+        335
+      ],
+      [
+        203,
+        347
+      ],
+      [
+        215,
+        359
+      ],
+      [
+        227,
+        371
+      ],
+      [
+        239,
+        383
+      ],
+      [
+        251,
+        395
+      ],
+      [
+        262,
+        406
+      ],
+      [
+        263,
+        407
+      ],
+      [
+        284,
+        428
+      ],
+      [
+        285,
+        429
+      ],
+      [
+        299,
+        443
+      ],
+      [
+        323,
+        467
+      ],
+      [
+        335,
+        479
+      ],
+      [
+        347,
+        491
+      ],
+      [
+        359,
+        503
+      ],
+      [
+        371,
+        515
+      ],
+      [
+        383,
+        527
+      ],
+      [
+        395,
+        539
+      ],
+      [
+        407,
+        551
+      ],
+      [
+        431,
+        575
+      ],
+      [
+        443,
+        587
+      ],
+      [
+        467,
+        611
+      ],
+      [
+        479,
+        623
+      ],
+      [
+        491,
+        635
+      ],
+      [
+        527,
+        671
+      ],
+      [
+        539,
+        683
+      ],
+      [
+        551,
+        695
+      ],
+      [
+        575,
+        719
+      ],
+      [
+        587,
+        731
+      ],
+      [
+        623,
+        767
+      ],
+      [
+        683,
+        827
+      ],
+      [
+        719,
+        863
+      ],
+      [
+        767,
+        911
+      ],
+      [
+        779,
+        923
+      ],
+      [
+        815,
+        959
+      ],
+      [
+        827,
+        971
+      ],
+      [
+        875,
+        1019
+      ],
+      [
+        911,
+        1055
+      ],
+      [
+        923,
+        1067
+      ],
+      [
+        935,
+        1079
+      ],
+      [
+        947,
+        1091
+      ],
+      [
+        959,
+        1103
+      ],
+      [
+        971,
+        1115
+      ],
+      [
+        1007,
+        1151
+      ],
+      [
+        1019,
+        1163
+      ],
+      [
+        1055,
+        1199
+      ],
+      [
+        1067,
+        1211
+      ],
+      [
+        1079,
+        1223
+      ],
+      [
+        1091,
+        1235
+      ],
+      [
+        1103,
+        1247
+      ],
+      [
+        1115,
+        1259
+      ],
+      [
+        1151,
+        1295
+      ],
+      [
+        1163,
+        1307
+      ],
+      [
+        1199,
+        1343
+      ],
+      [
+        1211,
+        1355
+      ],
+      [
+        1223,
+        1367
+      ],
+      [
+        1235,
+        1379
+      ],
+      [
+        1247,
+        1391
+      ],
+      [
+        1259,
+        1403
+      ],
+      [
+        1295,
+        1439
+      ],
+      [
+        1343,
+        1487
+      ],
+      [
+        1355,
+        1499
+      ],
+      [
+        1391,
+        1535
+      ],
+      [
+        1403,
+        1547
+      ],
+      [
+        1451,
+        1595
+      ],
+      [
+        1487,
+        1631
+      ],
+      [
+        1547,
+        1691
+      ],
+      [
+        1583,
+        1727
+      ],
+      [
+        1595,
+        1739
+      ],
+      [
+        1619,
+        1763
+      ],
+      [
+        1631,
+        1775
+      ],
+      [
+        1643,
+        1787
+      ],
+      [
+        1679,
+        1823
+      ],
+      [
+        1691,
+        1835
+      ],
+      [
+        1703,
+        1847
+      ],
+      [
+        1727,
+        1871
+      ],
+      [
+        1739,
+        1883
+      ],
+      [
+        1763,
+        1907
+      ],
+      [
+        1775,
+        1919
+      ],
+      [
+        1787,
+        1931
+      ],
+      [
+        1799,
+        1943
+      ],
+      [
+        1811,
+        1955
+      ],
+      [
+        1823,
+        1967
+      ],
+      [
+        1835,
+        1979
+      ],
+      [
+        1847,
+        1991
+      ],
+      [
+        1871,
+        2015
+      ],
+      [
+        1880,
+        2024
+      ],
+      [
+        1881,
+        2025
+      ],
+      [
+        1906,
+        2050
+      ],
+      [
+        1907,
+        2051
+      ],
+      [
+        1919,
+        2063
+      ],
+      [
+        1931,
+        2075
+      ],
+      [
+        1943,
+        2087
+      ],
+      [
+        1955,
+        2099
+      ],
+      [
+        1967,
+        2111
+      ],
+      [
+        1979,
+        2123
+      ],
+      [
+        1990,
+        2134
+      ],
+      [
+        1991,
+        2135
+      ],
+      [
+        2012,
+        2156
+      ],
+      [
+        2013,
+        2157
+      ],
+      [
+        2023,
+        2167
+      ],
+      [
+        2024,
+        2168
+      ],
+      [
+        2025,
+        2169
+      ],
+      [
+        2026,
+        2170
+      ],
+      [
+        2036,
+        2180
+      ],
+      [
+        2037,
+        2181
+      ],
+      [
+        2038,
+        2182
+      ],
+      [
+        2048,
+        2192
+      ],
+      [
+        2049,
+        2193
+      ],
+      [
+        2050,
+        2194
+      ],
+      [
+        2051,
+        2195
+      ],
+      [
+        2060,
+        2204
+      ],
+      [
+        2061,
+        2205
+      ],
+      [
+        2062,
+        2206
+      ],
+      [
+        2063,
+        2207
+      ],
+      [
+        2072,
+        2216
+      ],
+      [
+        2073,
+        2217
+      ],
+      [
+        2074,
+        2218
+      ],
+      [
+        2075,
+        2219
+      ],
+      [
+        2084,
+        2228
+      ],
+      [
+        2085,
+        2229
+      ],
+      [
+        2086,
+        2230
+      ],
+      [
+        2096,
+        2240
+      ],
+      [
+        2097,
+        2241
+      ],
+      [
+        2098,
+        2242
+      ],
+      [
+        2108,
+        2252
+      ],
+      [
+        2109,
+        2253
+      ],
+      [
+        2110,
+        2254
+      ],
+      [
+        2111,
+        2255
+      ],
+      [
+        2120,
+        2264
+      ],
+      [
+        2121,
+        2265
+      ],
+      [
+        2122,
+        2266
+      ],
+      [
+        2123,
+        2267
+      ],
+      [
+        2132,
+        2276
+      ],
+      [
+        2133,
+        2277
+      ],
+      [
+        2134,
+        2278
+      ],
+      [
+        2135,
+        2279
+      ],
+      [
+        2144,
+        2288
+      ],
+      [
+        2145,
+        2289
+      ],
+      [
+        2146,
+        2290
+      ],
+      [
+        2155,
+        2299
+      ],
+      [
+        2156,
+        2300
+      ],
+      [
+        2157,
+        2301
+      ],
+      [
+        2158,
+        2302
+      ]
+    ],
+    "openingM": [
+      3.4910204135024514e-06,
+      1.1242749300893774e-05,
+      1.5259901940985654e-05,
+      7.761291201843e-06,
+      6.9084053271355254e-06,
+      1.4944269738406488e-05,
+      8.193968906735738e-06,
+      6.370044235324161e-06,
+      1.4234411478688367e-05,
+      1.021407819858634e-05,
+      3.863194385604061e-06,
+      5.8388069709548175e-06,
+      1.3087378264563512e-05,
+      1.1112843370626605e-05,
+      1.0983041801049331e-05,
+      5.496398439334648e-06,
+      1.2082275114159856e-05,
+      8.142872971013856e-06,
+      8.03149007663107e-06,
+      4.9942086546429495e-06,
+      1.08085193045809e-05,
+      5.815292721482025e-06,
+      4.995661868782747e-06,
+      1.0812926540703821e-05,
+      5.810876753202973e-06,
+      5.501306853470453e-06,
+      1.20956194283492e-05,
+      8.104172904869884e-06,
+      7.480817171624359e-06,
+      5.844085617038489e-06,
+      1.3086471637910462e-05,
+      1.1003376712093907e-05,
+      1.2210816891308326e-05,
+      6.372515999157534e-06,
+      1.4203874644028916e-05,
+      1.0260852102262407e-05,
+      3.84402838645879e-06,
+      6.9308554987935235e-06,
+      1.4943507360361063e-05,
+      8.176665656253064e-06,
+      3.603131964545911e-06,
+      1.1098307113077542e-05,
+      1.5268378967830597e-05,
+      7.770508472513611e-06,
+      2.1291534054479747e-06,
+      2.1525719820697965e-06,
+      4.3349498828212826e-19,
+      7.815538348714932e-07,
+      1.2181334865789923e-06,
+      6.595640916232966e-07,
+      3.0789802876843183e-07,
+      2.9658069431981894e-07,
+      6.400629225950001e-07,
+      1.191195612175024e-06,
+      0.0,
+      7.89230777247362e-07,
+      2.17126154994908e-06,
+      2.1494424155377684e-06,
+      6.1239539217357576e-06,
+      1.7622817865697815e-07,
+      8.208362175490512e-09,
+      -5.019211022450716e-07,
+      -5.696809717161129e-07,
+      -5.710096688414856e-07,
+      -5.105242004575664e-07,
+      -4.2553772235690427e-10,
+      1.7557478334261317e-07,
+      6.088987951851049e-06,
+      -2.915991138111568e-07,
+      -5.257647827672881e-07,
+      -1.4308238807468456e-06,
+      -9.130607114362261e-07,
+      -9.090113231446289e-07,
+      -1.438528919850275e-06,
+      -5.30840675220071e-07,
+      -2.9711812376991014e-07,
+      -1.0231928750754779e-05,
+      2.1790646017370144e-19,
+      0.0,
+      -1.0412310201549314e-05,
+      -9.339974617575481e-07,
+      -9.368874395644184e-07,
+      -9.340363185651383e-07,
+      -9.364598904609624e-07,
+      -8.716756373916124e-06,
+      -5.139375411066831e-07,
+      -6.347429957769323e-07,
+      4.1106428871227995e-08,
+      4.299738320317753e-08,
+      -6.341557956491267e-07,
+      -5.137176387588413e-07,
+      -8.347033123483411e-06,
+      -4.113420396347963e-06,
+      -4.649465548677339e-07,
+      -6.758968288029563e-07,
+      -1.495751437293302e-07,
+      -1.4957395524070462e-07,
+      -6.758914335735275e-07,
+      -4.6494958007265447e-07,
+      -4.111079868958269e-06,
+      -8.716737173247764e-06,
+      -5.134966955572977e-07,
+      -6.349785032969532e-07,
+      4.246818243952124e-08,
+      4.198452552059751e-08,
+      -6.35167156934183e-07,
+      -5.137185670901504e-07,
+      -8.819291423553173e-06,
+      -9.387402592477727e-07,
+      -9.36886563579261e-07,
+      -9.388436941342782e-07,
+      -9.364608809552901e-07,
+      -1.0231961947530963e-05,
+      -2.8392014065114373e-21,
+      -3.40584610857096e-21,
+      -9.673548048599142e-06,
+      -2.9159015431994945e-07,
+      -5.311135012928649e-07,
+      -1.4504981743813354e-06,
+      -9.130620251618053e-07,
+      -9.193885749026702e-07,
+      -1.4498402933096217e-06,
+      -5.308419479587687e-07,
+      -2.928452723767922e-07,
+      6.1239797091154295e-06,
+      1.781706684883747e-07,
+      4.4051146386819215e-09,
+      -5.093858757496007e-07,
+      -5.750597893851966e-07,
+      -5.785991059451288e-07,
+      -5.143730971736332e-07,
+      3.4610663859827496e-09,
+      1.7557998061586892e-07,
+      6.144012785983131e-06,
+      2.129149713885995e-06,
+      2.1528128389903447e-06,
+      0.0,
+      8.021732166372334e-07,
+      1.2350215854021015e-06,
+      6.662710004832222e-07,
+      3.1013215925221834e-07,
+      3.0390872437293935e-07,
+      6.521449010145485e-07,
+      1.2230586591913577e-06,
+      -4.334361747604018e-19,
+      7.892436535260003e-07,
+      2.1119569625256282e-06,
+      2.2076677518707546e-06,
+      3.491026498397535e-06,
+      1.0709955281379814e-05,
+      1.5204258216328325e-05,
+      7.799697091281616e-06,
+      6.804110311758069e-06,
+      1.4942586616042006e-05,
+      8.070079350499366e-06,
+      6.352690518381251e-06,
+      1.4257654821553568e-05,
+      1.0106235481860861e-05,
+      3.8073578943872255e-06,
+      5.809636019638804e-06,
+      1.3084812204745548e-05,
+      1.0928413904209583e-05,
+      1.2189088278280305e-05,
+      5.464690559767928e-06,
+      1.2067677014256529e-05,
+      8.013328145045371e-06,
+      8.017995234351318e-06,
+      4.976982409660971e-06,
+      1.0799426904185689e-05,
+      5.845285775931197e-06,
+      4.976882210522526e-06,
+      1.0801837516570205e-05,
+      5.8450217697521174e-06,
+      5.4686566144696165e-06,
+      1.2077410088685178e-05,
+      8.01472413946346e-06,
+      8.329923364651161e-06,
+      5.817165186979433e-06,
+      1.3085561707468903e-05,
+      1.0864695060377024e-05,
+      1.2074257549776795e-05,
+      6.357748655986415e-06,
+      1.4226589377079075e-05,
+      9.959163102829286e-06,
+      3.826722292881499e-06,
+      6.8282138629643875e-06,
+      1.4943830502258484e-05,
+      8.050715415076681e-06,
+      3.39758498978463e-06,
+      1.0962339083629396e-05,
+      1.528365419853598e-05,
+      7.802347776516943e-06
+    ],
+    "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+    "unresolvedAffineCells": 44,
+    "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail.",
+    "shadingVertices": 1813,
+    "normals": "Area-weighted within smooth regions; split at resolved creases and crack walls. No displaced surface detail.",
+    "fractureTopologyPreserved": true,
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23\\state.npz",
+    "sourceSha256": "a094131655a5366040dbc1bb0017902ec336c5fd243f97a4c23c40207374cf64",
+    "physicalSeconds": 18.08
+  },
+  "renderPreflight": {
+    "status": "blocked",
+    "checks": {
+      "currentSource": true,
+      "topology": true,
+      "openFractures": true,
+      "volume": true,
+      "upperCrust": false,
+      "horizontalResolution": true,
+      "noInversion": true,
+      "resolvedDeformation": true,
+      "productionScene": false,
+      "fractureTimestepConvergence": false
+    },
+    "upperShareOfDamagedParticles": 0.49480968858131485,
+    "message": "Geometric preflight only; passing still requires visual and motion review. Controlled fracture coupons are diagnostic-only.",
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\upper-crust-load-23\\state-surface.npz"
+  },
+  "timestep": {
+    "status": "fail",
+    "runs": [
+      "upper-crust-load-23",
+      "upper-crust-load-23-fine"
+    ],
+    "time": 18.08,
+    "maxDtSeconds": [
+      0.02,
+      0.01
+    ],
+    "gates": {
+      "velocity": false,
+      "position": false,
+      "loadingWork": false,
+      "temperature": true
+    },
+    "massWeightedVelocityRelativeDifference": 8.794416928086243,
+    "maximumPositionDifferenceM": 0.00027625364406916954,
+    "boundaryWorkJ": [
+      0.028367374217672964,
+      0.011058861354022152
+    ],
+    "boundaryWorkRelativeDifference": 1.5651261291340486,
+    "maximumTemperatureDifferenceK": 0.6276702790980835,
+    "meaning": "Both runs form and export upper-crust fractures. Their trajectories/loading work must also converge; mechanism success alone is insufficient.",
+    "disposition": "Production render blocked until fracture time integration is resolved. No final simulation is claimed."
+  },
+  "sourceSha256": "a094131655a5366040dbc1bb0017902ec336c5fd243f97a4c23c40207374cf64",
+  "assets": {
+    "geometry-comparison.png": {
+      "size": [
+        1440,
+        495
+      ],
+      "bytes": 56663,
+      "sha256": "707beae5e05796965bc5d5f7055dd9f1182c04053d2207f4404256e88d43174f"
+    },
+    "cooling-proof.png": {
+      "size": [
+        1440,
+        900
+      ],
+      "bytes": 91685,
+      "sha256": "90146a9e90c54e96ee4e25c24e15696bcbfaef88abc0e378c50e4bb51210697c"
+    },
+    "fracture-proof.png": {
+      "size": [
+        1440,
+        900
+      ],
+      "bytes": 97768,
+      "sha256": "b0e32ada7f6cf9656d704b7098ae5cbb6599a1976e8ec0430d6870900f68ebb0"
+    },
+    "surface-tests.png": {
+      "size": [
+        1440,
+        430
+      ],
+      "bytes": 11114,
+      "sha256": "4dec1e0a0eb8d59a6880588e4eff2b073e2d97c373444cc682c3239f0f0651ac"
+    }
+  },
+  "remaining": [
+    "The test uses explicit end grips; it does not prove spontaneous free-flow crust breakup.",
+    "The material-cell surface still shows grid-scale facets. It is not the final basalt surface.",
+    "Spatial/fracture convergence, capillarity, solid-solid friction, gas coupling and the final material look remain unproved.",
+    "No new full-size animation or GPU render was launched."
+  ]
+}

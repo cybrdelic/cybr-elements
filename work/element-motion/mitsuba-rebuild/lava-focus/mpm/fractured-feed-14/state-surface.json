@@ -1,0 +1,69 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-14\\state.npz",
+  "sourceSha256": "122650fada29de894be2ce880eb400524a83b6e5a6b6e1c1551ebbca8aef576b",
+  "method": "Embedded initial clast boundaries with measured affine fits to MPM material displacement; conservative free-melt kernel reconstruction",
+  "clasts": [
+    {
+      "label": 1,
+      "affineFitMaxM": 6.876969857226191e-16,
+      "volumeDifference": 4.434433544128256e-14,
+      "centroidDisplacementM": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": 2,
+      "affineFitMaxM": 2.6479404645468863e-17,
+      "volumeDifference": 1.893138218641051e-16,
+      "centroidDisplacementM": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": 3,
+      "affineFitMaxM": 2.1866462936412747e-16,
+      "volumeDifference": 9.57082704692235e-15,
+      "centroidDisplacementM": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": 4,
+      "affineFitMaxM": 3.6594031814720145e-17,
+      "volumeDifference": 4.34246616702428e-15,
+      "centroidDisplacementM": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": 5,
+      "affineFitMaxM": 8.709970391202742e-17,
+      "volumeDifference": 4.3295913059846924e-15,
+      "centroidDisplacementM": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": 6,
+      "affineFitMaxM": 3.073742032675259e-16,
+      "volumeDifference": 1.9451737777157123e-14,
+      "centroidDisplacementM": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "meltVolumeDifference": 9.8978450431604e-05,
+  "limits": "Initial cracks and subgrid surface relief are specified initial geometry. No simulated crack-formation claim. Per-clast affine surface approximation; melt/solid kernel overlap at unresolved interfaces remains possible."
+}

@@ -1,0 +1,27 @@
+{
+  "scope": "Water02 only",
+  "defects": [
+    "Form disperses immediately after writing",
+    "Manufactured fragment cloud reads as particles"
+  ],
+  "goal": "Moving coherent water around02 through5.8s, then physical release; no point-cloud spray",
+  "iterations": 3,
+  "pilotFrames": [
+    45,
+    75,
+    120,
+    165
+  ],
+  "capture": "Native FLIP states and CPU Cycles images, then short motion preview",
+  "gates": [
+    "Finite converged pressure solves",
+    "Source/outflow accounting",
+    "Coherent form at5.5s",
+    "Surface movement during hold",
+    "No visible point/sprite cloud",
+    "Black background and exit"
+  ],
+  "forceDisclosure": "Authored smooth bending force around variable-width3D guide tubes; no per-particle position targets or render masks",
+  "representation": "Resolved reconstructed fluid surface; isolated under-resolved markers are not rendered as spheres or multiplied into fragments",
+  "expandedScope": "User now requests the clean full silhouette of fire and air for water, earth, lightning. Water body uses full artwork volume."
+}

@@ -1,0 +1,83 @@
+{
+  "grid": [
+    112,
+    36,
+    72
+  ],
+  "lo": [
+    -5.5,
+    -1.8,
+    0.0
+  ],
+  "extent": [
+    11.0,
+    3.6,
+    5.4
+  ],
+  "frames": 300,
+  "finite": true,
+  "emitterCoupling": "Actual per-frame Bullet/kinematic fracture transforms",
+  "method": "CPU incompressible advection for the three new local atmospheres.\n\nPeriodic FFT pressure projection with padded, absorbing outer boundaries.\nAuthored emission/curl force, semi-Lagrangian transport, buoyancy, dissipation.\nPNG atlases retain the 3D density; they are sampled as a volume in Cycles.\n",
+  "rows": [
+    {
+      "frame": 0,
+      "maxDensity": 0.0,
+      "densitySum": 0.0,
+      "maxSpeed": 0.007973771542310715
+    },
+    {
+      "frame": 30,
+      "maxDensity": 0.033838823437690735,
+      "densitySum": 100.4831771850586,
+      "maxSpeed": 0.29176002740859985
+    },
+    {
+      "frame": 60,
+      "maxDensity": 0.13320396840572357,
+      "densitySum": 746.37451171875,
+      "maxSpeed": 0.5589456558227539
+    },
+    {
+      "frame": 90,
+      "maxDensity": 0.23289403319358826,
+      "densitySum": 1411.4296875,
+      "maxSpeed": 0.745920717716217
+    },
+    {
+      "frame": 120,
+      "maxDensity": 0.2471102625131607,
+      "densitySum": 1801.907470703125,
+      "maxSpeed": 0.8343575596809387
+    },
+    {
+      "frame": 150,
+      "maxDensity": 0.2403944879770279,
+      "densitySum": 2012.2054443359375,
+      "maxSpeed": 0.8950116038322449
+    },
+    {
+      "frame": 180,
+      "maxDensity": 0.2413685917854309,
+      "densitySum": 2115.8798828125,
+      "maxSpeed": 0.9759024381637573
+    },
+    {
+      "frame": 210,
+      "maxDensity": 0.23384997248649597,
+      "densitySum": 2151.408203125,
+      "maxSpeed": 1.0936100482940674
+    },
+    {
+      "frame": 240,
+      "maxDensity": 0.19357968866825104,
+      "densitySum": 1941.1282958984375,
+      "maxSpeed": 1.0670591592788696
+    },
+    {
+      "frame": 270,
+      "maxDensity": 0.17241661250591278,
+      "densitySum": 1448.0906982421875,
+      "maxSpeed": 1.13411545753479
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\thermal-screen\\frame-0000\\state.npz",
+  "sourceSha256": "a38df87a416e82f3396c7dc2cf4df34a300866a4471a2e08a183c703bba195be",
+  "physicalSeconds": 0.0,
+  "vertices": 6182,
+  "triangles": 12360,
+  "solverParticleVolumeM3": 5.080000000000002e-07,
+  "reconstructedVolumeM3": 5.080290656762783e-07,
+  "relativeVolumeDifference": 5.721589818538678e-05,
+  "kernelSigmaRenderCells": [
+    1.4285714285714286,
+    1.4285714285714286,
+    2.857142857142857
+  ],
+  "kernelSigmaM": [
+    0.0005,
+    0.0005,
+    0.0005
+  ],
+  "renderCellSizeM": [
+    0.00035,
+    0.00035,
+    0.000175
+  ],
+  "method": "density reconstruction",
+  "fractureTopologyPreserved": true,
+  "limits": "Unfractured material reconstruction. Solidification does not switch the exterior to voxel cells. Explicit --method kernel on a fractured state does not preserve fracture topology. Material coordinates use local inverse deformation gradients."
+}

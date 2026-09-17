@@ -1,0 +1,6 @@
+Reference located: C:/Users/alexf/Documents/ChatGPT/cybrdelic-platform/flip-water-threejs.
+Inspected regenerated offline III.1 Jets/Impact GIF states 10,23,36; not the WebGPU preview. README identifies these as regenerated baseline films rather than the original delivered binaries.
+User rejected current Mantaflow lettering due oversized drops. Do not iterate by merely shrinking display size or raising video resolution.
+Reference traits: irregular thin sheets, fine dispersed spray, narrow torn ligaments, coherent bodies broken into much smaller scales; active fast interaction, not thick suspended glass tubing.
+Production source: src/main.js exports FlipSolver and makeProductionPreset. quality-profile.js locks FLIP .93, particle separation, reconstruction spacing .43h, PCA support .99h, sigma .34, two smoothing passes, no temporal field or shape blending, no global swelling recovery. Offline reconstruction has disjoint primary droplets; do not duplicate them in both mesh and spheres.
+Next implementation should reuse this source/reconstruction pipeline in an isolated workspace copy, adapting the emitter/scene to brand paths. Keep original source read-only. A smaller emitter in a coarse domain will not recover small structures; match resolution to local stream width and breakup scales. No replacement video was rendered in this reference-inspection turn.

@@ -1,0 +1,84 @@
+{
+  "method": "locally connected advected material domains",
+  "particles": 152,
+  "vertices": 323,
+  "triangles": 548,
+  "brokenFacePairs": 9,
+  "openFacePairs": 9,
+  "maximumOpeningM": 0.0002749999099786426,
+  "minimumOpeningM": 7.0728480404122756e-06,
+  "crackWallTriangles": 36,
+  "globalMaterialComponents": 1,
+  "solidMaterialComponents": 1,
+  "relativeVolumeDifference": 0.041476299250602186,
+  "cellVolumeRelativeErrorP95": 0.11564468489178158,
+  "maximumCellVolumeRelativeError": 0.15412795438335145,
+  "minimumCellVolumeM3": 2.500405108911102e-10,
+  "maximumDeformationCondition": 1.3442708852585337,
+  "solverParticleVolumeM3": 3.8016746289457026e-08,
+  "reconstructedVolumeM3": 3.9593540235092766e-08,
+  "openingPairs": [
+    [
+      76,
+      80
+    ],
+    [
+      76,
+      78
+    ],
+    [
+      77,
+      81
+    ],
+    [
+      77,
+      79
+    ],
+    [
+      80,
+      82
+    ],
+    [
+      81,
+      83
+    ],
+    [
+      84,
+      86
+    ],
+    [
+      85,
+      87
+    ],
+    [
+      86,
+      87
+    ]
+  ],
+  "openingM": [
+    0.0002749999099786426,
+    9.771683173040024e-06,
+    0.0002749999097157633,
+    9.665789531908337e-06,
+    1.9346406710530787e-05,
+    1.934057187027603e-05,
+    7.0728480404122756e-06,
+    7.227857824872901e-06,
+    7.396861622180646e-05
+  ],
+  "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+  "unresolvedAffineCells": 0,
+  "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail.",
+  "liquidFairing": {
+    "method": "liquid-only volume constrained fairing",
+    "mobileVertices": 0,
+    "maximumDisplacementM": 0.0,
+    "crustUnchanged": true
+  },
+  "shadingVertices": 457,
+  "normals": "Area-weighted within smooth regions; split at resolved creases and crack walls. No displaced surface detail.",
+  "fractureTopologyPreserved": true,
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\notch-0.002-r1\\state.npz",
+  "sourceSha256": "af151003e52b0311e5a0e61a53cb140c30d48077ea9421b6d09c15b71429ad5f",
+  "physicalSeconds": 0.06
+}

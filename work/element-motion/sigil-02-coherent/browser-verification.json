@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "browser": "Existing Codex in-app browser tab 5",
+  "page": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/?element=water",
+  "reloadedAfterPublication": true,
+  "revisedPlayback": {
+    "water": {"file": "water-02-r3.mp4", "width": 1920, "height": 1080, "duration": 10, "paused": false, "readyState": 4, "error": null},
+    "earth": {"file": "earth-02-r3.mp4", "width": 1920, "height": 1080, "duration": 10, "paused": false, "readyState": 4, "error": null},
+    "lightning": {"file": "lightning-02-r3.mp4", "width": 1920, "height": 1080, "duration": 10, "paused": false, "readyState": 4, "error": null}
+  },
+  "preservedSelection": {
+    "fire": {"file": "fire-02.mp4", "duration": 9.8, "previousButtonHidden": true},
+    "air": {"file": "air-02.mp4", "duration": 9.8, "previousButtonHidden": true}
+  },
+  "previousAndReturnVerified": {
+    "water": {"previous": "water-02-r2.mp4", "previousDuration": 8, "returnedTo": "water-02-r3.mp4"},
+    "earth": {"previous": "earth-02-r2.mp4", "previousDuration": 6.4, "returnedTo": "earth-02-r3.mp4"}
+  },
+  "artworkComparison": {"revealsApprovedArtwork": true, "pausesVideo": true, "elementSelectionHidesArtworkAndResumes": true},
+  "finalState": {"element": "water", "playing": true, "artworkHidden": true, "scrolledToTop": true, "markedDeliverable": true}
+}

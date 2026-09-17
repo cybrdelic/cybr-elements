@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "device": "cpu",
+  "checks": {
+    "quadratic": true,
+    "pairConservation": true,
+    "roundoffEnergy": true,
+    "radiationBalance": true,
+    "cooling": true
+  },
+  "particles": 1728,
+  "quadraticLaplacianRelativeError": 0.01509768608957529,
+  "pairFluxSumJ": 3.9362930692732334e-09,
+  "roundoffEnergyJ": 1.62e-05,
+  "radiationBalanceRelative": 1.5787809160974486e-07,
+  "estimatedAreaM2": 0.0007140514208003879,
+  "boxAreaM2": 0.000864
+}

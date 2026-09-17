@@ -1,0 +1,24 @@
+const fs=require('fs');
+(async()=>{
+const tabs=await(await fetch('http://127.0.0.1:9337/json')).json();const target=tabs.find(t=>t.type==='page'&&t.url.startsWith('http://127.0.0.1:8767'));
+if(!target)throw Error('Owned preview tab missing');
+const ws=new WebSocket(target.webSocketDebuggerUrl);await new Promise(r=>ws.addEventListener('open',r,{once:true}));
+let id=0;const pending=new Map();ws.addEventListener('message',e=>{const p=JSON.parse(e.data);if(p.id&&pending.has(p.id)){const [res,rej]=pending.get(p.id);pending.delete(p.id);p.error?rej(p.error):res(p.result)}});
+const call=(method,params={})=>new Promise((res,rej)=>{const i=++id;pending.set(i,[res,rej]);ws.send(JSON.stringify({id:i,method,params}))});
+const evaluate=async(expression)=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value};
+await call('Page.enable');await call('Runtime.enable');
+const initial=await evaluate(`(async()=>{await document.fonts.load('650 80px Flux');await document.fonts.ready;const ctx=document.createElement('canvas').getContext('2d');ctx.font='650 80px Flux';const custom=ctx.measureText('cybrdelic').width;ctx.font='650 80px sans-serif';const fallback=ctx.measureText('cybrdelic').width;return {fontLoaded:document.fonts.check('650 80px Flux'),widthDifference:Math.abs(custom-fallback),images:[...document.images].every(i=>i.complete&&i.naturalWidth>0),horizontalOverflow:document.documentElement.scrollWidth>innerWidth,svgCount:document.images.length}})()`);
+if(!initial.fontLoaded||initial.widthDifference<2||!initial.images||initial.horizontalOverflow)throw Error(JSON.stringify(initial));
+const controls=await evaluate(`(()=>{const sample=document.getElementById('sample'),size=document.getElementById('size'),tracking=document.getElementById('tracking'),button=document.getElementById('reverse');sample.textContent='beyond the ordinary 0123';size.value=82;size.dispatchEvent(new Event('input'));tracking.value=2;tracking.dispatchEvent(new Event('input'));button.click();const r={text:sample.textContent,fontSize:getComputedStyle(sample).fontSize,tracking:getComputedStyle(sample).letterSpacing,reversed:document.getElementById('tester').classList.contains('dark')};sample.textContent='cybrdelic';size.value=100;size.dispatchEvent(new Event('input'));tracking.value=0;tracking.dispatchEvent(new Event('input'));button.click();return r})()`);
+if(controls.fontSize!=='82px'||controls.tracking!=='2px'||!controls.reversed)throw Error(JSON.stringify(controls));
+await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1100,deviceScaleFactor:1,mobile:false});
+let shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('outputs/cybrdelic-type/previews/browser-guide.png',Buffer.from(shot.data,'base64'));
+await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+const mobile=await evaluate(`({width:innerWidth,scrollWidth:document.documentElement.scrollWidth,overflow:document.documentElement.scrollWidth>innerWidth+1})`);if(mobile.overflow)throw Error(JSON.stringify(mobile));
+shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('work/brand-font/browser-mobile.png',Buffer.from(shot.data,'base64'));
+await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+await call('Page.navigate',{url:'http://127.0.0.1:8767/vector/01-flux.svg'});await new Promise(r=>setTimeout(r,600));
+const svg=await evaluate(`({groups:document.querySelectorAll('g[id^="glyph-"]').length,paths:document.querySelectorAll('path').length,bounds:document.querySelector('#wordmark').getBBox().width})`);if(svg.groups!==9||svg.bounds<=0)throw Error(JSON.stringify(svg));
+const report={initial,controls,mobile,svg};fs.writeFileSync('outputs/cybrdelic-type/source/browser-validation.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+await call('Browser.close');
+})().catch(e=>{console.error(String(e));process.exit(1)});

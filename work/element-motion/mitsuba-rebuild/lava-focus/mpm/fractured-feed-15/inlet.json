@@ -1,0 +1,60 @@
+{
+  "startTime": 0.0,
+  "config": {
+    "plane": -0.09,
+    "half_width": 0.015,
+    "height": 0.015,
+    "peak_speed": 0.06,
+    "temperature": 1450.0,
+    "pipe_end": -0.05
+  },
+  "period": 0.08333333333333334,
+  "nextEmission": 0.08333333333333334,
+  "emissions": 0,
+  "description": "Six initially fractured cold basalt clasts resting in molten lava. Initial cracks are prescribed geometry, NOT generated fracture history. All subsequent velocities, contact, heating and incoming source material are solved by MPM.",
+  "initialClasts": [
+    {
+      "label": 1,
+      "particles": 220,
+      "volume": 1.888959395133363e-05,
+      "triangles": 29360
+    },
+    {
+      "label": 2,
+      "particles": 181,
+      "volume": 2.3782213462719255e-05,
+      "triangles": 25942
+    },
+    {
+      "label": 3,
+      "particles": 115,
+      "volume": 1.547720818339623e-05,
+      "triangles": 21556
+    },
+    {
+      "label": 4,
+      "particles": 270,
+      "volume": 2.7590605016602937e-05,
+      "triangles": 30938
+    },
+    {
+      "label": 5,
+      "particles": 170,
+      "volume": 2.137790281315514e-05,
+      "triangles": 23652
+    },
+    {
+      "label": 6,
+      "particles": 19,
+      "volume": 2.4907157591806254e-06,
+      "triangles": 6050
+    }
+  ],
+  "initialHotK": 1450.0,
+  "initialColdK": [
+    890.0,
+    1040.0
+  ],
+  "boundaryResolutionM": 0.0007,
+  "stateSha256": "e3e86befb5f5c86f5aa849786e9275d6210e43bb49418e9b6bb56c0466034fa0"
+}

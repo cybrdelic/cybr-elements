@@ -1,0 +1,34 @@
+{
+  "sceneKind": "aged_continuous_crust_under_renewed_feed",
+  "initialCondition": "Stress-free 16 x 8 x 3.2 cm continuous lobe, zero damage and zero cracks. Temperature comes from a 1D cooling solve mapped by depth; prior 3D thermal stress history is not represented.",
+  "thermalProfile": {
+    "ageSeconds": 180.0,
+    "depthM": 0.04,
+    "cells": 160,
+    "minimumTemperatureK": 1039.5725118517812,
+    "relativeEnergyResidual": 3.6100282985435453e-12,
+    "method": "1D finite-volume enthalpy; radiation and convection at the top; metered 1450 K reservoir at depth."
+  },
+  "reservoirInitialization": "Enthalpy blends to 1450 K across x=-32 to -64 mm in the upstream pipe; fluid inlet does not grip a cold solid plug.",
+  "config": {
+    "plane": -0.08,
+    "half_width": 0.024,
+    "height": 0.016,
+    "peak_speed": 0.004,
+    "temperature": 1450.0
+  },
+  "period": 2.0,
+  "nextEmission": 2.0,
+  "emissions": 0,
+  "sourceHashes": {
+    "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "bb756fab066adb11121ff3b978a304192b1f1bf8a31329de239cc892e5dea9bd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "0546246645a7be59787ae8d2ee9115200998844c511bdffd984d5f6bf4edf31f"
+  },
+  "driverSha256": "b9487e8511065f086c50932e1bf17d5f05a18b649abce93cef6f6ac95df38c0e",
+  "limits": "Coarse mechanism screen. Nominal mixed constitutive references, no convergence or photorealism claim. No authored fracture geometry."
+}

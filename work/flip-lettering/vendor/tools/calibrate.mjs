@@ -1,0 +1,2 @@
+import fs from 'node:fs';import {fitSurfaceTension} from '../src/experiments/calibration.js';
+const [input,output='calibration-result.json']=process.argv.slice(2);if(!input)throw Error('Usage: node tools/calibrate.mjs request.json [result.json]');const r=JSON.parse(fs.readFileSync(input,'utf8')),result=fitSurfaceTension(r.config,r.target,r.options);fs.writeFileSync(output,JSON.stringify(result,null,2));console.log('Saved',output,'verified forward evaluations',result.evaluations,'best N/m',result.bestSigma);

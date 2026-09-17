@@ -1,0 +1,28 @@
+{
+  "status": "pass",
+  "sourceTime": 2.333333333333333,
+  "results": [
+    {
+      "order": "COLAMD",
+      "seconds": 2.669818162918091,
+      "residual": 7.448074017995796e-14,
+      "velocityErrorMPerS": 0.0,
+      "temperatureErrorK": 0.0
+    },
+    {
+      "order": "MMD_AT_PLUS_A",
+      "seconds": 2.2302141189575195,
+      "residual": 1.0100105669541108e-13,
+      "velocityErrorMPerS": 2.559214615862263e-11,
+      "temperatureErrorK": 2.2737367544323206e-13
+    },
+    {
+      "order": "MMD_ATA",
+      "seconds": 2.497628927230835,
+      "residual": 5.998905402070226e-14,
+      "velocityErrorMPerS": 1.1011787708823316e-11,
+      "temperatureErrorK": 2.2737367544323206e-13
+    }
+  ],
+  "limits": "Permutation equivalence for one fully coupled source/contact step. No change to equations or timestep."
+}

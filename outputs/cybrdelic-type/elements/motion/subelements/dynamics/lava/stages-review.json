@@ -1,0 +1,351 @@
+{
+  "stills": [
+    {
+      "stage": "magma",
+      "image": "stage-magma.png",
+      "render": {
+        "renderer": "Mitsuba 3.9.1",
+        "variant": "scalar_rgb",
+        "device": "CPU",
+        "threads": 2,
+        "affinity": [
+          0,
+          1
+        ],
+        "samplesPerPixel": 8,
+        "size": [
+          960,
+          540
+        ],
+        "renderSeconds": 133.64,
+        "denoiseSeconds": 2.82,
+        "totalSeconds": 142.31,
+        "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+        "exposure": 4.5,
+        "background": "exact black",
+        "radianceQuantiles": [
+          0.0,
+          0.09154644049704078,
+          0.15593830823898316,
+          0.19979044605791552,
+          0.25787466764450073
+        ],
+        "meshSha256": "6771e906c9ae687acd645d3963f9e46c7d04b0c266196c178e41a1cacaaa56c5",
+        "imageSha256": "46a0f52302c3fd817441860b66333aab7058c99768f8d721494df518340e303b",
+        "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+        "normalAov": "world geometric normal",
+        "lightSampling": {
+          "mode": "luminance times emitter area",
+          "emitters": 17,
+          "keyProbability": 0.9013269768695346
+        },
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\stages\\magma.npz",
+        "matteCrust": false,
+        "rakingLight": false,
+        "geometryModel": "Matched authored material stage; fitted crust fragments, coherent melt, or separate conchoidal glass geometry",
+        "normalSmoothingIterations": 2,
+        "lightGain": 0.1,
+        "surfaceMix": false,
+        "bumpTexture": "basalt-vesicles.png",
+        "bumpScale": 0.00085,
+        "camera": {
+          "eye": [
+            0.92,
+            -2.18,
+            1.28
+          ],
+          "target": [
+            -0.17,
+            0.0,
+            0.13
+          ],
+          "fov": 35.0
+        },
+        "status": "candidate; direct visual review required",
+        "backLight": false,
+        "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+        "temperatureModel": "Authored stage temperatures; these stills are not a coupled cooling/crystallization simulation",
+        "surfaceModel": "CPU 3D volume gradient pores; independent of UV stretch, filtered bump approximation",
+        "stage": "magma"
+      }
+    },
+    {
+      "stage": "lava",
+      "image": "stage-lava.png",
+      "render": {
+        "renderer": "Mitsuba 3.9.1",
+        "variant": "scalar_rgb",
+        "device": "CPU",
+        "threads": 2,
+        "affinity": [
+          0,
+          1
+        ],
+        "samplesPerPixel": 8,
+        "size": [
+          960,
+          540
+        ],
+        "renderSeconds": 108.28,
+        "denoiseSeconds": 2.19,
+        "totalSeconds": 118.23,
+        "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+        "exposure": 4.5,
+        "background": "exact black",
+        "radianceQuantiles": [
+          0.0,
+          0.09772435910999783,
+          0.15668660417199134,
+          0.16332184499502173,
+          0.2393697053194046
+        ],
+        "meshSha256": "8b7427aabe1691668f548b657042043f70826c95c4e1042074c2d8bcf06883c7",
+        "imageSha256": "74c100ed1aa0aba461ef876e972062793aa351344767b2787926fb350c84a4cb",
+        "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+        "normalAov": "world geometric normal",
+        "lightSampling": {
+          "mode": "luminance times emitter area",
+          "emitters": 19,
+          "keyProbability": 0.9035617407364791
+        },
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\stages\\lava.npz",
+        "matteCrust": false,
+        "rakingLight": false,
+        "geometryModel": "Matched authored material stage; fitted crust fragments, coherent melt, or separate conchoidal glass geometry",
+        "normalSmoothingIterations": 2,
+        "lightGain": 0.1,
+        "surfaceMix": false,
+        "bumpTexture": "basalt-vesicles.png",
+        "bumpScale": 0.00085,
+        "camera": {
+          "eye": [
+            0.92,
+            -2.18,
+            1.28
+          ],
+          "target": [
+            -0.17,
+            0.0,
+            0.13
+          ],
+          "fov": 35.0
+        },
+        "status": "candidate; direct visual review required",
+        "backLight": false,
+        "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+        "temperatureModel": "Authored stage temperatures; these stills are not a coupled cooling/crystallization simulation",
+        "surfaceModel": "CPU 3D volume gradient pores; independent of UV stretch, filtered bump approximation",
+        "stage": "lava"
+      }
+    },
+    {
+      "stage": "cooling",
+      "image": "stage-cooling.png",
+      "render": {
+        "renderer": "Mitsuba 3.9.1",
+        "variant": "scalar_rgb",
+        "device": "CPU",
+        "threads": 2,
+        "affinity": [
+          0,
+          1
+        ],
+        "samplesPerPixel": 8,
+        "size": [
+          960,
+          540
+        ],
+        "renderSeconds": 124.53,
+        "denoiseSeconds": 2.31,
+        "totalSeconds": 135.42,
+        "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+        "exposure": 8.5,
+        "background": "exact black",
+        "radianceQuantiles": [
+          0.0,
+          0.008535992540419108,
+          0.012757973978295922,
+          0.14910874861478768,
+          0.181363046169281
+        ],
+        "meshSha256": "bd0b0f56bf79224b83fe1ee6db89c94f481c8cf1e3c8b34614db686ae145d33d",
+        "imageSha256": "ec4dd473f69242c210944d496e022c4ad78e02e68d6932448bc086e95184b6ca",
+        "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+        "normalAov": "world geometric normal",
+        "lightSampling": {
+          "mode": "luminance times emitter area",
+          "emitters": 14,
+          "keyProbability": 0.9074631601656749
+        },
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\stages\\cooling.npz",
+        "matteCrust": false,
+        "rakingLight": false,
+        "geometryModel": "Matched authored material stage; fitted crust fragments, coherent melt, or separate conchoidal glass geometry",
+        "normalSmoothingIterations": 2,
+        "lightGain": 0.09,
+        "surfaceMix": false,
+        "bumpTexture": "basalt-vesicles.png",
+        "bumpScale": 0.00085,
+        "camera": {
+          "eye": [
+            0.92,
+            -2.18,
+            1.28
+          ],
+          "target": [
+            -0.17,
+            0.0,
+            0.13
+          ],
+          "fov": 35.0
+        },
+        "status": "candidate; direct visual review required",
+        "backLight": false,
+        "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+        "temperatureModel": "Authored stage temperatures; these stills are not a coupled cooling/crystallization simulation",
+        "surfaceModel": "CPU 3D volume gradient pores; independent of UV stretch, filtered bump approximation",
+        "stage": "cooling"
+      }
+    },
+    {
+      "stage": "basalt",
+      "image": "stage-basalt.png",
+      "render": {
+        "renderer": "Mitsuba 3.9.1",
+        "variant": "scalar_rgb",
+        "device": "CPU",
+        "threads": 2,
+        "affinity": [
+          0,
+          1
+        ],
+        "samplesPerPixel": 8,
+        "size": [
+          960,
+          540
+        ],
+        "renderSeconds": 60.83,
+        "denoiseSeconds": 2.06,
+        "totalSeconds": 71.2,
+        "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+        "exposure": 8.5,
+        "background": "exact black",
+        "radianceQuantiles": [
+          0.0,
+          0.008036421984434133,
+          0.011849252292886378,
+          0.013729559119790787,
+          0.01586342230439186
+        ],
+        "meshSha256": "d7e6a6ad842bbe54764af3c203c7e99be196628fc1988c1c028201de859613e1",
+        "imageSha256": "288ac6042be5d8db7aabe66e5d6ffe341148119fe2b1aa89e797719ec449e180",
+        "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+        "normalAov": "world geometric normal",
+        "lightSampling": {
+          "mode": "luminance times emitter area",
+          "emitters": 2,
+          "keyProbability": 0.9157944116435072
+        },
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\stages\\basalt.npz",
+        "matteCrust": false,
+        "rakingLight": false,
+        "geometryModel": "Matched authored material stage; fitted crust fragments, coherent melt, or separate conchoidal glass geometry",
+        "normalSmoothingIterations": 2,
+        "lightGain": 0.09,
+        "surfaceMix": false,
+        "bumpTexture": "basalt-vesicles.png",
+        "bumpScale": 0.00085,
+        "camera": {
+          "eye": [
+            0.92,
+            -2.18,
+            1.28
+          ],
+          "target": [
+            -0.17,
+            0.0,
+            0.13
+          ],
+          "fov": 35.0
+        },
+        "status": "candidate; direct visual review required",
+        "backLight": false,
+        "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+        "temperatureModel": "Authored stage temperatures; these stills are not a coupled cooling/crystallization simulation",
+        "surfaceModel": "CPU 3D volume gradient pores; independent of UV stretch, filtered bump approximation",
+        "stage": "basalt"
+      }
+    },
+    {
+      "stage": "obsidian",
+      "image": "stage-obsidian.png",
+      "render": {
+        "renderer": "Mitsuba 3.9.1",
+        "variant": "scalar_rgb",
+        "device": "CPU",
+        "threads": 2,
+        "affinity": [
+          0,
+          1
+        ],
+        "samplesPerPixel": 64,
+        "size": [
+          960,
+          540
+        ],
+        "renderSeconds": 84.11,
+        "denoiseSeconds": 1.73,
+        "totalSeconds": 87.12,
+        "denoiser": "OIDN, explicitly CPU; GPU backends disabled",
+        "exposure": 8.5,
+        "background": "exact black",
+        "radianceQuantiles": [
+          0.0,
+          0.019081318750977537,
+          0.04435426745563746,
+          0.07489382992684833,
+          0.10219504684209824
+        ],
+        "meshSha256": "56c44d81842b425b38c8761f41861b63afca8e819bf7ebb320fc6d3e0d2c1a59",
+        "imageSha256": "1c8ceadd4403cab7b86e95cabea7abbd9137abc760342594accec63b12b7a4df",
+        "emission": "Continuous barycentric interpolation of per-vertex integrated Planck radiance; geometric emitter sampling independent of repeated UVs",
+        "normalAov": "world geometric normal",
+        "lightSampling": {
+          "mode": "luminance times emitter area",
+          "emitters": 5,
+          "keyProbability": 0.3481280084164504
+        },
+        "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\stages\\obsidian.npz",
+        "matteCrust": false,
+        "rakingLight": false,
+        "geometryModel": "Matched authored material stage; fitted crust fragments, coherent melt, or separate conchoidal glass geometry",
+        "normalSmoothingIterations": 2,
+        "lightGain": 0.025,
+        "surfaceMix": false,
+        "bumpTexture": "basalt-vesicles.png",
+        "bumpScale": 0.00085,
+        "camera": {
+          "eye": [
+            0.92,
+            -2.18,
+            1.28
+          ],
+          "target": [
+            -0.17,
+            0.0,
+            0.13
+          ],
+          "fov": 35.0
+        },
+        "status": "candidate; direct visual review required",
+        "backLight": false,
+        "geometryLimits": "Material still; no new fluid dynamics or animation acceptance is claimed",
+        "temperatureModel": "Authored stage temperatures; these stills are not a coupled cooling/crystallization simulation",
+        "surfaceModel": "Opaque optical limit of a thick absorbing glass specimen: GGX dielectric reflection, IOR 1.51, weak residual diffuse scattering. No transmitted light through this thick piece; transmissive comparison available as an optional preset.",
+        "stage": "obsidian"
+      }
+    }
+  ],
+  "motionStatus": "Movie rendering stopped: the reduced model does not satisfy the requested coupled lava simulation. No completed video published.",
+  "limits": "Authored matched material states; motion is a reduced numerical study; obsidian is a separate composition branch"
+}

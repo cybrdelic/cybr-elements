@@ -1,0 +1,43 @@
+         9656158 function calls (9502900 primitive calls) in 30.235 seconds
+
+   Ordered by: cumulative time
+   List reduced from 2061 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   30.235   30.235 lava_mpm_coupled.py:148(advance)
+        3    0.000    0.000   30.219   10.073 lava_mpm_coupled.py:151(one_step)
+        3    0.000    0.000   30.215   10.072 lava_mpm.py:367(step)
+        3    0.141    0.047   30.215   10.072 lava_mpm_coupled.py:38(coupled_step)
+       65    2.146    0.033   29.770    0.458 lava_mpm.py:373(_step)
+       65    0.040    0.001   11.565    0.178 lava_mpm_friction.py:171(mixed_contact)
+       65    0.075    0.001   11.524    0.177 lava_mpm_active_contact33.py:11(mixed_contact)
+       68    0.174    0.003    8.922    0.131 lava_mpm_friction.py:89(contact)
+     6065    0.010    0.000    7.439    0.001 _base.py:919(__matmul__)
+     6065    0.048    0.000    7.390    0.001 _base.py:788(_matmul_dispatch)
+     1124    0.022    0.000    6.573    0.006 _compressed.py:415(_matmul_sparse)
+       82    0.001    0.000    5.839    0.071 linsolve.py:329(splu)
+       82    5.818    0.071    5.818    0.071 {built-in method scipy.sparse.linalg._dsolve._superlu.gstrf}
+     1124    4.056    0.004    4.056    0.004 {built-in method scipy.sparse._sparsetools.csr_matmat}
+37530/35901    0.219    0.000    2.284    0.000 _compressed.py:30(__init__)
+      133    0.822    0.006    2.147    0.016 lava_mpm_friction.py:19(tangent_rows)
+       65    0.711    0.011    1.750    0.027 lava_mpm_inlet.py:24(velocity_map)
+      204    0.038    0.000    1.715    0.008 lava_mpm_friction.py:108(solve)
+     1124    1.677    0.001    1.677    0.001 {built-in method scipy.sparse._sparsetools.csr_matmat_maxnnz}
+        2    0.033    0.017    1.449    0.725 lava_mpm_sparse_pressure.py:49(contact)
+      638    1.327    0.002    1.327    0.002 {method 'solve' of 'SuperLU' objects}
+    26368    0.012    0.000    1.302    0.000 _matrix.py:110(getrow)
+    26368    0.071    0.000    1.290    0.000 _csr.py:167(_getrow)
+      908    0.003    0.000    1.270    0.001 _base.py:740(__add__)
+      908    0.002    0.000    1.258    0.001 _compressed.py:257(_add_sparse)
+      908    0.013    0.000    1.256    0.001 _compressed.py:1189(_binopt)
+       65    0.054    0.001    1.065    0.016 lava_mpm.py:234(heat_solve)
+      908    1.041    0.001    1.041    0.001 {built-in method scipy.sparse._sparsetools.csr_plus_csr}
+     7532    0.019    0.000    1.026    0.000 _arraysetops_impl.py:145(unique)
+       14    0.000    0.000    0.996    0.071 lava_mpm_linear27.py:88(factor)
+     7532    0.094    0.000    0.983    0.000 _arraysetops_impl.py:339(_unique1d)
+       65    0.270    0.004    0.885    0.014 lava_mpm.py:190(strain_matrix)
+    46260    0.109    0.000    0.871    0.000 _base.py:1525(_get_index_dtype)
+     1044    0.847    0.001    0.847    0.001 {built-in method scipy.sparse._sparsetools.csr_tocsc}
+       65    0.001    0.000    0.828    0.013 lava_mpm_fracture.py:62(mechanical_fields)
+
+

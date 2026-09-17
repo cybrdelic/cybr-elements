@@ -1,0 +1,40 @@
+{
+  "target": "Replace the single painted-looking surface with a separate incandescent body and cohesive crust shells",
+  "baseline": "renders/basalt-04-hero-0059-896-16spp.png",
+  "editableScope": [
+    "lava_cohesive_cpu.py",
+    "lava_shell_render.py",
+    "lava-focus/cohesive",
+    "lava page only after visual review"
+  ],
+  "device": "CPU only, two logical processors",
+  "capture": "bounded.py lava_shell_render.py; 640px previews, 896px final still",
+  "mechanism": "XPBD membrane constraints, compliant cohesive welds, breakable bending links, collision against a rising molten foundation",
+  "limitation": "One-way foundation contact; not a new fully coupled fluid/solid solve",
+  "budget": {
+    "mechanicsTrials": 3,
+    "renderCandidates": 4,
+    "previewWidth": 640,
+    "perProcessSeconds": 180
+  },
+  "visualChecks": [
+    "Actual hot body below separate cold crust",
+    "No uniform orange line outline",
+    "Retain basalt detail",
+    "Irregular fractures and overlapping edges",
+    "Pitch-black backdrop"
+  ],
+  "numericChecks": [
+    "Finite state",
+    "Breakage is irreversible",
+    "Nonpenetration before surface dressing",
+    "No GPU context",
+    "Memory under 3GiB"
+  ],
+  "review": {
+    "firstLoop": "Macro rejected: triangle-discarded holes and reflected key produced sawtooth contours and pink pools",
+    "correction": "Continuous contour clipping and grazing side illumination",
+    "additionalRenderCap": 2
+  },
+  "status": "CPU build complete; final visual acceptance failed; previous view preserved"
+}

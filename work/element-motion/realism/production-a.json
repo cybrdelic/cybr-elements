@@ -1,0 +1,29 @@
+[
+  {
+    "name": "lava-black-full",
+    "script": "lava.py",
+    "args": [
+      "--kind",
+      "lava",
+      "--full"
+    ]
+  },
+  {
+    "name": "sand-black-full",
+    "script": "grains.py",
+    "args": [
+      "--kind",
+      "sand",
+      "--full"
+    ]
+  },
+  {
+    "name": "snow-black-full",
+    "script": "grains.py",
+    "args": [
+      "--kind",
+      "snow",
+      "--full"
+    ]
+  }
+]

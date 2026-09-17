@@ -1,0 +1,22 @@
+{
+  "status": "pass",
+  "evidence": {
+    "final": {
+      "time": 0.02,
+      "substeps": 1,
+      "maxProjectionResidual": 2.1212456748847563e-08,
+      "massErrorKg": 2.168404344971009e-19,
+      "waterErrorKg": 0.0,
+      "temperatureRange": [
+        292.53586659673294,
+        293.72310874626265
+      ],
+      "maximumSpeed": 0.038482335610036694,
+      "dustMassErrorKg": 0.0,
+      "dustHeatErrorJ": 0.0,
+      "dustMassKg": 0.0
+    },
+    "fluidVolumeChangeM3": 0.0
+  },
+  "seconds": 0.022025346755981445
+}

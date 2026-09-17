@@ -1,0 +1,9 @@
+{
+  "target": "Replace manufactured sigil surfaces with an actual emitted liquid whose pressure and momentum evolve its shape",
+  "editableScope": "sigil-quality/native-liquid.py and native-render.py; no published films or original artwork",
+  "iterations": 2,
+  "capture": "Native FLIP 384-cell cache, then 1920x1080 Cycles frames 20,45,60,72,90 and motion if the surface passes",
+  "visualGate": "Connected liquid body, believable varying thickness, restrained breakup; reject beads, inflated text or stiff geometry",
+  "technicalGate": "Complete cache, nonempty evaluated mesh, black backdrop, finite geometry, one heavy job, check available disk",
+  "limitation": "Zero-gravity drawing support is authored for bending; a 3-second mechanism test is not a final 15-second intro"
+}

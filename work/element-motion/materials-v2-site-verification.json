@@ -1,0 +1,119 @@
+{
+  "comparisons": [
+    {
+      "original": {
+        "time": 1,
+        "file": "fire-shared.mp4"
+      },
+      "previous": {
+        "time": 1,
+        "file": "fire-material-v2.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "fire-sheets.mp4"
+      }
+    },
+    {
+      "original": {
+        "time": 1,
+        "file": "water-shared.mp4"
+      },
+      "previous": {
+        "time": 1,
+        "file": "water-material.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "water-optical.mp4"
+      }
+    },
+    {
+      "original": {
+        "time": 1,
+        "file": "air-shared.mp4"
+      },
+      "previous": {
+        "time": 1,
+        "file": "air-material-v2.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "air-filaments-lit.mp4"
+      }
+    },
+    {
+      "original": {
+        "time": 1,
+        "file": "earth-packed.mp4"
+      },
+      "previous": {
+        "time": 1,
+        "file": "earth-material.mp4"
+      },
+      "trial": {
+        "time": 1,
+        "file": "earth-strata.mp4"
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "src": "fire-sheets.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "water-optical.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "air-filaments-lit.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "earth-strata.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "seekTimes": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "playTimes": [
+    1.591175,
+    1.591244,
+    1.591254,
+    1.590369
+  ],
+  "solo": [
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": false,
+      "time": 0.764742
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    }
+  ],
+  "overlays": 4,
+  "mobileOverflow": false,
+  "errors": []
+}

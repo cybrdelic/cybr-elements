@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "error": "TimeoutError('Pressure solve deadline reached; trial must roll back')",
+  "time": 42.2,
+  "particles": 2060,
+  "broken": 8,
+  "maximumDamage": 0.11711964307705239,
+  "solidPoints": 241,
+  "rejects": 0,
+  "wallSeconds": 240.07800000000861,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\hot-nozzle",
+    "sha256": "fc6778e4e2088dea4a78e3ead6e8e1f5166e9768872f134ef785e6cbded92c99"
+  },
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

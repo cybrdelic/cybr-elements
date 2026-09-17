@@ -1,0 +1,101 @@
+[
+  {
+    "name": "spirit-black-full",
+    "script": "spirit.py",
+    "args": [
+      "--kind",
+      "spirit",
+      "--full"
+    ]
+  },
+  {
+    "name": "energy-black-full",
+    "script": "entities.py",
+    "args": [
+      "--kind",
+      "energy",
+      "--full"
+    ]
+  },
+  {
+    "name": "spirit-projection-black-full",
+    "script": "entities.py",
+    "args": [
+      "--kind",
+      "spirit-projection",
+      "--full"
+    ]
+  },
+  {
+    "name": "healing-black-full",
+    "script": "healing.py",
+    "args": [
+      "--kind",
+      "healing",
+      "--full"
+    ]
+  },
+  {
+    "name": "sound-black-full",
+    "script": "black-fields.py",
+    "args": [
+      "--kind",
+      "sound",
+      "--full"
+    ]
+  },
+  {
+    "name": "seismic-black-full",
+    "script": "black-fields.py",
+    "args": [
+      "--kind",
+      "seismic",
+      "--full"
+    ]
+  },
+  {
+    "name": "heat-black-full",
+    "script": "black-fields.py",
+    "args": [
+      "--kind",
+      "heat",
+      "--full"
+    ]
+  },
+  {
+    "name": "pressure-black-full",
+    "script": "grains.py",
+    "args": [
+      "--kind",
+      "pressure",
+      "--full"
+    ]
+  },
+  {
+    "name": "flight-black-full",
+    "script": "grains.py",
+    "args": [
+      "--kind",
+      "flight",
+      "--full"
+    ]
+  },
+  {
+    "name": "lightning-black-full",
+    "script": "electric.py",
+    "args": [
+      "--kind",
+      "lightning",
+      "--full"
+    ]
+  },
+  {
+    "name": "lightning-redirection-black-full",
+    "script": "electric.py",
+    "args": [
+      "--kind",
+      "lightning-redirection",
+      "--full"
+    ]
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "status": "complete",
+  "variant": "02",
+  "artifacts": [
+    {
+      "element": "water",
+      "frames": 270,
+      "duration": 9.0,
+      "sha256": "97d1bbce83f33a0c1ed747c85140039e5f8d21fe8d76721cdc8e7fccd2c7bd73",
+      "maxCorner": 1,
+      "visualStatus": "reviewed"
+    },
+    {
+      "element": "earth",
+      "frames": 294,
+      "duration": 9.8,
+      "sha256": "e7c0055f6311ebc83840a827575ea3385b17c606f6ac13350ab0a20c3a81224a",
+      "maxCorner": 0,
+      "visualStatus": "reviewed"
+    },
+    {
+      "element": "air",
+      "frames": 294,
+      "duration": 9.8,
+      "sha256": "80d89a5bd8ccb347da1659b5dcc8f8417db156bffe66759498adab4cb40b7120",
+      "maxCorner": 0,
+      "visualStatus": "reviewed"
+    },
+    {
+      "element": "lightning",
+      "frames": 294,
+      "duration": 9.8,
+      "sha256": "0b76a57d98a9d3807deba2ed378c0b51c093d6e9cd36edae5f737e582061a324",
+      "maxCorner": 0,
+      "visualStatus": "reviewed"
+    }
+  ],
+  "approvedFireUnchanged": true,
+  "originalVideosUnchanged": 17,
+  "browser": {
+    "tab": "5",
+    "url": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/?element=water",
+    "allFourSelectorsVerified": true,
+    "downloadTargetsVerified": true,
+    "artworkExpansionVerified": true,
+    "lightningReadyState": 4,
+    "lightningDecodedSize": [
+      1920,
+      1080
+    ],
+    "waterReadyState": 4,
+    "waterPlaying": true,
+    "deliverableMarked": true
+  },
+  "activeRenderWorkers": []
+}

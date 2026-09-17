@@ -1,0 +1,19 @@
+{
+  "error": 2.691947701977128e-08,
+  "seconds": 0.7129755000059959,
+  "factorNonzeros": 1808754,
+  "stats": {
+    "cpuFactors": 0,
+    "gpuFactors": 1,
+    "cpuTriangularSolves": 30,
+    "factorSeconds": 0.27499730000272393,
+    "solveSeconds": 0.7080698998470325,
+    "maximumDofs": 1914,
+    "maximumAllocatedBytes": 58735616,
+    "fallbacks": [],
+    "backend": "cuda_dense",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "CUDA factorization only. CPU triangular solves, assembly and nonlinear MPM. Small repeated GPU solves were rejected after an end-to-end slowdown."
+  }
+}

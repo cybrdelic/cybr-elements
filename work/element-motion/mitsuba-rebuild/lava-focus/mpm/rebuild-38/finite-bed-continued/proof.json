@@ -1,0 +1,23 @@
+{
+  "status": "paused",
+  "error": "TimeoutError('Pressure solve deadline reached; trial must roll back')",
+  "time": 12.2,
+  "targetTime": 20.0,
+  "particles": 1100,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.3321310720663714,
+  "solidPoints": 152,
+  "rejects": 0,
+  "wallSeconds": 240.06299999999464,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\finite-bed",
+    "sha256": "f95d672fe076ad6d650204f76a15537573e3805bac5d50b0146096d41e6047d3"
+  },
+  "bedKind": "finite",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

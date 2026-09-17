@@ -1,0 +1,15 @@
+{
+  "device": "CPU",
+  "seconds": 2.06,
+  "stages": [
+    "magma",
+    "lava",
+    "cooling",
+    "basalt",
+    "obsidian"
+  ],
+  "states": "Authored matched material states; not a seconds-long crystallization time-lapse",
+  "obsidian": "Separate silica-rich composition / quenched glass branch, not basalt transformed into obsidian",
+  "geometry": "Magma bare coherent melt; lava with partial crust rafts; cooling and basalt share thick fitted blocks; obsidian has its own fracture geometry",
+  "source": "crust-volume/blocks-01.npz"
+}

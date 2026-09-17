@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "error": null,
+  "time": 0.12,
+  "oppositeGripsDisconnected": true,
+  "firstBreakTime": 0.019500000000000014,
+  "brokenEdges": 41,
+  "components": 3,
+  "maximumDamage": 0.9951901651874694,
+  "workJ": 0.0002778313913361645,
+  "maxSpeed": 0.0010044374049315115,
+  "steps": 240,
+  "rejections": 0,
+  "dt": 0.0005,
+  "refinement": 1,
+  "wallSeconds": 83.43162417411804,
+  "sourceHashes": {
+    "lava_mpm.py": "83ad22ac3e2ce73d0fc2110eb407f848bf526bc3ef225ab9acd52c63669609ed",
+    "lava_mpm_coupled.py": "a20826ae7b85b151928f72c727ab288c814256ee1312fb73e1877ac19fd688d2",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "98d4715c7a3f27482c6b813fb7d38a61bd601b5759c1e331be1ea0b727281716",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "7db796316dccb802c72991cb2135d68774d5d9acba31007e9c3486ab74475330"
+  },
+  "limits": "Full-opening screen; timestep and spatial comparisons must be evaluated separately. Laboratory loading, not natural lava."
+}

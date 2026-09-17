@@ -1,0 +1,40 @@
+         17931 function calls (17635 primitive calls) in 0.140 seconds
+
+   Ordered by: cumulative time
+   List reduced from 459 to 32 due to restriction <32>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.140    0.140 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py:319(step)
+        1    0.002    0.002    0.128    0.128 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_coupled.py:38(coupled_step)
+        1    0.013    0.013    0.121    0.121 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py:325(_step)
+       46    0.000    0.000    0.044    0.001 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:919(__matmul__)
+       46    0.000    0.000    0.044    0.001 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:788(_matmul_dispatch)
+       13    0.001    0.000    0.040    0.003 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:415(_matmul_sparse)
+        1    0.001    0.001    0.031    0.031 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_fracture.py:177(implicit_contact)
+       13    0.023    0.002    0.023    0.002 {built-in method scipy.sparse._sparsetools.csr_matmat}
+        4    0.000    0.000    0.017    0.004 <frozen importlib._bootstrap>:1349(_find_and_load)
+        4    0.000    0.000    0.017    0.004 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+        4    0.000    0.000    0.015    0.004 <frozen importlib._bootstrap>:911(_load_unlocked)
+        4    0.000    0.000    0.015    0.004 <frozen importlib._bootstrap_external>:993(exec_module)
+        4    0.000    0.000    0.014    0.004 <frozen importlib._bootstrap_external>:1066(get_code)
+    92/78    0.001    0.000    0.013    0.000 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:30(__init__)
+        1    0.000    0.000    0.012    0.012 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\linalg\_dsolve\linsolve.py:329(splu)
+        1    0.012    0.012    0.012    0.012 {built-in method scipy.sparse.linalg._dsolve._superlu.gstrf}
+        6    0.000    0.000    0.009    0.001 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:740(__add__)
+       13    0.009    0.001    0.009    0.001 {built-in method scipy.sparse._sparsetools.csr_matmat_maxnnz}
+        6    0.000    0.000    0.008    0.001 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:257(_add_sparse)
+        6    0.000    0.000    0.008    0.001 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:1189(_binopt)
+        1    0.000    0.000    0.007    0.007 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_phase_field.py:55(update_damage)
+        1    0.002    0.002    0.007    0.007 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py:166(strain_matrix)
+        6    0.006    0.001    0.006    0.001 {built-in method scipy.sparse._sparsetools.csr_plus_csr}
+      155    0.001    0.000    0.006    0.000 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:1525(_get_index_dtype)
+       31    0.000    0.000    0.006    0.000 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:451(asformat)
+        9    0.000    0.000    0.005    0.001 <frozen importlib._bootstrap>:480(_call_with_frames_removed)
+        1    0.000    0.000    0.005    0.005 <frozen importlib._bootstrap_external>:1058(source_to_code)
+        1    0.005    0.005    0.005    0.005 {built-in method builtins.compile}
+        1    0.003    0.003    0.005    0.005 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_phase_field.py:15(gradient_operator)
+      156    0.003    0.000    0.005    0.000 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_sputils.py:264(get_index_dtype)
+        1    0.000    0.000    0.005    0.005 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_dia.py:304(_matmul_sparse)
+        1    0.000    0.000    0.005    0.005 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:898(_matmul_sparse)
+
+

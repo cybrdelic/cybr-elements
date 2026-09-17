@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "renderer": "Mitsuba 3.9.1",
+  "device": "CPU",
+  "variant": "scalar_rgb",
+  "interpolatedSolid": 0.3749999701976776,
+  "emissionAttributeError": 1.1920928966180355e-08,
+  "normalIncidenceBSDF": [
+    0.8197900652885437,
+    0.8197900652885437,
+    0.8197900652885437
+  ]
+}

@@ -1,0 +1,347 @@
+{
+  "device": "CPU",
+  "seconds": 4.944,
+  "passed": 26,
+  "tests": [
+    {
+      "test": "ice_latent_heat",
+      "pass": true,
+      "evidence": {
+        "temperatureK": [
+          263.15,
+          273.15,
+          273.15,
+          273.15,
+          273.15,
+          273.15,
+          283.15
+        ],
+        "solidFraction": [
+          1.0,
+          1.0,
+          0.75,
+          0.5,
+          0.25,
+          0.0,
+          0.0
+        ]
+      },
+      "scope": "Reference law; scene coupling is separately reviewed"
+    },
+    {
+      "test": "ice_monotonic_energy_loss",
+      "pass": true,
+      "evidence": {
+        "initialEnthalpy": 375800.0,
+        "finalEnthalpy": 344500.0508359336
+      },
+      "scope": "CPU thermal coupon"
+    },
+    {
+      "test": "lava_cooling_stiffens",
+      "pass": true,
+      "evidence": {
+        "viscosityPaS": [
+          80.0,
+          576.7836118640012,
+          12825.500634804732
+        ]
+      },
+      "scope": "Reference viscosity law; full feedback solve still required"
+    },
+    {
+      "test": "metal_yield_and_permanent_state",
+      "pass": true,
+      "evidence": {
+        "elasticLogStretch": [
+          [
+            0.006,
+            -0.003,
+            -0.003
+          ],
+          [
+            0.028577380332470415,
+            -0.014288690166235208,
+            -0.014288690166235208
+          ]
+        ],
+        "plasticState": [
+          0.0,
+          0.0741816307401944
+        ]
+      },
+      "scope": "CPU return-map reference to cached MPM law"
+    },
+    {
+      "test": "metal_closed_surface_30",
+      "pass": true,
+      "evidence": {
+        "caps": 2,
+        "volume": 0.10004005581140518,
+        "boundaryEdges": 0
+      },
+      "scope": "Actual rendered mesh"
+    },
+    {
+      "test": "metal_closed_surface_45",
+      "pass": true,
+      "evidence": {
+        "caps": 2,
+        "volume": 0.16028635203838348,
+        "boundaryEdges": 0
+      },
+      "scope": "Actual rendered mesh"
+    },
+    {
+      "test": "metal_closed_surface_65",
+      "pass": true,
+      "evidence": {
+        "caps": 2,
+        "volume": 0.1672646850347519,
+        "boundaryEdges": 0
+      },
+      "scope": "Actual rendered mesh"
+    },
+    {
+      "test": "metal_closed_surface_90",
+      "pass": true,
+      "evidence": {
+        "caps": 2,
+        "volume": 0.14926056563854218,
+        "boundaryEdges": 0
+      },
+      "scope": "Actual rendered mesh"
+    },
+    {
+      "test": "foam_no_severe_overlap",
+      "pass": true,
+      "evidence": {
+        "inputCells": 26534,
+        "retainedCells": 8172,
+        "severeOverlapFraction": 0.0
+      },
+      "scope": "Actual diagnostic reconstruction; temporal packing not certified"
+    },
+    {
+      "test": "foam_drainage_mass",
+      "pass": true,
+      "evidence": {
+        "initialMass": 2.8,
+        "finalMass": 2.7999999999999985,
+        "liquidAtNodes": [
+          0.861756259091594,
+          0.7728982033434528,
+          0.6271017966565468,
+          0.5382437409084049
+        ]
+      },
+      "scope": "CPU shared-film drainage coupon"
+    },
+    {
+      "test": "snow_compaction_memory",
+      "pass": true,
+      "evidence": {
+        "plasticVolume": [
+          0.65,
+          1.0
+        ],
+        "hardening": [
+          16.444646771097048,
+          1.0
+        ]
+      },
+      "scope": "CPU MPM material reference"
+    },
+    {
+      "test": "mud_yield_threshold",
+      "pass": true,
+      "evidence": {
+        "shearRates": [
+          0.0,
+          0.0,
+          0.0,
+          0.03847508117277996,
+          5.949611447992288
+        ]
+      },
+      "scope": "CPU yield-fluid coupon; existing movie carrier is not this solve"
+    },
+    {
+      "test": "blood_thickness_absorption",
+      "pass": true,
+      "evidence": {
+        "RGBTransmission": [
+          [
+            0.9627129408911995,
+            0.6570468198150567,
+            0.5712090638488149
+          ],
+          [
+            0.6838614092123558,
+            0.014995576820477703,
+            0.003697863716482929
+          ],
+          [
+            0.04783488949419837,
+            2.5568509276699837e-15,
+            3.496288089567749e-20
+          ]
+        ]
+      },
+      "scope": "Optical law coupon"
+    },
+    {
+      "test": "leaf_lag_and_settle",
+      "pass": true,
+      "evidence": {
+        "firstStep": 0.0004999999999999999,
+        "peakAngle": 0.8317055042078746,
+        "finalAngle": -0.03895256152289108
+      },
+      "scope": "CPU leaf attachment response"
+    },
+    {
+      "test": "energy_local_exchange",
+      "pass": true,
+      "evidence": {
+        "channelA": [
+          0.76,
+          0.31000000000000005
+        ],
+        "channelB": [
+          0.44,
+          0.5900000000000001
+        ]
+      },
+      "scope": "Designed fictional field with conserved exchange"
+    },
+    {
+      "test": "healing_actual_gap_closure",
+      "pass": true,
+      "evidence": {
+        "missingAreas": [
+          0.5046772970379956,
+          0.28939282694693347,
+          0.1388976386944205,
+          0.059301339824176846,
+          4.440892098500626e-16,
+          4.440892098500626e-16
+        ]
+      },
+      "scope": "Actual original-sigil geometry"
+    },
+    {
+      "test": "sound_finite_distinct_response",
+      "pass": true,
+      "evidence": {
+        "device": "CPU",
+        "particles": 24000,
+        "frames": 120,
+        "grid": [
+          160,
+          112
+        ],
+        "dt": 0.005555555555555556,
+        "CFL": 0.3,
+        "peakDisplacement": 0.04229104891419411,
+        "peakSpeed": 0.17930173873901367,
+        "mechanism": "Damped traveling acoustic pressure",
+        "limits": "Two-dimensional slowed witness; pressure effect is a prescribed body force"
+      },
+      "scope": "Actual CPU witness sequence"
+    },
+    {
+      "test": "pressure_finite_distinct_response",
+      "pass": true,
+      "evidence": {
+        "device": "CPU",
+        "particles": 24000,
+        "frames": 120,
+        "grid": [
+          160,
+          112
+        ],
+        "dt": 0.005555555555555556,
+        "CFL": 0.3,
+        "peakDisplacement": 1.0494458675384521,
+        "peakSpeed": 0.9387132525444031,
+        "mechanism": "Localized inward force and rebound",
+        "limits": "Two-dimensional slowed witness; pressure effect is a prescribed body force"
+      },
+      "scope": "Actual CPU witness sequence"
+    },
+    {
+      "test": "sand_positive_deformation_30",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.9992028474807739,
+        "maximumJ": 1.0008066892623901
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "sand_positive_deformation_45",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.7399301528930664,
+        "maximumJ": 1.000768780708313
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "sand_positive_deformation_65",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.9195411801338196,
+        "maximumJ": 1.0007715225219727
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "sand_positive_deformation_90",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.27563777565956116,
+        "maximumJ": 1.0008105039596558
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "snow_positive_deformation_30",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.982123613357544,
+        "maximumJ": 1.0171034336090088
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "snow_positive_deformation_45",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.9780533909797668,
+        "maximumJ": 1.0167638063430786
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "snow_positive_deformation_65",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.9698537588119507,
+        "maximumJ": 1.013979196548462
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    },
+    {
+      "test": "snow_positive_deformation_90",
+      "pass": true,
+      "evidence": {
+        "minimumJ": 0.9751750230789185,
+        "maximumJ": 1.016095757484436
+      },
+      "scope": "Existing dynamics cache, CPU validation"
+    }
+  ],
+  "interpretation": "Law coupons validate mechanisms, not complete scene coupling or photorealism."
+}

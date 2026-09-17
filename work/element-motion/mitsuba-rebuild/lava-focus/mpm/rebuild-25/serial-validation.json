@@ -1,0 +1,40 @@
+{
+  "status": "pass",
+  "runs": {
+    "lava_mpm_rebuild25_check.py": {
+      "exitCode": 0,
+      "seconds": 7.155999999988126,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_mpm_rebuild25_check-verified.log"
+    },
+    "lava_mpm_rebuild_suite.py": {
+      "exitCode": 0,
+      "seconds": 4.125,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_mpm_rebuild_suite-verified.log"
+    },
+    "lava_mpm_rebuild_smoke.py": {
+      "exitCode": 0,
+      "seconds": 5.344000000011874,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_mpm_rebuild_smoke-verified.log"
+    },
+    "lava_mpm_surface25_check.py": {
+      "exitCode": 0,
+      "seconds": 2.937000000005355,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_mpm_surface25_check-verified.log"
+    },
+    "lava_mpm_gap25_check.py": {
+      "exitCode": 0,
+      "seconds": 2.6719999999913853,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_mpm_gap25_check-verified.log"
+    },
+    "lava_material_texture_check.py": {
+      "exitCode": 0,
+      "seconds": 1.4060000000172295,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_material_texture_check-verified.log"
+    },
+    "lava_mpm_rebuild_comparison.py": {
+      "exitCode": 0,
+      "seconds": 8.71899999998277,
+      "log": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\lava_mpm_rebuild_comparison-verified.log"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "material": "glass",
+    "signedVolume": -0.212630033493042,
+    "vertices": 19294,
+    "inward": true
+  },
+  {
+    "material": "ice",
+    "signedVolume": -0.34487393498420715,
+    "vertices": 20996,
+    "inward": true
+  },
+  {
+    "material": "lava",
+    "signedVolume": 0.6440854582110402,
+    "vertices": 15935,
+    "inward": false
+  },
+  {
+    "material": "metal",
+    "signedVolume": -0.00905777420848608,
+    "vertices": 21000,
+    "inward": true
+  }
+]

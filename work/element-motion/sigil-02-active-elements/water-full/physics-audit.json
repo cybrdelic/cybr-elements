@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "frames": 240,
+  "finite": true,
+  "allPressureConverged": true,
+  "initialParcels": 138022,
+  "finalParcels": 138022,
+  "maxSourceBalanceError": 0,
+  "maxRepresentedVolumeError": 0.0017383874292964375,
+  "maxMeshVolumeError": 0.0017394964966313809,
+  "holdDropletCounts": {
+    "30": 9,
+    "60": 20,
+    "90": 74,
+    "120": 82,
+    "144": 83
+  },
+  "endFloorContacts": 113416,
+  "disjointDropletAndBodyMass": true
+}

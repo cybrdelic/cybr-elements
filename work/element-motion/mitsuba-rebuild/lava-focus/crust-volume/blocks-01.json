@@ -1,0 +1,19 @@
+{
+  "device": "CPU",
+  "sourceSha256": "f0db4ce41b02b93747912bac9211e095016d5bdf1be3e6055c17fe85cbf8c147",
+  "meshSha256": "3dfe3b411614fb9b020791837cd475ad20fb5ae444029574a74d2a02854d1124",
+  "vertices": 854524,
+  "triangles": 1708088,
+  "blocks": 185,
+  "thicknessRangeM": [
+    0.033017669630225024,
+    0.063
+  ],
+  "columnEnergyResidual": 1.3369055668654663e-14,
+  "seconds": 17.55,
+  "limits": [
+    "Authored packed fracture blocks; not a rigid-body or fracture solve",
+    "Tilt and lift are authored, and block interpenetration has not been ruled out",
+    "Local cooling only, not coupled thermal-fluid dynamics"
+  ]
+}

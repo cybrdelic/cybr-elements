@@ -1,0 +1,20 @@
+{
+  "startTime": 66.78217740558523,
+  "config": {
+    "plane": -0.08,
+    "half_width": 0.015,
+    "height": 0.025,
+    "peak_speed": 0.08,
+    "temperature": 1450.0
+  },
+  "period": 0.0625,
+  "nextEmission": 67.59467740558523,
+  "emissions": 12,
+  "seed": {
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\crust-local-10\\state.npz",
+    "sha256": "41e5c0fc710fc6d861554b209ae62ce6c5bccd8cb84207a200d2aeb32df2cb39",
+    "hotChannelParticles": 188
+  },
+  "description": "New inlet experiment: an initially hot channel feeds the cached cooling sample. Initial channel mass/enthalpy is declared; subsequent material enters through a prescribed-velocity boundary. No fragment paths or geometric crack cuts.",
+  "stateSha256": "ee0f9983fc1907518c06e7faf903df4ad991d5a492bc6d1a2dfe08804ed221ce"
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "spirit",
+  "frame": 45,
+  "status": "complete",
+  "seconds": 6.372,
+  "peakResidentMB": 607.2,
+  "device": "CPU",
+  "threads": 2,
+  "processorAffinity": [
+    0,
+    1
+  ],
+  "samples": 24,
+  "sourceHash": "565e7597b547b8d183261e0cac38331fc7d8db613624342ef7ee2807eb0fbdef",
+  "returncode": 0,
+  "images": [
+    "spirit-0045.png"
+  ],
+  "key": "2c6aa53a6d17ef2a"
+}

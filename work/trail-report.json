@@ -1,0 +1,17 @@
+{
+  "frames": 234,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    480,
+    56,
+    192
+  ],
+  "elapsed": 115.28199999999924,
+  "peakGpuMiB": 1284.7470703125,
+  "source": "bake-reactive-fire.py",
+  "changes": "Single moving fuel nozzle with backward jet momentum; speed-preserving hot-gas turning; native buoyancy, reaction, pressure and radiance; no trail fitting, morph or cached particles."
+}

@@ -1,0 +1,11 @@
+{
+  "radiationEmissivity": 0.94,
+  "convectionWPerM2K": 45,
+  "externalQuenchWPerM2": 0,
+  "energyRelativeError": 2.8159162474123576e-14,
+  "ageRangeSeconds": [
+    0.3,
+    60
+  ],
+  "limits": "Independent 5.6mm depth columns; initial crust age is authored and advected."
+}

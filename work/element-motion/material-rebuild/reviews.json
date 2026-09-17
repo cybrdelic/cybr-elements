@@ -1,0 +1,82 @@
+{
+  "lightning": {
+    "decision": "keep",
+    "sha256": "c92bc22bf855747c5689a925cdd817cc7990e427ca030ff818318a868a71b595",
+    "frames": [
+      10,
+      20,
+      30,
+      45,
+      57,
+      65,
+      80,
+      95
+    ],
+    "observations": "Compared frame 45 with the prior clip and inspected decoded formation, complete-gesture restrikes and extinction. Multiscale angular channels, primary forks and finer branches remain visible; pulse gaps are intentional and the black background is retained. A substantial discharge-detail improvement, not a photorealism certification.",
+    "note": "Jagged branching discharges, fine secondary channels and brief repeated return strokes."
+  },
+  "lightning-redirection": {
+    "decision": "keep",
+    "sha256": "5b48e496f669cea4797f1d695d9a4bc09b4245feceb3473381130a652efe2624",
+    "frames": [
+      10,
+      20,
+      30,
+      45,
+      57,
+      65,
+      80,
+      95
+    ],
+    "observations": "Decoded full HD movie and inspected incoming stroke, guided transition, outgoing forks and extinction. Branching maintains fine detail, intentional intermittent discharges and black background. More convincing electric discharge than the earlier smooth wire.",
+    "note": "Incoming discharge, guided transfer and outgoing branched return strokes."
+  },
+  "blood": {
+    "decision": "keep",
+    "sha256": "0b1d146d952e994b270fe982790b71c016cddd56faea55eaff32cc833a3c4c57",
+    "frames": [
+      10,
+      20,
+      30,
+      45,
+      57,
+      65,
+      80,
+      95
+    ],
+    "observations": "Reviewed the complete decoded progression in eight frames plus full-size material comparison. Dense dark red liquid, narrower specular response and connected sheeting through the fall. The existing guided FLIP motion is preserved; this is an optical improvement to the previously mostly-good material.",
+    "note": "Dense red absorption, restrained wet highlights and native FLIP sheeting."
+  },
+  "mud": {
+    "decision": "keep",
+    "sha256": "dad590b8d20acbbd3d3f35c5b1ace84e5062c9b2dec43546eb7165433f307045",
+    "frames": [
+      10,
+      20,
+      30,
+      45,
+      57,
+      65,
+      80,
+      95
+    ],
+    "observations": "Inspected all eight decoded review frames and the optical comparison. Dense wet earth color and reduced plastic-like coat, with the original cohesive viscous fall and pooling. This refines an existing mostly-good motion, not a new fluid simulation.",
+    "note": "Dense wet earth with fine roughness and restrained surface reflections."
+  },
+  "combustion": {
+    "decision": "keep",
+    "sha256": "ceca993c4398863111a0c37dfcfa53ff16ddbc61d570b7282003a38ae94cab49",
+    "frames": [
+      10,
+      20,
+      30,
+      45,
+      57,
+      65,
+      80,
+      95
+    ],
+    "observations": "Compared the ignition frame at enlarged scale and inspected the decoded jet, burst and extinction sequence. The reaction front has more luminous contrast and red/orange hot-soot structure, with the existing 3-D reactive motion preserved. The burst remains restrained in size; this is a radiance reconstruction improvement.",
+    "note": "Resolved reaction-front radiance, incandescent soot and self-shadowed cooling gas."
+  }
+}

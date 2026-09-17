@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "device": "CPU",
+  "variant": "scalar_rgb",
+  "facesTested": 96,
+  "maximumEmissionRelativeError": 0.0009524652224085113,
+  "maximumPositionErrorM": 3.5832113779574673e-09,
+  "maximumPhaseError": 7.410905192573036e-07,
+  "sourceSha256": "57a7af71774a920abf9603845feb8068b1171a9c5c8f52335e608b32c80f43ee",
+  "scope": "Direct emission, phase and non-overlapping UV parameterization; not visual or motion approval."
+}

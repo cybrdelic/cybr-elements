@@ -1,0 +1,51 @@
+{
+  "status": "incomplete",
+  "error": "MemoryError((699300,), dtype('float64'))",
+  "time": 8.591375079117432,
+  "targetTime": 10.0,
+  "steps": 3,
+  "particles": 884,
+  "temperatureRange": [
+    1123.9727431483864,
+    1450.0000008418365
+  ],
+  "maximumDamage": 0.44921300016030413,
+  "brokenEdges": 0,
+  "coherentParticles": 92,
+  "ledger": {
+    "radiation": 279.1758558792077,
+    "convection": 20.082999503290523,
+    "bed": -49.508093763806656,
+    "viscous_heat": 0.0001054486259027705,
+    "fracture": 1.7492324820735633e-06,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0,
+    "conduit_impulse_norm": 0.0,
+    "solid_floor_impulse_norm": 0.0,
+    "contact_objective_loss": 3.0153121401084214e-05,
+    "inlet_boundary_work": 0.0001127881732772105,
+    "source_mass": 0.00014531250000000002,
+    "source_enthalpy": 106.40071875,
+    "source_kinetic": 1.9727245895892744e-11,
+    "inlet_particles": 288,
+    "inlet_reference_layers": 8,
+    "friction_work": 0.0,
+    "friction_heat": 0.0,
+    "interface_heat": 8.485627552069906e-06
+  },
+  "massErrorKg": 2.710505431213761e-20,
+  "thermalBalanceRelative": 2.9543502087953166e-11,
+  "wallSeconds": 75.0,
+  "sourceHashes": {
+    "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "23b87eb9fed4a2f1f78562f748f826d8f434f790ccfcf09b3e2533442c1226c3",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "a81843ad329c444f915cd649dfda826335ef5d7b3a37503d72cb7ba04ca3e2ae"
+  },
+  "limits": "Coarse CPU physical screening, not a final render or spatial/temporal convergence proof."
+}

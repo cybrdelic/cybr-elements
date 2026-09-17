@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\inlet-crust-12\\state.npz",
+  "sourceSha256": "ee0f9983fc1907518c06e7faf903df4ad991d5a492bc6d1a2dfe08804ed221ce",
+  "physicalSeconds": 67.58217740558523,
+  "vertices": 2548,
+  "triangles": 5088,
+  "solverParticleVolumeM3": 0.00013295559531657862,
+  "reconstructedVolumeM3": 0.00013294106713737173,
+  "relativeVolumeDifference": 0.00010927091238467844,
+  "limits": "Kernel-based reconstruction at the material point spacing; subgrid fractures are not manufactured in the mesh"
+}

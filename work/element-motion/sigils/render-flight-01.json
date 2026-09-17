@@ -1,0 +1,14 @@
+{
+  "kind": "flight",
+  "variant": "01",
+  "frames": [
+    240,
+    360
+  ],
+  "configuration": "b16664698852df7ea7fec7900a2b1aaf0f80d833f446d39524350c7fcf9dd6b0",
+  "seconds": 22.411478281021118,
+  "reusedSettledFrames": 0,
+  "sourceSha256": "daa4f6ee0737c9f645cd5e4becf31f8223f6c032dbfcc937d162b72669ad025e",
+  "method": "Original source geometry, reviewed shader recipes, supported damped motion and gravity release",
+  "limits": "Authored bending support; this retargeting pass does not rerun the earlier FLIP/MPM solves"
+}

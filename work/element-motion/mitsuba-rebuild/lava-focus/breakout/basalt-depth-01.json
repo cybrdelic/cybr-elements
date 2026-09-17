@@ -1,0 +1,13 @@
+{
+  "device": "CPU",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\refined-lobed-02.npz",
+  "sourceSha256": "50de5d3510c0c5db0f4dca5ea2200be94c130c020c237624b69acd3586a7e44e",
+  "meshSha256": "83bbd715d5e3106ef0b843a7b16d9013a5c82a86696a239848447a7a73ecd41f",
+  "seconds": 5.37,
+  "method": "Original rough-basalt surface and temperature field preserved; coarse volume made thicker and less oval",
+  "limits": [
+    "Authored coarse deformation, not a new fluid solve",
+    "Existing temperature field remains authored from baseline crust exposure",
+    "No motion or sigil acceptance is claimed"
+  ]
+}

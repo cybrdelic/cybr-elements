@@ -1,0 +1,19 @@
+{
+  "device": "CPU",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\breakout\\rupture-03.npz",
+  "sourceSha256": "e92c2e5871b92a092d3ee995c587b9c65f51872f29570b9d8cd0d75eb4bbfa0a",
+  "vertices": 648158,
+  "triangles": 1296320,
+  "coreConnectedComponents": 1,
+  "openEdges": 0,
+  "nonManifoldEdges": 0,
+  "zeroAreaTriangles": 0,
+  "collapsedTriangleMaxEdgeM": 0.0,
+  "normalMaxError": 1.7881393432617188e-07,
+  "temperatureRangeK": [
+    968.8411865234375,
+    1441.2784423828125
+  ],
+  "seconds": 1.9,
+  "limits": "Checks finite closed geometry and one connected core. Does not validate collision-free crust, fluid dynamics, temporal coherence, or visual realism."
+}

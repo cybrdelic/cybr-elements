@@ -1,0 +1,1117 @@
+{
+  "scope": "Independent 1D conduction/enthalpy timescale screen, not a 3D lava cache.\n\nSix millimetres of hot lava on twelve millimetres of finite cold rock.\nOnly the exposed top radiates/convects. This omits lateral cooling, feed,\ndeformation and gas transport, so it estimates a mechanism, not the shot.\n",
+  "cases": [
+    {
+      "dx": 0.00025,
+      "dt": 0.05,
+      "seconds": 0.7029999999795109,
+      "firstCoherentTopSeconds": 11.450000000000001,
+      "firstTopBelow1000KSeconds": 38.85,
+      "relativeEnergyBalance": 1.1820805747899463e-12,
+      "records": [
+        {
+          "time": 1.0,
+          "topTemperatureK": 1383.1502723561725,
+          "bottomLavaTemperatureK": 1014.4699249002955,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 2.0,
+          "topTemperatureK": 1358.4292739052037,
+          "bottomLavaTemperatureK": 991.7683436768432,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 3.0,
+          "topTemperatureK": 1341.0431785254584,
+          "bottomLavaTemperatureK": 981.9979473718751,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 4.0,
+          "topTemperatureK": 1327.214735337455,
+          "bottomLavaTemperatureK": 976.7865958343922,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 5.0,
+          "topTemperatureK": 1315.4981140630823,
+          "bottomLavaTemperatureK": 972.9595752328311,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 6.0,
+          "topTemperatureK": 1305.2218671274725,
+          "bottomLavaTemperatureK": 969.8518079297328,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 7.0,
+          "topTemperatureK": 1295.9729768289023,
+          "bottomLavaTemperatureK": 967.8209668799144,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 8.0,
+          "topTemperatureK": 1287.4217156739433,
+          "bottomLavaTemperatureK": 965.6890465878281,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 9.0,
+          "topTemperatureK": 1279.3159846286587,
+          "bottomLavaTemperatureK": 963.8148768134206,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 10.0,
+          "topTemperatureK": 1271.4781755773506,
+          "bottomLavaTemperatureK": 962.3172545943414,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 11.0,
+          "topTemperatureK": 1263.79105403956,
+          "bottomLavaTemperatureK": 960.7731232267803,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 12.0,
+          "topTemperatureK": 1256.182092742309,
+          "bottomLavaTemperatureK": 959.1122081241426,
+          "topCoherentSkinMm": 0.25
+        },
+        {
+          "time": 13.0,
+          "topTemperatureK": 1248.6103340043355,
+          "bottomLavaTemperatureK": 957.5798726893216,
+          "topCoherentSkinMm": 0.25
+        },
+        {
+          "time": 14.0,
+          "topTemperatureK": 1241.0558638415077,
+          "bottomLavaTemperatureK": 956.0607518679072,
+          "topCoherentSkinMm": 0.5
+        },
+        {
+          "time": 15.0,
+          "topTemperatureK": 1233.512145799575,
+          "bottomLavaTemperatureK": 954.3351388077882,
+          "topCoherentSkinMm": 0.5
+        },
+        {
+          "time": 16.0,
+          "topTemperatureK": 1225.9810209517846,
+          "bottomLavaTemperatureK": 952.6131532997952,
+          "topCoherentSkinMm": 0.75
+        },
+        {
+          "time": 17.0,
+          "topTemperatureK": 1218.4687454240934,
+          "bottomLavaTemperatureK": 950.88803245632,
+          "topCoherentSkinMm": 0.75
+        },
+        {
+          "time": 18.0,
+          "topTemperatureK": 1210.9834898925712,
+          "bottomLavaTemperatureK": 948.9994646725913,
+          "topCoherentSkinMm": 1.0
+        },
+        {
+          "time": 19.0,
+          "topTemperatureK": 1203.5341346349066,
+          "bottomLavaTemperatureK": 947.0772909717668,
+          "topCoherentSkinMm": 1.25
+        },
+        {
+          "time": 20.0,
+          "topTemperatureK": 1196.128760181646,
+          "bottomLavaTemperatureK": 945.1077714272385,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 21.0,
+          "topTemperatureK": 1188.77435199831,
+          "bottomLavaTemperatureK": 943.0285598396877,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 22.0,
+          "topTemperatureK": 1181.4762827798272,
+          "bottomLavaTemperatureK": 940.9176528128854,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 23.0,
+          "topTemperatureK": 1174.237948994885,
+          "bottomLavaTemperatureK": 938.720557773975,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 24.0,
+          "topTemperatureK": 1164.9088975278592,
+          "bottomLavaTemperatureK": 936.4730455313884,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 25.0,
+          "topTemperatureK": 1156.675451798515,
+          "bottomLavaTemperatureK": 934.1574122515502,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 26.0,
+          "topTemperatureK": 1147.1192275232577,
+          "bottomLavaTemperatureK": 931.7860260423729,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 27.0,
+          "topTemperatureK": 1137.5387066099431,
+          "bottomLavaTemperatureK": 929.3518049177234,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 28.0,
+          "topTemperatureK": 1127.537630342263,
+          "bottomLavaTemperatureK": 926.8544966836554,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 29.0,
+          "topTemperatureK": 1116.6568103006007,
+          "bottomLavaTemperatureK": 924.2863233002025,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 30.0,
+          "topTemperatureK": 1103.638908909366,
+          "bottomLavaTemperatureK": 921.628391564891,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 31.0,
+          "topTemperatureK": 1089.7478226866667,
+          "bottomLavaTemperatureK": 918.8286608450701,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 32.0,
+          "topTemperatureK": 1076.2452510820276,
+          "bottomLavaTemperatureK": 915.8378139708848,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 33.0,
+          "topTemperatureK": 1063.3913609639912,
+          "bottomLavaTemperatureK": 912.6620547444635,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 34.0,
+          "topTemperatureK": 1051.2013800422112,
+          "bottomLavaTemperatureK": 909.3380851655237,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 35.0,
+          "topTemperatureK": 1039.633618735654,
+          "bottomLavaTemperatureK": 905.9066249525498,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 36.0,
+          "topTemperatureK": 1028.6358661478005,
+          "bottomLavaTemperatureK": 902.4033716122178,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 37.0,
+          "topTemperatureK": 1018.1579476197135,
+          "bottomLavaTemperatureK": 898.8576161328717,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 38.0,
+          "topTemperatureK": 1008.1548841824273,
+          "bottomLavaTemperatureK": 895.292965699449,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 39.0,
+          "topTemperatureK": 998.5872231922494,
+          "bottomLavaTemperatureK": 891.7283813512032,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 40.0,
+          "topTemperatureK": 989.4205364626148,
+          "bottomLavaTemperatureK": 888.1790893854878,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 41.0,
+          "topTemperatureK": 980.6247339586531,
+          "bottomLavaTemperatureK": 884.6573076214892,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 42.0,
+          "topTemperatureK": 972.1734031811104,
+          "bottomLavaTemperatureK": 881.1728142545848,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 43.0,
+          "topTemperatureK": 964.0432339844145,
+          "bottomLavaTemperatureK": 877.7333960051947,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 44.0,
+          "topTemperatureK": 956.2135364681052,
+          "bottomLavaTemperatureK": 874.345205141739,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 45.0,
+          "topTemperatureK": 948.665842714336,
+          "bottomLavaTemperatureK": 871.0130469894705,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 46.0,
+          "topTemperatureK": 941.3835790942491,
+          "bottomLavaTemperatureK": 867.740613526858,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 47.0,
+          "topTemperatureK": 934.3517963119808,
+          "bottomLavaTemperatureK": 864.5306745114606,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 48.0,
+          "topTemperatureK": 927.5569461564568,
+          "bottomLavaTemperatureK": 861.3852347216783,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 49.0,
+          "topTemperatureK": 920.9866959241069,
+          "bottomLavaTemperatureK": 858.305663900144,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 50.0,
+          "topTemperatureK": 914.6297732645148,
+          "bottomLavaTemperatureK": 855.2928045409224,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 51.0,
+          "topTemperatureK": 908.4758356863997,
+          "bottomLavaTemperatureK": 852.3470615902545,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 52.0,
+          "topTemperatureK": 902.5153601523767,
+          "bottomLavaTemperatureK": 849.4684773140508,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 53.0,
+          "topTemperatureK": 896.7395491306311,
+          "bottomLavaTemperatureK": 846.6567939517182,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 54.0,
+          "topTemperatureK": 891.1402502081175,
+          "bottomLavaTemperatureK": 843.9115062773412,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 55.0,
+          "topTemperatureK": 885.7098869462337,
+          "bottomLavaTemperatureK": 841.2319057930403,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 56.0,
+          "topTemperatureK": 880.4413991116357,
+          "bottomLavaTemperatureK": 838.6171179622557,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 57.0,
+          "topTemperatureK": 875.3281907700964,
+          "bottomLavaTemperatureK": 836.0661336356701,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 58.0,
+          "topTemperatureK": 870.3640850118571,
+          "bottomLavaTemperatureK": 833.5778356165598,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 59.0,
+          "topTemperatureK": 865.5432842996074,
+          "bottomLavaTemperatureK": 831.1510211455859,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 60.0,
+          "topTemperatureK": 860.8603356079055,
+          "bottomLavaTemperatureK": 828.7844209495943,
+          "topCoherentSkinMm": 6.0000000000000036
+        }
+      ]
+    },
+    {
+      "dx": 0.00025,
+      "dt": 0.025,
+      "seconds": 1.875,
+      "firstCoherentTopSeconds": 11.425,
+      "firstTopBelow1000KSeconds": 38.85,
+      "relativeEnergyBalance": 4.329991181699103e-13,
+      "records": [
+        {
+          "time": 1.0,
+          "topTemperatureK": 1382.9208089577298,
+          "bottomLavaTemperatureK": 1013.5755419929775,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 2.0,
+          "topTemperatureK": 1358.2656012939046,
+          "bottomLavaTemperatureK": 991.6044184489887,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 3.0,
+          "topTemperatureK": 1340.9179969904433,
+          "bottomLavaTemperatureK": 981.8671006125321,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 4.0,
+          "topTemperatureK": 1327.1180698385738,
+          "bottomLavaTemperatureK": 976.7314560404895,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 5.0,
+          "topTemperatureK": 1315.4208167920065,
+          "bottomLavaTemperatureK": 972.9024677478255,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 6.0,
+          "topTemperatureK": 1305.1575598805823,
+          "bottomLavaTemperatureK": 969.819583608182,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 7.0,
+          "topTemperatureK": 1295.9209096813654,
+          "bottomLavaTemperatureK": 967.8050627955546,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 8.0,
+          "topTemperatureK": 1287.381520117921,
+          "bottomLavaTemperatureK": 965.6682396425937,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 9.0,
+          "topTemperatureK": 1279.2860526833,
+          "bottomLavaTemperatureK": 963.8024933466189,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 10.0,
+          "topTemperatureK": 1271.4560883998852,
+          "bottomLavaTemperatureK": 962.3126238632951,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 11.0,
+          "topTemperatureK": 1263.7742020927144,
+          "bottomLavaTemperatureK": 960.7690950095455,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 12.0,
+          "topTemperatureK": 1256.1680535940634,
+          "bottomLavaTemperatureK": 959.110062332101,
+          "topCoherentSkinMm": 0.25
+        },
+        {
+          "time": 13.0,
+          "topTemperatureK": 1248.597071839794,
+          "bottomLavaTemperatureK": 957.5814661146147,
+          "topCoherentSkinMm": 0.25
+        },
+        {
+          "time": 14.0,
+          "topTemperatureK": 1241.0418008779952,
+          "bottomLavaTemperatureK": 956.0652699756479,
+          "topCoherentSkinMm": 0.5
+        },
+        {
+          "time": 15.0,
+          "topTemperatureK": 1233.4961101288634,
+          "bottomLavaTemperatureK": 954.3379322357792,
+          "topCoherentSkinMm": 0.5
+        },
+        {
+          "time": 16.0,
+          "topTemperatureK": 1225.9622059737299,
+          "bottomLavaTemperatureK": 952.6166883830448,
+          "topCoherentSkinMm": 0.75
+        },
+        {
+          "time": 17.0,
+          "topTemperatureK": 1218.4466625278205,
+          "bottomLavaTemperatureK": 950.8933881410746,
+          "topCoherentSkinMm": 0.75
+        },
+        {
+          "time": 18.0,
+          "topTemperatureK": 1210.957860617441,
+          "bottomLavaTemperatureK": 949.0025545881888,
+          "topCoherentSkinMm": 1.0
+        },
+        {
+          "time": 19.0,
+          "topTemperatureK": 1203.5048693194883,
+          "bottomLavaTemperatureK": 947.0795404665901,
+          "topCoherentSkinMm": 1.25
+        },
+        {
+          "time": 20.0,
+          "topTemperatureK": 1196.0959027317617,
+          "bottomLavaTemperatureK": 945.1101533418334,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 21.0,
+          "topTemperatureK": 1188.7380170821143,
+          "bottomLavaTemperatureK": 943.0286738726824,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 22.0,
+          "topTemperatureK": 1181.4366711223543,
+          "bottomLavaTemperatureK": 940.917323245816,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 23.0,
+          "topTemperatureK": 1174.195273520367,
+          "bottomLavaTemperatureK": 938.7181709469999,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 24.0,
+          "topTemperatureK": 1164.8466000692158,
+          "bottomLavaTemperatureK": 936.4694168871341,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 25.0,
+          "topTemperatureK": 1156.5990371447767,
+          "bottomLavaTemperatureK": 934.1518394875031,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 26.0,
+          "topTemperatureK": 1147.0413180048781,
+          "bottomLavaTemperatureK": 931.7790617211942,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 27.0,
+          "topTemperatureK": 1137.444757926373,
+          "bottomLavaTemperatureK": 929.3431038046925,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 28.0,
+          "topTemperatureK": 1127.4365907377075,
+          "bottomLavaTemperatureK": 926.8442738141475,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 29.0,
+          "topTemperatureK": 1116.5565245844682,
+          "bottomLavaTemperatureK": 924.274835347875,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 30.0,
+          "topTemperatureK": 1103.5114973824627,
+          "bottomLavaTemperatureK": 921.6164911174889,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 31.0,
+          "topTemperatureK": 1089.5942079826298,
+          "bottomLavaTemperatureK": 918.8172340173252,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 32.0,
+          "topTemperatureK": 1076.0813455676423,
+          "bottomLavaTemperatureK": 915.8254788039355,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 33.0,
+          "topTemperatureK": 1063.224322483798,
+          "bottomLavaTemperatureK": 912.6474110481173,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 34.0,
+          "topTemperatureK": 1051.034442071453,
+          "bottomLavaTemperatureK": 909.3205069604973,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 35.0,
+          "topTemperatureK": 1039.4683273342457,
+          "bottomLavaTemperatureK": 905.8859642371127,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 36.0,
+          "topTemperatureK": 1028.47298124272,
+          "bottomLavaTemperatureK": 902.3796914854189,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 37.0,
+          "topTemperatureK": 1017.9978356854618,
+          "bottomLavaTemperatureK": 898.8310644650927,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 38.0,
+          "topTemperatureK": 1007.997704048251,
+          "bottomLavaTemperatureK": 895.2637241738746,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 39.0,
+          "topTemperatureK": 998.4330201405793,
+          "bottomLavaTemperatureK": 891.6966450727583,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 40.0,
+          "topTemperatureK": 989.2692925078809,
+          "bottomLavaTemperatureK": 888.1450577168082,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 41.0,
+          "topTemperatureK": 980.4763958628153,
+          "bottomLavaTemperatureK": 884.6211791446741,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 42.0,
+          "topTemperatureK": 972.0278985778102,
+          "bottomLavaTemperatureK": 881.1347834727018,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 43.0,
+          "topTemperatureK": 963.9004808848387,
+          "bottomLavaTemperatureK": 877.6936510117374,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 44.0,
+          "topTemperatureK": 956.0734489552154,
+          "bottomLavaTemperatureK": 874.3039259837907,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 45.0,
+          "topTemperatureK": 948.5283343783915,
+          "bottomLavaTemperatureK": 870.9704045854053,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 46.0,
+          "topTemperatureK": 941.2485650978825,
+          "bottomLavaTemperatureK": 867.6967690320457,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 47.0,
+          "topTemperatureK": 934.2191946077505,
+          "bottomLavaTemperatureK": 864.4857790364505,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 48.0,
+          "topTemperatureK": 927.426678172521,
+          "bottomLavaTemperatureK": 861.339429317607,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 49.0,
+          "topTemperatureK": 920.8586869127436,
+          "bottomLavaTemperatureK": 858.259079738602,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 50.0,
+          "topTemperatureK": 914.5039524358904,
+          "bottomLavaTemperatureK": 855.2455632289002,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 51.0,
+          "topTemperatureK": 908.3521362057725,
+          "bottomLavaTemperatureK": 852.2992755735698,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 52.0,
+          "topTemperatureK": 902.3937190513226,
+          "bottomLavaTemperatureK": 849.4202503338822,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 53.0,
+          "topTemperatureK": 896.6199071653764,
+          "bottomLavaTemperatureK": 846.6082215281883,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 54.0,
+          "topTemperatureK": 891.0225516867599,
+          "bottomLavaTemperatureK": 843.8626762015176,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 55.0,
+          "topTemperatureK": 885.594079539247,
+          "bottomLavaTemperatureK": 841.1828986144453,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 56.0,
+          "topTemperatureK": 880.3274336551749,
+          "bottomLavaTemperatureK": 838.5680074632779,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 57.0,
+          "topTemperatureK": 875.2160210683563,
+          "bottomLavaTemperatureK": 836.0169872874293,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 58.0,
+          "topTemperatureK": 870.2536676425494,
+          "bottomLavaTemperatureK": 833.5287150130429,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 59.0,
+          "topTemperatureK": 865.4345784251498,
+          "bottomLavaTemperatureK": 831.1019824144639,
+          "topCoherentSkinMm": 6.0000000000000036
+        },
+        {
+          "time": 60.0,
+          "topTemperatureK": 860.753302793914,
+          "bottomLavaTemperatureK": 828.7355151392151,
+          "topCoherentSkinMm": 6.0000000000000036
+        }
+      ]
+    },
+    {
+      "dx": 0.000125,
+      "dt": 0.025,
+      "seconds": 1.860000000015134,
+      "firstCoherentTopSeconds": 10.975000000000001,
+      "firstTopBelow1000KSeconds": 38.85,
+      "relativeEnergyBalance": 7.387652701741727e-13,
+      "records": [
+        {
+          "time": 1.0,
+          "topTemperatureK": 1376.780064749764,
+          "bottomLavaTemperatureK": 976.944235827971,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 2.0,
+          "topTemperatureK": 1352.6735938682907,
+          "bottomLavaTemperatureK": 966.5512293705893,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 3.0,
+          "topTemperatureK": 1335.7671394295016,
+          "bottomLavaTemperatureK": 961.9186667647743,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 4.0,
+          "topTemperatureK": 1322.3212207346714,
+          "bottomLavaTemperatureK": 959.2058168443484,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 5.0,
+          "topTemperatureK": 1310.9136900072351,
+          "bottomLavaTemperatureK": 957.2923323340466,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 6.0,
+          "topTemperatureK": 1300.8923350724651,
+          "bottomLavaTemperatureK": 955.7216704412564,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 7.0,
+          "topTemperatureK": 1291.8702133244497,
+          "bottomLavaTemperatureK": 954.4699578504362,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 8.0,
+          "topTemperatureK": 1283.5267661114026,
+          "bottomLavaTemperatureK": 953.400461825706,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 9.0,
+          "topTemperatureK": 1275.611488418998,
+          "bottomLavaTemperatureK": 952.3346008926854,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 10.0,
+          "topTemperatureK": 1267.947552239009,
+          "bottomLavaTemperatureK": 951.3493577553393,
+          "topCoherentSkinMm": 0.0
+        },
+        {
+          "time": 11.0,
+          "topTemperatureK": 1260.4189795660823,
+          "bottomLavaTemperatureK": 950.3369540463646,
+          "topCoherentSkinMm": 0.125
+        },
+        {
+          "time": 12.0,
+          "topTemperatureK": 1252.9549436323698,
+          "bottomLavaTemperatureK": 949.2678991775986,
+          "topCoherentSkinMm": 0.125
+        },
+        {
+          "time": 13.0,
+          "topTemperatureK": 1245.5161476052251,
+          "bottomLavaTemperatureK": 948.16246870097,
+          "topCoherentSkinMm": 0.25
+        },
+        {
+          "time": 14.0,
+          "topTemperatureK": 1238.084298937946,
+          "bottomLavaTemperatureK": 946.9530567892629,
+          "topCoherentSkinMm": 0.375
+        },
+        {
+          "time": 15.0,
+          "topTemperatureK": 1230.6544392060714,
+          "bottomLavaTemperatureK": 945.6767406832267,
+          "topCoherentSkinMm": 0.5
+        },
+        {
+          "time": 16.0,
+          "topTemperatureK": 1223.2295704034075,
+          "bottomLavaTemperatureK": 944.3100904030003,
+          "topCoherentSkinMm": 0.625
+        },
+        {
+          "time": 17.0,
+          "topTemperatureK": 1215.8169945346801,
+          "bottomLavaTemperatureK": 942.8450929869045,
+          "topCoherentSkinMm": 0.75
+        },
+        {
+          "time": 18.0,
+          "topTemperatureK": 1208.425886161429,
+          "bottomLavaTemperatureK": 941.2988795441778,
+          "topCoherentSkinMm": 1.0
+        },
+        {
+          "time": 19.0,
+          "topTemperatureK": 1201.0657267766196,
+          "bottomLavaTemperatureK": 939.6652647605197,
+          "topCoherentSkinMm": 1.2500000000000002
+        },
+        {
+          "time": 20.0,
+          "topTemperatureK": 1193.7453182226773,
+          "bottomLavaTemperatureK": 937.9453191119775,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 21.0,
+          "topTemperatureK": 1186.4721734700877,
+          "bottomLavaTemperatureK": 936.1451785548682,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 22.0,
+          "topTemperatureK": 1179.25213713762,
+          "bottomLavaTemperatureK": 934.268768229299,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 23.0,
+          "topTemperatureK": 1171.6284793656237,
+          "bottomLavaTemperatureK": 932.3188474966261,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 24.0,
+          "topTemperatureK": 1163.4166728583507,
+          "bottomLavaTemperatureK": 930.298274065817,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 25.0,
+          "topTemperatureK": 1154.7417921745036,
+          "bottomLavaTemperatureK": 928.2095857908378,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 26.0,
+          "topTemperatureK": 1145.757985693694,
+          "bottomLavaTemperatureK": 926.054575059817,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 27.0,
+          "topTemperatureK": 1136.4050050309293,
+          "bottomLavaTemperatureK": 923.8339694646558,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 28.0,
+          "topTemperatureK": 1126.5396128528985,
+          "bottomLavaTemperatureK": 921.5465058434094,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 29.0,
+          "topTemperatureK": 1115.9356730616507,
+          "bottomLavaTemperatureK": 919.1871994021991,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 30.0,
+          "topTemperatureK": 1103.3435008525285,
+          "bottomLavaTemperatureK": 916.7430607035384,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 31.0,
+          "topTemperatureK": 1089.5209901757942,
+          "bottomLavaTemperatureK": 914.1737083223575,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 32.0,
+          "topTemperatureK": 1076.0209182110023,
+          "bottomLavaTemperatureK": 911.4228479497448,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 33.0,
+          "topTemperatureK": 1063.1642608786542,
+          "bottomLavaTemperatureK": 908.4836081671264,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 34.0,
+          "topTemperatureK": 1050.975275125076,
+          "bottomLavaTemperatureK": 905.3865841542942,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 35.0,
+          "topTemperatureK": 1039.4127033198736,
+          "bottomLavaTemperatureK": 902.1705547395243,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 36.0,
+          "topTemperatureK": 1028.423343833772,
+          "bottomLavaTemperatureK": 898.8709432703973,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 37.0,
+          "topTemperatureK": 1017.956000505083,
+          "bottomLavaTemperatureK": 895.5174058635591,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 38.0,
+          "topTemperatureK": 1007.964888901139,
+          "bottomLavaTemperatureK": 892.1341593281076,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 39.0,
+          "topTemperatureK": 998.4099669501819,
+          "bottomLavaTemperatureK": 888.740856930674,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 40.0,
+          "topTemperatureK": 989.2563873713307,
+          "bottomLavaTemperatureK": 885.3534276083589,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 41.0,
+          "topTemperatureK": 980.473766497145,
+          "bottomLavaTemperatureK": 881.9847683615661,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 42.0,
+          "topTemperatureK": 972.0354884792991,
+          "bottomLavaTemperatureK": 878.64529740461,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 43.0,
+          "topTemperatureK": 963.9181043234055,
+          "bottomLavaTemperatureK": 875.3433959020946,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 44.0,
+          "topTemperatureK": 956.1008313139955,
+          "bottomLavaTemperatureK": 872.0857635221001,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 45.0,
+          "topTemperatureK": 948.5651416085232,
+          "bottomLavaTemperatureK": 868.8777071124754,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 46.0,
+          "topTemperatureK": 941.2944251804197,
+          "bottomLavaTemperatureK": 865.7233768182616,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 47.0,
+          "topTemperatureK": 934.2737131662712,
+          "bottomLavaTemperatureK": 862.6259603501614,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 48.0,
+          "topTemperatureK": 927.4894498035994,
+          "bottomLavaTemperatureK": 859.5878435716132,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 49.0,
+          "topTemperatureK": 920.9293033751502,
+          "bottomLavaTemperatureK": 856.610743754605,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 50.0,
+          "topTemperatureK": 914.5820085294012,
+          "bottomLavaTemperatureK": 853.695820519452,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 51.0,
+          "topTemperatureK": 908.4372339463757,
+          "bottomLavaTemperatureK": 850.843768465976,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 52.0,
+          "topTemperatureK": 902.4854705876778,
+          "bottomLavaTemperatureK": 848.0548947250729,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 53.0,
+          "topTemperatureK": 896.7179367640293,
+          "bottomLavaTemperatureK": 845.3291840479887,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 54.0,
+          "topTemperatureK": 891.1264970282422,
+          "bottomLavaTemperatureK": 842.6663535641944,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 55.0,
+          "topTemperatureK": 885.7035925047481,
+          "bottomLavaTemperatureK": 840.0658989487124,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 56.0,
+          "topTemperatureK": 880.4421807375948,
+          "bottomLavaTemperatureK": 837.5271334253341,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 57.0,
+          "topTemperatureK": 875.3356835076488,
+          "bottomLavaTemperatureK": 835.049220777676,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 58.0,
+          "topTemperatureK": 870.3779413601171,
+          "bottomLavaTemperatureK": 832.6312033335137,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 59.0,
+          "topTemperatureK": 865.5631738132992,
+          "bottomLavaTemperatureK": 830.2720257198622,
+          "topCoherentSkinMm": 6.000000000000004
+        },
+        {
+          "time": 60.0,
+          "topTemperatureK": 860.8859444023606,
+          "bottomLavaTemperatureK": 827.9705550493578,
+          "topCoherentSkinMm": 6.000000000000004
+        }
+      ]
+    }
+  ],
+  "maximumTopTemperatureChangeUnderTimeRefinementK": 0.2294633984427037,
+  "maximumTopTemperatureChangeUnderSpaceRefinementK": 6.140744207965781
+}

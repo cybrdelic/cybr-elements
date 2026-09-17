@@ -1,0 +1,40 @@
+{
+  "status": "fail",
+  "durationSeconds": 0.5,
+  "grids": [
+    {
+      "dx": 0.01,
+      "particles": 744,
+      "time": 0.5,
+      "centerDisplacement": [
+        0.0010485832928854464,
+        -6.65476120171872e-12,
+        -0.0010969163162758751
+      ],
+      "initialVolume": 9.300000000000004e-05,
+      "finalVolume": 9.298892764861646e-05,
+      "meanTemperature": 1445.0389030925257,
+      "rmsSpeed": 0.003937177421928846,
+      "maximumSpeed": 0.007246387248699967
+    },
+    {
+      "dx": 0.005,
+      "particles": 5860,
+      "time": 0.5,
+      "centerDisplacement": [
+        0.0009637841978381915,
+        9.168365983782684e-13,
+        -0.0008506201127041774
+      ],
+      "initialVolume": 9.156250000000004e-05,
+      "finalVolume": 9.154378259037936e-05,
+      "meanTemperature": 1441.4806213548118,
+      "rmsSpeed": 0.0032952359728826534,
+      "maximumSpeed": 0.006218607917714465
+    }
+  ],
+  "relativeRmsSpeedDifference": 0.19480894671243407,
+  "centerDifferenceM": 0.0002604855205470442,
+  "scope": "Early molten flow only. Does not validate long-time fracture, gas refinement, or final render quality.",
+  "seconds": 88.04198098182678
+}

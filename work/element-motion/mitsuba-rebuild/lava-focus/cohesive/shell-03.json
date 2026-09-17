@@ -1,0 +1,26 @@
+{
+  "device": "CPU",
+  "method": "XPBD elastic triangles, irreversible cohesive weld failure, compliant flexion, gravity, viscous drag and unilateral foundation contact",
+  "steps": 150,
+  "dt": 0.005555555555555556,
+  "simulationSeconds": 0.8333333333333334,
+  "mechanicalTriangles": 14337,
+  "brokenWeldFraction": 0.1091023607352804,
+  "maxSpeedBeforeCap": 0.46680258812581793,
+  "contactPenetrationM": 0.0,
+  "renderVertices": 344932,
+  "renderTriangles": 690908,
+  "wallSeconds": 86.71,
+  "settings": {
+    "spacing": 0.016,
+    "cohesiveSeparationM": 0.0004,
+    "surfaceDriveMps": 0.25,
+    "inflationFraction": 0.28
+  },
+  "limits": [
+    "Foundation inflation is kinematic, with no crust-to-fluid force feedback",
+    "Flexion uses opposite-vertex distances, not a full shell finite-element law",
+    "Crust microrelief and temperature history are authored; not calibrated basalt mechanics",
+    "No crust self-contact solver yet"
+  ]
+}

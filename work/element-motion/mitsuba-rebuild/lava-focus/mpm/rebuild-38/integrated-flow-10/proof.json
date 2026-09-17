@@ -1,0 +1,23 @@
+{
+  "status": "paused",
+  "error": "TimeoutError('CPU contact response deadline reached')",
+  "time": 7.758630833468516,
+  "targetTime": 10.0,
+  "particles": 1124,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.9788442779102701,
+  "solidPoints": 192,
+  "rejects": 2,
+  "wallSeconds": 300.34399999998277,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\integrated-flow",
+    "sha256": "6d79c05b89dd7222229e47d63d5948acf5aa65d9f6089108bb3d9c5ef045e3bd"
+  },
+  "bedKind": "finite",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

@@ -1,0 +1,36 @@
+{
+  "run": "crust-interface-09",
+  "physicalSeconds": 87.58217740558553,
+  "chunkSteps": 195,
+  "wallSeconds": 105.26975965499878,
+  "completedTarget": false,
+  "stateSha256": "76b0fa2c78054f6da577481e04c403c9de09dceba885c673668b1c270fd22df3",
+  "device": "CPU",
+  "latest": {
+    "time": 87.58217740558553,
+    "dt": 0.2,
+    "particles": 744,
+    "mass": 0.25110000000000005,
+    "volume": 9.218701168122179e-05,
+    "temperatureRange": [
+      623.0454823083857,
+      1298.0130707341766
+    ],
+    "meanSolidFraction": 0.8399304778507817,
+    "solidParticles": 456,
+    "damagedParticles": 313,
+    "maximumDamage": 0.9999999916584699,
+    "maximumSpeed": 6.805051483399927e-06,
+    "thermalBalanceRelative": 1.7343422947138306e-11,
+    "stepHeatResidualJ": 1.4665602066088468e-11,
+    "mechanicalResidual": 3.0843166325585416e-15,
+    "heatNewtonIterations": 5,
+    "viscousHeatJ": 4.200394876025985e-06,
+    "fractureEnergyJ": 0.0002792172499140524,
+    "seconds": 0.3130462169647217,
+    "materialVelocityFields": 2,
+    "brokenConnectivityEdges": 70,
+    "contactImpulses": 75,
+    "contactMomentumError": 0.0
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "metadata": [
+    {
+      "src": "fire-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "water-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "air-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "earth-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "seekTimes": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "playTimes": [
+    1.599813,
+    1.599806,
+    1.599755,
+    1.599745
+  ],
+  "overlays": 4,
+  "mobileOverflow": false,
+  "errors": []
+}

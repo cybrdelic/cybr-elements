@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "inletVelocityError": 4.163336342344337e-17,
+  "groundVelocityError": 0.0,
+  "movingWallVelocityError": 1.0000333894311098e-13,
+  "sourceMassErrorKg": 8.673617379884035e-19,
+  "sourceEnthalpyErrorJ": 9.094947017729282e-13,
+  "sourceQuadratureFluxM3PerS": 2.278500000000001e-05,
+  "limits": "Verifies discrete boundary and source accounting, not grid convergence or final lava quality",
+  "conduitPositionErrorM": 3.0010716134398763e-15,
+  "conduitDownstreamUnconstrained": true,
+  "uniqueMaterialReferenceCells": true,
+  "sourceMaterialDomainVolumeErrorM3": 1.9852334701272664e-23
+}

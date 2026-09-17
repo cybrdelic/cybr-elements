@@ -1,0 +1,24 @@
+{
+  "status": "pass",
+  "evidence": {
+    "analyticAmplitude": 0.35769171609909733,
+    "grids": [
+      {
+        "dx": 0.01,
+        "measuredAmplitude": 0.37458391204952335,
+        "relativeError": 0.04722557216210757
+      },
+      {
+        "dx": 0.005,
+        "measuredAmplitude": 0.3630872106669577,
+        "relativeError": 0.01508420330977295
+      },
+      {
+        "dx": 0.0025,
+        "measuredAmplitude": 0.36021755531724786,
+        "relativeError": 0.007061497665354799
+      }
+    ]
+  },
+  "seconds": 2.7937328815460205
+}

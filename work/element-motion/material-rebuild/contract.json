@@ -1,0 +1,41 @@
+{
+  "scope": "Repair the 23 rejected materials in the currently served dynamics gallery, then transfer validated material systems to both original sigils",
+  "protected": "Original sigil artwork, pitch-black stage, shared emitter trail, accepted fire/water/air films",
+  "firstFamilies": [
+    "lava",
+    "ice",
+    "foam",
+    "lightning"
+  ],
+  "visualFailures": [
+    "Lava flat peach emission and disconnected gravel crust",
+    "Ice diffuse white surface reads chalk",
+    "Foam drawn as loose white particles",
+    "Lightning smooth unbranched wire"
+  ],
+  "capture": "Fresh 1920x1080 Cycles frames 30,45,65,90; native-detail crops; complete 120-frame motion for retained changes",
+  "iterationsPerFamily": 4,
+  "gate": "Visible material improvement at matching frames and in decoded motion; no quality claim from sample count or solver name",
+  "remainingFamilies": [
+    "metal",
+    "sand",
+    "mud",
+    "plants",
+    "snow",
+    "glass",
+    "crystal",
+    "blood",
+    "combustion",
+    "healing",
+    "spirit",
+    "energy",
+    "lightning-redirection",
+    "seismic",
+    "sound",
+    "flight",
+    "spirit-projection",
+    "pressure",
+    "heat"
+  ],
+  "publication": "Replace each material in the existing gallery only after complete decode and direct visual review; keep its prior version available"
+}

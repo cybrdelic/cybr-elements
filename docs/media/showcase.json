@@ -1,0 +1,19 @@
+{
+  "source": "Existing delivered MP4s; CPU FFmpeg montage, no new simulation",
+  "movies": {
+    "Fire": "fire-02.mp4",
+    "Water": "water-02-r8.mp4",
+    "Earth": "earth-02-r6.mp4",
+    "Air": "air-02.mp4",
+    "Ice": "ice-02.mp4",
+    "Lava": "lava-02.mp4",
+    "Lightning": "lightning-02-r5.mp4"
+  },
+  "size": [
+    840,
+    1050
+  ],
+  "frames": 112,
+  "durationSeconds": 11.2,
+  "bytes": 8850895
+}

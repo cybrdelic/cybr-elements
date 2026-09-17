@@ -1,0 +1,34 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "r_frame_rate": "30/1",
+  "duration": "15.000000",
+  "nb_frames": "450",
+  "id": "smoke-01",
+  "sha256": "9cca9a13d4efd6685d06870c126a995a236b0beb402df7e0f8f27867c4d2ab9e",
+  "blackCornerMeans": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "visibleCounts": [
+    0,
+    415454,
+    611921,
+    745256,
+    690779,
+    585981,
+    511635,
+    444507,
+    0,
+    0
+  ],
+  "frameDigest": "2cbb5182eb753a5032355e0d6e1a0b26eee209bc893bccb1cb8d2b912c047bd1"
+}

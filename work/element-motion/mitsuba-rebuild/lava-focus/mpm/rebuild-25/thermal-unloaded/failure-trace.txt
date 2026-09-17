@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_thermal25.py", line 48, in run
+    if time.monotonic()>start+wall:raise TimeoutError('CPU thermal screening budget reached')
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: CPU thermal screening budget reached

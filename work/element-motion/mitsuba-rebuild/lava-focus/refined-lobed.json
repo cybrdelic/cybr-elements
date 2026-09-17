@@ -1,0 +1,30 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\iterations\\01\\surface-0059.npz",
+  "sourceSha256": "abd4b1f011dcaf764b75c7b7ee0d16fb161180f9b754fad27407f5bf506feaf3",
+  "output": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\refined-lobed.npz",
+  "vertices": 257716,
+  "triangles": 515428,
+  "volumeRelativeError": 1.6653345369377348e-15,
+  "bounds": [
+    [
+      -1.055558878673181,
+      -0.6034468808944934,
+      -0.009951557775212408
+    ],
+    [
+      0.7217864903914316,
+      0.6372306577985715,
+      0.32882973165372187
+    ]
+  ],
+  "temperatureK": [
+    934.7470092773438,
+    989.9090576171875,
+    1058.5673678106507,
+    1375.439560775774,
+    1458.2864990234375
+  ],
+  "seconds": 8.0,
+  "device": "CPU",
+  "limitation": "Authored morphology and crust exposure; not a resolved crust-fracture simulation"
+}

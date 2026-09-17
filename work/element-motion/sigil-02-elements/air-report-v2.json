@@ -1,0 +1,17 @@
+{
+  "frames": 294,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    896,
+    56,
+    504
+  ],
+  "elapsed": 460.3440000000119,
+  "peakGpuMiB": 5897.6953125,
+  "source": "bending-air-v5 optics and projected passive tracer flow, full approved 02 source geometry",
+  "changes": "Full 02 source cross-section with thin passive tracer filaments; free pressure-projected transport and native directional volume optics. Source drains after 6.8 seconds."
+}

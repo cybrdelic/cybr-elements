@@ -1,0 +1,16 @@
+{
+  "issue": "First full-geometry trial overfed the broad source and rising flames reached the domain top",
+  "changes": [
+    "Lower sustained fuel throughput, from 5*.95 to 2.5*.55",
+    "Keep strong shear and 8m/s source momentum at the travelling front only",
+    "Quiet gas supply after the front passes",
+    "Expand the full camera volume to 14 x 7.875 metres",
+    "896 x 56 x 504 grid, with broadcast coordinates to reduce GPU memory"
+  ],
+  "preserved": [
+    "Approved 02 complete tapered source geometry",
+    "Reaction, cooling, buoyancy and vorticity",
+    "Original radiance and exposure"
+  ],
+  "reviewGateFrame": 135
+}

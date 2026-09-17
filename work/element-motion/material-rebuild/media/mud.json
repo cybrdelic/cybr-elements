@@ -1,0 +1,25 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "avg_frame_rate": "30/1",
+  "duration": "4.000000",
+  "nb_frames": "120",
+  "id": "mud",
+  "sha256": "dad590b8d20acbbd3d3f35c5b1ace84e5062c9b2dec43546eb7165433f307045",
+  "frameDigest": "d68ba8ebdad5e9b51be49abac3b96a0677dc057d5904b0d60415050c28467a51",
+  "decodedFrames": 120,
+  "minimumBlackFraction": 0.9558453896604938,
+  "posterFrame": 46,
+  "selectedReviewFrames": [
+    10,
+    20,
+    30,
+    45,
+    57,
+    65,
+    80,
+    95
+  ],
+  "maximumFrameDifference": 1.5259953703703704,
+  "status": "Technical checks pass; manual motion review is still required"
+}

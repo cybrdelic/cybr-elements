@@ -1,0 +1,44 @@
+{
+  "status": "complete",
+  "checkedAt": "2026-09-17T05:41:38.196283+00:00",
+  "elements": {
+    "water": {
+      "phase": "published",
+      "framesOnDisk": 12,
+      "decodedFrames": 336,
+      "visuallyReviewed": true,
+      "browserVerified": true,
+      "movie": "water-02-r8.mp4"
+    },
+    "lightning": {
+      "phase": "published",
+      "framesOnDisk": 15,
+      "decodedFrames": 300,
+      "visuallyReviewed": true,
+      "browserVerified": true,
+      "movie": "lightning-02-r5.mp4"
+    },
+    "lava": {
+      "phase": "published",
+      "framesOnDisk": 15,
+      "decodedFrames": 300,
+      "visuallyReviewed": true,
+      "browserVerified": true,
+      "movie": "lava-02.mp4"
+    },
+    "ice": {
+      "phase": "published",
+      "framesOnDisk": 15,
+      "decodedFrames": 300,
+      "visuallyReviewed": true,
+      "browserVerified": true,
+      "movie": "ice-02.mp4"
+    }
+  },
+  "userAccepted": false,
+  "protected": [
+    "fire",
+    "air",
+    "earth"
+  ]
+}

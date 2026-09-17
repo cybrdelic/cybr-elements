@@ -1,0 +1,14 @@
+{
+  "status": "fail",
+  "initialTime": 5.0,
+  "duration": 0.1,
+  "normalizedErrors": {
+    "velocity": 0.01669614568797811,
+    "position": 0.014168474369130636,
+    "damage": 0.5338066482898196,
+    "temperature": 3.433834223223812,
+    "work": 0.009622297728564483,
+    "substrateTemperature": 0.06906524285534488
+  },
+  "limits": "Local estimate at one cooling state only. It is not whole-sequence temporal or spatial convergence."
+}

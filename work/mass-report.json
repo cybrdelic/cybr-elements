@@ -1,0 +1,76 @@
+{
+  "frames": 195,
+  "fps": 30,
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "parcels": 1300000,
+  "source": "Spatial emission samples from native flame-native-emitter 3D cache",
+  "method": "3D cached-fire emission parcels; finite arrival force followed by free turbulent release; not coupled CFD",
+  "checks": [
+    {
+      "frame": 0,
+      "time": 0.0,
+      "flowTime": 0.0,
+      "speed": 2.200000286102295,
+      "distanceToWord": 3.8629446029663086,
+      "elapsed": 0.8,
+      "gpuMiB": 0
+    },
+    {
+      "frame": 30,
+      "time": 1.0,
+      "flowTime": 1.4951242751281313,
+      "speed": 1.9798943996429443,
+      "distanceToWord": 1.9822313785552979,
+      "elapsed": 19.5,
+      "gpuMiB": 0
+    },
+    {
+      "frame": 60,
+      "time": 2.0,
+      "flowTime": 2.2782586647063185,
+      "speed": 1.6330738067626953,
+      "distanceToWord": 0.3477892279624939,
+      "elapsed": 39.3,
+      "gpuMiB": 0
+    },
+    {
+      "frame": 90,
+      "time": 3.0,
+      "flowTime": 2.593375220293042,
+      "speed": 0.5849566459655762,
+      "distanceToWord": 0.028390252962708473,
+      "elapsed": 58.5,
+      "gpuMiB": 0
+    },
+    {
+      "frame": 120,
+      "time": 4.0,
+      "flowTime": 2.891061243184788,
+      "speed": 0.5636007785797119,
+      "distanceToWord": 0.13975702226161957,
+      "elapsed": 78.0,
+      "gpuMiB": 0
+    },
+    {
+      "frame": 150,
+      "time": 5.0,
+      "flowTime": 4.0243491104848745,
+      "speed": 2.0829904079437256,
+      "distanceToWord": 1.2579375505447388,
+      "elapsed": 100.4,
+      "gpuMiB": 0
+    },
+    {
+      "frame": 180,
+      "time": 6.0,
+      "flowTime": 5.082491719220767,
+      "speed": 4.114295959472656,
+      "distanceToWord": 4.454022407531738,
+      "elapsed": 123.3,
+      "gpuMiB": 0
+    }
+  ]
+}

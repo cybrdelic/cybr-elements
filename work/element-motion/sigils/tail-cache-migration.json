@@ -1,0 +1,19 @@
+{
+  "changes": "--- \n+++ \n@@ -48,7 +48,7 @@\n     def wake(at):\n         pos=pp.copy();phase=pp[:,0]*11+pp[:,2]*14;age=np.maximum(0,at-pb)\n         pos[:,0]+=.045*np.cos(phase+age*5);pos[:,2]+=.045*np.sin(phase+age*5);pos[:,1]+=.07*np.sin(phase*.7-age*4)\n-        release=max(0,at-11);pos[:,0]+=1.8*release;pos[:,2]+=.14*release*np.sin(phase);pos[:,1]+=.2*release*np.cos(phase)\n+        release=max(0,at-11);pos[:,0]+=1.8*release+.6*release**2;pos[:,2]+=.14*release*np.sin(phase);pos[:,1]+=.2*release*np.cos(phase)\n         return pos\n cache={};reused=0\n started=time.time()\n@@ -56,8 +56,7 @@\n     if '--resume' in args and f in completed and (out/f'{f:04}.jpg').exists():continue\n     t=f/FPS\n     if K in bodyKinds+particleKinds+['plants','healing'] and t>=13.5:\n-        from PIL import Image\n-        Image.new('RGB',(1920,1080)).save(out/f'{f:04}.jpg',quality=97)\n+        shutil.copyfile(R/'black-frame.jpg',out/f'{f:04}.jpg')\n         record(f)\n         continue\n     for ob in objects:\n",
+  "migrations": [
+    {
+      "key": "metal-01",
+      "before": "bad02d3003598d8ea415e67746b7ef8784f41b35c41ff7404778a5803a7f87c6",
+      "after": "634fa908552c2b4a588e1951ccabc8b041f9f06dc4a3eb8147a82cc60b0371ea",
+      "retainedFrames": 405,
+      "reason": "Only flight motion and black tail writer after frame 405 changed; rendered metal frames 0 through 404 are unchanged."
+    },
+    {
+      "key": "metal-02",
+      "before": "a3589e6cfe50396b5c09abaf4694149fbacacc0b15325653c729398142cc1f2a",
+      "after": "72da2e1f5ffe609a35c8c6fb196c70295e64b7b6886c1ffa5cb3fc484cbfadde",
+      "retainedFrames": 405,
+      "reason": "Only flight motion and black tail writer after frame 405 changed; rendered metal frames 0 through 404 are unchanged."
+    }
+  ]
+}

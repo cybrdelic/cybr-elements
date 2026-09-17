@@ -1,0 +1,10 @@
+{
+  "vertices": 1504859,
+  "triangles": 2992434,
+  "fluidVolumeError": 9.517775228297989e-06,
+  "rocks": 45,
+  "time": 0.7500000000000006,
+  "source": "lava-focus\\mpm\\rebuild-31\\closed-crust\\frame-000750.npz",
+  "reliefMaximumM": 0.0032,
+  "limitations": "Cached MPM / XPBD initial fragments. Render relief is authored in material coordinates; it is not simulated new fracture. Original prepared basalt temperature profile retained; rock-fluid heat exchange remains unsolved."
+}

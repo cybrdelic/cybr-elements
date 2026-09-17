@@ -1,0 +1,17 @@
+{
+  "frames": 181,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    768,
+    64,
+    432
+  ],
+  "elapsed": 294.9219999999914,
+  "peakGpuMiB": 5519.4052734375,
+  "source": "bake-reactive-fire.py",
+  "changes": "Accepted bending-fire solver/radiance with the approved sigil centerline as motion input. A moving nozzle deposits a narrow gas source and tangential source momentum, supplied until 8.2s then drained. No silhouette clipping or filled glyph volume. Art-directed source, free reacting wake."
+}

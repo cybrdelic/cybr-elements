@@ -1,0 +1,23 @@
+{
+  "device": "CPU",
+  "method": "Connected implicit lava volume, authored rupture and local compression, lifted thick crust and differently sized rafts, natural 100-micrometre enthalpy columns",
+  "vertices": 648158,
+  "triangles": 1296320,
+  "seconds": 19.08,
+  "sourceSha256": "e92c2e5871b92a092d3ee995c587b9c65f51872f29570b9d8cd0d75eb4bbfa0a",
+  "surfaceTemperatureByAge": {
+    "0.02": 1437.3291888828649,
+    "0.1": 1415.268504278938,
+    "0.5": 1370.6296070819449,
+    "1": 1341.6248239645693,
+    "3": 1296.7214573195483,
+    "10": 1230.6915332464068,
+    "20": 1183.4606302843304
+  },
+  "columnEnergyResidual": 5.353431012162062e-16,
+  "limits": [
+    "Rupture, fragments and volume morphology are authored, not a new fluid dynamics simulation",
+    "Radiative/conductive cooling is one-dimensional and not coupled to crust motion",
+    "No animation or inter-fragment collisions have been validated"
+  ]
+}

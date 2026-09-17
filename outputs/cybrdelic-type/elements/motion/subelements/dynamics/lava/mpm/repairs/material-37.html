@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cybrdelic — lava material revision</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#000;color:#ded3c9;font:15px/1.6 system-ui}main{max-width:1440px;margin:auto;padding:26px 4% 64px}header{display:flex;justify-content:space-between;border-bottom:1px solid #32281f;padding-bottom:16px;font-size:11px;letter-spacing:.13em}a{color:#d8a478}h1{font-size:clamp(30px,5vw,50px);font-weight:450;letter-spacing:-.04em;line-height:1.12;margin:32px 0 14px}p{max-width:900px;color:#b8aca1}.notice{border-left:2px solid #b57c51;padding:8px 18px;margin:24px 0}figure{margin:24px 0}img{display:block;width:100%;height:auto;background:#000}figcaption,footer{font-size:12px;color:#a39589}figcaption{margin-top:10px}details{margin:24px 0;border-top:1px solid #32281f;padding-top:18px}summary{cursor:pointer}strong{font-weight:550;color:#ded3c9}.previous{max-width:640px}footer a{white-space:nowrap}
+</style>
+<main>
+<header><span>CYBRDELIC / LAVA</span><a href="../">Lava studies</a></header>
+<h1>Basalt material revision.</h1>
+<p>Chipped surface geometry, pores and conductive cooling beneath a dark crust.</p>
+<figure><a href="basalt-material-37.png"><img src="basalt-material-37.png" width="1440" height="900" alt="Mitsuba material study showing rough dark basalt fragments above incandescent orange fissures on a pitch-black background"></a><figcaption>1440 × 900 · Mitsuba CUDA · 192 samples · Black backdrop · Cached MPM and rigid-fragment motion</figcaption></figure>
+<p class="notice"><strong>The full lava simulation is still unfinished.</strong><br>This is a material revision using pre-existing fragments. The large slab shapes remain too regular, and the new continuous-crust solver has not produced valid breakup. This is not a finished simulation or a final video.</p>
+<details><summary>Compare with the previous render</summary><figure class="previous"><img src="cooling-25.png" width="640" height="400" loading="lazy" alt="Previous smooth dark lava lobe"><figcaption>Previous cooling-lobe diagnostic. The camera and simulation case differ, so this is a visual reference, not a controlled physics comparison.</figcaption></figure><a href="solver-25.html">Previous review and evidence</a></details>
+<details><summary>What changed, and what remains</summary>
+<p>The new basalt surface contains actual cavities and relief instead of a smooth polygon shell. Emission is calculated from temperature and sampled from the geometry. A separate test compares the emitter with Mitsuba’s built-in area light.</p>
+<p>The rock temperature profile uses a one-dimensional enthalpy solve with radiation, convection and latent heat. Its preparation age is an authored initial condition. This thermal revision is not fed back into the cached mechanical motion; coupled rock–melt heat exchange is still missing.</p>
+<p>The separate continuous-crust run reached 2.2 seconds with no open fractures, then failed its pressure-solve acceptance check. It is not presented as a successful lava result. Broad slab geometry and sustained, physically generated breakup remain the main unresolved defects.</p>
+</details>
+<footer><a href="render-37.json">Render record</a> · <a href="thermal-37.json">Thermal method and limits</a> · <a href="emitter-37.json">Emitter validation</a></footer>
+</main></html>

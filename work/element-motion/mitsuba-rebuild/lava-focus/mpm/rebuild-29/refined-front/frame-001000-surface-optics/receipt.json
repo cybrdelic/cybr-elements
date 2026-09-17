@@ -1,0 +1,19 @@
+{
+  "image": "lava-focus\\mpm\\rebuild-29\\refined-front\\frame-001000-surface-optics\\beauty-6.png",
+  "width": 960,
+  "spp": 48,
+  "seconds": 19.15700000000652,
+  "atlas": {
+    "size": [
+      3460,
+      3460
+    ],
+    "triangles": 477748,
+    "pixelsPerTriangleTile": 5,
+    "method": "Unique per-triangle atlas; interpolated solved temperature evaluated through Planck radiance. Optical pores sampled in advected reference coordinates. Native Mitsuba bitmap emitters and bump maps."
+  },
+  "renderer": "Mitsuba CUDA path tracing; CPU OIDN",
+  "source": "lava-focus\\mpm\\rebuild-29\\refined-front\\frame-001000-surface.npz",
+  "background": "black, no environment",
+  "status": "unreviewed"
+}

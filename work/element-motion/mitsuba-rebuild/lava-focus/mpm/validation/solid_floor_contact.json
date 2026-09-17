@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "freeFallVelocityErrorMPerS": 1.0910363360440534e-09,
+  "freeFallPositionErrorM": 2.1820726834583295e-11,
+  "minimumDomainGroundGapM": -4.05188167306586e-10,
+  "floorImpulseNs": 0.02542750411755699,
+  "limits": "Rigid translation and coarse-domain nonpenetration checked at every step; solid ground contact is normal-only, not a validated frictional collision law."
+}

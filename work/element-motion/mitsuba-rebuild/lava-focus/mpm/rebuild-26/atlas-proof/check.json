@@ -1,0 +1,51 @@
+{
+  "status": "pass",
+  "checks": [
+    {
+      "temperature": 975.0,
+      "relativeError": 0.0042146462702177395,
+      "observed": [
+        8.943805005401373e-05,
+        2.5403187464689836e-07,
+        0.0
+      ],
+      "expected": [
+        8.906268235202319e-05,
+        2.44801404093345e-07,
+        0.0
+      ],
+      "uv": [
+        0.140625,
+        0.140625
+      ]
+    },
+    {
+      "temperature": 1325.0,
+      "relativeError": 0.0012202513161745955,
+      "observed": [
+        0.04316325485706329,
+        0.0038413284346461296,
+        0.0
+      ],
+      "expected": [
+        0.04311064903084227,
+        0.0038343559691024413,
+        0.0
+      ],
+      "uv": [
+        0.640625,
+        0.140625
+      ]
+    }
+  ],
+  "atlas": {
+    "size": [
+      64,
+      64
+    ],
+    "triangles": 2,
+    "pixelsPerTriangleTile": 32,
+    "method": "Unique per-triangle atlas; interpolated solved temperature evaluated through Planck radiance. Optical pores sampled in advected reference coordinates. Native Mitsuba bitmap emitters and bump maps."
+  },
+  "variant": "scalar_rgb"
+}

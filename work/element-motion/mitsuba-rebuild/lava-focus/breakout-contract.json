@@ -1,0 +1,23 @@
+{
+  "target": "Replace corrugated logs and bright end caps with one connected rupture: lifted older crust over a hotter emerging flow, irregular rafts, and cooling downstream.",
+  "baseline": "renders/lava-continuous-hero-0059-1280-8spp.png",
+  "capture": "CPU geometry raster, then bounded Mitsuba scalar_rgb material still",
+  "audit": "Direct inspection of volume continuity, crust/melt transition, repetition, lighting, and exact black background",
+  "budget": "Three geometry/material iterations, small CPU renders before a larger still; no video batch",
+  "safety": "CPU, two logical cores, 3 GiB process tree cap, maximum 180 seconds per bounded command",
+  "scope": [
+    "lava_breakout_cpu.py",
+    "new lava breakout renderer and presets",
+    "lava-focus/breakout",
+    "lava gallery after review"
+  ],
+  "status": "Completed and rejected three rupture iterations; tested and rejected rubble, then retained the preserved rough-basalt surface with coarse depth and lighting changes",
+  "extension": "Direct comparison showed the earlier rough-basalt surface was stronger. One rubble test and one preserved-baseline comparison were evaluated before the retained larger stills.",
+  "finalHero": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\renders\\lava-basalt-final-hero-0059-1024-16spp.png",
+  "finalDetail": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\renders\\lava-basalt-final-detail-0059-960-8spp.png",
+  "remaining": [
+    "Some vertical creases retain the procedural character of the original mesh",
+    "Shape and temperature field are authored; no new coupled crust/melt dynamics have been validated",
+    "Still images do not establish temporal stability or moving sigil quality"
+  ]
+}

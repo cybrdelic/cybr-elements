@@ -1,0 +1,11 @@
+{
+  "frames": 294,
+  "fps": 30,
+  "bodies": 1350,
+  "finite": true,
+  "substeps": 8,
+  "contacts": 283805,
+  "maximumTransientOverlap": 0.1514430320980366,
+  "releaseMedianDrop": 33.66843032836914,
+  "model": "Discrete clast inertia, mass-weighted sphere contact impulses, friction and gravity; authored damped collection forces disabled at6.8s; original uncut layered meshes"
+}

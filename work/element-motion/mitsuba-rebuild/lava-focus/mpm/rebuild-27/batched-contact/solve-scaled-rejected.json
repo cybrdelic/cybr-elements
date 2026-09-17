@@ -1,0 +1,51 @@
+{
+  "status": "fail",
+  "checks": {
+    "velocity": true,
+    "absoluteVelocity": false,
+    "stationarity": true,
+    "cone": true,
+    "naturalResidual": true
+  },
+  "velocityRelativeDifference": 1.5500731132372559e-07,
+  "velocityMaximumErrorMPerS": 1.4275027529486728e-07,
+  "cpuSeconds": 1.9750116000068374,
+  "cudaSeconds": 2.6883142000006046,
+  "cpuContact": {
+    "iterations": 530,
+    "naturalResidual": 1.912313384516232e-08,
+    "stationarity": 1.1475397180596414e-15,
+    "slidingDissipationJ": 1.2872734323342032e-07,
+    "maximumConeViolation": 0.0
+  },
+  "gpuContact": {
+    "iterations": 530,
+    "naturalResidual": 1.9123136272071296e-08,
+    "stationarity": 1.5062589068583894e-15,
+    "slidingDissipationJ": 1.2872734056849024e-07,
+    "maximumConeViolation": 0.0
+  },
+  "backend": {
+    "gpuFactors": 1,
+    "seconds": 0.40909950001514517,
+    "maximumDofs": 1914,
+    "maximumDirections": 738,
+    "maximumTorchBytes": 141863936,
+    "fallbacks": [],
+    "backend": "cuda_batched",
+    "precision": "float64",
+    "scope": "CUDA dense contact factorization and batched response; Coulomb iteration, residual acceptance and all physics remain unchanged on CPU. Torch bytes exclude driver/context and other applications."
+  },
+  "sourceHashes": {
+    "lava_mpm.py": "5f52d833d305326eff6246575fbbff76db88886527ea0c4f18205b0d3b9f9ff4",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "7fe989e7a1e796e85010351966588137471f411005e0c5022a6b6369d2539534",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "75e45cceeec2d97b3ee722e709c5c78ea9105ffb62bc55396800ca7c44ee6d0e",
+    "lava_mpm_cuda_contact27.py": "837ba21abb3943614dbc1705b49f728122584f0ce8f56a8b7f0d6e0fa7c75a93"
+  },
+  "scope": "Complete first real Coulomb contact solve, same matrix and constraints. One-system speedup does not establish whole-MPM speedup."
+}

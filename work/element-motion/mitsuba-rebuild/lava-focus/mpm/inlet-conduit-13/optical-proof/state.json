@@ -1,0 +1,20 @@
+{
+  "status": "unreviewed CPU material proof; not a final shot",
+  "renderer": "Mitsuba 3.9.1",
+  "variant": "scalar_rgb",
+  "device": "CPU",
+  "threads": 2,
+  "width": 512,
+  "height": 320,
+  "samples": 8,
+  "exposure": 6.0,
+  "seconds": 50.52579140663147,
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\inlet-conduit-13\\state-surface.npz",
+  "sourceSha256": "342c729faed7631d5cd5d121229627f695d9620939b50b4fb99d47414b72628c",
+  "image": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\inlet-conduit-13\\optical-proof\\state.png",
+  "geometry": "Kernel reconstruction of the actual MPM volume",
+  "temperature": "Interpolated simulated enthalpy temperatures; Planck radiance with grey emissivity 0.94",
+  "optics": "Nominal rough dielectric basalt and melt. Filtered subgrid pore bump is an optical approximation, not simulated fracture geometry.",
+  "background": "Exact black; black absorbing ground; no environment or bloom overlay",
+  "limits": "Existing spatial refinement failure and coarse crust geometry remain. This still does not validate motion, gas, or photorealism."
+}

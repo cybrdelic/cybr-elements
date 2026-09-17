@@ -1,0 +1,26 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\continuous-21-cooling\\state.npz",
+  "sourceSha256": "38a394adc8d8be7d1353a1252df4d03821fbc37587000ffb9866bdfa064fe89c",
+  "physicalSeconds": 4.993945701145235,
+  "vertices": 5302,
+  "triangles": 10616,
+  "solverParticleVolumeM3": 2.2544800704547746e-06,
+  "reconstructedVolumeM3": 2.2552515128979452e-06,
+  "relativeVolumeDifference": 0.0003421819750285053,
+  "kernelSigmaRenderCells": [
+    0.7142857142857143,
+    0.9523809523809524,
+    5.714285714285714
+  ],
+  "kernelSigmaM": [
+    0.001,
+    0.001,
+    0.001
+  ],
+  "renderCellSizeM": [
+    0.0014,
+    0.00105,
+    0.000175
+  ],
+  "limits": "Kernel-based reconstruction at the material point spacing; subgrid fractures are not manufactured in the mesh"
+}

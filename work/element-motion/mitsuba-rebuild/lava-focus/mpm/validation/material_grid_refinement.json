@@ -1,0 +1,45 @@
+{
+  "status": "fail",
+  "durationSeconds": 0.5,
+  "grids": [
+    {
+      "dx": 0.01,
+      "particles": 744,
+      "time": 0.5,
+      "centerDisplacement": [
+        0.0010485832928854464,
+        -6.65476120171872e-12,
+        -0.0010969163162758751
+      ],
+      "initialVolume": 9.300000000000004e-05,
+      "finalVolume": 9.298892764861646e-05,
+      "meanTemperature": 1445.0389030925257,
+      "rmsSpeed": 0.003937177421928846,
+      "maximumSpeed": 0.007246387248699967
+    },
+    {
+      "dx": 0.005,
+      "particles": 5860,
+      "time": 0.5,
+      "centerDisplacement": [
+        0.0009637603049027126,
+        5.673586624427829e-13,
+        -0.0008505816272133555
+      ],
+      "initialVolume": 9.156250000000004e-05,
+      "finalVolume": 9.154378259229725e-05,
+      "meanTemperature": 1441.4806222273369,
+      "rmsSpeed": 0.003293762048486981,
+      "maximumSpeed": 0.006215947120562271
+    }
+  ],
+  "relativeRmsSpeedDifference": 0.19534361133871944,
+  "centerDifferenceM": 0.0002605296879932253,
+  "scope": "Early molten flow only. Does not validate long-time fracture, gas refinement, or final render quality.",
+  "seconds": 38.688464641571045,
+  "sourceHashes": {
+    "lava_mpm.py": "da2a4e0a2c4f17c9f492a016313506b898b0e7ce99e0d201e05314485df47de9",
+    "lava_mpm_fracture.py": "df744c129d5b9dfa4ed14c6a1666032a2b7e813d5408379a077622b3157bd5b6",
+    "lava_mpm_run.py": "177a798552e72c4b4ac155549ff3c09f49588928cf4daa157dfbbce0783c01f8"
+  }
+}

@@ -1,0 +1,1 @@
+[{"name": "foam-full-resumed", "script": "foam.py", "args": ["--kind", "foam", "--full", "--resume"]}, {"name": "mud-full", "script": "fluids.py", "args": ["--kind", "mud", "--full"]}, {"name": "blood-full", "script": "fluids.py", "args": ["--kind", "blood", "--full"]}]

@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "dofs": 1914,
+  "contactDirections": 738,
+  "cpuBulkSeconds": 1.3803100000077393,
+  "gpuTrials": [
+    {
+      "seconds": 0.40250409999862313,
+      "relativeDifference": 8.15151824328443e-09,
+      "normalizedResidual": 1.157686007713134e-12,
+      "peakTorchBytes": 153164288
+    },
+    {
+      "seconds": 0.27137249999213964,
+      "relativeDifference": 8.15151824328443e-09,
+      "normalizedResidual": 1.157686007713134e-12,
+      "peakTorchBytes": 153164288
+    }
+  ],
+  "scope": "FP64 factorization, all contact RHS together, two refinement passes, and J-response. Includes matrix transfers. This is one real matrix, not full-simulation timing."
+}

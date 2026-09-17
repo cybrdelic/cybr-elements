@@ -1,0 +1,13 @@
+{
+  "config": {
+    "plane": -0.009,
+    "half_width": 0.0015,
+    "height": 0.003,
+    "peak_speed": 0.0006,
+    "temperature": 1450.0,
+    "pipe_end": -0.0045
+  },
+  "initial": "Uniform 1450 K connected lobe and inlet; zero damage",
+  "ground": true,
+  "period": 0.5
+}

@@ -1,0 +1,16 @@
+{
+  "element": "lightning",
+  "frames": 300,
+  "rendered": [
+    150
+  ],
+  "resolution": [
+    768,
+    432
+  ],
+  "engine": "CYCLES",
+  "samples": 12,
+  "method": "Cycles material studies, native Bullet release, CPU-solved local gas.\nThe powered assembly is authored. Ice and basalt are rigid fractures, not a\nthermodynamic phase-change/viscoelastic lava solver. Electrical channels are\nan authored branching discharge visualization, not calibrated plasma.\n",
+  "rows": [],
+  "userAccepted": false
+}

@@ -1,0 +1,137 @@
+{
+  "status": "pass",
+  "tests": {
+    "pressure": {
+      "status": "pass",
+      "details": {
+        "velocity": [
+          0.05,
+          0.11111111111111112
+        ],
+        "analyticVelocity": [
+          0.05,
+          0.1111111111111111
+        ],
+        "maximumError": 1.3877787807814457e-17,
+        "tensileLiquidPressure": 0.0
+      },
+      "wallSeconds": 0.00599980354309082
+    },
+    "collision": {
+      "status": "pass",
+      "details": {
+        "particles": 32,
+        "momentumError": 1.7659341000367275e-18,
+        "initialKineticJ": 8.64e-08,
+        "finalKineticJ": 3.834897732423311e-08,
+        "frictionHeatJ": 2.5556480128119416e-08,
+        "maximumSpeed": 0.03256235896818877,
+        "contact": {
+          "iterations": 11,
+          "naturalResidual": 2.5682642496901468e-12,
+          "stationarity": 1.4270749374781911e-12,
+          "slidingDissipationJ": 2.6307903055857652e-09,
+          "maximumConeViolation": 0.0
+        }
+      },
+      "wallSeconds": 9.530991077423096
+    },
+    "coupled": {
+      "status": "pass",
+      "details": {
+        "gravityVelocityError": 4.508358963928316e-12,
+        "adaptive": {
+          "accepted": 2,
+          "rejected": 1,
+          "trials": 3,
+          "records": [
+            {
+              "time": 0.001,
+              "dt": 0.001,
+              "errors": {
+                "velocity": 5.2927890592468544e-08,
+                "position": 0.4904999985313324,
+                "damage": 0.0,
+                "temperature": 0.0,
+                "work": 0.0
+              }
+            },
+            {
+              "time": 0.002,
+              "dt": 0.001,
+              "errors": {
+                "velocity": 8.866699158687936e-09,
+                "position": 0.4905000014748112,
+                "damage": 0.0,
+                "temperature": 0.0,
+                "work": 0.0
+              }
+            }
+          ]
+        },
+        "rollback": true,
+        "damage": 0.0
+      },
+      "wallSeconds": 3.8978092670440674
+    }
+  },
+  "sourceHashes": {
+    "lava_mpm.py": "7949f63ed0f26cba9a9841df5fe8acd4b2599c891ead2c525bedde2baccdc7c4",
+    "lava_mpm_admm_check.py": "ca63d8ea7ed494afcdbcddfcd75f35a1153b0af9f468ba8cf185f3c663ae5098",
+    "lava_mpm_bed.py": "917d92070e75d4752040db0637f2efcc69d55b445749554a23bfa97a210903de",
+    "lava_mpm_bond_check.py": "ea203792e648228b5c6c7ab9c5eb499485af5886217d5126e6db1353ec92695b",
+    "lava_mpm_boundary_check.py": "7777fb732a6bc884bf018df901b809998e6bf60ade4d0ab63993e05e7f5f3135",
+    "lava_mpm_boundary_debug.py": "8806de972dfb98a71a602f30597de0113b16826367a21250adfa7ec771544cd2",
+    "lava_mpm_clasts.py": "62860c3faf8f8b66d64624f7d0f27956de4047a386ee753f77e8bef8757c8213",
+    "lava_mpm_contact_admm.py": "d101f6f5dad78675fab75492d9a3838c00b63faf116738d189032babce728f92",
+    "lava_mpm_contact_scene_check.py": "cb6d551d2b57730ca3837e8be2dcf21af52a18f9af09964652a5cafb8cee0b42",
+    "lava_mpm_continuous.py": "7b2ee61c7898d6b917c5ec44f74c7001d7a2e0f9a9c6913e9bc7864ce7b3abd6",
+    "lava_mpm_cooling_pulse.py": "53b2715968a0724e1d8c3a5b6230044aff0e671148f4fe4b583da317f6f690a0",
+    "lava_mpm_coupled.py": "07b01f9e1045f366345a65a4c253354b133222d11582af89df506ff5bf795877",
+    "lava_mpm_crack_surface.py": "7c93e88a579199ef1d1f98b5a875e677a4820ac31af9942c95da057678e020ba",
+    "lava_mpm_crust_check.py": "e4bcb13a6c24466d6db893000700f3e1a055b932dd3e3b368858650e470214a8",
+    "lava_mpm_crust_loading_check.py": "9414af8c2be2577afb9bd340b71f07a582d0b21ffddf000e826c57b1c03ff24e",
+    "lava_mpm_crust_review.py": "32c3328ebb6e3952bede0ca131429841b679d9db79968342268120a44c19c5bf",
+    "lava_mpm_crust_timestep_review.py": "e252c9ee93e77c79ce466c561332a32a64c32cae795ad95e742e05b4b49f40d5",
+    "lava_mpm_evidence.py": "02eb8d1047513857c6e500b95caf1a277e6e1ccefd35f8db71e0024d76922f30",
+    "lava_mpm_exposure_review.py": "c11b734ca620f85d523cbd2edca8a231dc457a83414055f2190342733d83e9a3",
+    "lava_mpm_fed_run.py": "bcf2eeb4af71caa5ca8a17ffc79f0e40d791e883fc6523fab83814ecb14caecf",
+    "lava_mpm_finish_review.py": "f3b694733e24edbc58a911ea15ec09dc52df77f350be3fe9b822f9ba0284d5bf",
+    "lava_mpm_floor_check.py": "b37cfb77a4eebbe14a78dcee5e9696f56fb026decb6289ad5856d31bb2290ba9",
+    "lava_mpm_flow_review.py": "4e3fc533aa0c414d31b68c105c47f1709e23404ef2d8bb6a9cd146c391204330",
+    "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+    "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+    "lava_mpm_gas.py": "4cdb002afd0236cc38240e473a46bda2d93f2ad674e9a5941152ea8d6f54c2d0",
+    "lava_mpm_gas_validate.py": "8ec1b2421768b5a052799899a5cdec767725f1dbd36963af15661970aba76b5d",
+    "lava_mpm_hybrid_surface.py": "d06adc7ad713f896b682e4315ab76b1fbcc1e605527501e78f52839f460454e7",
+    "lava_mpm_inlet.py": "e265ca63e2de1b6de5227054206bd19c8857ec10489b757a7e9063f8aacc36f3",
+    "lava_mpm_inlet_check.py": "f50717dbd655a19fcb34f0ed5ca3147bfc19e660f08c084fbc67254c099ae439",
+    "lava_mpm_loading.py": "434d81bd51db1536808dc078719611c6a60e8155e98c83ec605cf58b98655c62",
+    "lava_mpm_local_check.py": "4ad1d324b8d8f5c18a5953dea2aa3a51112b4ad23565dc0d195bea0578c34e45",
+    "lava_mpm_material_surface.py": "57291561af4d7f0e784418a28076e51a283c9b17871f45e0fa73417db457aa1d",
+    "lava_mpm_optics_check.py": "5fb19af54e0db06f98162268d05c0428446ea38a0c57cf50cc255a107305c350",
+    "lava_mpm_order_check.py": "a74a002074791848bb3026406d4f465962ecbdffe60d0c3b3fa39b51a198cfa7",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_profile_step.py": "5c61588435fa0126143a598b0717ccf76c02da16005026768ae9b0577c9cac90",
+    "lava_mpm_rebuild_check.py": "bbb77e9b4c49cb5f987c499377df7fb3c0efa7121cc41136e3dd854ab24b9247",
+    "lava_mpm_rebuild_recovery.py": "023f565d749d80adc11eb4855607100392ea694157f477d885875d0d86004639",
+    "lava_mpm_rebuild_timestep.py": "924d9cf0be5af83639e5814eb35b263cd411698661bc93484a5c2203fd79c564",
+    "lava_mpm_rect_check.py": "5c3e40f714e0b57eb3cc5b4fd112d811116a0cfe9ec0cbab638d1a427606c7d2",
+    "lava_mpm_refine.py": "d4637dbc59b24a9c3cff36ef38b89de9fed2f1e29ac6622b117be4e522a7c8b0",
+    "lava_mpm_render.py": "9cbf9e722af3c812c93db6da20877894e86cdaa43ed695da553984b07035aa0a",
+    "lava_mpm_render_gate.py": "2cc74edd862965dcecd57b9f0a6b358f4966a47aca328cee025629f6e8546fd2",
+    "lava_mpm_repairs_check.py": "41e2afc3962bd961ee576eabe4d8fb19990ffc161d6a022aa10ceafded807494",
+    "lava_mpm_repair_review.py": "3732543b4a19ba09665dff16d2ab21cf44bc6cbe3c6fa953445a24d16f098e6f",
+    "lava_mpm_run.py": "177a798552e72c4b4ac155549ff3c09f49588928cf4daa157dfbbce0783c01f8",
+    "lava_mpm_snapshots.py": "c959f374ef4b12d04530722cff2d5f713c534f48286fab3bfc6cd75596364e91",
+    "lava_mpm_state_audit.py": "c18b5230508d3e81efcdc3c4472b24dede08177c041b6cf9b52252b493f010d3",
+    "lava_mpm_structural_review.py": "791411002cde14298634f4b53c0a3b07fdc8dc0dd00167f4d52a0281efe0ae01",
+    "lava_mpm_surface.py": "333f992879cb7f103d087ddf3ae3d18e06f648e65a95c62e393ae167b6d73ed1",
+    "lava_mpm_surface_check.py": "f075e5784afb5ec6cd8b1dcdea7a9f30cdce0fbecc309f1e7d20984561804a74",
+    "lava_mpm_timestep_check.py": "a64f81d207005ff40365ed2652e8d19895efdf6ec024958d7e1794429b7d12ba",
+    "lava_mpm_transition_check.py": "0444b1ca1f454cca4f6c134bab74708f6bf93939680005f3919ebd6eb92c5a12",
+    "lava_mpm_upper_crust.py": "d9d869d19d5b27ac7df87b7adcc8a07bee0d6c327042fa6570256355191f282e",
+    "lava_mpm_validate.py": "9a28b2f18d61496c486e9abec62ad9ef777ef5eda2dbf60157044e927a1f45b4"
+  },
+  "wallSeconds": 13.452784299850464
+}

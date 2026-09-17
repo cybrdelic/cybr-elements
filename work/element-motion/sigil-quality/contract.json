@@ -1,0 +1,13 @@
+{
+  "status": "Bulk sigil batch stopped after user quality rejection",
+  "scope": "Rebuild surface geometry, material scale and material-specific motion on original 01/02 sigils before resuming full delivery",
+  "families": ["lava", "ice", "blood"],
+  "iterationsPerFamily": 3,
+  "baseline": "../sigils/sample-lava.jpg, ../sigils/sample-ice.jpg, ../sigils/sample-blood.jpg and their decoded pilot frames",
+  "visibleFailures": ["repeated speckle crust", "cloudy plastic ice", "lacquer-like blood", "low-resolution silhouette normals", "generic supported deformation"],
+  "capture": "Native 1920x1080 Cycles material frames, original-pixel detail crops and short motion clips before a full batch",
+  "visualGate": "Inspect material-specific shape, relief, thickness, reflection, transmission, detail scale and motion; reject superficially recolored lettering",
+  "technicalGate": "Source artwork hash, finite geometry, positive mesh volume, fresh frames, black camera background, decoded video integrity, one heavy GPU job at a time",
+  "protected": "Original fonts, sigil source artwork, earlier accepted fire and air films",
+  "remainingScope": "All 26 material families on both sigils remain requested; no completion claim based on this initial surface test"
+}

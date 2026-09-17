@@ -1,0 +1,12 @@
+{
+  "grains": 1194,
+  "bonds": 2940,
+  "intactAtEnd": 752,
+  "substeps": 8,
+  "constraintIterations": 5,
+  "supportRelease": [
+    2.04,
+    2.32
+  ],
+  "method": "Reduced cohesive grain solve; external bending support ends before collapse.\n\nPersistent local fracture geometry comes from the cooling cache. Grain centers\nhave mass, gravity, contact and brittle distance bonds. This is a reduced XPBD\nmodel, with spherical contact proxies, not a full rigid fracture solver.\n"
+}

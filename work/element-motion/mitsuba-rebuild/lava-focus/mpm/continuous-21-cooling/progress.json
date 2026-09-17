@@ -1,0 +1,36 @@
+{
+  "run": "continuous-21-cooling",
+  "elapsed": 4.993945701145235,
+  "wallSeconds": 109.10077857971191,
+  "completed": false,
+  "latest": {
+    "time": 4.993945701145235,
+    "dt": 0.12,
+    "particles": 3362,
+    "mass": 0.00610658591308594,
+    "volume": 2.2544800704547746e-06,
+    "temperatureRange": [
+      1088.4838827171532,
+      1432.5619491708778
+    ],
+    "meanSolidFraction": 0.4103539941335697,
+    "solidParticles": 244,
+    "damagedParticles": 214,
+    "maximumDamage": 1.0,
+    "maximumSpeed": 0.00021236438267259371,
+    "thermalBalanceRelative": 1.2214295526178425e-11,
+    "stepHeatResidualJ": 3.787192781601334e-12,
+    "mechanicalResidual": 8.561727878132516e-13,
+    "heatNewtonIterations": 8,
+    "viscousHeatJ": 2.91361236269348e-07,
+    "fractureEnergyJ": 4.946015442348122e-07,
+    "seconds": 9.58398723602295,
+    "materialVelocityFields": 61,
+    "brokenConnectivityEdges": 229,
+    "contactImpulses": 505,
+    "contactMomentumError": 2.42434975903054e-19,
+    "splitGridNodes": 814,
+    "massBalanceErrorKg": 5.421010862427522e-19
+  },
+  "initialCondition": "Continuous-21 molten inlet pulse ends at its cached physical time. The existing mass, heat, velocity and fracture state continue in the full MPM/thermal solve with zero inlet velocity. No artificial cooling, motion targets, pore cuts, or added cracks."
+}

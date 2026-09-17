@@ -1,0 +1,99 @@
+{
+  "frames": 294,
+  "networks": 5,
+  "nodes": 2990,
+  "elapsed": 653.779130935669,
+  "aerosol": [
+    {
+      "frame": 0,
+      "finite": true,
+      "aerosolMass": 0.0,
+      "maxSpeed": 1.264280915260315
+    },
+    {
+      "frame": 20,
+      "finite": true,
+      "aerosolMass": 1.2431047106647204,
+      "maxSpeed": 0.8776893615722656
+    },
+    {
+      "frame": 40,
+      "finite": true,
+      "aerosolMass": 2.530142230671128,
+      "maxSpeed": 0.7235093116760254
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "aerosolMass": 3.1257281916496478,
+      "maxSpeed": 1.0377306938171387
+    },
+    {
+      "frame": 80,
+      "finite": true,
+      "aerosolMass": 3.403071989199294,
+      "maxSpeed": 1.2405463457107544
+    },
+    {
+      "frame": 100,
+      "finite": true,
+      "aerosolMass": 3.5425210933617017,
+      "maxSpeed": 1.2566617727279663
+    },
+    {
+      "frame": 120,
+      "finite": true,
+      "aerosolMass": 3.6195863748551558,
+      "maxSpeed": 1.3354692459106445
+    },
+    {
+      "frame": 140,
+      "finite": true,
+      "aerosolMass": 3.66474391295673,
+      "maxSpeed": 1.6080528497695923
+    },
+    {
+      "frame": 160,
+      "finite": true,
+      "aerosolMass": 3.692991387441223,
+      "maxSpeed": 1.709028959274292
+    },
+    {
+      "frame": 180,
+      "finite": true,
+      "aerosolMass": 3.709748131809674,
+      "maxSpeed": 1.816176414489746
+    },
+    {
+      "frame": 200,
+      "finite": true,
+      "aerosolMass": 3.7156846896211944,
+      "maxSpeed": 1.7996965646743774
+    },
+    {
+      "frame": 220,
+      "finite": true,
+      "aerosolMass": 2.474980155289187,
+      "maxSpeed": 1.7217154502868652
+    },
+    {
+      "frame": 240,
+      "finite": true,
+      "aerosolMass": 1.1812563645977516,
+      "maxSpeed": 1.5976823568344116
+    },
+    {
+      "frame": 260,
+      "finite": true,
+      "aerosolMass": 0.5632430715495133,
+      "maxSpeed": 1.4927194118499756
+    },
+    {
+      "frame": 280,
+      "finite": true,
+      "aerosolMass": 0.2681882199778363,
+      "maxSpeed": 1.3517483472824097
+    }
+  ],
+  "model": "Art-directed 3D branched conductor graphs, subtree current weighting, geodesic excitation, exposed return strokes and pressure-projected lit aerosol; not calibrated plasma"
+}

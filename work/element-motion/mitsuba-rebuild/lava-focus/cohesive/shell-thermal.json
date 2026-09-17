@@ -1,0 +1,25 @@
+{
+  "device": "CPU",
+  "seconds": 3.57,
+  "exposureGrid": [
+    733,
+    518
+  ],
+  "simulationSeconds": 0.8333333333333334,
+  "surfaceTemperatureK": [
+    1190.9429044896285,
+    1205.8178781177267,
+    1205.8178781177282,
+    1429.8626909129644,
+    1459.6538192152545
+  ],
+  "columnEnergyRelativeError": 4.2601983152295504e-16,
+  "coreVertices": 368234,
+  "coreTriangles": 736464,
+  "method": "Four mechanical exposure snapshots + natural enthalpy-column cooling + analytic lateral edge boundary layer",
+  "limits": [
+    "Exposure onset is bracketed by four snapshots",
+    "Old fine vents have authored pre-shot ages",
+    "Lateral cooling is a boundary-layer approximation rather than a 3D heat solve"
+  ]
+}

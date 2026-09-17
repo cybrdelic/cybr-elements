@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "width": 2560,
+    "height": 1440,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  "frameSequenceComplete": true,
+  "render": {
+    "element": "air",
+    "variant": "01",
+    "resolution": [
+      2560,
+      1440
+    ],
+    "samples": 64,
+    "triangles": 223764,
+    "frames": 450,
+    "elapsed": 850.3129999999946,
+    "model": "2D advected condensation density with diffusion and evaporation, rendered as a heterogeneous volume"
+  }
+}

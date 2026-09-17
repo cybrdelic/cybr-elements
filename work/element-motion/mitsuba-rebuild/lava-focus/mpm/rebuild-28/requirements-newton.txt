@@ -1,0 +1,7 @@
+# Recreate the rejected Newton trial environment with Python 3.12.
+# Removed to recover disk space; simulation sources and receipts retained.
+newton==1.6.0
+warp-lang==1.17.0
+numpy==2.5.3
+scipy==1.18.1
+pillow==12.3.0

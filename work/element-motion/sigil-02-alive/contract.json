@@ -1,0 +1,22 @@
+{
+  "scope": [
+    "water",
+    "earth",
+    "lightning"
+  ],
+  "feedback": "Fire feels alive; water, earth and lightning do not",
+  "preserve": [
+    "Full approved 02 artwork",
+    "Pitch-black backdrop",
+    "Current material and camera treatments",
+    "Long hold",
+    "Fire and air media"
+  ],
+  "changes": {
+    "water": "Resolved circulation driven by smooth curl forces during the hold, replacing near-zero bulk velocity",
+    "earth": "Small correlated pressure-wave shifts, rocking fracture surfaces, and irregular physical chip release",
+    "lightning": "Non-looping stochastic discharge events, propagating leaders and short return pulses; persistent low corona"
+  },
+  "review": "CPU pilots and motion sequences before final rendering; then decoded full-film review",
+  "limitations": "Bending forces and held earth poses are authored controls. Bullet handles released fragments. Lightning is an authored discharge visualization, not calibrated plasma physics."
+}

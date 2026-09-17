@@ -1,0 +1,28 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\natural-coarse\\frame-2100\\state.npz",
+  "sourceSha256": "13e366a34d731fcef555086106e27d128a83120c3303eac5112854ac9c95447b",
+  "physicalSeconds": 2.1,
+  "vertices": 3036,
+  "triangles": 6068,
+  "solverParticleVolumeM3": 1.007140295164782e-05,
+  "reconstructedVolumeM3": 1.0069698306631559e-05,
+  "relativeVolumeDifference": 0.00016925596408418728,
+  "kernelSigmaRenderCells": [
+    0.7,
+    0.7,
+    0.7
+  ],
+  "kernelSigmaM": [
+    0.00098,
+    0.00098,
+    0.00049
+  ],
+  "renderCellSizeM": [
+    0.0014,
+    0.0014,
+    0.0007
+  ],
+  "method": "density reconstruction",
+  "fractureTopologyPreserved": true,
+  "limits": "Unfractured liquid reconstruction only. Explicit --method kernel is a diagnostic override that does not preserve fractures."
+}

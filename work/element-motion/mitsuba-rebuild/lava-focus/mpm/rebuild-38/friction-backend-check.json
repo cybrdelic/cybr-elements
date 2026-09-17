@@ -1,0 +1,22 @@
+{
+  "status": "pass",
+  "cases": [
+    {
+      "backend": "cpu",
+      "seconds": 0.5780000000086147,
+      "velocityDifference": 0.0,
+      "residual": 1.330434782838524e-15,
+      "gpuFactors": 0,
+      "fallbacks": []
+    },
+    {
+      "backend": "cuda_batched",
+      "seconds": 1.75,
+      "velocityDifference": 1.9048426427805956e-10,
+      "residual": 1.1753184448525897e-15,
+      "gpuFactors": 1,
+      "fallbacks": []
+    }
+  ],
+  "selected": "cpu"
+}

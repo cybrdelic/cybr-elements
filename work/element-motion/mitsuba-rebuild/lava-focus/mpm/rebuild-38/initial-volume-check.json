@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "referenceVolumeM3": 2.3930760892733002e-06,
+  "cases": [
+    {
+      "case": "hot-nozzle",
+      "relativeVolumeError": 0.00978820139973624,
+      "volumeM3": 2.4165000000000005e-06
+    },
+    {
+      "case": "integrated-coarse",
+      "relativeVolumeError": 2.6151530233550583e-05,
+      "volumeM3": 2.393138671875e-06
+    },
+    {
+      "case": "nozzle-fine",
+      "relativeVolumeError": 0.0016788687767635936,
+      "volumeM3": 2.3970937500000007e-06
+    },
+    {
+      "case": "integrated-fine",
+      "relativeVolumeError": 0.0001067544816748347,
+      "volumeM3": 2.3928206176757814e-06
+    }
+  ],
+  "reference": "1024 squared vertical-column integration of the continuous union"
+}

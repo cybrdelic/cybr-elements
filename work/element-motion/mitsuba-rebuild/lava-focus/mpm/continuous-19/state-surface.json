@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\continuous-19\\state.npz",
+  "sourceSha256": "75fc6dd346404be5550b567b3734912e523b1f58b2624c4ef7681010b3868fae",
+  "physicalSeconds": 1.8432670147392758,
+  "vertices": 5070,
+  "triangles": 10128,
+  "solverParticleVolumeM3": 2.1142921171717693e-06,
+  "reconstructedVolumeM3": 2.1134365707495173e-06,
+  "relativeVolumeDifference": 0.0004046491094127832,
+  "limits": "Kernel-based reconstruction at the material point spacing; subgrid fractures are not manufactured in the mesh"
+}

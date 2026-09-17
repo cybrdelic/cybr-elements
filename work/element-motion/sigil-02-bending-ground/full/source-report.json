@@ -1,0 +1,16 @@
+{
+  "particles": 138022,
+  "grid": [
+    264,
+    106,
+    168
+  ],
+  "massBornAtStart": true,
+  "source": "Single continuous ground ribbon",
+  "ribbonLength": 5.335729483351324,
+  "worldVolume": 2.3467763965014576,
+  "releaseAt": 8.1,
+  "duration": 13,
+  "floor": "Native solid box at world height zero; no outflow deletion",
+  "limits": "The bending force is authored. Liquid transport, pressure, free surface, gravity and floor contact are solved; no render morph or particle position assignment."
+}

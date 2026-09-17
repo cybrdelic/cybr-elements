@@ -1,0 +1,23 @@
+{
+  "source": "bending-fire.py",
+  "sourceSha256": "eea78215c2c5402cadc4976fb8918a24cb682282c81fa976cb5d57d7a3f66634",
+  "changes": [
+    "trajectory import",
+    "isolated output paths",
+    "72-frame trial length",
+    "ffmpeg thread cap"
+  ],
+  "preserved": [
+    "gas solver",
+    "reaction",
+    "vorticity",
+    "nozzle geometry and momentum",
+    "buoyancy",
+    "radiance",
+    "exposure",
+    "black backdrop"
+  ],
+  "curveLength": 6.538122529418308,
+  "start": 0.15,
+  "end": 1.6
+}

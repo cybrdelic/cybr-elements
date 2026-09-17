@@ -1,0 +1,13 @@
+{
+  "image": "lava-focus\\mpm\\rebuild-31\\closed-crust\\frame-000750-relief36\\thermal37-600\\review\\beauty-200.png",
+  "seconds": 14.46799999999348,
+  "width": 1440,
+  "height": 900,
+  "spp": 192,
+  "renderer": "Mitsuba CUDA path tracing with geometry-sampled vertex Planck emission",
+  "denoiser": "OIDN CPU",
+  "blackBackground": true,
+  "bloom": false,
+  "geometry": "lava-focus\\mpm\\rebuild-31\\closed-crust\\frame-000750-relief36\\surface.ply",
+  "status": "Material study, not a completed coupled fracture simulation"
+}

@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_scene26.py", line 86, in run
+    try:row=s.step(step,bed=HotBed(1450.),boundary=setup['config']);break
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py", line 364, in step
+    return coupled_step(self,dt,thermal=thermal,mechanics=mechanics,gas=gas,bed=bed,boundary=boundary,node_velocity=node_velocity)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_coupled.py", line 57, in coupled_step
+    row=s._step(dt,**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py", line 538, in _step
+    u,mechanical_residual,multipliers,contact_objective_loss,contact_iterations,tangentC,tangent_impulse,friction_report=friction_contact(A,rhs,S,contactC,compliance,offset,mu,tangent_rows(contactC,mu>0)@lift,**friction_kwargs)
+                                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_friction.py", line 158, in mixed_contact
+    if deadline is not None and time.monotonic()>deadline:raise TimeoutError('CPU mixed contact deadline reached')
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: CPU mixed contact deadline reached

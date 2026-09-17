@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "comparison": "Mitsuba native area emitter, same constant Planck-like RGB and geometric light distribution",
+  "imageRelativeL2": 1.0478919648448937e-05,
+  "totalRadianceRelativeError": 2.0875290829280857e-07,
+  "spp": 2048
+}

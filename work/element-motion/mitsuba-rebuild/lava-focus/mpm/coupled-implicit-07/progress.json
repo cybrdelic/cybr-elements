@@ -1,0 +1,36 @@
+{
+  "run": "coupled-implicit-07",
+  "physicalSeconds": 42.33854709335417,
+  "chunkSteps": 365,
+  "wallSeconds": 108.9701828956604,
+  "completedTarget": true,
+  "stateSha256": "80ac2c970987ae74f92b407f504c5f670bafb87a6c9f746e9403ecaa2ca1be9c",
+  "device": "CPU",
+  "latest": {
+    "time": 42.33854709335417,
+    "dt": 0.01735548946808052,
+    "particles": 744,
+    "mass": 0.25110000000000005,
+    "volume": 9.261035057936073e-05,
+    "temperatureRange": [
+      1081.8027015016314,
+      1362.4753312392359
+    ],
+    "meanSolidFraction": 0.5823793096730652,
+    "solidParticles": 178,
+    "damagedParticles": 6,
+    "maximumDamage": 0.9818541743164872,
+    "maximumSpeed": 0.013624497481198502,
+    "thermalBalanceRelative": 7.921603445812523e-12,
+    "stepHeatResidualJ": 1.5849295209591219e-09,
+    "mechanicalResidual": 1.006158278278567e-13,
+    "heatNewtonIterations": 7,
+    "viscousHeatJ": 1.5354429079365365e-07,
+    "fractureEnergyJ": 0.0,
+    "seconds": 0.25461363792419434,
+    "materialVelocityFields": 8,
+    "brokenConnectivityEdges": 0,
+    "contactImpulses": 88,
+    "contactMomentumError": 0.0
+  }
+}

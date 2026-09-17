@@ -1,0 +1,18 @@
+{
+  "device": "CPU",
+  "vertices": 842106,
+  "triangles": 1684568,
+  "openEdges": 0,
+  "nonManifoldEdges": 0,
+  "zeroAreaTriangles": 2,
+  "unitNormalsMaxError": 5.960464477539063e-08,
+  "temperatureRangeK": [
+    970.0,
+    1475.2353515625
+  ],
+  "surfaceAreaM2": 13.917731285095215,
+  "seconds": 1.85,
+  "limits": "These checks establish finite, closed component geometry. They do not establish nonintersection between overlapping lobes, physical flow accuracy or visual realism.",
+  "collapsedTriangleMaxEdgeM": 2.3995612435322873e-07,
+  "roundoffOnlyDegeneracies": true
+}

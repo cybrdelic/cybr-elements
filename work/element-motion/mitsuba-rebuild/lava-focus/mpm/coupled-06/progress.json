@@ -1,0 +1,48 @@
+{
+  "run": "coupled-06",
+  "physicalSeconds": 33.990774123522,
+  "chunkSteps": 273,
+  "wallSeconds": 115.42246603965759,
+  "completedTarget": false,
+  "stateSha256": "737b13616ddbc4fab998016e911e6d45704f377339ec4fa752cec143d2d07531",
+  "device": "CPU",
+  "latest": {
+    "time": 33.990774123522,
+    "dt": 4.6461716158065896e-05,
+    "particles": 744,
+    "mass": 0.25110000000000005,
+    "volume": 9.248685431475332e-05,
+    "temperatureRange": [
+      1175.3725463629405,
+      1441.5362575438985
+    ],
+    "meanSolidFraction": 0.47132425228902286,
+    "solidParticles": 45,
+    "damagedParticles": 26,
+    "maximumDamage": 0.9999999982602981,
+    "maximumSpeed": 8.154507194358526,
+    "thermalBalanceRelative": 4.558103572091305e-12,
+    "stepHeatResidualJ": 2.1612256428937826e-10,
+    "mechanicalResidual": 1.5216419360274717e-15,
+    "heatNewtonIterations": 6,
+    "viscousHeatJ": 6.386910767025533,
+    "fractureEnergyJ": 0.00014631696211325795,
+    "seconds": 0.2569997310638428,
+    "materialVelocityFields": 19,
+    "brokenConnectivityEdges": 3,
+    "contactImpulses": 96,
+    "contactMomentumError": 1.454609855418324e-18,
+    "gas": {
+      "time": 33.99077412352325,
+      "substeps": 1,
+      "maxProjectionResidual": 5.929917685695423e-08,
+      "massErrorKg": -7.077671781985373e-16,
+      "waterErrorKg": -5.692061405548898e-18,
+      "temperatureRange": [
+        293.150001083129,
+        633.8355259619793
+      ],
+      "maximumSpeed": 0.982605262211168
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cpuReviewed": true,
+  "frames": [
+    30,
+    66,
+    102,
+    150,
+    192,
+    228,
+    258,
+    294
+  ],
+  "findings": "3D branched channel brightness varies locally, clouds light from within, black backdrop maintained, after-current extinction is dark. Further full-resolution review required.",
+  "userAccepted": false,
+  "latestCpuReview": "final-volume-check/0150.jpg",
+  "branchCurrentFix": "Exclude shared trunk root when computing fork current; assign spline materials after creating slots.",
+  "productionFirstFrame": 150
+}

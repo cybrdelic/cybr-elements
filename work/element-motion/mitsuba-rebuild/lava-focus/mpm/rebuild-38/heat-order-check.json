@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "referenceTemperatureK": 1252.7358641413377,
+  "cases": [
+    {
+      "method": "heat_solve",
+      "temperatureErrorsK": [
+        1.7156601884537395,
+        0.8675423953570771,
+        0.43602099092140634
+      ]
+    },
+    {
+      "method": "heat_solve_trbdf2",
+      "temperatureErrorsK": [
+        0.013176211620020695,
+        0.0037658248961633944,
+        0.0010536686129398731
+      ]
+    }
+  ],
+  "enthalpyLedgerConserved": true
+}

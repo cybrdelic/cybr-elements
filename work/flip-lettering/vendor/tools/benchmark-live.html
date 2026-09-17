@@ -1,0 +1,34 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>FLIP live benchmark</title>
+<style>body{background:#10151b;color:#dce7ef;font:14px monospace}iframe{width:960px;height:540px;border:0}pre{white-space:pre-wrap}</style>
+<h1>GPU resident surface benchmark</h1>
+<p>Fixed preview resolution, 1/48 s per frame. GPU completion included; first two steps excluded from timing summary.</p>
+<iframe id="preview"></iframe><pre id="report">Running…</pre>
+<script type="module">
+const output=document.querySelector('#report'),iframe=document.querySelector('#preview');
+try {
+ const html=await (await fetch('../index.html')).text();
+ iframe.srcdoc=html.replace('<head>','<head><base href="'+new URL('../',location.href)+'"><script>window.__CAPTURE__=true;window.__CAPTURE_LIVE__=true;window.__CAPTURE_RESIDENT__=true;<\/script>');
+ await new Promise(resolve=>iframe.onload=resolve);
+ const w=iframe.contentWindow,start=performance.now();
+ while(!w.CYBR?.ready){if(w.CYBR_ERROR)throw Error(w.CYBR_ERROR);if(performance.now()-start>90000)throw Error('Initialization timed out');await new Promise(r=>setTimeout(r,50));}
+ w.CYBR.resize(960,540);
+ const gl=w.CYBR.renderer.renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
+ const report={renderer:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),frames:[]};
+ for(let i=0;i<14;i++){
+  await new Promise(requestAnimationFrame);
+  const before=w.CYBR.inspect().metrics.gpuPasses,t=performance.now();
+  await w.CYBR.stepLive(1/48);gl.finish();
+  const wallMs=performance.now()-t,info=w.CYBR.inspect(),m=info.metrics;
+  if(info.glError||!m.finite||m.solidViolations||!m.pressure.converged)throw Error('Simulation validation failed');
+  const pixels=new Uint8Array(960*540*4);gl.readPixels(0,0,960,540,gl.RGBA,gl.UNSIGNED_BYTE,pixels);
+  let hash=2166136261;for(const value of pixels)hash=Math.imul(hash^value,16777619);
+  report.frames.push({wallMs,time:m.time,particles:m.particles,passes:m.gpuPasses-before,pressure:m.pressure.relativeResidual,primaryReadbackBytes:m.primaryReadbackBytes,pixelHash:(hash>>>0).toString(16)});
+ }
+ const samples=report.frames.slice(2).map(f=>f.wallMs).sort((a,b)=>a-b);
+ report.medianMs=(samples[5]+samples[6])/2;report.p95Ms=samples.at(-1);
+ report.simulationSpeed=(12/48)/(samples.reduce((a,b)=>a+b,0)/1000);
+ output.textContent=JSON.stringify(report,null,2);
+}catch(error){output.textContent=JSON.stringify({error:error.message});}
+</script>

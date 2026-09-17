@@ -1,0 +1,14 @@
+{
+  "before": {
+    "meanLuminance": 0.00470167168327351,
+    "highFrequencyResidualRMS": 0.004088081279247167,
+    "samplesPerPixel": 16
+  },
+  "after": {
+    "meanLuminance": 0.004722514777604897,
+    "highFrequencyResidualRMS": 0.0006091135105980965,
+    "samplesPerPixel": 16
+  },
+  "residualReduction": 0.8510025929058176,
+  "scope": "One fixed cold-surface patch, same mesh, camera, illumination, and sample count. This measures noise reduction, not material realism."
+}

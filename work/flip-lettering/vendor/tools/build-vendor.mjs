@@ -1,0 +1,11 @@
+import {build} from 'esbuild';
+import {mkdir,copyFile,readFile} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+const root = new URL('../',import.meta.url);
+const pkg = JSON.parse(await readFile(new URL('node_modules/three/package.json',root),'utf8'));
+if(pkg.version !== '0.180.0') throw new Error('Three.js version mismatch: '+pkg.version);
+await mkdir(new URL('vendor/',root),{recursive:true});
+for(const name of ['three.module.js','three.core.js']) await copyFile(new URL('node_modules/three/build/'+name,root),new URL('vendor/'+name,root));
+await copyFile(new URL('node_modules/three/LICENSE',root),new URL('vendor/THREE-LICENSE.txt',root));
+await build({entryPoints:[fileURLToPath(new URL('node_modules/three/build/three.module.js',root))],outfile:fileURLToPath(new URL('vendor/three.global.js',root)),bundle:true,format:'iife',globalName:'THREE',minify:true,legalComments:'eof',platform:'browser',target:'es2022'});
+console.log('Built pinned Three.js r180 browser bundle.');

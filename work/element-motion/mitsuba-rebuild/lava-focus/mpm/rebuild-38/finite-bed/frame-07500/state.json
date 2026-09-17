@@ -1,0 +1,5056 @@
+{
+  "material": {
+    "density": 2700.0,
+    "cp": 1200.0,
+    "solidus": 1173.15,
+    "liquidus": 1423.15,
+    "latent_heat": 400000.0,
+    "conductivity": 1.6,
+    "emissivity": 0.94,
+    "convection": 12.0,
+    "ambient": 293.15,
+    "young": 30000000000.0,
+    "poisson": 0.25,
+    "liquid_bulk": 20000000000.0,
+    "expansion": 8e-06,
+    "tensile_strength": 8000000.0,
+    "fracture_energy": 100.0,
+    "viscosity_reference": 150.0,
+    "viscosity_temperature": 1450.0,
+    "activation_over_R": 60000.0,
+    "friction": 0.6,
+    "crystal_lock_fraction": 0.65,
+    "rheology": "basalt_power_creep",
+    "creep_viscosity_reference": 1000000000000.0,
+    "creep_temperature": 933.15,
+    "creep_activation_over_R": 60000.0,
+    "fracture_model": "phase_field",
+    "fracture_length": 0.003,
+    "melt_viscosity_law": "farrell_180719",
+    "vft_a": -4.55,
+    "vft_b": 5978.4,
+    "vft_c": 595.3,
+    "rock_creep_a": 610000000.0,
+    "rock_creep_n": 3.6,
+    "rock_creep_q": 456000.0
+  },
+  "dx": 0.003,
+  "spacing": 0.0015,
+  "cell_size": [
+    0.003,
+    0.003,
+    0.003
+  ],
+  "sample_size": [
+    0.0015,
+    0.0015,
+    0.0015
+  ],
+  "contact_solver": "friction",
+  "bonded_bed": false,
+  "coherent_fraction": 0.65,
+  "failure_fraction": 0.65,
+  "origin": [
+    -0.018,
+    -0.015,
+    -0.009
+  ],
+  "shape": [
+    25,
+    13,
+    15
+  ],
+  "gravity": [
+    0.0,
+    0.0,
+    -9.81
+  ],
+  "ground": true,
+  "initial_energy": 4777.4060009999985,
+  "initial_mass": 0.006524549999999999,
+  "ledger": {
+    "radiation": 759.822185510083,
+    "convection": 51.26151111347552,
+    "bed": 755.3850350930005,
+    "viscous_heat": 0.0003071715183284593,
+    "fracture": 1.586147441719674e-07,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0,
+    "conduit_heat": -35.68888895626955,
+    "conduit_impulse_norm": 1.115349449882878e-08,
+    "solid_floor_impulse_norm": 1.2468540707864333,
+    "contact_objective_loss": 0.00025543250053063397,
+    "inlet_boundary_work": 3.8099893210486723e-06,
+    "source_mass": 6.282404296875003e-05,
+    "source_enthalpy": 46.00102074257811,
+    "source_kinetic": 6.499026220276955e-13,
+    "inlet_particles": 224,
+    "inlet_reference_layers": 14,
+    "friction_work": 4.077376483791201e-06,
+    "friction_heat": 4.077377664392682e-06,
+    "interface_heat": 0.00020487133104894935
+  },
+  "time": 7.5,
+  "rows": [
+    {
+      "time": 0.2,
+      "dt": 0.2,
+      "particles": 716,
+      "mass": 0.006524549999999999,
+      "volume": 2.416097272442781e-06,
+      "temperatureRange": [
+        1425.1737685322298,
+        1449.9958279387818
+      ],
+      "meanSolidFraction": 0.0,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.001705298529310629,
+      "thermalBalanceRelative": 1.5037021643612022e-16,
+      "stepHeatResidualJ": -7.105427357601002e-15,
+      "mechanicalResidual": 8.319028694534008e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 7.437320148569234e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 3.979341506958008,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 0.0,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 1,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.2,
+        "storedHeatJ": 21.769785799703616,
+        "receivedHeatJ": 21.769790379519318,
+        "bottomLossJ": 4.5783627489981886e-06,
+        "energyErrorJ": 1.4529533132190409e-09,
+        "maximumTemperature": 306.43979874659095
+      }
+    },
+    {
+      "time": 0.4,
+      "dt": 0.2,
+      "particles": 716,
+      "mass": 0.006524549999999999,
+      "volume": 2.4157752751715106e-06,
+      "temperatureRange": [
+        1413.4743368599495,
+        1449.9864037391962
+      ],
+      "meanSolidFraction": 0.0017142020562780761,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0015737156549619972,
+      "thermalBalanceRelative": 1.5124410143216163e-16,
+      "stepHeatResidualJ": 1.4210854715202004e-14,
+      "mechanicalResidual": 5.527154057062128e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 5.408921181431756e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1267237663269043,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 0.0,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.4,
+        "storedHeatJ": 43.81792822830868,
+        "receivedHeatJ": 43.81795511191342,
+        "bottomLossJ": 2.6880857960304642e-05,
+        "energyErrorJ": 2.7467805807646073e-09,
+        "maximumTemperature": 319.20610007099606
+      }
+    },
+    {
+      "time": 0.5,
+      "dt": 0.09999999999999998,
+      "particles": 716,
+      "mass": 0.006524549999999999,
+      "volume": 2.4156555586575537e-06,
+      "temperatureRange": [
+        1408.0020053157432,
+        1449.9851585503552
+      ],
+      "meanSolidFraction": 0.003677204622995485,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0013176901505335874,
+      "thermalBalanceRelative": 1.4555146137811673e-16,
+      "stepHeatResidualJ": 1.7763568394002505e-14,
+      "mechanicalResidual": 2.5504172849596353e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 2.3200188479189106e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1448068618774414,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 0.0,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.5,
+        "storedHeatJ": 55.09457083555079,
+        "receivedHeatJ": 55.09461559884893,
+        "bottomLossJ": 4.476029771378762e-05,
+        "energyErrorJ": 3.000430126576248e-09,
+        "maximumTemperature": 325.512507212121
+      }
+    },
+    {
+      "time": 0.653559958934992,
+      "dt": 0.15355995893499194,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.4171313561209156e-06,
+      "temperatureRange": [
+        1399.8576888654572,
+        1449.992968598512
+      ],
+      "meanSolidFraction": 0.007399588073914199,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0012534425449343043,
+      "thermalBalanceRelative": 3.280065590481451e-16,
+      "stepHeatResidualJ": 2.7711166694643907e-13,
+      "mechanicalResidual": 4.411522269586509e-10,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 3.108265762407946e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1603076457977295,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.653559958934992,
+        "storedHeatJ": 72.30090580893534,
+        "receivedHeatJ": 72.30100673404873,
+        "bottomLossJ": 0.00010091773284791092,
+        "energyErrorJ": 7.3805352940325974e-09,
+        "maximumTemperature": 334.89660077449673
+      }
+    },
+    {
+      "time": 0.7864108859965548,
+      "dt": 0.13285092706156282,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.416985461718542e-06,
+      "temperatureRange": [
+        1392.7949612044665,
+        1449.9858640732514
+      ],
+      "meanSolidFraction": 0.011489238576812414,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0007796968460562282,
+      "thermalBalanceRelative": 4.219244538698798e-14,
+      "stepHeatResidualJ": 1.9952750562879373e-10,
+      "mechanicalResidual": 3.106381968813502e-10,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 2.354359171663603e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.17255783081054688,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.7864108859965548,
+        "storedHeatJ": 87.25576086066606,
+        "receivedHeatJ": 87.25594308012873,
+        "bottomLossJ": 0.00018221054601962874,
+        "energyErrorJ": 8.916657634472358e-09,
+        "maximumTemperature": 342.8321931093455
+      }
+    },
+    {
+      "time": 0.9864108859965548,
+      "dt": 0.2,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.416773110922931e-06,
+      "temperatureRange": [
+        1382.5934311095148,
+        1449.9720328056353
+      ],
+      "meanSolidFraction": 0.01825338299892455,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0006715958717870724,
+      "thermalBalanceRelative": 4.4407262583805194e-14,
+      "stepHeatResidualJ": 1.0174971976084635e-11,
+      "mechanicalResidual": 4.670673797226082e-10,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 3.054842725235863e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.15898919105529785,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 0.9864108859965548,
+        "storedHeatJ": 109.53265235117644,
+        "receivedHeatJ": 109.53308677534216,
+        "bottomLossJ": 0.00043441435066146893,
+        "energyErrorJ": 9.815053658712714e-09,
+        "maximumTemperature": 354.3053296468628
+      }
+    },
+    {
+      "time": 1.0,
+      "dt": 0.013589114003445202,
+      "particles": 732,
+      "mass": 0.006529037431640624,
+      "volume": 2.416769671535931e-06,
+      "temperatureRange": [
+        1381.8152195200416,
+        1449.9712593207344
+      ],
+      "meanSolidFraction": 0.018758808492736527,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0007356869974009372,
+      "thermalBalanceRelative": 4.450668327928686e-14,
+      "stepHeatResidualJ": 1.7967849430533533e-12,
+      "mechanicalResidual": 3.222873329225167e-11,
+      "heatNewtonIterations": 6,
+      "viscousHeatJ": 2.0106851537341574e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1569199562072754,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 2.185345003916095e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.0,
+        "storedHeatJ": 111.09106210331225,
+        "receivedHeatJ": 111.0915142808108,
+        "bottomLossJ": 0.00045216766079337164,
+        "energyErrorJ": 9.837748393692891e-09,
+        "maximumTemperature": 355.0932360156115
+      }
+    },
+    {
+      "time": 1.2,
+      "dt": 0.2,
+      "particles": 748,
+      "mass": 0.006533524863281249,
+      "volume": 2.4182326472572722e-06,
+      "temperatureRange": [
+        1371.7617529022893,
+        1449.9833697642246
+      ],
+      "meanSolidFraction": 0.025781235914241033,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0006506802545619459,
+      "thermalBalanceRelative": 4.4313877642423114e-14,
+      "stepHeatResidualJ": 3.339550858072471e-13,
+      "mechanicalResidual": 4.5287904665641757e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.620503201836552e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.15378713607788086,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 4.37069000783219e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.2,
+        "storedHeatJ": 133.31959653716194,
+        "receivedHeatJ": 133.3205200742712,
+        "bottomLossJ": 0.0009235264852998956,
+        "energyErrorJ": 1.0623949719956727e-08,
+        "maximumTemperature": 366.1329426896808
+      }
+    },
+    {
+      "time": 1.4,
+      "dt": 0.2,
+      "particles": 748,
+      "mass": 0.006533524863281249,
+      "volume": 2.4180492425817423e-06,
+      "temperatureRange": [
+        1361.8399358164988,
+        1449.9647921872702
+      ],
+      "meanSolidFraction": 0.03366957821880626,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00051514627265788,
+      "thermalBalanceRelative": 6.973964272823596e-14,
+      "stepHeatResidualJ": 1.213251721310371e-10,
+      "mechanicalResidual": 2.7563880470599286e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.2217934679478135e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.15060710906982422,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 4.37069000783219e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.4,
+        "storedHeatJ": 155.47411023626609,
+        "receivedHeatJ": 155.4758126235215,
+        "bottomLossJ": 0.0017023759348882652,
+        "energyErrorJ": 1.1320537396386499e-08,
+        "maximumTemperature": 376.7845680921452
+      }
+    },
+    {
+      "time": 1.5,
+      "dt": 0.10000000000000009,
+      "particles": 748,
+      "mass": 0.006533524863281249,
+      "volume": 2.4179687531772366e-06,
+      "temperatureRange": [
+        1356.6426571177067,
+        1449.962523518002
+      ],
+      "meanSolidFraction": 0.03774564963891278,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0004634542382856498,
+      "thermalBalanceRelative": 9.215030413606977e-14,
+      "stepHeatResidualJ": 1.0591705290607933e-10,
+      "mechanicalResidual": 1.9122638441297607e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.0137013306275424e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1668694019317627,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 4.37069000783219e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.5,
+        "storedHeatJ": 166.67761172634835,
+        "receivedHeatJ": 166.67979394720925,
+        "bottomLossJ": 0.0021822093755762915,
+        "energyErrorJ": 1.1485326467663981e-08,
+        "maximumTemperature": 382.0535656348361
+      }
+    },
+    {
+      "time": 1.7,
+      "dt": 0.2,
+      "particles": 764,
+      "mass": 0.006538012294921874,
+      "volume": 2.4194585219212365e-06,
+      "temperatureRange": [
+        1346.9308518422295,
+        1449.9827060330817
+      ],
+      "meanSolidFraction": 0.044966574283731554,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00041296917656204353,
+      "thermalBalanceRelative": 1.4935465803689334e-13,
+      "stepHeatResidualJ": 2.7402080604588264e-10,
+      "mechanicalResidual": 2.7098486181061566e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.7765897296311856e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.146622896194458,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.556035011748285e-19,
+      "heatTransfer": {
+        "flipFraction": 1.0,
+        "unlimitedMaximumOvershootJPerKg": 0.0,
+        "transferEnergyErrorJ": 0.0
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.7,
+        "storedHeatJ": 188.66613677166498,
+        "receivedHeatJ": 188.66977130992942,
+        "bottomLossJ": 0.0036345261928194183,
+        "energyErrorJ": 1.2071609489794355e-08,
+        "maximumTemperature": 392.1491254313292
+      }
+    },
+    {
+      "time": 1.9,
+      "dt": 0.2,
+      "particles": 764,
+      "mass": 0.006538012294921874,
+      "volume": 2.419294626077708e-06,
+      "temperatureRange": [
+        1337.6375760115059,
+        1449.982706064369
+      ],
+      "meanSolidFraction": 0.05303076044228463,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00040736011262808617,
+      "thermalBalanceRelative": 2.73876580405963e-13,
+      "stepHeatResidualJ": 5.965574700894649e-10,
+      "mechanicalResidual": 2.922410437786694e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.6118620686189503e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13366007804870605,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.556035011748285e-19,
+      "heatTransfer": {
+        "flipFraction": 0.993352680543925,
+        "unlimitedMaximumOvershootJPerKg": 30.45696826989297,
+        "transferEnergyErrorJ": -7.655197691906431e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 1.9,
+        "storedHeatJ": 210.52102349186526,
+        "receivedHeatJ": 210.52675741408498,
+        "bottomLossJ": 0.005733909617046981,
+        "energyErrorJ": 1.2602669130501454e-08,
+        "maximumTemperature": 401.8943415975044
+      }
+    },
+    {
+      "time": 2.0,
+      "dt": 0.10000000000000009,
+      "particles": 764,
+      "mass": 0.006538012294921874,
+      "volume": 2.4192213159944455e-06,
+      "temperatureRange": [
+        1332.8357453535903,
+        1449.9827060942216
+      ],
+      "meanSolidFraction": 0.05713629537290249,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00040718115010762945,
+      "thermalBalanceRelative": 3.0169252222319037e-13,
+      "stepHeatResidualJ": 1.283204653645953e-10,
+      "mechanicalResidual": 1.6796863459091104e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 7.605299611056302e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.12206435203552246,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.556035011748285e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9950476306333553,
+        "unlimitedMaximumOvershootJPerKg": 25.1927339930553,
+        "transferEnergyErrorJ": 4.082734804665986e-16
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.0,
+        "storedHeatJ": 221.55692490508488,
+        "receivedHeatJ": 221.56389106900056,
+        "bottomLossJ": 0.006966151171262584,
+        "energyErrorJ": 1.2744408195430879e-08,
+        "maximumTemperature": 406.720257472088
+      }
+    },
+    {
+      "time": 2.2,
+      "dt": 0.2,
+      "particles": 780,
+      "mass": 0.0065424997265625,
+      "volume": 2.4207249238045655e-06,
+      "temperatureRange": [
+        1323.642630751331,
+        1450.0
+      ],
+      "meanSolidFraction": 0.06403939160869218,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.000340889938647239,
+      "thermalBalanceRelative": 3.1520884810959187e-13,
+      "stepHeatResidualJ": 6.650680006714538e-11,
+      "mechanicalResidual": 3.4745641912277474e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.355919713656458e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.12627434730529785,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 8.74138001566438e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9962946366916842,
+        "unlimitedMaximumOvershootJPerKg": 19.710164945106953,
+        "transferEnergyErrorJ": 4.410250999271057e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.2,
+        "storedHeatJ": 243.20343851153876,
+        "receivedHeatJ": 243.21378958430142,
+        "bottomLossJ": 0.010351059551978153,
+        "energyErrorJ": 1.3210694760346087e-08,
+        "maximumTemperature": 415.96860776829953
+      }
+    },
+    {
+      "time": 2.4000000000000004,
+      "dt": 0.2,
+      "particles": 780,
+      "mass": 0.0065424997265625,
+      "volume": 2.4205725624810744e-06,
+      "temperatureRange": [
+        1314.8229691310983,
+        1450.000000029405
+      ],
+      "meanSolidFraction": 0.07213842871350844,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00030496846035515365,
+      "thermalBalanceRelative": 3.208224120229614e-13,
+      "stepHeatResidualJ": 2.751932015598868e-11,
+      "mechanicalResidual": 2.907745154179179e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.178698887212347e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1264958381652832,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 8.74138001566438e-19,
+      "heatTransfer": {
+        "flipFraction": 0.992089154581561,
+        "unlimitedMaximumOvershootJPerKg": 45.94956932903733,
+        "transferEnergyErrorJ": -3.8551232874533626e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.4000000000000004,
+        "storedHeatJ": 264.7015341069886,
+        "receivedHeatJ": 264.7164047321918,
+        "bottomLossJ": 0.01487061155860962,
+        "energyErrorJ": 1.3644580576510634e-08,
+        "maximumTemperature": 424.90555355872164
+      }
+    },
+    {
+      "time": 2.5,
+      "dt": 0.09999999999999964,
+      "particles": 780,
+      "mass": 0.0065424997265625,
+      "volume": 2.420505639709173e-06,
+      "temperatureRange": [
+        1310.2646768463276,
+        1450.0000000584648
+      ],
+      "meanSolidFraction": 0.07624082825670164,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00028680803014047323,
+      "thermalBalanceRelative": 3.2303611631342736e-13,
+      "stepHeatResidualJ": 9.247713705917704e-12,
+      "mechanicalResidual": 1.7316482628488468e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 5.419648869669994e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.12539958953857422,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 8.74138001566438e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9946458071534874,
+        "unlimitedMaximumOvershootJPerKg": 33.6803728134837,
+        "transferEnergyErrorJ": 8.748107574847947e-16
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.5,
+        "storedHeatJ": 275.5467045274673,
+        "receivedHeatJ": 275.5641468708843,
+        "bottomLossJ": 0.017442324755731424,
+        "energyErrorJ": 1.8661296508071246e-08,
+        "maximumTemperature": 429.33695314497885
+      }
+    },
+    {
+      "time": 2.7,
+      "dt": 0.2,
+      "particles": 796,
+      "mass": 0.006546987158203125,
+      "volume": 2.4220184762153314e-06,
+      "temperatureRange": [
+        1301.7266427315283,
+        1450.0000000728664
+      ],
+      "meanSolidFraction": 0.08267024107127825,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00025732259312451775,
+      "thermalBalanceRelative": 3.4677634021593997e-13,
+      "stepHeatResidualJ": 1.1426948276493931e-10,
+      "mechanicalResidual": 3.4814948017891373e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 9.546199823175124e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13359451293945312,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9914486602382002,
+        "unlimitedMaximumOvershootJPerKg": 55.651014975155704,
+        "transferEnergyErrorJ": 2.4264971898235255e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.7,
+        "storedHeatJ": 296.80537448427197,
+        "receivedHeatJ": 296.82945792762314,
+        "bottomLossJ": 0.02408342430169644,
+        "energyErrorJ": 1.9049480215471704e-08,
+        "maximumTemperature": 437.82573031342537
+      }
+    },
+    {
+      "time": 2.9000000000000004,
+      "dt": 0.2,
+      "particles": 796,
+      "mass": 0.006546987158203125,
+      "volume": 2.4218752536866366e-06,
+      "temperatureRange": [
+        1293.3679399123,
+        1450.0000001011153
+      ],
+      "meanSolidFraction": 0.09067674710951928,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0002472691031470196,
+      "thermalBalanceRelative": 3.6647938197511707e-13,
+      "stepHeatResidualJ": 9.493561492490699e-11,
+      "mechanicalResidual": 2.029873470777912e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 8.4275771133555e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1280820369720459,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9911319614830376,
+        "unlimitedMaximumOvershootJPerKg": 61.87205988809001,
+        "transferEnergyErrorJ": 7.636647882119799e-16
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 2.9000000000000004,
+        "storedHeatJ": 317.8945500588157,
+        "receivedHeatJ": 317.9270454749029,
+        "bottomLossJ": 0.0324953966759643,
+        "energyErrorJ": 1.9411231733101886e-08,
+        "maximumTemperature": 446.0303042020182
+      }
+    },
+    {
+      "time": 3.0,
+      "dt": 0.09999999999999964,
+      "particles": 796,
+      "mass": 0.006546987158203125,
+      "volume": 2.4218114602437023e-06,
+      "temperatureRange": [
+        1289.0474413263157,
+        1450.000000128569
+      ],
+      "meanSolidFraction": 0.09472843520158904,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00024463554306822607,
+      "thermalBalanceRelative": 4.157711535385836e-13,
+      "stepHeatResidualJ": 2.3728929932076426e-10,
+      "mechanicalResidual": 1.125159427884812e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 3.9445958182316993e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13227391242980957,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 0,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9943453569727005,
+        "unlimitedMaximumOvershootJPerKg": 42.059379905462265,
+        "transferEnergyErrorJ": 1.0986167038961703e-14
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 3.0,
+        "storedHeatJ": 328.52194150751603,
+        "receivedHeatJ": 328.5591212227274,
+        "bottomLossJ": 0.0371796913742032,
+        "energyErrorJ": 2.383717401244212e-08,
+        "maximumTemperature": 450.10097345227547
+      }
+    },
+    {
+      "time": 3.2,
+      "dt": 0.2,
+      "particles": 812,
+      "mass": 0.00655147458984375,
+      "volume": 2.4233335767587907e-06,
+      "temperatureRange": [
+        1280.951267632102,
+        1450.0000001420156
+      ],
+      "meanSolidFraction": 0.10073705365547202,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00018937202378880978,
+      "thermalBalanceRelative": 5.077087131356194e-13,
+      "stepHeatResidualJ": 4.377369577923673e-10,
+      "mechanicalResidual": 2.184402853565814e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 6.062422375753224e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13225293159484863,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 2,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3078188705606397e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9907813290390948,
+        "unlimitedMaximumOvershootJPerKg": 70.43881457834505,
+        "transferEnergyErrorJ": -2.047767413875857e-14
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 3.2,
+        "storedHeatJ": 349.3437423847482,
+        "receivedHeatJ": 349.3925110386084,
+        "bottomLossJ": 0.0487686297069322,
+        "energyErrorJ": 2.4153223421308212e-08,
+        "maximumTemperature": 457.89447375589026
+      }
+    },
+    {
+      "time": 3.4000000000000004,
+      "dt": 0.2,
+      "particles": 812,
+      "mass": 0.00655147458984375,
+      "volume": 2.4231979536068564e-06,
+      "temperatureRange": [
+        1273.0364726391526,
+        1450.000000174867
+      ],
+      "meanSolidFraction": 0.10857937764919552,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00018587942376717469,
+      "thermalBalanceRelative": 5.463974715278527e-13,
+      "stepHeatResidualJ": 1.84385839929746e-10,
+      "mechanicalResidual": 1.7632517548315145e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 5.277389172541473e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.1439816951751709,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 2,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3078188705606397e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9904008021493178,
+        "unlimitedMaximumOvershootJPerKg": 77.77165065496229,
+        "transferEnergyErrorJ": -2.422009821027209e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 3.4000000000000004,
+        "storedHeatJ": 369.98170072596133,
+        "receivedHeatJ": 370.0446074048252,
+        "bottomLossJ": 0.06290665442643828,
+        "energyErrorJ": 2.443738367219339e-08,
+        "maximumTemperature": 465.42685161694175
+      }
+    },
+    {
+      "time": 3.5,
+      "dt": 0.09999999999999964,
+      "particles": 812,
+      "mass": 0.00655147458984375,
+      "volume": 2.423136830425186e-06,
+      "temperatureRange": [
+        1268.955139834581,
+        1450.0000002165489
+      ],
+      "meanSolidFraction": 0.11252920850463811,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.00018452470514522255,
+      "thermalBalanceRelative": 5.484536490803147e-13,
+      "stepHeatResidualJ": 9.737988193592173e-12,
+      "mechanicalResidual": 1.1406279371852866e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.4749138388963356e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13498997688293457,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 2,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3078188705606397e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9939870036865484,
+        "unlimitedMaximumOvershootJPerKg": 51.470885190647095,
+        "transferEnergyErrorJ": 1.953823159102472e-15
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 0.0,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 0.0,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 3.5,
+        "storedHeatJ": 380.3760274640451,
+        "receivedHeatJ": 380.4466828503743,
+        "bottomLossJ": 0.07065535798018954,
+        "energyErrorJ": 2.8349063541099895e-08,
+        "maximumTemperature": 469.1662990727481
+      }
+    },
+    {
+      "time": 3.7,
+      "dt": 0.2,
+      "particles": 828,
+      "mass": 0.006555962021484374,
+      "volume": 2.424665243168588e-06,
+      "temperatureRange": [
+        1261.3088470485677,
+        1450.0000002372442
+      ],
+      "meanSolidFraction": 0.11799225177333106,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0,
+      "maximumSpeed": 0.0001873616804401881,
+      "thermalBalanceRelative": 5.558593885338466e-13,
+      "stepHeatResidualJ": 3.590372443795786e-11,
+      "mechanicalResidual": 1.9605995372947012e-10,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 4.4641201083181624e-07,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.13847088813781738,
+      "materialVelocityFields": 1,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 2,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 0,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.572975670693371e-19,
+      "heatTransfer": {
+        "flipFraction": 0.989894046785516,
+        "unlimitedMaximumOvershootJPerKg": 88.5228444011882,
+        "transferEnergyErrorJ": 1.0619026748963194e-14
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 0.0,
+      "damageCouplingVelocityResidual": 3.3881317890172014e-21,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 2.5153490401663703e-17,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 0,
+        "fractureEnergyJ": 0.0,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 0.0,
+        "incrementalEnergyAfterJ": 0.0,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0
+      },
+      "bed": {
+        "time": 3.7,
+        "storedHeatJ": 400.73140037236703,
+        "receivedHeatJ": 400.82063161239574,
+        "bottomLossJ": 0.08923121144133274,
+        "energyErrorJ": 2.8587351152964402e-08,
+        "maximumTemperature": 476.32136757486285
+      }
+    },
+    {
+      "time": 3.9000000000000004,
+      "dt": 0.2,
+      "particles": 828,
+      "mass": 0.006555962021484374,
+      "volume": 2.4245372248403983e-06,
+      "temperatureRange": [
+        1253.8332277731324,
+        1450.0000002782351
+      ],
+      "meanSolidFraction": 0.12559103881696893,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 8.331662703014531e-10,
+      "maximumSpeed": 0.00047041184694190464,
+      "thermalBalanceRelative": 5.594396821786179e-13,
+      "stepHeatResidualJ": 1.666222715357435e-11,
+      "mechanicalResidual": 2.8689148650002234e-12,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.2382893245757178e-06,
+      "fractureEnergyJ": 1.1695399493113617e-22,
+      "seconds": 0.511667013168335,
+      "materialVelocityFields": 7,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 88,
+      "contactMomentumError": 5.795370703668335e-20,
+      "splitGridNodes": 89,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.572975670693371e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9896064464878033,
+        "unlimitedMaximumOvershootJPerKg": 95.72076251066756,
+        "transferEnergyErrorJ": -1.1209062276724014e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.4044147290945308e-09,
+        "stationarity": 2.8689148650002234e-12,
+        "slidingDissipationJ": 3.883278898092975e-16,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 2,
+        "condensedNormalRows": 276,
+        "frictionRows": 6,
+        "candidateFrictionRows": 6,
+        "physicalRows": 154
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 7.55592173381807e-18,
+      "damageCouplingVelocityResidual": 7.1467618371862865e-12,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 2.5039122251296897e-11,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 1,
+        "fractureEnergyJ": 1.1695399493113617e-22,
+        "previousFractureEnergyJ": 0.0,
+        "incrementalEnergyBeforeJ": 1.855844259094039e-13,
+        "incrementalEnergyAfterJ": 1.8558442579244994e-13,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 8.331662703014531e-10
+      },
+      "bed": {
+        "time": 3.9000000000000004,
+        "storedHeatJ": 420.89839137068856,
+        "receivedHeatJ": 421.0096559289735,
+        "bottomLossJ": 0.11126452948130608,
+        "energyErrorJ": 2.8803583518310916e-08,
+        "maximumTemperature": 483.2377155152731
+      }
+    },
+    {
+      "time": 4.0,
+      "dt": 0.09999999999999964,
+      "particles": 828,
+      "mass": 0.006555962021484374,
+      "volume": 2.424478183890923e-06,
+      "temperatureRange": [
+        1250.2798008077302,
+        1450.0000003183138
+      ],
+      "meanSolidFraction": 0.12940739975342136,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 1.2829371001975734e-09,
+      "maximumSpeed": 0.0010217814625370593,
+      "thermalBalanceRelative": 5.596993590951332e-13,
+      "stepHeatResidualJ": 1.0160761121369433e-12,
+      "mechanicalResidual": 1.7979546678720012e-12,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.6265553270755878e-06,
+      "fractureEnergyJ": 1.851636153957021e-22,
+      "seconds": 0.710132360458374,
+      "materialVelocityFields": 9,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 104,
+      "contactMomentumError": 1.73962557757526e-20,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.572975670693371e-19,
+      "heatTransfer": {
+        "flipFraction": 0.993904939963724,
+        "unlimitedMaximumOvershootJPerKg": 58.8515841702465,
+        "transferEnergyErrorJ": -9.725187608076568e-16
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 5.965156016286095e-10,
+        "stationarity": 1.7979546678720012e-12,
+        "slidingDissipationJ": 0.0,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 3,
+        "condensedNormalRows": 304,
+        "frictionRows": 8,
+        "candidateFrictionRows": 8,
+        "physicalRows": 182
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 5.44133005786652e-17,
+      "damageCouplingVelocityResidual": 1.508783901300248e-12,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 3.34274678250035e-11,
+      "phaseField": {
+        "kktResidual": 0.0,
+        "iterations": 1,
+        "fractureEnergyJ": 3.0211761032683827e-22,
+        "previousFractureEnergyJ": 1.1695399493113617e-22,
+        "incrementalEnergyBeforeJ": 1.4437528603659995e-13,
+        "incrementalEnergyAfterJ": 1.4437528585143638e-13,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 1.2829371001975734e-09
+      },
+      "bed": {
+        "time": 4.0,
+        "storedHeatJ": 431.0536610564383,
+        "receivedHeatJ": 431.1768551988918,
+        "bottomLossJ": 0.12319411024317277,
+        "energyErrorJ": 3.221038014089572e-08,
+        "maximumTemperature": 486.6746866848674
+      }
+    },
+    {
+      "time": 4.2,
+      "dt": 0.2,
+      "particles": 844,
+      "mass": 0.006560449453124999,
+      "volume": 2.42601312209417e-06,
+      "temperatureRange": [
+        1243.6425292433657,
+        1450.0000003383589
+      ],
+      "meanSolidFraction": 0.13431171896123917,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 2.7705405013081125e-07,
+      "maximumSpeed": 0.0003447429107423881,
+      "thermalBalanceRelative": 5.608407035708169e-13,
+      "stepHeatResidualJ": 5.5280224842135794e-12,
+      "mechanicalResidual": 6.527361243422975e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.3171956396729596e-06,
+      "fractureEnergyJ": 1.554587369982522e-17,
+      "seconds": 0.7696456909179688,
+      "materialVelocityFields": 6,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 99,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.776263578034403e-21,
+      "heatTransfer": {
+        "flipFraction": 0.9892271051372649,
+        "unlimitedMaximumOvershootJPerKg": 106.05754013243131,
+        "transferEnergyErrorJ": -2.9737420953967163e-15
+      },
+      "frictionContact": {
+        "iterations": 10,
+        "naturalResidual": 1.8320705104381334e-08,
+        "stationarity": 6.527361243422975e-13,
+        "slidingDissipationJ": 1.0227192784185244e-08,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 2,
+        "condensedNormalRows": 293,
+        "frictionRows": 8,
+        "candidateFrictionRows": 12,
+        "physicalRows": 169
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 3.5270224601201847e-14,
+      "damageCouplingVelocityResidual": 4.200407784806964e-12,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 7.905062754560988e-10,
+      "phaseField": {
+        "kktResidual": 1.0172214725256969e-23,
+        "iterations": 2,
+        "fractureEnergyJ": 1.5546224943731784e-17,
+        "previousFractureEnergyJ": 3.512439065658081e-22,
+        "incrementalEnergyBeforeJ": 5.669530489231497e-11,
+        "incrementalEnergyAfterJ": 5.669528934643302e-11,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 2.7705405013081125e-07
+      },
+      "bed": {
+        "time": 4.2,
+        "storedHeatJ": 450.9249108551277,
+        "receivedHeatJ": 451.0760220665106,
+        "bottomLossJ": 0.15111117900893153,
+        "energyErrorJ": 3.237397550037713e-08,
+        "maximumTemperature": 493.24726135263444
+      }
+    },
+    {
+      "time": 4.4,
+      "dt": 0.2,
+      "particles": 844,
+      "mass": 0.006560449453124999,
+      "volume": 2.4258898048269123e-06,
+      "temperatureRange": [
+        1237.4618947155045,
+        1450.0000003781063
+      ],
+      "meanSolidFraction": 0.14160302883943365,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 2.7553513054225066e-06,
+      "maximumSpeed": 0.00037124100456662303,
+      "thermalBalanceRelative": 5.615223353329344e-13,
+      "stepHeatResidualJ": 2.9345414986892138e-12,
+      "mechanicalResidual": 5.502982146320626e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.9171547733709665e-06,
+      "fractureEnergyJ": 2.693260749894311e-15,
+      "seconds": 0.20532608032226562,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 71,
+      "contactMomentumError": 8.470339812294349e-21,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.776263578034403e-21,
+      "heatTransfer": {
+        "flipFraction": 0.9891284296968897,
+        "unlimitedMaximumOvershootJPerKg": 111.8046407524962,
+        "transferEnergyErrorJ": 2.656718839063113e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 2.9379881076620184e-09,
+        "stationarity": 5.502982146320626e-13,
+        "slidingDissipationJ": 1.2671583574302987e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 285,
+        "frictionRows": 8,
+        "candidateFrictionRows": 16,
+        "physicalRows": 161
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 1.7198063994950188e-12,
+      "damageCouplingVelocityResidual": 2.1985101092241313e-08,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 1.626361494713735e-07,
+      "phaseField": {
+        "kktResidual": 2.935978007988893e-22,
+        "iterations": 2,
+        "fractureEnergyJ": 2.70880802786331e-15,
+        "previousFractureEnergyJ": 1.5547277968999198e-17,
+        "incrementalEnergyBeforeJ": 1.1119431519603829e-09,
+        "incrementalEnergyAfterJ": 1.1119405065271577e-09,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 2.7553513054225066e-06
+      },
+      "bed": {
+        "time": 4.4,
+        "storedHeatJ": 470.59806552009684,
+        "receivedHeatJ": 470.7815745833217,
+        "bottomLossJ": 0.1835090307019814,
+        "energyErrorJ": 3.2522848414373584e-08,
+        "maximumTemperature": 499.60289068064634
+      }
+    },
+    {
+      "time": 4.5,
+      "dt": 0.09999999999999964,
+      "particles": 844,
+      "mass": 0.006560449453124999,
+      "volume": 2.4258292178329994e-06,
+      "temperatureRange": [
+        1234.221736721491,
+        1450.0000004182375
+      ],
+      "meanSolidFraction": 0.14526663795806094,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 7.503970149101688e-06,
+      "maximumSpeed": 0.000184881094777818,
+      "thermalBalanceRelative": 5.613229516202957e-13,
+      "stepHeatResidualJ": 4.618527782440651e-14,
+      "mechanicalResidual": 8.389543721767273e-14,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.9302481254369166e-07,
+      "fractureEnergyJ": 1.6781605009333714e-14,
+      "seconds": 0.2122197151184082,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 55,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 6.776263578034403e-21,
+      "heatTransfer": {
+        "flipFraction": 0.994002899763228,
+        "unlimitedMaximumOvershootJPerKg": 64.28928336931858,
+        "transferEnergyErrorJ": 1.2544865633554278e-14
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 3.7857207511607914e-10,
+        "stationarity": 8.389543721767273e-14,
+        "slidingDissipationJ": 3.4175196483996712e-12,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 283,
+        "frictionRows": 8,
+        "candidateFrictionRows": 16,
+        "physicalRows": 159
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 1.371031951011482e-11,
+      "damageCouplingVelocityResidual": 2.1143520648248584e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 4.3096856107687626e-09,
+      "phaseField": {
+        "kktResidual": 3.7376642336579994e-15,
+        "iterations": 2,
+        "fractureEnergyJ": 1.9490413037197025e-14,
+        "previousFractureEnergyJ": 2.70880802786331e-15,
+        "incrementalEnergyBeforeJ": 2.7766928419991732e-09,
+        "incrementalEnergyAfterJ": 2.7766850656971756e-09,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 4.748618843679181e-06
+      },
+      "bed": {
+        "time": 4.5,
+        "storedHeatJ": 480.51971777970846,
+        "receivedHeatJ": 480.7205998342667,
+        "bottomLossJ": 0.2008820190482446,
+        "energyErrorJ": 3.5509970075509045e-08,
+        "maximumTemperature": 502.76447774457256
+      }
+    },
+    {
+      "time": 4.7,
+      "dt": 0.2,
+      "particles": 860,
+      "mass": 0.006564936884765625,
+      "volume": 2.4273638101001397e-06,
+      "temperatureRange": [
+        1228.216662798328,
+        1450.0000004381534
+      ],
+      "meanSolidFraction": 0.14962534649021783,
+      "solidParticles": 0,
+      "damagedParticles": 0,
+      "maximumDamage": 2.2260642399546546e-05,
+      "maximumSpeed": 0.00018748544493646247,
+      "thermalBalanceRelative": 5.619471203876889e-13,
+      "stepHeatResidualJ": 1.3500311979441904e-12,
+      "mechanicalResidual": 1.1021953935869821e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 3.52924651876746e-07,
+      "fractureEnergyJ": 1.5192372022598437e-13,
+      "seconds": 0.24265670776367188,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 55,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9892710594283454,
+        "unlimitedMaximumOvershootJPerKg": 116.94085244997405,
+        "transferEnergyErrorJ": 3.1254012270202306e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.448572759651974e-08,
+        "stationarity": 1.1021953935869821e-13,
+        "slidingDissipationJ": 4.903444783168914e-12,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 285,
+        "frictionRows": 8,
+        "candidateFrictionRows": 16,
+        "physicalRows": 161
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 1.3400900440396183e-10,
+      "damageCouplingVelocityResidual": 5.799484569094171e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 1.4995136196982255e-07,
+      "phaseField": {
+        "kktResidual": 1.6339258498091711e-21,
+        "iterations": 2,
+        "fractureEnergyJ": 1.714141332631814e-13,
+        "previousFractureEnergyJ": 1.9490413037197025e-14,
+        "incrementalEnergyBeforeJ": 8.182783641792051e-09,
+        "incrementalEnergyAfterJ": 8.182708275304264e-09,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 1.4756672250444858e-05
+      },
+      "bed": {
+        "time": 4.7,
+        "storedHeatJ": 499.9093494570162,
+        "receivedHeatJ": 500.15011962643575,
+        "bottomLossJ": 0.24077013377332165,
+        "energyErrorJ": 3.56462237505184e-08,
+        "maximumTemperature": 508.8065571308929
+      }
+    },
+    {
+      "time": 4.9,
+      "dt": 0.2,
+      "particles": 860,
+      "mass": 0.006564936884765625,
+      "volume": 2.4272413174755235e-06,
+      "temperatureRange": [
+        1222.3927100721673,
+        1450.0000004778133
+      ],
+      "meanSolidFraction": 0.1566225721926279,
+      "solidParticles": 2,
+      "damagedParticles": 0,
+      "maximumDamage": 4.4655239315917525e-05,
+      "maximumSpeed": 0.00025500339656348475,
+      "thermalBalanceRelative": 5.619774766430498e-13,
+      "stepHeatResidualJ": 7.602807272633072e-13,
+      "mechanicalResidual": 3.3054545862969093e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.659168793355096e-06,
+      "fractureEnergyJ": 5.194362712463187e-13,
+      "seconds": 0.2239842414855957,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 50,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9886657841321687,
+        "unlimitedMaximumOvershootJPerKg": 153.93521511403378,
+        "transferEnergyErrorJ": -2.3654182792717283e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 9.301294165345165e-11,
+        "stationarity": 3.3054545862969093e-13,
+        "slidingDissipationJ": 8.664561068069018e-09,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 273,
+        "frictionRows": 6,
+        "candidateFrictionRows": 18,
+        "physicalRows": 147
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 3.9169204711701723e-10,
+      "damageCouplingVelocityResidual": 7.374924706660005e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 8.406839562165314e-08,
+      "phaseField": {
+        "kktResidual": 6.5356591553758265e-21,
+        "iterations": 1,
+        "fractureEnergyJ": 6.908504046158189e-13,
+        "previousFractureEnergyJ": 1.7141413336950026e-13,
+        "incrementalEnergyBeforeJ": 1.6653962033802493e-08,
+        "incrementalEnergyAfterJ": 1.6653787871612986e-08,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 2.239459691637098e-05
+      },
+      "bed": {
+        "time": 4.9,
+        "storedHeatJ": 519.1230720045725,
+        "receivedHeatJ": 519.4093320934589,
+        "bottomLossJ": 0.28626005311052544,
+        "energyErrorJ": 3.577599727577763e-08,
+        "maximumTemperature": 514.6501428199007
+      }
+    },
+    {
+      "time": 5.0,
+      "dt": 0.09999999999999964,
+      "particles": 860,
+      "mass": 0.006564936884765625,
+      "volume": 2.4271830294789704e-06,
+      "temperatureRange": [
+        1219.5732638627808,
+        1450.0000006048956
+      ],
+      "meanSolidFraction": 0.16013532455188148,
+      "solidParticles": 2,
+      "damagedParticles": 0,
+      "maximumDamage": 6.690351244878313e-05,
+      "maximumSpeed": 0.00018501421465263077,
+      "thermalBalanceRelative": 7.507621901331908e-13,
+      "stepHeatResidualJ": 9.020411084748048e-10,
+      "mechanicalResidual": 8.061653569295505e-14,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 1.5521038098933424e-07,
+      "fractureEnergyJ": 8.744717309479672e-13,
+      "seconds": 0.23239731788635254,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 51,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9912849552215159,
+        "unlimitedMaximumOvershootJPerKg": 123.28578393277712,
+        "transferEnergyErrorJ": 1.253474083697751e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 3.94225699849837e-09,
+        "stationarity": 8.061653569295505e-14,
+        "slidingDissipationJ": 4.127232713184852e-11,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 271,
+        "frictionRows": 6,
+        "candidateFrictionRows": 18,
+        "physicalRows": 145
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 5.832026882501536e-10,
+      "damageCouplingVelocityResidual": 6.414276984570561e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 2.156996120738911e-07,
+      "phaseField": {
+        "kktResidual": 9.803429771196055e-21,
+        "iterations": 2,
+        "fractureEnergyJ": 1.5653221355637861e-12,
+        "previousFractureEnergyJ": 6.908504046158189e-13,
+        "incrementalEnergyBeforeJ": 2.5594175149549533e-08,
+        "incrementalEnergyAfterJ": 2.5593997179217997e-08,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 2.224827313286561e-05
+      },
+      "bed": {
+        "time": 5.0,
+        "storedHeatJ": 528.8231819628302,
+        "receivedHeatJ": 529.1336457498047,
+        "bottomLossJ": 0.3104637485066019,
+        "energyErrorJ": 3.846798790618777e-08,
+        "maximumTemperature": 517.5601109415632
+      }
+    },
+    {
+      "time": 5.2,
+      "dt": 0.2,
+      "particles": 876,
+      "mass": 0.00656942431640625,
+      "volume": 2.4287247565746286e-06,
+      "temperatureRange": [
+        1214.4413119453468,
+        1450.0000006706334
+      ],
+      "meanSolidFraction": 0.16398000818335484,
+      "solidParticles": 8,
+      "damagedParticles": 0,
+      "maximumDamage": 0.00012082631390201094,
+      "maximumSpeed": 0.00018753283713377695,
+      "thermalBalanceRelative": 7.509228470800547e-13,
+      "stepHeatResidualJ": 1.7763568394002505e-13,
+      "mechanicalResidual": 2.36588115586228e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.4818461453483225e-06,
+      "fractureEnergyJ": 3.642786333826765e-12,
+      "seconds": 0.2093486785888672,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 59,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3078188705606397e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9835744461003119,
+        "unlimitedMaximumOvershootJPerKg": 236.65550660178997,
+        "transferEnergyErrorJ": -4.100249328432837e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 3.0067383891351624e-11,
+        "stationarity": 2.36588115586228e-13,
+        "slidingDissipationJ": 7.265573955353068e-10,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 277,
+        "frictionRows": 4,
+        "candidateFrictionRows": 20,
+        "physicalRows": 149
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 2.545034359974674e-09,
+      "damageCouplingVelocityResidual": 3.7558984784948953e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 3.195451824256068e-07,
+      "phaseField": {
+        "kktResidual": 1.960658579357444e-20,
+        "iterations": 2,
+        "fractureEnergyJ": 5.211473445707857e-12,
+        "previousFractureEnergyJ": 1.5686871118810922e-12,
+        "incrementalEnergyBeforeJ": 4.909545353540679e-08,
+        "incrementalEnergyAfterJ": 4.909437609468766e-08,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 5.39228014532278e-05
+      },
+      "bed": {
+        "time": 5.2,
+        "storedHeatJ": 547.7686824731703,
+        "receivedHeatJ": 548.1338669070906,
+        "bottomLossJ": 0.36518439533161584,
+        "energyErrorJ": 3.858860964101041e-08,
+        "maximumTemperature": 523.1183126967155
+      }
+    },
+    {
+      "time": 5.4,
+      "dt": 0.2,
+      "particles": 876,
+      "mass": 0.00656942431640625,
+      "volume": 2.428604687870341e-06,
+      "temperatureRange": [
+        1209.572811101858,
+        1450.0000008039208
+      ],
+      "meanSolidFraction": 0.1706889887765028,
+      "solidParticles": 10,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0001905756122073663,
+      "maximumSpeed": 0.00018643040455603002,
+      "thermalBalanceRelative": 7.513432794086297e-13,
+      "stepHeatResidualJ": 2.5082158572331537e-12,
+      "mechanicalResidual": 2.612485421413535e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.8125494418281143e-06,
+      "fractureEnergyJ": 8.002906321741139e-12,
+      "seconds": 0.17819643020629883,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 56,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3078188705606397e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9831989739305221,
+        "unlimitedMaximumOvershootJPerKg": 251.48204182228073,
+        "transferEnergyErrorJ": -4.715392606816169e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 8.687167949724542e-11,
+        "stationarity": 2.612485421413535e-13,
+        "slidingDissipationJ": 3.6177592794135035e-09,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 281,
+        "frictionRows": 4,
+        "candidateFrictionRows": 22,
+        "physicalRows": 151
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 5.183502510059572e-09,
+      "damageCouplingVelocityResidual": 3.059770383837039e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 3.9899587249772606e-07,
+      "phaseField": {
+        "kktResidual": 1.9606237923284588e-20,
+        "iterations": 4,
+        "fractureEnergyJ": 1.3238450350999848e-11,
+        "previousFractureEnergyJ": 5.2355440292587095e-12,
+        "incrementalEnergyBeforeJ": 8.059698330622337e-08,
+        "incrementalEnergyAfterJ": 8.059509439853464e-08,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 6.974929830535536e-05
+      },
+      "bed": {
+        "time": 5.4,
+        "storedHeatJ": 566.5376514231026,
+        "receivedHeatJ": 566.9643589315642,
+        "bottomLossJ": 0.42670746975700574,
+        "energyErrorJ": 3.8704570215486456e-08,
+        "maximumTemperature": 528.4974823725903
+      }
+    },
+    {
+      "time": 5.5,
+      "dt": 0.09999999999999964,
+      "particles": 876,
+      "mass": 0.00656942431640625,
+      "volume": 2.428545983484913e-06,
+      "temperatureRange": [
+        1207.0049468452132,
+        1450.000000942508
+      ],
+      "meanSolidFraction": 0.1740619963926254,
+      "solidParticles": 12,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0002349002304953186,
+      "maximumSpeed": 0.0001850550328283548,
+      "thermalBalanceRelative": 7.516040302964686e-13,
+      "stepHeatResidualJ": 1.7053025658242404e-13,
+      "mechanicalResidual": 7.20001669445176e-14,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.2981392090339621e-07,
+      "fractureEnergyJ": 7.280054640734495e-12,
+      "seconds": 0.17772984504699707,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 42,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 125,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3078188705606397e-18,
+      "heatTransfer": {
+        "flipFraction": 0.990830055866255,
+        "unlimitedMaximumOvershootJPerKg": 142.38184472336434,
+        "transferEnergyErrorJ": 1.1404709523364339e-14
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.1482596457664518e-15,
+        "stationarity": 7.20001669445176e-14,
+        "slidingDissipationJ": 3.4366843750629525e-11,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 281,
+        "frictionRows": 4,
+        "candidateFrictionRows": 22,
+        "physicalRows": 151
+      },
+      "damageCouplingIterations": 2,
+      "damageCouplingResidual": 4.058384281277949e-09,
+      "damageCouplingVelocityResidual": 3.794664419404012e-12,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 9.937219439540767e-09,
+      "phaseField": {
+        "kktResidual": 2.6141355553421812e-20,
+        "iterations": 3,
+        "fractureEnergyJ": 2.0518504991734343e-11,
+        "previousFractureEnergyJ": 1.3238450350999848e-11,
+        "incrementalEnergyBeforeJ": 1.0398758957261984e-07,
+        "incrementalEnergyAfterJ": 1.0398675268326977e-07,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 4.4324618287952294e-05
+      },
+      "bed": {
+        "time": 5.5,
+        "storedHeatJ": 576.0207118303482,
+        "receivedHeatJ": 576.4799432757436,
+        "bottomLossJ": 0.4592314043114522,
+        "energyErrorJ": 4.108392204216216e-08,
+        "maximumTemperature": 531.1798150672615
+      }
+    },
+    {
+      "time": 5.7,
+      "dt": 0.2,
+      "particles": 892,
+      "mass": 0.006573911748046875,
+      "volume": 2.4300899321791294e-06,
+      "temperatureRange": [
+        1202.3708881119492,
+        1450.0000010125525
+      ],
+      "meanSolidFraction": 0.1774432698187921,
+      "solidParticles": 16,
+      "damagedParticles": 0,
+      "maximumDamage": 0.00027121865151035607,
+      "maximumSpeed": 0.0002395022237293835,
+      "thermalBalanceRelative": 7.514887108221119e-13,
+      "stepHeatResidualJ": 6.536993168992922e-13,
+      "mechanicalResidual": 4.951223540838574e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 7.942383817551614e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.17448091506958008,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 66,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 123,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.5246593050577406e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9826786158099011,
+        "unlimitedMaximumOvershootJPerKg": 273.4283317383379,
+        "transferEnergyErrorJ": 8.037542223308155e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 5.896257916709152e-10,
+        "stationarity": 4.951223540838574e-13,
+        "slidingDissipationJ": 3.288220081136935e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 293,
+        "frictionRows": 6,
+        "candidateFrictionRows": 28,
+        "physicalRows": 161
+      },
+      "damageCouplingIterations": 9,
+      "damageCouplingResidual": 1.3224609368743881e-11,
+      "damageCouplingVelocityResidual": 1.015132003753523e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 1,
+      "creepCouplingLogStressResidual": 3.0726088418725483e-07,
+      "phaseField": {
+        "kktResidual": 2.2623327822622038e-20,
+        "iterations": 2,
+        "fractureEnergyJ": 3.668965843668941e-11,
+        "previousFractureEnergyJ": 4.919922131938822e-11,
+        "incrementalEnergyBeforeJ": 1.5572085648340173e-07,
+        "incrementalEnergyAfterJ": 1.556981683799382e-07,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.00015033976933227528
+      },
+      "bed": {
+        "time": 5.7,
+        "storedHeatJ": 594.5318967653205,
+        "receivedHeatJ": 595.063729135259,
+        "bottomLossJ": 0.5318323287446584,
+        "energyErrorJ": 4.119374352740124e-08,
+        "maximumTemperature": 536.299411943414
+      }
+    },
+    {
+      "time": 5.9,
+      "dt": 0.2,
+      "particles": 892,
+      "mass": 0.006573911748046875,
+      "volume": 2.429970900664529e-06,
+      "temperatureRange": [
+        1197.952022359412,
+        1450.0000011557836
+      ],
+      "meanSolidFraction": 0.18389176378954694,
+      "solidParticles": 16,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0002923969482683176,
+      "maximumSpeed": 0.00018642199946005422,
+      "thermalBalanceRelative": 1.5265564088878051e-12,
+      "stepHeatResidualJ": 3.70353347989294e-09,
+      "mechanicalResidual": 2.054692366279971e-13,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 1.5551129620548091e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.17456960678100586,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 56,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 123,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.5246593050577406e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9823830607357701,
+        "unlimitedMaximumOvershootJPerKg": 287.85591497051064,
+        "transferEnergyErrorJ": -4.606448076173268e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 3.839419240728227e-10,
+        "stationarity": 2.054692366279971e-13,
+        "slidingDissipationJ": 2.8850710828194325e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 297,
+        "frictionRows": 4,
+        "candidateFrictionRows": 30,
+        "physicalRows": 163
+      },
+      "damageCouplingIterations": 3,
+      "damageCouplingResidual": 8.587027586931008e-12,
+      "damageCouplingVelocityResidual": 2.884578713809225e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 4.6569073529519056e-07,
+      "phaseField": {
+        "kktResidual": 2.71462838169301e-20,
+        "iterations": 3,
+        "fractureEnergyJ": 5.3189683253074025e-11,
+        "previousFractureEnergyJ": 7.995522494220496e-11,
+        "incrementalEnergyBeforeJ": 2.1701139141524387e-07,
+        "incrementalEnergyAfterJ": 2.1697442709152014e-07,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.00021518457503832638
+      },
+      "bed": {
+        "time": 5.9,
+        "storedHeatJ": 612.8603635841589,
+        "receivedHeatJ": 613.4728613975973,
+        "bottomLossJ": 0.612497772134378,
+        "energyErrorJ": 4.1304019759991206e-08,
+        "maximumTemperature": 541.2554416600553
+      }
+    },
+    {
+      "time": 6.0,
+      "dt": 0.09999999999999964,
+      "particles": 892,
+      "mass": 0.006573911748046875,
+      "volume": 2.429915106913385e-06,
+      "temperatureRange": [
+        1195.5958557744855,
+        1450.0000012933729
+      ],
+      "meanSolidFraction": 0.18713653525900406,
+      "solidParticles": 16,
+      "damagedParticles": 0,
+      "maximumDamage": 0.00030867143029813144,
+      "maximumSpeed": 0.0003833220276591611,
+      "thermalBalanceRelative": 1.543149191790203e-12,
+      "stepHeatResidualJ": 7.80211451001378e-11,
+      "mechanicalResidual": 2.9886700842381394e-13,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 1.0916596836626079e-05,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.16509389877319336,
+      "materialVelocityFields": 2,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 61,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 124,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.5246593050577406e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9904615010505906,
+        "unlimitedMaximumOvershootJPerKg": 161.2166638505878,
+        "transferEnergyErrorJ": 4.513931749542364e-16
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 3.082382151602616e-11,
+        "stationarity": 2.9886700842381394e-13,
+        "slidingDissipationJ": 2.7400003903766854e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 302,
+        "frictionRows": 4,
+        "candidateFrictionRows": 34,
+        "physicalRows": 168
+      },
+      "damageCouplingIterations": 3,
+      "damageCouplingResidual": 6.951509517755944e-12,
+      "damageCouplingVelocityResidual": 5.560306539347863e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 5.587106613469395e-08,
+      "phaseField": {
+        "kktResidual": 4.7788125087034374e-20,
+        "iterations": 3,
+        "fractureEnergyJ": 6.90406635562076e-11,
+        "previousFractureEnergyJ": 1.1118188375733522e-10,
+        "incrementalEnergyBeforeJ": 2.728133146935944e-07,
+        "incrementalEnergyAfterJ": 2.7276204361669257e-07,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.00019121071295067927
+      },
+      "bed": {
+        "time": 6.0,
+        "storedHeatJ": 622.1303597361708,
+        "receivedHeatJ": 622.7852708026801,
+        "bottomLossJ": 0.6549110230470561,
+        "energyErrorJ": 4.3462250687298365e-08,
+        "maximumTemperature": 543.7299246688071
+      }
+    },
+    {
+      "time": 6.2,
+      "dt": 0.2,
+      "particles": 908,
+      "mass": 0.0065783991796875,
+      "volume": 2.4314591184658292e-06,
+      "temperatureRange": [
+        1191.347807541861,
+        1450.000001358115
+      ],
+      "meanSolidFraction": 0.19009707577785473,
+      "solidParticles": 16,
+      "damagedParticles": 0,
+      "maximumDamage": 0.00038899725807245786,
+      "maximumSpeed": 0.00018763364649397458,
+      "thermalBalanceRelative": 1.5435684530566864e-12,
+      "stepHeatResidualJ": 3.218758592993254e-12,
+      "mechanicalResidual": 6.06399518409259e-14,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.2261848972565036e-07,
+      "fractureEnergyJ": 4.031187352034407e-11,
+      "seconds": 0.18805480003356934,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 36,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 146,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 8.74138001566438e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9819518877635602,
+        "unlimitedMaximumOvershootJPerKg": 309.67748506064527,
+        "transferEnergyErrorJ": 7.474484694917384e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 4.097253749771828e-10,
+        "stationarity": 6.06399518409259e-14,
+        "slidingDissipationJ": 3.907726428612653e-10,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 320,
+        "frictionRows": 8,
+        "candidateFrictionRows": 38,
+        "physicalRows": 190
+      },
+      "damageCouplingIterations": 3,
+      "damageCouplingResidual": 1.5324525448525556e-11,
+      "damageCouplingVelocityResidual": 1.6857094252298722e-09,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 7.922911253897477e-07,
+      "phaseField": {
+        "kktResidual": 5.943697828767879e-14,
+        "iterations": 3,
+        "fractureEnergyJ": 1.0935253707655166e-10,
+        "previousFractureEnergyJ": 6.90406635562076e-11,
+        "incrementalEnergyBeforeJ": 3.4436501059981136e-07,
+        "incrementalEnergyAfterJ": 3.4436030503963674e-07,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 8.032582777432642e-05
+      },
+      "bed": {
+        "time": 6.2,
+        "storedHeatJ": 640.2066506980965,
+        "receivedHeatJ": 640.9552319323694,
+        "bottomLossJ": 0.7485811907108824,
+        "energyErrorJ": 4.3562067730817944e-08,
+        "maximumTemperature": 548.4443352287198
+      }
+    },
+    {
+      "time": 6.4,
+      "dt": 0.2,
+      "particles": 908,
+      "mass": 0.0065783991796875,
+      "volume": 2.43134550604865e-06,
+      "temperatureRange": [
+        1187.201150870078,
+        1450.0000015050039
+      ],
+      "meanSolidFraction": 0.1963075244511816,
+      "solidParticles": 18,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0004935950741009268,
+      "maximumSpeed": 0.0003525358401448078,
+      "thermalBalanceRelative": 1.5442962585263482e-12,
+      "stepHeatResidualJ": 2.9629632081196178e-12,
+      "mechanicalResidual": 4.20145114893421e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 1.3759794915221065e-05,
+      "fractureEnergyJ": 3.86915885886153e-11,
+      "seconds": 0.24098753929138184,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 70,
+      "contactMomentumError": 7.608751328437384e-19,
+      "splitGridNodes": 145,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 8.74138001566438e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9817304945995243,
+        "unlimitedMaximumOvershootJPerKg": 323.69187543168664,
+        "transferEnergyErrorJ": -8.530062235983377e-16
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.1628613846954033e-09,
+        "stationarity": 4.20145114893421e-13,
+        "slidingDissipationJ": 5.688638386126071e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 339,
+        "frictionRows": 8,
+        "candidateFrictionRows": 46,
+        "physicalRows": 205
+      },
+      "damageCouplingIterations": 19,
+      "damageCouplingResidual": 1.0627579778666948e-10,
+      "damageCouplingVelocityResidual": 4.2175761874451834e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 5,
+      "creepCouplingLogStressResidual": 9.628788402993305e-07,
+      "phaseField": {
+        "kktResidual": 1.3737061899600934e-13,
+        "iterations": 2,
+        "fractureEnergyJ": 1.9839342023597962e-10,
+        "previousFractureEnergyJ": 1.5970183164736432e-10,
+        "incrementalEnergyBeforeJ": 5.306971349784475e-07,
+        "incrementalEnergyAfterJ": 5.306405465537693e-07,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.00023251521049208178
+      },
+      "bed": {
+        "time": 6.4,
+        "storedHeatJ": 658.1295696486659,
+        "receivedHeatJ": 658.9811915435737,
+        "bottomLossJ": 0.8516218467720373,
+        "energyErrorJ": 4.813580289919628e-08,
+        "maximumTemperature": 553.0095265945753
+      }
+    },
+    {
+      "time": 6.5,
+      "dt": 0.09999999999999964,
+      "particles": 908,
+      "mass": 0.0065783991796875,
+      "volume": 2.4312936428869853e-06,
+      "temperatureRange": [
+        1184.9630779106542,
+        1450.0000016477425
+      ],
+      "meanSolidFraction": 0.19943320940967443,
+      "solidParticles": 18,
+      "damagedParticles": 0,
+      "maximumDamage": 0.0007384391136814288,
+      "maximumSpeed": 0.0005439734838886355,
+      "thermalBalanceRelative": 1.5447870439494297e-12,
+      "stepHeatResidualJ": 1.4033219031261979e-12,
+      "mechanicalResidual": 5.824324029110945e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 4.640271917477501e-05,
+      "fractureEnergyJ": 6.231903127324724e-10,
+      "seconds": 0.23077750205993652,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 60,
+      "contactMomentumError": 2.4246329674007314e-19,
+      "splitGridNodes": 145,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 8.74138001566438e-19,
+      "heatTransfer": {
+        "flipFraction": 0.9901963315880691,
+        "unlimitedMaximumOvershootJPerKg": 179.16340507171117,
+        "transferEnergyErrorJ": 4.082690335436255e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 6.141643953132136e-10,
+        "stationarity": 5.824324029110945e-13,
+        "slidingDissipationJ": 1.3973875650424436e-06,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 343,
+        "frictionRows": 10,
+        "candidateFrictionRows": 52,
+        "physicalRows": 211
+      },
+      "damageCouplingIterations": 4,
+      "damageCouplingResidual": 2.668136843192101e-10,
+      "damageCouplingVelocityResidual": 3.6387929553661507e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 4.662176220082692e-07,
+      "phaseField": {
+        "kktResidual": 7.590466878410267e-13,
+        "iterations": 2,
+        "fractureEnergyJ": 9.54575652792216e-10,
+        "previousFractureEnergyJ": 3.3138534005974364e-10,
+        "incrementalEnergyBeforeJ": 1.478206499017892e-06,
+        "incrementalEnergyAfterJ": 1.47761242179446e-06,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0007384391136814288
+      },
+      "bed": {
+        "time": 6.5,
+        "storedHeatJ": 667.19748082099,
+        "receivedHeatJ": 668.103031819243,
+        "bottomLossJ": 0.9055509481371474,
+        "energyErrorJ": 5.0115886551793665e-08,
+        "maximumTemperature": 555.2919386470439
+      }
+    },
+    {
+      "time": 6.7,
+      "dt": 0.2,
+      "particles": 924,
+      "mass": 0.006582886611328125,
+      "volume": 2.4328419696834534e-06,
+      "temperatureRange": [
+        1180.8363777590516,
+        1450.000001715706
+      ],
+      "meanSolidFraction": 0.20200310377729944,
+      "solidParticles": 18,
+      "damagedParticles": 0,
+      "maximumDamage": 0.00117233833904425,
+      "maximumSpeed": 0.0003556211071920953,
+      "thermalBalanceRelative": 1.5454231985197356e-12,
+      "stepHeatResidualJ": 2.8848035071860068e-12,
+      "mechanicalResidual": 2.743391946192413e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 2.4308162173092533e-05,
+      "fractureEnergyJ": 4.5740158227501376e-10,
+      "seconds": 0.2763500213623047,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 66,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 191,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9814693214548066,
+        "unlimitedMaximumOvershootJPerKg": 343.6115248246351,
+        "transferEnergyErrorJ": -2.1807676378691326e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.8256871482535662e-09,
+        "stationarity": 2.743391946192413e-13,
+        "slidingDissipationJ": 2.4292186832814645e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 372,
+        "frictionRows": 10,
+        "candidateFrictionRows": 64,
+        "physicalRows": 236
+      },
+      "damageCouplingIterations": 19,
+      "damageCouplingResidual": 5.767392279899808e-10,
+      "damageCouplingVelocityResidual": 7.504680066543413e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 5,
+      "creepCouplingLogStressResidual": 6.110930542702064e-07,
+      "phaseField": {
+        "kktResidual": 5.74473328504991e-13,
+        "iterations": 6,
+        "fractureEnergyJ": 2.2172743692846273e-09,
+        "previousFractureEnergyJ": 1.7598727870096135e-09,
+        "incrementalEnergyBeforeJ": 2.2277909019465293e-06,
+        "incrementalEnergyAfterJ": 2.2262229649020806e-06,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0011667188046021934
+      },
+      "bed": {
+        "time": 6.7,
+        "storedHeatJ": 684.8547519736709,
+        "receivedHeatJ": 685.8783292174984,
+        "bottomLossJ": 1.0235771893567152,
+        "energyErrorJ": 5.447077455755789e-08,
+        "maximumTemperature": 559.6170876460651
+      }
+    },
+    {
+      "time": 6.8,
+      "dt": 0.1,
+      "particles": 924,
+      "mass": 0.006582886611328125,
+      "volume": 2.432789282934142e-06,
+      "temperatureRange": [
+        1178.4098317514133,
+        1450.0000018397755
+      ],
+      "meanSolidFraction": 0.2050362457764584,
+      "solidParticles": 18,
+      "damagedParticles": 0,
+      "maximumDamage": 0.007794152039003968,
+      "maximumSpeed": 0.000985258006829206,
+      "thermalBalanceRelative": 1.5454781293731572e-12,
+      "stepHeatResidualJ": 1.2789769243681803e-12,
+      "mechanicalResidual": 5.865542071138786e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 9.227385938051699e-05,
+      "fractureEnergyJ": 6.877836071311199e-08,
+      "seconds": 0.19307899475097656,
+      "materialVelocityFields": 6,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 89,
+      "contactMomentumError": 1.9848110380868613e-19,
+      "splitGridNodes": 195,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9901379957066843,
+        "unlimitedMaximumOvershootJPerKg": 188.52215016144328,
+        "transferEnergyErrorJ": 1.0809868354177271e-14
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 5.504777003786589e-09,
+        "stationarity": 5.865542071138786e-13,
+        "slidingDissipationJ": 2.8469015876281403e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 408,
+        "frictionRows": 8,
+        "candidateFrictionRows": 74,
+        "physicalRows": 260
+      },
+      "damageCouplingIterations": 32,
+      "damageCouplingResidual": 1.4152500334846385e-09,
+      "damageCouplingVelocityResidual": 5.205096931877605e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 10,
+      "creepCouplingLogStressResidual": 3.67316031590903e-07,
+      "phaseField": {
+        "kktResidual": 1.5485666553121845e-18,
+        "iterations": 2,
+        "fractureEnergyJ": 7.29759832741069e-08,
+        "previousFractureEnergyJ": 4.197622560994916e-09,
+        "incrementalEnergyBeforeJ": 1.2727047532052923e-05,
+        "incrementalEnergyAfterJ": 1.2671373478198225e-05,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0066274878497981525
+      },
+      "bed": {
+        "time": 6.8,
+        "storedHeatJ": 693.8019566210519,
+        "receivedHeatJ": 694.8871558190158,
+        "bottomLossJ": 1.0851991414434954,
+        "energyErrorJ": 5.6520434554840904e-08,
+        "maximumTemperature": 561.7826273418744
+      }
+    },
+    {
+      "time": 7.0,
+      "dt": 0.2,
+      "particles": 924,
+      "mass": 0.006582886611328125,
+      "volume": 2.4326778291229913e-06,
+      "temperatureRange": [
+        1174.115232327646,
+        1450.0000019851173
+      ],
+      "meanSolidFraction": 0.2109691014873439,
+      "solidParticles": 20,
+      "damagedParticles": 0,
+      "maximumDamage": 0.011772615243951252,
+      "maximumSpeed": 0.00032069447602461063,
+      "thermalBalanceRelative": 1.5459663415100442e-12,
+      "stepHeatResidualJ": 2.1032064978498966e-12,
+      "mechanicalResidual": 4.5267966557244854e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 3.6211881178940304e-05,
+      "fractureEnergyJ": 3.79721168031151e-08,
+      "seconds": 0.2583799362182617,
+      "materialVelocityFields": 6,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 87,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 192,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.0909784360635388e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9814942171103513,
+        "unlimitedMaximumOvershootJPerKg": 361.60428775381297,
+        "transferEnergyErrorJ": 5.792197640573302e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 2.6568891127952007e-09,
+        "stationarity": 4.5267966557244854e-13,
+        "slidingDissipationJ": 2.4063263951386206e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 409,
+        "frictionRows": 12,
+        "candidateFrictionRows": 78,
+        "physicalRows": 263
+      },
+      "damageCouplingIterations": 25,
+      "damageCouplingResidual": 4.3350761591565146e-09,
+      "damageCouplingVelocityResidual": 5.563821990084177e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 7,
+      "creepCouplingLogStressResidual": 9.452037342816411e-07,
+      "phaseField": {
+        "kktResidual": 4.852981296471469e-18,
+        "iterations": 3,
+        "fractureEnergyJ": 1.6141289187912162e-07,
+        "previousFractureEnergyJ": 1.2344077507600652e-07,
+        "incrementalEnergyBeforeJ": 1.8052516186861087e-05,
+        "incrementalEnergyAfterJ": 1.7967271135958892e-05,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.01042106251452424
+      },
+      "bed": {
+        "time": 7.0,
+        "storedHeatJ": 711.1474085527714,
+        "receivedHeatJ": 712.3668238148061,
+        "bottomLossJ": 1.2194152009919783,
+        "energyErrorJ": 6.104278327256907e-08,
+        "maximumTemperature": 565.8240602522719
+      }
+    },
+    {
+      "time": 7.2,
+      "dt": 0.2,
+      "particles": 940,
+      "mass": 0.00658737404296875,
+      "volume": 2.4342281542950578e-06,
+      "temperatureRange": [
+        1165.6886823453947,
+        1450.0000020958705
+      ],
+      "meanSolidFraction": 0.21312304679146113,
+      "solidParticles": 22,
+      "damagedParticles": 0,
+      "maximumDamage": 0.011772615243951252,
+      "maximumSpeed": 0.0004721378616734349,
+      "thermalBalanceRelative": 1.5463053747051142e-12,
+      "stepHeatResidualJ": 1.3997691894473974e-12,
+      "mechanicalResidual": 3.1471774460800375e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 8.968942200820581e-06,
+      "fractureEnergyJ": 0.0,
+      "seconds": 0.26333141326904297,
+      "materialVelocityFields": 4,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 78,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 191,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3145951341386741e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9812824694838829,
+        "unlimitedMaximumOvershootJPerKg": 377.0915208650986,
+        "transferEnergyErrorJ": -8.783555480174066e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.0531547802720499e-08,
+        "stationarity": 3.1471774460800375e-13,
+        "slidingDissipationJ": 1.1284466823415149e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 415,
+        "frictionRows": 8,
+        "candidateFrictionRows": 82,
+        "physicalRows": 263
+      },
+      "damageCouplingIterations": 18,
+      "damageCouplingResidual": 1.1088250630175711e-09,
+      "damageCouplingVelocityResidual": 6.942610824073316e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 5,
+      "creepCouplingLogStressResidual": 9.887031010846759e-07,
+      "phaseField": {
+        "kktResidual": 1.4941746060811427e-18,
+        "iterations": 4,
+        "fractureEnergyJ": 1.7967958786676473e-07,
+        "previousFractureEnergyJ": 2.45569430088394e-07,
+        "incrementalEnergyBeforeJ": 9.179584507558763e-06,
+        "incrementalEnergyAfterJ": 9.103929966398027e-06,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.007497783925052165
+      },
+      "bed": {
+        "time": 7.2,
+        "storedHeatJ": 728.2799678552643,
+        "receivedHeatJ": 729.6451094442357,
+        "bottomLossJ": 1.3651415233685733,
+        "energyErrorJ": 6.560276233358309e-08,
+        "maximumTemperature": 569.6776185327633
+      }
+    },
+    {
+      "time": 7.4,
+      "dt": 0.2,
+      "particles": 940,
+      "mass": 0.00658737404296875,
+      "volume": 2.4341154912891615e-06,
+      "temperatureRange": [
+        1156.012093390089,
+        1450.0000022837169
+      ],
+      "meanSolidFraction": 0.2187656158728113,
+      "solidParticles": 22,
+      "damagedParticles": 0,
+      "maximumDamage": 0.011772615243951252,
+      "maximumSpeed": 0.00018488682209714241,
+      "thermalBalanceRelative": 1.5462973975888306e-12,
+      "stepHeatResidualJ": 4.760636329592671e-13,
+      "mechanicalResidual": 1.353746202666752e-13,
+      "heatNewtonIterations": 8,
+      "viscousHeatJ": 4.884246012888802e-06,
+      "fractureEnergyJ": 3.0887156129275268e-09,
+      "seconds": 0.3017256259918213,
+      "materialVelocityFields": 3,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 87,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 191,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3145951341386741e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9813464788826171,
+        "unlimitedMaximumOvershootJPerKg": 387.5699585751863,
+        "transferEnergyErrorJ": -1.0255553052835112e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 9.820692009161604e-09,
+        "stationarity": 1.353746202666752e-13,
+        "slidingDissipationJ": 1.7457116147951306e-07,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 411,
+        "frictionRows": 12,
+        "candidateFrictionRows": 86,
+        "physicalRows": 265
+      },
+      "damageCouplingIterations": 12,
+      "damageCouplingResidual": 5.79717860521578e-10,
+      "damageCouplingVelocityResidual": 5.277152598491716e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 3,
+      "creepCouplingLogStressResidual": 9.374061684663815e-07,
+      "phaseField": {
+        "kktResidual": 1.8574653502589994e-18,
+        "iterations": 5,
+        "fractureEnergyJ": 2.045354231684211e-07,
+        "previousFractureEnergyJ": 2.0144670755549356e-07,
+        "incrementalEnergyBeforeJ": 1.0717622242795688e-05,
+        "incrementalEnergyAfterJ": 1.0685379976241073e-05,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.004627509968324151
+      },
+      "bed": {
+        "time": 7.4,
+        "storedHeatJ": 745.1952190246129,
+        "receivedHeatJ": 746.7181356425885,
+        "bottomLossJ": 1.5229165478520412,
+        "energyErrorJ": 7.012363312242087e-08,
+        "maximumTemperature": 573.2920558265286
+      }
+    },
+    {
+      "time": 7.5,
+      "dt": 0.09999999999999964,
+      "particles": 940,
+      "mass": 0.00658737404296875,
+      "volume": 2.43405899085299e-06,
+      "temperatureRange": [
+        1150.7348471374353,
+        1450.000002403672
+      ],
+      "meanSolidFraction": 0.22158953225931755,
+      "solidParticles": 26,
+      "damagedParticles": 0,
+      "maximumDamage": 0.01256394132602042,
+      "maximumSpeed": 0.00018385586363198398,
+      "thermalBalanceRelative": 1.8573203856439584e-12,
+      "stepHeatResidualJ": 1.4857768348974787e-09,
+      "mechanicalResidual": 9.88676320490207e-14,
+      "heatNewtonIterations": 7,
+      "viscousHeatJ": 8.55386549474558e-07,
+      "fractureEnergyJ": 4.759546461626569e-08,
+      "seconds": 0.23794078826904297,
+      "materialVelocityFields": 3,
+      "brokenConnectivityEdges": 0,
+      "contactImpulses": 82,
+      "contactMomentumError": 0.0,
+      "splitGridNodes": 191,
+      "fracturedSolidEdges": 0,
+      "meltReleasedEdges": 0,
+      "massBalanceErrorKg": 1.3145951341386741e-18,
+      "heatTransfer": {
+        "flipFraction": 0.9901805270054759,
+        "unlimitedMaximumOvershootJPerKg": 210.415186172002,
+        "transferEnergyErrorJ": -2.0004080653773272e-15
+      },
+      "frictionContact": {
+        "iterations": 5,
+        "naturalResidual": 1.9002164729145284e-08,
+        "stationarity": 9.88676320490207e-14,
+        "slidingDissipationJ": 1.3708788947623092e-08,
+        "maximumConeViolation": 0.0,
+        "acceptedAccelerationSteps": 0,
+        "pressureActiveIterations": 1,
+        "condensedNormalRows": 405,
+        "frictionRows": 12,
+        "candidateFrictionRows": 86,
+        "physicalRows": 259
+      },
+      "damageCouplingIterations": 5,
+      "damageCouplingResidual": 2.2021760109902644e-10,
+      "damageCouplingVelocityResidual": 9.958718205683296e-10,
+      "damageAcceleration": "anderson",
+      "accelerationRestarts": 0,
+      "creepCouplingLogStressResidual": 4.841270858785274e-07,
+      "phaseField": {
+        "kktResidual": 2.3521880276570537e-18,
+        "iterations": 5,
+        "fractureEnergyJ": 2.521308877846868e-07,
+        "previousFractureEnergyJ": 2.045354231684211e-07,
+        "incrementalEnergyBeforeJ": 1.3390348065676225e-05,
+        "incrementalEnergyAfterJ": 1.3378122689558111e-05,
+        "lengthM": 0.003,
+        "model": "reference finite-volume AT2",
+        "maximumDamageIncrement": 0.0038592016098036672
+      },
+      "bed": {
+        "time": 7.5,
+        "storedHeatJ": 753.7801514859906,
+        "receivedHeatJ": 755.3850350930005,
+        "bottomLossJ": 1.604883534728108,
+        "energyErrorJ": 7.228186404972803e-08,
+        "maximumTemperature": 575.11232956342
+      }
+    }
+  ],
+  "sourceHashes": {
+    "lava_mpm.py": "a36bdc6d59c734e6133f0856c1c3e6e678b4343eb3a65ba0f8e4ef977aeddc38",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "19d168a6bf1d4c46bc4831d63a68f73645e14de33c85915eeaa7d172f03f2ee5",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "6c02705565ec9e71476e7221ca44a2fdd40e44c39cd4f3cd9128dd543bd06e0a",
+    "lava_mpm_linear27.py": "75db2a18102f05446c4edbe2a75d95b49ed279d195bc2701997210471fbba27a",
+    "lava_mpm_cuda_contact27.py": "a1bf79691b8b1015e8dd886929a85f399c2cfe1eca944404dd9ff5f9f421a52f",
+    "lava_mpm_active_contact33.py": "156370ad217d3e0de2f6427d9db66688c0b74657b07878ba0fc6d7fd11f3915d",
+    "lava_mpm_inlet.py": "7517d6aba31e57e908097cecf230a3f346fc309231d411c9bb980de7ad288fb5"
+  },
+  "pressureSolver": {
+    "lineSearch": "exact",
+    "newtonSystem": "primal"
+  },
+  "linearBackend": {
+    "cpuFactors": 904,
+    "gpuFactors": 0,
+    "cpuTriangularSolves": 0,
+    "factorSeconds": 0.0,
+    "solveSeconds": 0.0,
+    "maximumDofs": 0,
+    "maximumAllocatedBytes": 0,
+    "fallbacks": [],
+    "backend": "cpu",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "Unilateral pressure factorization and CPU substitutions only. Friction routing is recorded separately in frictionBackend; these counters exclude its factors."
+  },
+  "frictionBackend": {
+    "gpuFactors": 0,
+    "seconds": 0.0,
+    "maximumDofs": 0,
+    "maximumDirections": 0,
+    "maximumTorchBytes": 0,
+    "fallbacks": [],
+    "backend": "cpu",
+    "precision": "float64",
+    "scope": "CUDA dense contact factorization and batched response; Coulomb iteration, residual acceptance and all physics remain unchanged on CPU. Torch bytes exclude driver/context and other applications."
+  },
+  "transfer": "apic",
+  "transfer_filter_seconds": 0.001,
+  "driver_state": {
+    "config": {
+      "plane": -0.012,
+      "half_width": 0.003,
+      "height": 0.006,
+      "peak_speed": 0.0004,
+      "temperature": 1450.0,
+      "pipe_end": -0.006,
+      "wall_temperature": 1450.0
+    },
+    "nextFrame": 8.0,
+    "nextEmission": 7.5,
+    "period": 0.5,
+    "bedKind": "finite",
+    "bed": {
+      "origin": [
+        -0.018,
+        -0.015,
+        -0.012
+      ],
+      "shape": [
+        24,
+        12,
+        4
+      ],
+      "dx": 0.003,
+      "temperature": [
+        [
+          [
+            293.1510009567343,
+            293.1558179959894,
+            293.1711477189398,
+            293.1986582311575
+          ],
+          [
+            293.1524996410372,
+            293.16483398621097,
+            293.20545830033177,
+            293.28152052314437
+          ],
+          [
+            293.1553824389638,
+            293.18222935294835,
+            293.27191935933547,
+            293.4427322147255
+          ],
+          [
+            293.15860611173883,
+            293.20166235699173,
+            293.34604286740625,
+            293.6221799989847
+          ],
+          [
+            293.16071105592016,
+            293.2143411720685,
+            293.3943519586573,
+            293.7390308637568
+          ],
+          [
+            293.16071096523524,
+            293.21434069481785,
+            293.3943504308508,
+            293.7390277491446
+          ],
+          [
+            293.15860526846393,
+            293.20165783950944,
+            293.34602807924824,
+            293.62214923168085
+          ],
+          [
+            293.15537629355714,
+            293.1821957417325,
+            293.2718064251971,
+            293.44249154917213
+          ],
+          [
+            293.1524614068807,
+            293.16462030645465,
+            293.20472042040734,
+            293.2799072687104
+          ],
+          [
+            293.1508040933092,
+            293.1546932183421,
+            293.1671515677755,
+            293.18967703260995
+          ],
+          [
+            293.15019781284514,
+            293.1511298697815,
+            293.1540128561089,
+            293.15901610929495
+          ],
+          [
+            293.15004439836196,
+            293.1502474113476,
+            293.1508513323587,
+            293.15185543044277
+          ]
+        ],
+        [
+          [
+            293.1549608007652,
+            293.1799152081613,
+            293.264315091713,
+            293.42765729649454
+          ],
+          [
+            293.162574352889,
+            293.22784765449586,
+            293.4589687149231,
+            293.9357613963512
+          ],
+          [
+            293.1770198429009,
+            293.31913581841894,
+            293.8317991025774,
+            294.9165891788209
+          ],
+          [
+            293.19275421817684,
+            293.4184228500655,
+            294.2364551962424,
+            295.9790318028261
+          ],
+          [
+            293.20277402565785,
+            293.48159711498585,
+            294.49376184926797,
+            296.65497715136394
+          ],
+          [
+            293.2027736207876,
+            293.48159494230504,
+            294.4937547358423,
+            296.65496241703073
+          ],
+          [
+            293.1927503756353,
+            293.4184018057578,
+            294.2363844504693,
+            295.9788813854988
+          ],
+          [
+            293.17699118506476,
+            293.31897508587883,
+            293.831241802826,
+            294.9153674178621
+          ],
+          [
+            293.16239189245545,
+            293.2267982990369,
+            293.45520926744285,
+            293.9272452318626
+          ],
+          [
+            293.1540002090811,
+            293.17424396051405,
+            293.2432747104758,
+            293.37823301796476
+          ],
+          [
+            293.1509649262253,
+            293.155695049499,
+            293.17112092084767,
+            293.1995979027289
+          ],
+          [
+            293.150211227986,
+            293.1512108746224,
+            293.15432077531415,
+            293.15975232456486
+          ]
+        ],
+        [
+          [
+            293.1723595955668,
+            293.2900173683422,
+            293.71515043992457,
+            294.6188776568057
+          ],
+          [
+            293.2073594576637,
+            293.5215950880173,
+            294.7319432655564,
+            297.5903906328559
+          ],
+          [
+            293.2724548681793,
+            293.95447773781655,
+            296.64995440936565,
+            303.28643067934865
+          ],
+          [
+            293.3407915329812,
+            294.4080046826622,
+            298.6553237455132,
+            309.24109918213287
+          ],
+          [
+            293.3827461091268,
+            294.6862755687113,
+            299.8870433731739,
+            312.9205925425063
+          ],
+          [
+            293.38274444383507,
+            294.6862664860777,
+            299.8870131395488,
+            312.92052972945555
+          ],
+          [
+            293.3407754416508,
+            294.4079148283086,
+            298.6550148184594,
+            309.2404332808388
+          ],
+          [
+            293.27233240416575,
+            293.95377476234864,
+            296.64744479882756,
+            303.28078521957764
+          ],
+          [
+            293.2065638613854,
+            293.5168924254838,
+            294.7144718085353,
+            297.54931112383986
+          ],
+          [
+            293.168088699588,
+            293.26397030654385,
+            293.6140697792114,
+            294.3691390545589
+          ],
+          [
+            293.15428912013726,
+            293.1761494831306,
+            293.25143886511904,
+            293.40054289813673
+          ],
+          [
+            293.1509186894378,
+            293.1554108031412,
+            293.1700133041318,
+            293.19687342087894
+          ]
+        ],
+        [
+          [
+            293.2253484976504,
+            293.640538171874,
+            295.25635699761676,
+            299.17487954765414
+          ],
+          [
+            293.3444509847347,
+            294.4730738890885,
+            299.293831543858,
+            313.63936048386114
+          ],
+          [
+            293.5587711857714,
+            295.98086362084285,
+            306.7176884933057,
+            341.30057199653453
+          ],
+          [
+            293.7705837182534,
+            297.46553987595604,
+            314.01454844485204,
+            368.7642727706659
+          ],
+          [
+            293.89243743235215,
+            298.318724962958,
+            318.22859270124866,
+            385.0822326583604
+          ],
+          [
+            293.89243223096594,
+            298.31869624618247,
+            318.22849653394053,
+            385.08204175297635
+          ],
+          [
+            293.7705326638846,
+            297.46525010282284,
+            314.01353687015734,
+            368.762131537513
+          ],
+          [
+            293.55837582350637,
+            295.97854576241826,
+            306.70919734778784,
+            341.28120557987916
+          ],
+          [
+            293.34183885087936,
+            294.45722429548135,
+            299.23278931549123,
+            313.49017001523316
+          ],
+          [
+            293.21110403836946,
+            293.5508188694421,
+            294.8912474518909,
+            298.2164018665103
+          ],
+          [
+            293.16430273428614,
+            293.2400550223851,
+            293.5163333464755,
+            294.11144963272517
+          ],
+          [
+            293.15301042871613,
+            293.16819546642347,
+            293.2197525719504,
+            293.32003186596745
+          ]
+        ],
+        [
+          [
+            293.32235339522055,
+            294.3024988642159,
+            298.32410907753024,
+            309.15993541618303
+          ],
+          [
+            293.58961228116345,
+            296.2340419398273,
+            308.2687341158299,
+            349.16916617338495
+          ],
+          [
+            294.0436351633667,
+            299.5154992591612,
+            325.23125335697796,
+            418.5816537072101
+          ],
+          [
+            294.44674033937366,
+            302.3734788502372,
+            339.5539660764683,
+            474.4046276213182
+          ],
+          [
+            294.6488845364853,
+            303.7736385473039,
+            346.30859382684304,
+            499.1993652870094
+          ],
+          [
+            294.64887305232514,
+            303.7735747348906,
+            346.30838096306536,
+            499.19897385983916
+          ],
+          [
+            294.44662647549455,
+            302.3728260908345,
+            339.5516765777759,
+            474.4000136829414
+          ],
+          [
+            294.04274414709135,
+            299.5102004535372,
+            325.21153731412863,
+            418.5370469838932
+          ],
+          [
+            293.5836738017675,
+            296.1973368777607,
+            308.12370848346774,
+            348.80526495330787
+          ],
+          [
+            293.28978114747116,
+            294.0926221130957,
+            297.4399520424986,
+            306.72550605322965
+          ],
+          [
+            293.1827037819365,
+            293.36065276298496,
+            294.0371333624411,
+            295.59278894839923
+          ],
+          [
+            293.1568389486371,
+            293.19210538183796,
+            293.31567471983647,
+            293.56643265453494
+          ]
+        ],
+        [
+          [
+            293.40710490239394,
+            294.8825483330988,
+            301.0285266895361,
+            318.1106886750583
+          ],
+          [
+            293.796969786169,
+            297.7211579608543,
+            315.8343140663057,
+            379.1629759735575
+          ],
+          [
+            294.43290639218134,
+            302.3223467354186,
+            339.64316330406905,
+            476.59220555754047
+          ],
+          [
+            294.956418520103,
+            305.9921733841904,
+            357.6221219398339,
+            543.319705427264
+          ],
+          [
+            295.19112056643337,
+            307.5643734468888,
+            364.70474919546393,
+            565.5145231096251
+          ],
+          [
+            295.19110345200704,
+            307.5642781897342,
+            364.70443254988777,
+            565.513962200503
+          ],
+          [
+            294.95624832650776,
+            305.9911947964,
+            357.6186908098185,
+            543.3129707059678
+          ],
+          [
+            294.4315711981161,
+            302.31437037277396,
+            339.61337153149736,
+            476.52551557696563
+          ],
+          [
+            293.7880615924193,
+            297.66576688646546,
+            315.6137235116505,
+            378.60573718613796
+          ],
+          [
+            293.3583098198738,
+            294.56591377502184,
+            299.68045413131483,
+            314.34451524868587
+          ],
+          [
+            293.1989932519906,
+            293.4678172556516,
+            294.5027331578434,
+            296.9303219937028
+          ],
+          [
+            293.16026025960105,
+            293.2135556879608,
+            293.4021919202861,
+            293.79012208920955
+          ]
+        ],
+        [
+          [
+            293.41811738008744,
+            294.94991435489413,
+            301.2838079764333,
+            318.6658947083897
+          ],
+          [
+            293.8284661262251,
+            297.91900017434205,
+            316.6008793992635,
+            380.6324742940171
+          ],
+          [
+            294.50895882269987,
+            302.81242558720294,
+            341.6289201950702,
+            480.7038395581414
+          ],
+          [
+            295.0815254619345,
+            306.80597023816836,
+            361.0000680684444,
+            551.0407885044532
+          ],
+          [
+            295.34215049582184,
+            308.5445593750165,
+            368.7756129515306,
+            575.11232956342
+          ],
+          [
+            295.3421327573817,
+            308.54446074479114,
+            368.77528559918267,
+            575.1117512461625
+          ],
+          [
+            295.0813489483589,
+            306.8049565065107,
+            360.9965193443221,
+            551.0338317787134
+          ],
+          [
+            294.5075729613623,
+            302.80415933867897,
+            341.59811128970864,
+            480.63500829870475
+          ],
+          [
+            293.81921055971014,
+            297.86157085552577,
+            316.3728782933886,
+            380.0586276689277
+          ],
+          [
+            293.36734159971155,
+            294.62138481494753,
+            299.89135662569464,
+            314.79902197811145
+          ],
+          [
+            293.2009811967253,
+            293.4797536107458,
+            294.54726274514024,
+            297.0314203727545
+          ],
+          [
+            293.16065876139254,
+            293.215888690709,
+            293.4106635541669,
+            293.80923817995824
+          ]
+        ],
+        [
+          [
+            293.3612113695588,
+            294.55388648763284,
+            299.3877543923769,
+            312.11856719789455
+          ],
+          [
+            293.7059495113526,
+            297.0218237015576,
+            311.87757027374613,
+            360.8677143094746
+          ],
+          [
+            294.33111177111493,
+            301.515474822422,
+            334.84657765800546,
+            452.69188280045665
+          ],
+          [
+            294.9250410258517,
+            305.7087013196945,
+            355.6372207105683,
+            531.4319334433062
+          ],
+          [
+            295.23048752848825,
+            307.7970716585993,
+            365.40274932206614,
+            564.3786098021413
+          ],
+          [
+            295.2304741547595,
+            307.79699755758486,
+            365.4025040802284,
+            564.3781748373859
+          ],
+          [
+            294.9249075998957,
+            305.7079382324254,
+            355.6345581278642,
+            531.4266760982084
+          ],
+          [
+            294.33005957484755,
+            301.50923342429394,
+            334.82344836364473,
+            452.6399395420943
+          ],
+          [
+            293.6988702610088,
+            296.97821811677386,
+            311.7061843749104,
+            360.44053208372327
+          ],
+          [
+            293.3218866501022,
+            294.3017080789119,
+            298.33350692721893,
+            309.24659699183417
+          ],
+          [
+            293.1894785721162,
+            293.4030836310186,
+            294.2077029749258,
+            296.0316079946818
+          ],
+          [
+            293.1581422889303,
+            293.1999641997018,
+            293.345605836,
+            293.6385768225037
+          ]
+        ],
+        [
+          [
+            293.2786171767164,
+            293.9909894283025,
+            296.7825715857051,
+            303.62202434794665
+          ],
+          [
+            293.511944789232,
+            295.63410659085446,
+            304.845144770875,
+            333.17046624028495
+          ],
+          [
+            293.9953195679798,
+            299.1058856980287,
+            322.55491574481124,
+            403.6776680061331
+          ],
+          [
+            294.5402391136644,
+            303.0179979137992,
+            342.5157822349632,
+            483.25528047509806
+          ],
+          [
+            294.86918949877196,
+            305.34339821996633,
+            354.04635515438713,
+            526.6132559891687
+          ],
+          [
+            294.86918197833745,
+            305.34335681240185,
+            354.0462186707627,
+            526.6130106222752
+          ],
+          [
+            294.5401637414603,
+            303.01757017864145,
+            342.5142986829887,
+            483.25230144668296
+          ],
+          [
+            293.9947203066989,
+            299.10236712500944,
+            322.54202264393183,
+            403.64858132920494
+          ],
+          [
+            293.50785682479864,
+            295.6092495481309,
+            304.74919420098786,
+            332.93571092103906
+          ],
+          [
+            293.2553847542724,
+            293.8442577315687,
+            296.1834913759254,
+            302.043965282262
+          ],
+          [
+            293.17331819356383,
+            293.29722640413723,
+            293.7508872884953,
+            294.73249882214134
+          ],
+          [
+            293.15469152731777,
+            293.17841893238193,
+            293.2592164551267,
+            293.4168161979078
+          ]
+        ],
+        [
+          [
+            293.2100338961772,
+            293.53407728197544,
+            294.75086370979676,
+            297.4998963671305
+          ],
+          [
+            293.3313909963092,
+            294.3675553111257,
+            298.6536544834738,
+            310.4677278313608
+          ],
+          [
+            293.6182603196238,
+            296.40485233192237,
+            308.8198382948205,
+            349.1446048078779
+          ],
+          [
+            294.0022142556938,
+            299.1829848990343,
+            323.1703409528482,
+            407.5359353960986
+          ],
+          [
+            294.27177393377457,
+            301.13788818651625,
+            333.3078687601086,
+            448.9895295186861
+          ],
+          [
+            294.27177071518986,
+            301.13787060100776,
+            333.3078108650632,
+            448.9894210397385
+          ],
+          [
+            294.00218187034943,
+            299.1828030563729,
+            323.16971506035736,
+            407.53464020756746
+          ],
+          [
+            293.61800060789017,
+            296.4033487521679,
+            308.8144182327869,
+            349.13239750471126
+          ],
+          [
+            293.32959172707103,
+            294.3568008728575,
+            298.613113030988,
+            310.3709998840233
+          ],
+          [
+            293.1995453826707,
+            293.46914023688163,
+            294.49353554285847,
+            296.8483419094371
+          ],
+          [
+            293.1605249738809,
+            293.2151432245646,
+            293.40805451327054,
+            293.8031972278288
+          ],
+          [
+            293.1520601748044,
+            293.1622686549507,
+            293.19604024941685,
+            293.2594592794409
+          ]
+        ],
+        [
+          [
+            293.17106277941707,
+            293.2811274317127,
+            293.67402516998857,
+            294.49216234152016
+          ],
+          [
+            293.2171813434282,
+            293.5869971436691,
+            295.0193963697382,
+            298.43566750436145
+          ],
+          [
+            293.3376103028327,
+            294.4179645066049,
+            298.9453492879785,
+            311.733615809231
+          ],
+          [
+            293.5228173940016,
+            295.7410597946522,
+            305.6151913492696,
+            337.5877762451634
+          ],
+          [
+            293.6689740234887,
+            296.8026036894078,
+            311.1311751446715,
+            360.257726521117
+          ],
+          [
+            293.66897295895507,
+            296.8025979250452,
+            311.1311561362918,
+            360.2576880814083
+          ],
+          [
+            293.52280668122415,
+            295.7410004491854,
+            305.61498936752855,
+            337.5873468671399
+          ],
+          [
+            293.33752399921156,
+            294.4174734718382,
+            298.94361642261913,
+            311.7297605315384
+          ],
+          [
+            293.21657710126874,
+            293.58345920302474,
+            295.0064256233799,
+            298.4056115639696
+          ],
+          [
+            293.16747459961385,
+            293.25944005097085,
+            293.59099976792436,
+            294.29048456686337
+          ],
+          [
+            293.1536001601206,
+            293.17175387870054,
+            293.23325331493396,
+            293.3521743886737
+          ],
+          [
+            293.1506908062051,
+            293.1540309460334,
+            293.16471509315085,
+            293.1839648621675
+          ]
+        ],
+        [
+          [
+            293.1556378793445,
+            293.18408904891186,
+            293.28059585425177,
+            293.4675997457072
+          ],
+          [
+            293.1685445189511,
+            293.2664852612869,
+            293.6214656943972,
+            294.3764628606497
+          ],
+          [
+            293.20415212890794,
+            293.50211078952776,
+            294.6543663454044,
+            297.38939095381295
+          ],
+          [
+            293.2633700417944,
+            293.9084192931313,
+            296.5521044172517,
+            303.64338126335036
+          ],
+          [
+            293.3132527575424,
+            294.25763070945544,
+            298.24256247808523,
+            309.62150781686125
+          ],
+          [
+            293.31325247889396,
+            294.25762921764834,
+            298.2425575759219,
+            309.6214972669882
+          ],
+          [
+            293.2633672484288,
+            293.90840406433597,
+            296.5520534706353,
+            303.6432729907046
+          ],
+          [
+            293.2041296342127,
+            293.5019852344207,
+            294.65393378185564,
+            297.38844835036485
+          ],
+          [
+            293.1683864388034,
+            293.26557991361534,
+            293.6182416593713,
+            294.3692080533121
+          ],
+          [
+            293.15469066386663,
+            293.17850861040245,
+            293.2599696598475,
+            293.4193963285774
+          ],
+          [
+            293.150950327651,
+            293.15559740452005,
+            293.17068295859934,
+            293.1983240423079
+          ],
+          [
+            293.15018062434143,
+            293.1510312274135,
+            293.1536580887592,
+            293.1582023745808
+          ]
+        ],
+        [
+          [
+            293.1511947667262,
+            293.1570224292575,
+            293.17587913847296,
+            293.2103062872782
+          ],
+          [
+            293.15398549145345,
+            293.17420863033027,
+            293.2433119296463,
+            293.3784104911418
+          ],
+          [
+            293.16189765837817,
+            293.2244437867643,
+            293.44950336401365,
+            293.92277219252054
+          ],
+          [
+            293.17558029939914,
+            293.3140688203768,
+            293.83572718525505,
+            295.0162227718066
+          ],
+          [
+            293.18749385840556,
+            293.3934879154563,
+            294.18748763987253,
+            296.0523126171168
+          ],
+          [
+            293.1874937990314,
+            293.3934876024616,
+            294.1874866313159,
+            296.0523105177095
+          ],
+          [
+            293.1755797075861,
+            293.31406564931905,
+            293.8357167973189,
+            295.0162011076873
+          ],
+          [
+            293.16189291366317,
+            293.22441781646296,
+            293.4494160481602,
+            293.92258607018806
+          ],
+          [
+            293.1539522123321,
+            293.17402219122226,
+            293.24266650780595,
+            293.3769970899164
+          ],
+          [
+            293.1509950735939,
+            293.1558751205508,
+            293.1717768694368,
+            293.20103889563376
+          ],
+          [
+            293.1502003508409,
+            293.15115083304164,
+            293.1541138000392,
+            293.15929138837635
+          ],
+          [
+            293.15003803222095,
+            293.15021245999657,
+            293.1507329333924,
+            293.15160003536283
+          ]
+        ],
+        [
+          [
+            293.15020810512095,
+            293.15119129393196,
+            293.1542401275937,
+            293.1595377394964
+          ],
+          [
+            293.1506967612463,
+            293.15410457124176,
+            293.1651698681364,
+            293.18544969035526
+          ],
+          [
+            293.1520991220651,
+            293.16268455952314,
+            293.19853911471387,
+            293.2678295001798
+          ],
+          [
+            293.15457044059923,
+            293.17820650180215,
+            293.26123275868605,
+            293.42987170086946
+          ],
+          [
+            293.1567600351587,
+            293.19216361520307,
+            293.3188136679618,
+            293.58258278464336
+          ],
+          [
+            293.1567600245553,
+            293.1921635602212,
+            293.3188134945848,
+            293.5825824329587
+          ],
+          [
+            293.15457033568737,
+            293.17820594936774,
+            293.26123098723855,
+            293.4298680761387
+          ],
+          [
+            293.15209828720134,
+            293.16268007648506,
+            293.19852439430184,
+            293.26779877365163
+          ],
+          [
+            293.15069094009647,
+            293.1540726443931,
+            293.1650622519383,
+            293.1852197511408
+          ],
+          [
+            293.15017330505117,
+            293.1509960521303,
+            293.15356301235045,
+            293.1580524639863
+          ],
+          [
+            293.1500349163153,
+            293.15019585481775,
+            293.1506790797648,
+            293.1514892883391
+          ],
+          [
+            293.1500066572424,
+            293.150036417164,
+            293.15012236247554,
+            293.15026072459887
+          ]
+        ],
+        [
+          [
+            293.15003073852523,
+            293.1501717279206,
+            293.150592470032,
+            293.1512934793524
+          ],
+          [
+            293.15010264937723,
+            293.1505881898517,
+            293.1520960770078,
+            293.1547201625193
+          ],
+          [
+            293.1503097955321,
+            293.15181490756424,
+            293.15665862400806,
+            293.16544252655547
+          ],
+          [
+            293.15067782762287,
+            293.1540435387667,
+            293.16520381011037,
+            293.1862012612995
+          ],
+          [
+            293.1510069348708,
+            293.15606167500414,
+            293.1730749630038,
+            293.2056804403375
+          ],
+          [
+            293.15100693324365,
+            293.15606166670267,
+            293.1730749373626,
+            293.2056803893888
+          ],
+          [
+            293.150677811665,
+            293.1540434561524,
+            293.1652035506243,
+            293.18620073974836
+          ],
+          [
+            293.1503096697538,
+            293.1518142444753,
+            293.15665649516694,
+            293.1654381688142
+          ],
+          [
+            293.15010177987966,
+            293.1505835160926,
+            293.15208071104666,
+            293.1546880527276
+          ],
+          [
+            293.15002557722676,
+            293.1501434078899,
+            293.150496960259,
+            293.1510893095666
+          ],
+          [
+            293.1500051788913,
+            293.1500284114786,
+            293.15009579732293,
+            293.15020474743665
+          ],
+          [
+            293.15000099542345,
+            293.1500053377649,
+            293.1500174980253,
+            293.15003647450936
+          ]
+        ],
+        [
+          [
+            293.1500039468436,
+            293.15002156008603,
+            293.1500723183284,
+            293.150153859702
+          ],
+          [
+            293.15001309521256,
+            293.15007317724394,
+            293.150252542154,
+            293.15055149495305
+          ],
+          [
+            293.15003941816207,
+            293.1502246263477,
+            293.15079485653393,
+            293.1517777999547
+          ],
+          [
+            293.1500862840305,
+            293.1504995254166,
+            293.15180452615084,
+            293.1541201641851
+          ],
+          [
+            293.150128387037,
+            293.1507491985242,
+            293.1527346982626,
+            293.1563092662593
+          ],
+          [
+            293.15012838681804,
+            293.15074919742443,
+            293.1527346949305,
+            293.1563092597536
+          ],
+          [
+            293.1500862819044,
+            293.1504995145874,
+            293.15180449280314,
+            293.1541200982655
+          ],
+          [
+            293.1500394015869,
+            293.15022454048614,
+            293.1507945866901,
+            293.15177725748833
+          ],
+          [
+            293.1500129818087,
+            293.15007257916454,
+            293.15025062110254,
+            293.1505475609077
+          ],
+          [
+            293.15000327989634,
+            293.15001797572774,
+            293.1500605364481,
+            293.150129243697
+          ],
+          [
+            293.15000066927115,
+            293.1500035962883,
+            293.15001181875704,
+            293.1500246890047
+          ],
+          [
+            293.15000012999144,
+            293.1500006840355,
+            293.1500021912498,
+            293.1500044772901
+          ]
+        ],
+        [
+          [
+            293.1500004492357,
+            293.1500024034682,
+            293.15000785742495,
+            293.1500163404766
+          ],
+          [
+            293.1500014772984,
+            293.1500080682878,
+            293.1500270569548,
+            293.15005755321044
+          ],
+          [
+            293.1500044233548,
+            293.15002458591175,
+            293.150084283207,
+            293.15018292958877
+          ],
+          [
+            293.1500096606721,
+            293.15005445363204,
+            293.1501900390395,
+            293.15041949958334
+          ],
+          [
+            293.15001437415987,
+            293.15008159508693,
+            293.15028732815233,
+            293.1506396869977
+          ],
+          [
+            293.1500143741337,
+            293.1500815949571,
+            293.15028732776585,
+            293.15063968625435
+          ],
+          [
+            293.15000966041976,
+            293.1500544523667,
+            293.1501900352154,
+            293.1504194921406
+          ],
+          [
+            293.1500044214108,
+            293.1500245760082,
+            293.1500842527038,
+            293.15018286929205
+          ],
+          [
+            293.15000146414957,
+            293.1500080001781,
+            293.15002684290357,
+            293.1500571229024
+          ],
+          [
+            293.150000372727,
+            293.15000200019466,
+            293.1500065629502,
+            293.15001369102345
+          ],
+          [
+            293.1500000767804,
+            293.15000040465617,
+            293.15000129868366,
+            293.1500026576798
+          ],
+          [
+            293.15000001509304,
+            293.1500000780197,
+            293.1500002445856,
+            293.15000049068124
+          ]
+        ],
+        [
+          [
+            293.1500000460372,
+            293.15000024158076,
+            293.15000077131316,
+            293.1500015716173
+          ],
+          [
+            293.15000014981706,
+            293.15000080115425,
+            293.15000261766386,
+            293.1500054412195
+          ],
+          [
+            293.15000044546076,
+            293.1500024203657,
+            293.15000806549534,
+            293.1500170605505
+          ],
+          [
+            293.150000969066,
+            293.15000533205796,
+            293.1500180508073,
+            293.15003873386826
+          ],
+          [
+            293.15000144028386,
+            293.1500079753132,
+            293.15002721424315,
+            293.1500588208751
+          ],
+          [
+            293.1500014402811,
+            293.1500079752992,
+            293.15002721420234,
+            293.1500588207981
+          ],
+          [
+            293.1500009690389,
+            293.1500053319242,
+            293.15001805041044,
+            293.15003873310707
+          ],
+          [
+            293.15000044525493,
+            293.1500024193338,
+            293.15000806237725,
+            293.1500170544828
+          ],
+          [
+            293.1500001484417,
+            293.1500007941511,
+            293.15000259610184,
+            293.15000539860665
+          ],
+          [
+            293.1500000381278,
+            293.1500002006436,
+            293.15000064277757,
+            293.15000131342015
+          ],
+          [
+            293.15000000793776,
+            293.15000004108174,
+            293.1500001289686,
+            293.1500002590335
+          ],
+          [
+            293.15000000158045,
+            293.1500000080347,
+            293.15000002468236,
+            293.15000004868693
+          ]
+        ],
+        [
+          [
+            293.1500000043014,
+            293.1500000221657,
+            293.15000006923333,
+            293.1500001384758
+          ],
+          [
+            293.15000001383817,
+            293.15000007256765,
+            293.150000231512,
+            293.1500004714287
+          ],
+          [
+            293.15000004081475,
+            293.1500002171821,
+            293.1500007053679,
+            293.15000145868123
+          ],
+          [
+            293.15000008834437,
+            293.1500004755078,
+            293.150001566386,
+            293.1500032799466
+          ],
+          [
+            293.1500001310645,
+            293.1500007095399,
+            293.1500023540652,
+            293.15000496048356
+          ],
+          [
+            293.1500001310642,
+            293.15000070953874,
+            293.1500023540614,
+            293.15000496047645
+          ],
+          [
+            293.15000008834176,
+            293.150000475495,
+            293.1500015663484,
+            293.1500032798755
+          ],
+          [
+            293.15000004079525,
+            293.1500002170837,
+            293.1500007050765,
+            293.150001458122
+          ],
+          [
+            293.15000001370686,
+            293.15000007190986,
+            293.1500002295255,
+            293.1500004675644
+          ],
+          [
+            293.1500000035552,
+            293.150000018371,
+            293.15000005756156,
+            293.1500001154297
+          ],
+          [
+            293.15000000074855,
+            293.1500000038087,
+            293.1500000117125,
+            293.1500000231233
+          ],
+          [
+            293.15000000015084,
+            293.1500000007557,
+            293.15000000227786,
+            293.15000000442365
+          ]
+        ],
+        [
+          [
+            293.15000000036997,
+            293.1500000018754,
+            293.1500000057383,
+            293.15000001128396
+          ],
+          [
+            293.1500000011764,
+            293.1500000060588,
+            293.150000018906,
+            293.1500000377864
+          ],
+          [
+            293.1500000034397,
+            293.150000017954,
+            293.15000005695214,
+            293.15000011541747
+          ],
+          [
+            293.150000007403,
+            293.15000003904737,
+            293.15000012546847,
+            293.15000025710276
+          ],
+          [
+            293.1500000109576,
+            293.15000005810475,
+            293.1500001879228,
+            293.15000038724486
+          ],
+          [
+            293.15000001095757,
+            293.1500000581047,
+            293.1500001879226,
+            293.1500003872443
+          ],
+          [
+            293.15000000740287,
+            293.1500000390464,
+            293.15000012546517,
+            293.15000025709645
+          ],
+          [
+            293.15000000343804,
+            293.1500000179456,
+            293.1500000569273,
+            293.15000011536944
+          ],
+          [
+            293.15000000116487,
+            293.1500000060018,
+            293.1500000187368,
+            293.15000003746223
+          ],
+          [
+            293.1500000003051,
+            293.15000000155135,
+            293.15000000475976,
+            293.1500000093819
+          ],
+          [
+            293.1500000000648,
+            293.15000000032586,
+            293.1500000009825,
+            293.15000000190844
+          ],
+          [
+            293.1500000000133,
+            293.1500000000656,
+            293.1500000001939,
+            293.1500000003716
+          ]
+        ],
+        [
+          [
+            293.1500000000297,
+            293.15000000014743,
+            293.15000000044245,
+            293.1500000008569
+          ],
+          [
+            293.1500000000928,
+            293.1500000004702,
+            293.1500000014372,
+            293.1500000028238
+          ],
+          [
+            293.1500000002689,
+            293.1500000013795,
+            293.15000000428114,
+            293.15000000851757
+          ],
+          [
+            293.15000000057523,
+            293.1500000029793,
+            293.15000000935584,
+            293.1500000188017
+          ],
+          [
+            293.1500000008494,
+            293.1500000044197,
+            293.15000001396356,
+            293.15000002820386
+          ],
+          [
+            293.1500000008494,
+            293.15000000441967,
+            293.1500000139636,
+            293.15000002820375
+          ],
+          [
+            293.15000000057535,
+            293.1500000029793,
+            293.15000000935544,
+            293.15000001880117
+          ],
+          [
+            293.1500000002688,
+            293.1500000013787,
+            293.1500000042789,
+            293.1500000085139
+          ],
+          [
+            293.15000000009167,
+            293.15000000046575,
+            293.15000000142413,
+            293.15000000279866
+          ],
+          [
+            293.15000000002414,
+            293.15000000012196,
+            293.15000000036656,
+            293.15000000071086
+          ],
+          [
+            293.15000000000504,
+            293.15000000002607,
+            293.150000000077,
+            293.1500000001467
+          ],
+          [
+            293.1500000000008,
+            293.15000000000515,
+            293.1500000000153,
+            293.150000000029
+          ]
+        ],
+        [
+          [
+            293.15000000000254,
+            293.1500000000108,
+            293.1500000000317,
+            293.1500000000609
+          ],
+          [
+            293.1500000000067,
+            293.15000000003414,
+            293.1500000001024,
+            293.1500000001978
+          ],
+          [
+            293.15000000001953,
+            293.1500000000993,
+            293.1500000003019,
+            293.1500000005902
+          ],
+          [
+            293.15000000004153,
+            293.15000000021297,
+            293.1500000006542,
+            293.1500000012911
+          ],
+          [
+            293.1500000000613,
+            293.15000000031455,
+            293.15000000097285,
+            293.15000000192896
+          ],
+          [
+            293.1500000000613,
+            293.15000000031455,
+            293.1500000009729,
+            293.150000001929
+          ],
+          [
+            293.15000000004176,
+            293.15000000021286,
+            293.15000000065425,
+            293.1500000012911
+          ],
+          [
+            293.1500000000196,
+            293.1500000000992,
+            293.15000000030165,
+            293.15000000059007
+          ],
+          [
+            293.1500000000067,
+            293.1500000000339,
+            293.15000000010156,
+            293.1500000001962
+          ],
+          [
+            293.1500000000014,
+            293.1500000000093,
+            293.15000000002675,
+            293.15000000005034
+          ],
+          [
+            293.1499999999997,
+            293.15000000000236,
+            293.15000000000606,
+            293.1500000000106
+          ],
+          [
+            293.14999999999964,
+            293.1500000000001,
+            293.150000000001,
+            293.1500000000021
+          ]
+        ],
+        [
+          [
+            293.15000000000055,
+            293.15000000000083,
+            293.150000000002,
+            293.15000000000373
+          ],
+          [
+            293.15000000000055,
+            293.1500000000027,
+            293.150000000007,
+            293.1500000000128
+          ],
+          [
+            293.1500000000013,
+            293.1500000000069,
+            293.15000000002044,
+            293.15000000003835
+          ],
+          [
+            293.15000000000293,
+            293.1500000000146,
+            293.15000000004335,
+            293.15000000008365
+          ],
+          [
+            293.150000000004,
+            293.15000000002124,
+            293.15000000006415,
+            293.15000000012446
+          ],
+          [
+            293.1500000000042,
+            293.15000000002124,
+            293.1500000000642,
+            293.1500000001245
+          ],
+          [
+            293.1500000000028,
+            293.1500000000146,
+            293.15000000004324,
+            293.15000000008354
+          ],
+          [
+            293.15000000000134,
+            293.1500000000069,
+            293.1500000000202,
+            293.1500000000383
+          ],
+          [
+            293.15000000000003,
+            293.1500000000027,
+            293.1500000000071,
+            293.15000000001294
+          ],
+          [
+            293.14999999999947,
+            293.15000000000106,
+            293.1500000000023,
+            293.1500000000035
+          ],
+          [
+            293.14999999999947,
+            293.15000000000066,
+            293.15000000000106,
+            293.1500000000008
+          ],
+          [
+            293.14999999999947,
+            293.14999999999986,
+            293.1499999999999,
+            293.1499999999999
+          ]
+        ],
+        [
+          [
+            293.14999999999986,
+            293.1499999999999,
+            293.1499999999999,
+            293.14999999999964
+          ],
+          [
+            293.14999999999986,
+            293.1499999999999,
+            293.1500000000002,
+            293.15000000000043
+          ],
+          [
+            293.14999999999986,
+            293.1500000000002,
+            293.150000000001,
+            293.1500000000025
+          ],
+          [
+            293.15000000000003,
+            293.1500000000007,
+            293.15000000000265,
+            293.1500000000054
+          ],
+          [
+            293.15000000000003,
+            293.1500000000011,
+            293.15000000000396,
+            293.150000000008
+          ],
+          [
+            293.15000000000015,
+            293.15000000000117,
+            293.150000000004,
+            293.15000000000805
+          ],
+          [
+            293.15000000000003,
+            293.1500000000007,
+            293.1500000000026,
+            293.1500000000054
+          ],
+          [
+            293.14999999999986,
+            293.1500000000002,
+            293.1500000000012,
+            293.1500000000025
+          ],
+          [
+            293.1499999999998,
+            293.1499999999999,
+            293.15000000000026,
+            293.15000000000083
+          ],
+          [
+            293.14999999999964,
+            293.14999999999986,
+            293.1499999999999,
+            293.15000000000003
+          ],
+          [
+            293.14999999999947,
+            293.14999999999986,
+            293.14999999999986,
+            293.14999999999986
+          ],
+          [
+            293.1499999999995,
+            293.1499999999999,
+            293.14999999999986,
+            293.14999999999947
+          ]
+        ]
+      ],
+      "received": 755.3850350930005,
+      "bottom_loss": 1.604883534728108,
+      "time": 7.5
+    }
+  }
+}

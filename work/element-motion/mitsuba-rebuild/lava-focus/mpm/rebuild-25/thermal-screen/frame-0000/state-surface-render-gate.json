@@ -1,0 +1,23 @@
+{
+  "status": "blocked",
+  "checks": {
+    "currentSource": true,
+    "topology": true,
+    "openFractures": false,
+    "volume": false,
+    "upperCrust": false,
+    "horizontalResolution": false,
+    "noInversion": false,
+    "resolvedDeformation": false,
+    "productionScene": false,
+    "fractureTimestepConvergence": false,
+    "currentSolver": false,
+    "validatedConfiguration": false,
+    "materialCalibration": false,
+    "spatialFractureConvergence": false,
+    "naturalFlowBreakup": false
+  },
+  "upperShareOfDamagedParticles": 0.0,
+  "message": "Geometric preflight only; passing still requires visual and motion review. Controlled fracture coupons are diagnostic-only.",
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\thermal-screen\\frame-0000\\state-surface.npz"
+}

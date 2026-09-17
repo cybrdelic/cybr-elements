@@ -1,0 +1,26 @@
+         178098 function calls (177602 primitive calls) in 2.189 seconds
+
+   Ordered by: cumulative time
+   List reduced from 643 to 18 due to restriction <18>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.092    0.092    2.189    2.189 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py:302(step)
+        1    0.009    0.009    1.501    1.501 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_fracture.py:172(implicit_contact)
+        4    0.014    0.004    0.773    0.193 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_fracture.py:184(solve)
+        4    0.638    0.159    0.638    0.159 {method 'solve' of 'SuperLU' objects}
+        1    0.000    0.000    0.624    0.624 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\linalg\_dsolve\linsolve.py:329(splu)
+        1    0.623    0.623    0.623    0.623 {built-in method scipy.sparse.linalg._dsolve._superlu.gstrf}
+       56    0.000    0.000    0.418    0.007 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:919(__matmul__)
+       56    0.002    0.000    0.417    0.007 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:788(_matmul_dispatch)
+       13    0.000    0.000    0.286    0.022 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:415(_matmul_sparse)
+       13    0.183    0.014    0.183    0.014 {built-in method scipy.sparse._sparsetools.csr_matmat}
+        6    0.001    0.000    0.115    0.019 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:399(_matmul_multivector)
+        3    0.110    0.037    0.110    0.037 {built-in method scipy.sparse._sparsetools.csc_matvecs}
+       13    0.080    0.006    0.080    0.006 {built-in method scipy.sparse._sparsetools.csr_matmat_maxnnz}
+        1    0.028    0.028    0.072    0.072 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_inlet.py:11(velocity_map)
+       18    0.054    0.003    0.054    0.003 {method 'argsort' of 'numpy.ndarray' objects}
+       25    0.000    0.000    0.054    0.002 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\lib\_arraysetops_impl.py:145(unique)
+       25    0.002    0.000    0.053    0.002 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\lib\_arraysetops_impl.py:339(_unique1d)
+        1    0.000    0.000    0.049    0.049 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_fracture.py:52(mechanical_fields)
+
+

@@ -1,0 +1,287 @@
+{
+  "device": "CPU",
+  "seconds": 133.98,
+  "frames": 32,
+  "simulatedSeconds": 12.0,
+  "flowGrid": [
+    96,
+    64
+  ],
+  "plumeGrid": [
+    48,
+    32,
+    48
+  ],
+  "flow": "Conservative finite-volume lubrication / Bingham yield approximation, temperature viscosity, donor-limited fluxes, gravity and source feed",
+  "thermal": "Conservative advection and natural top-surface radiation/convection; bulk depth average, with authored pre-existing crust temperatures",
+  "plume": "MAC pressure projection, semi-Lagrangian advection, buoyancy, heat and moisture; approximate equilibrium condensate opacity",
+  "relativeVolumeError": 3.3149708625308977e-16,
+  "relativeThermalLedgerError": 3.949271819483911e-16,
+  "maxPostProjectionDivergenceRMS": 3.411504465244786e-15,
+  "maxPreProjectionDivergenceRMS": 0.6704151302154632,
+  "history": [
+    {
+      "frame": 0,
+      "seconds": 0.05,
+      "volumeM3": 0.18847769068588938,
+      "densityMax": 0.0,
+      "plumeCentroidZ": 0.0,
+      "maxVertexTravelM": 0.004659053340213542
+    },
+    {
+      "frame": 1,
+      "seconds": 0.45,
+      "volumeM3": 0.18917564068588938,
+      "densityMax": 1.9100034251348073,
+      "plumeCentroidZ": 0.23188039436891356,
+      "maxVertexTravelM": 0.025280806396816985
+    },
+    {
+      "frame": 2,
+      "seconds": 0.8,
+      "volumeM3": 0.18975681568588937,
+      "densityMax": 1.910003335705862,
+      "plumeCentroidZ": 0.2558275753385072,
+      "maxVertexTravelM": 0.03620554243305781
+    },
+    {
+      "frame": 3,
+      "seconds": 1.2,
+      "volumeM3": 0.19038726568588935,
+      "densityMax": 1.91000345496887,
+      "plumeCentroidZ": 0.29694939681440835,
+      "maxVertexTravelM": 0.045813422133281295
+    },
+    {
+      "frame": 4,
+      "seconds": 1.6,
+      "volumeM3": 0.19098171568588934,
+      "densityMax": 1.9100035621406877,
+      "plumeCentroidZ": 0.3558376567957872,
+      "maxVertexTravelM": 0.053725364215210285
+    },
+    {
+      "frame": 5,
+      "seconds": 2.0,
+      "volumeM3": 0.19154016568588936,
+      "densityMax": 1.9100036614946478,
+      "plumeCentroidZ": 0.4338373674499889,
+      "maxVertexTravelM": 0.060563275380360125
+    },
+    {
+      "frame": 6,
+      "seconds": 2.35,
+      "volumeM3": 0.19199927818588935,
+      "densityMax": 1.9100031974661247,
+      "plumeCentroidZ": 0.5220210173524291,
+      "maxVertexTravelM": 0.06591511890697352
+    },
+    {
+      "frame": 7,
+      "seconds": 2.75,
+      "volumeM3": 0.19249022818588937,
+      "densityMax": 1.910003441875003,
+      "plumeCentroidZ": 0.6448914594845796,
+      "maxVertexTravelM": 0.07147732740119116
+    },
+    {
+      "frame": 8,
+      "seconds": 3.15,
+      "volumeM3": 0.19294517818588933,
+      "densityMax": 1.9100036508900131,
+      "plumeCentroidZ": 0.7784176909586171,
+      "maxVertexTravelM": 0.07676313644241914
+    },
+    {
+      "frame": 9,
+      "seconds": 3.5,
+      "volumeM3": 0.19331372818588935,
+      "densityMax": 1.9100036574822885,
+      "plumeCentroidZ": 0.8913732697340093,
+      "maxVertexTravelM": 0.0809621512201604
+    },
+    {
+      "frame": 10,
+      "seconds": 3.9,
+      "volumeM3": 0.19370117818588933,
+      "densityMax": 1.9100036341875637,
+      "plumeCentroidZ": 1.0026202102599306,
+      "maxVertexTravelM": 0.0853307684072828
+    },
+    {
+      "frame": 11,
+      "seconds": 4.3,
+      "volumeM3": 0.19405262818588934,
+      "densityMax": 1.9100036594765495,
+      "plumeCentroidZ": 1.0306048694455403,
+      "maxVertexTravelM": 0.08953849384010056
+    },
+    {
+      "frame": 12,
+      "seconds": 4.7,
+      "volumeM3": 0.19436807818588933,
+      "densityMax": 1.9100036267193126,
+      "plumeCentroidZ": 0.9752050054060455,
+      "maxVertexTravelM": 0.09359594594526144
+    },
+    {
+      "frame": 13,
+      "seconds": 5.05,
+      "volumeM3": 0.19461456568588928,
+      "densityMax": 1.9100028551167971,
+      "plumeCentroidZ": 0.9126973760136528,
+      "maxVertexTravelM": 0.09696368448507445
+    },
+    {
+      "frame": 14,
+      "seconds": 5.45,
+      "volumeM3": 0.1948625156858893,
+      "densityMax": 1.9100034515553457,
+      "plumeCentroidZ": 0.83588353237367,
+      "maxVertexTravelM": 0.10060755369256293
+    },
+    {
+      "frame": 15,
+      "seconds": 5.85,
+      "volumeM3": 0.19507446568588932,
+      "densityMax": 1.9100035132415942,
+      "plumeCentroidZ": 0.817335328783426,
+      "maxVertexTravelM": 0.10408273161574712
+    },
+    {
+      "frame": 16,
+      "seconds": 6.2,
+      "volumeM3": 0.1952303906858893,
+      "densityMax": 1.9100036204542468,
+      "plumeCentroidZ": 0.8084344849871554,
+      "maxVertexTravelM": 0.10700313442919517
+    },
+    {
+      "frame": 17,
+      "seconds": 6.6,
+      "volumeM3": 0.1953748406858893,
+      "densityMax": 1.9100036567283991,
+      "plumeCentroidZ": 0.7989742257931663,
+      "maxVertexTravelM": 0.11018555529494897
+    },
+    {
+      "frame": 18,
+      "seconds": 7.0,
+      "volumeM3": 0.19548329068588932,
+      "densityMax": 1.9100036612759739,
+      "plumeCentroidZ": 0.8018884575738107,
+      "maxVertexTravelM": 0.11322253104983324
+    },
+    {
+      "frame": 19,
+      "seconds": 7.35,
+      "volumeM3": 0.19554865318588932,
+      "densityMax": 1.910003660444569,
+      "plumeCentroidZ": 0.8052257683864301,
+      "maxVertexTravelM": 0.11578785641989879
+    },
+    {
+      "frame": 20,
+      "seconds": 7.75,
+      "volumeM3": 0.1955896031858893,
+      "densityMax": 1.910003626644675,
+      "plumeCentroidZ": 0.8066021006717923,
+      "maxVertexTravelM": 0.11860025521590477
+    },
+    {
+      "frame": 21,
+      "seconds": 8.15,
+      "volumeM3": 0.19559691568588933,
+      "densityMax": 1.910003598538861,
+      "plumeCentroidZ": 0.8066115588297162,
+      "maxVertexTravelM": 0.12129181476993432
+    },
+    {
+      "frame": 22,
+      "seconds": 8.55,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.9100036604634165,
+      "plumeCentroidZ": 0.805495558150802,
+      "maxVertexTravelM": 0.12389966027938606
+    },
+    {
+      "frame": 23,
+      "seconds": 8.9,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.9100036613614506,
+      "plumeCentroidZ": 0.804953386959263,
+      "maxVertexTravelM": 0.12612543809868815
+    },
+    {
+      "frame": 24,
+      "seconds": 9.3,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.91000364790607,
+      "plumeCentroidZ": 0.8018059437129418,
+      "maxVertexTravelM": 0.12857060015034327
+    },
+    {
+      "frame": 25,
+      "seconds": 9.7,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.9100036542652283,
+      "plumeCentroidZ": 0.8033035873767612,
+      "maxVertexTravelM": 0.13091482660178572
+    },
+    {
+      "frame": 26,
+      "seconds": 10.05,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.910003661106998,
+      "plumeCentroidZ": 0.8003100208251634,
+      "maxVertexTravelM": 0.13291699080056177
+    },
+    {
+      "frame": 27,
+      "seconds": 10.45,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.910003660534005,
+      "plumeCentroidZ": 0.7990096128957781,
+      "maxVertexTravelM": 0.1351738231474487
+    },
+    {
+      "frame": 28,
+      "seconds": 10.85,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.9100034347445003,
+      "plumeCentroidZ": 0.7990786598756757,
+      "maxVertexTravelM": 0.1379163055118079
+    },
+    {
+      "frame": 29,
+      "seconds": 11.25,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.9100036574501504,
+      "plumeCentroidZ": 0.7987734885048017,
+      "maxVertexTravelM": 0.14039826603916583
+    },
+    {
+      "frame": 30,
+      "seconds": 11.6,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.9100036603034645,
+      "plumeCentroidZ": 0.801634956027772,
+      "maxVertexTravelM": 0.1415377719700056
+    },
+    {
+      "frame": 31,
+      "seconds": 12.0,
+      "volumeM3": 0.19559691568588927,
+      "densityMax": 1.910003562196512,
+      "plumeCentroidZ": 0.8053268616238817,
+      "maxVertexTravelM": 0.14343590068609308
+    }
+  ],
+  "limits": [
+    "One-way mesh following of the height/velocity field, not a coupled 3D solid fracture/contact simulation",
+    "Crust deformation may intersect and has no collision solve",
+    "Plume condensation has no latent heat or chemical aerosol feedback",
+    "Plume has closed velocity boundaries and an absorbing upper layer",
+    "Full basalt cooling/crystallization and the separate obsidian branch are material stills, not simulated transformations"
+  ]
+}

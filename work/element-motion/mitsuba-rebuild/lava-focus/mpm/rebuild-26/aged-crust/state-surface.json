@@ -1,0 +1,28 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-26\\aged-crust\\state.npz",
+  "sourceSha256": "5794a956de22b48d67cbc0ada0843a38fd01ab56a93c8683592d1fedff20c8de",
+  "physicalSeconds": 0.02,
+  "vertices": 5784,
+  "triangles": 11564,
+  "solverParticleVolumeM3": 0.0002222081431010603,
+  "reconstructedVolumeM3": 0.00022216176183886415,
+  "relativeVolumeDifference": 0.00020872890412056526,
+  "kernelSigmaRenderCells": [
+    1.4285714285714286,
+    1.4285714285714286,
+    2.857142857142857
+  ],
+  "kernelSigmaM": [
+    0.004,
+    0.004,
+    0.004
+  ],
+  "renderCellSizeM": [
+    0.0028,
+    0.0028,
+    0.0014
+  ],
+  "method": "density reconstruction",
+  "fractureTopologyPreserved": true,
+  "limits": "Unfractured material reconstruction. Solidification does not switch the exterior to voxel cells. Explicit --method kernel on a fractured state does not preserve fracture topology. Material coordinates use local inverse deformation gradients."
+}

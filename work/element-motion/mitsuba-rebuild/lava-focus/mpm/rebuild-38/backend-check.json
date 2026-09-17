@@ -1,0 +1,24 @@
+{
+  "status": "pass",
+  "cases": [
+    {
+      "backend": "cpu",
+      "seconds": 6.5310000000172295,
+      "warmupSeconds": 0.0,
+      "residual": 1.528605599222642e-09,
+      "velocityRelativeDifference": 0.0,
+      "gpuFactors": 0,
+      "fallbacks": []
+    },
+    {
+      "backend": "cuda_dense",
+      "seconds": 7.734000000025844,
+      "warmupSeconds": 1.7189999999827705,
+      "residual": 1.628777799107839e-09,
+      "velocityRelativeDifference": 5.723791699549053e-11,
+      "gpuFactors": 16,
+      "fallbacks": []
+    }
+  ],
+  "selected": "cpu"
+}

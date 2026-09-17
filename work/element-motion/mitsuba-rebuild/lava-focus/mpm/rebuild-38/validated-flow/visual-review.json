@@ -1,0 +1,21 @@
+{
+  "accepted": false,
+  "geometryAccepted": false,
+  "motionAccepted": false,
+  "resolutionChecked": false,
+  "stateSha256": "5d8c5640c4586a3f8990c45855d25a8c6ca6796c61aaef14c7c8a1ea72ad484f",
+  "evidenceImages": [
+    {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\adaptive-flow-review.png",
+      "sha256": "2e7faf9c3a98ef92b3e827cfd0461a0b6b8deb70b72963c239b3b7bb0065568e"
+    }
+  ],
+  "observations": [
+    "Cohesive body in sampled views.",
+    "Visible reconstruction bands and faceting remain.",
+    "No open fractures.",
+    "The requested simulation interval is incomplete.",
+    "Spatial convergence and continuous motion have not passed."
+  ],
+  "decision": "Rejected for final presentation; CPU mechanism diagnostic only."
+}

@@ -1,0 +1,54 @@
+{
+  "revision": "Material rebuild 3",
+  "acceptedCoreUnchanged": [
+    "fire-sheets.mp4",
+    "water-optical.mp4",
+    "air-filaments-lit.mp4"
+  ],
+  "camera": {
+    "width": 10.5,
+    "centerZ": 1.903125
+  },
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "frames": 120,
+    "fps": 30
+  },
+  "changes": {
+    "ice": "Transmission with IOR 1.31; explicit air pockets and fissures; patchy roughness; rigid fragments.",
+    "glass": "Thin irregular panes, bevel geometry, IOR 1.52.",
+    "crystal": "Intergrown mineral prisms with absorptive interiors, rough matrix and added fill lighting.",
+    "lava": "Persistent particle IDs drive surface crust placement; cooling ages drive blackbody temperature; viscous FLIP geometry.",
+    "lightning": "Three-dimensional branching emission channels and restrained optical bloom.",
+    "foam": "Hollow water-film shells, heavy-tailed bubble radii; FLIP particle centers.",
+    "healing": "Broken fibers geometrically reconnect behind a moving luminous front; repaired structure remains.",
+    "spirit": "Disordered filaments transition to a coherent luminous structure. No liquid mesh.",
+    "energy": "Counter-propagating amber and blue filament fields with a sustained exchange region. No liquid mesh.",
+    "metal": "Brushed reflective strips with solid edges, anisotropic highlights, and bend deformation.",
+    "plants": "Irregular leaf placement, modeled curved blades, vein shading and translucent edges.",
+    "sand": "Fine ballistic grains with gravity, drag, and ground response.",
+    "snow": "Fine powder grains with reduced settling speed."
+  },
+  "limits": [
+    "Art-directed bending forces and material approximations; not a calibrated multi-physics model.",
+    "Lightning branching is procedural, not electrical breakdown simulation.",
+    "Lava cooling uses particle age, not a solved heat equation.",
+    "Healing, spiritbending, and energybending are stylized geometric VFX interpretations, not physical simulations.",
+    "Sand and snow use ballistic grains; interparticle collisions are not solved.",
+    "Lava surface fissures include procedural shading; they are not a thermal fracture solve."
+  ],
+  "verification": {
+    "videoCount": 26,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "framesPerVideo": 120,
+    "soloPlayback": true,
+    "synchronizedPlayback": true,
+    "beforeAfterPreservesPlayhead": true,
+    "mobileOverflow": false,
+    "browserErrors": [],
+    "visualReview": "Early, middle, and late sequence contact sheets inspected; gallery inspected.",
+    "acceptedCoreHashesMatch": true
+  }
+}

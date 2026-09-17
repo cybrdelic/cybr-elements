@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "ice",
+    "script": "render_ice_body.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "sand",
+    "script": "render_solids-r1.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "snow",
+    "script": "render_solids-r1.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "glass",
+    "script": "render_constructed.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "plants",
+    "script": "render_constructed.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "healing",
+    "script": "render_constructed.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "energy",
+    "script": "render_channels.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "spirit",
+    "script": "render_channels.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "flight",
+    "script": "render_channels.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "seismic",
+    "script": "render_minerals.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "crystal",
+    "script": "render_minerals.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "spirit-projection",
+    "script": "render_projection.py",
+    "frames": "30,45,65,90"
+  },
+  {
+    "kind": "heat-witness",
+    "script": "render_heat_witness.py",
+    "frames": "30,45,65,90"
+  }
+]

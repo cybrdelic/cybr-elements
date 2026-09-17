@@ -1,0 +1,17 @@
+{
+  "description": "Initially molten 8 x 6 x 3 mm specimen on a 1450 K reservoir; gravity and all exposed-surface heat losses active. No initial solid, seeded damage or imposed crack opening.",
+  "initialTemperatureK": 1450.0,
+  "bedTemperatureK": 1450.0,
+  "cellSizeM": [
+    0.001,
+    0.001,
+    0.0005
+  ],
+  "sampleSizeM": [
+    0.0005,
+    0.0005,
+    0.00025
+  ],
+  "initialParticles": 2304,
+  "refinement": 1
+}

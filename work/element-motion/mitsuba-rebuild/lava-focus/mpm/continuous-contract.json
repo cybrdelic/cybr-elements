@@ -1,0 +1,9 @@
+{
+  "target": "Replace the rejected paving-slab setup with continuously cooling and deforming molten material",
+  "scope": ["rectangular MPM grid with fine vertical spacing", "conservative continuous inlet", "resolved enthalpy phase change", "fracture-aware CPU inspection and rendering"],
+  "capture": "Saved material temperature/deformation profiles, CPU meshes, then a small Mitsuba CPU image only after review",
+  "gates": ["anisotropic affine transfer", "finite-volume metric consistency", "surface/interior cooling separation", "existing physical component tests", "no initial cracks or pore geometry", "black backdrop"],
+  "budget": "Two CPU cores, under 3 GiB, checkpointed jobs under 180 seconds. No GPU or final movie batch.",
+  "iterations": 4,
+  "limits": "Rectangular cells improve vertical resolution, not horizontal fracture convergence. Nominal basalt parameters remain uncalibrated."
+}

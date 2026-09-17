@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "error": "RuntimeError('Material starts too far outside the conduit')",
+  "time": 8.899999999999999,
+  "particles": 988,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.11986177021857092,
+  "solidPoints": 100,
+  "rejects": 19,
+  "wallSeconds": 179.35899999999674,
+  "source": null,
+  "bedKind": "finite",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

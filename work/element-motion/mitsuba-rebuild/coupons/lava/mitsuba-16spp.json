@@ -1,0 +1,14 @@
+{
+  "renderer": "Mitsuba 3.9.1",
+  "variant": "scalar_spectral",
+  "device": "CPU",
+  "threads": 2,
+  "size": [
+    640,
+    480
+  ],
+  "spp": 16,
+  "seconds": 9.914,
+  "status": "requires visual review; not a final effect",
+  "png": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\coupons\\lava\\mitsuba-16spp.png"
+}

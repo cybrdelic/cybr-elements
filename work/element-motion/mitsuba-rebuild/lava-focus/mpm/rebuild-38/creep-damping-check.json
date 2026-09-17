@@ -1,0 +1,60 @@
+{
+  "status": "pass",
+  "fallbackRelaxation": 0.4347826086956522,
+  "cases": [
+    {
+      "temperatureK": 1100.0,
+      "trialStressPa": 10000000.0,
+      "iterations": 43,
+      "relativeStressError": 1.0333828918028494e-10
+    },
+    {
+      "temperatureK": 1100.0,
+      "trialStressPa": 1000000000.0,
+      "iterations": 39,
+      "relativeStressError": 7.314808362027919e-11
+    },
+    {
+      "temperatureK": 1100.0,
+      "trialStressPa": 10000000000.0,
+      "iterations": 17,
+      "relativeStressError": 8.708880052518336e-12
+    },
+    {
+      "temperatureK": 1200.0,
+      "trialStressPa": 10000000.0,
+      "iterations": 43,
+      "relativeStressError": 1.0319962322362678e-10
+    },
+    {
+      "temperatureK": 1200.0,
+      "trialStressPa": 1000000000.0,
+      "iterations": 15,
+      "relativeStressError": 4.173779699265783e-11
+    },
+    {
+      "temperatureK": 1200.0,
+      "trialStressPa": 10000000000.0,
+      "iterations": 30,
+      "relativeStressError": 1.2941238961345067e-11
+    },
+    {
+      "temperatureK": 1250.0,
+      "trialStressPa": 10000000.0,
+      "iterations": 43,
+      "relativeStressError": 1.0293112867886822e-10
+    },
+    {
+      "temperatureK": 1250.0,
+      "trialStressPa": 1000000000.0,
+      "iterations": 11,
+      "relativeStressError": 3.522580786179736e-11
+    },
+    {
+      "temperatureK": 1250.0,
+      "trialStressPa": 10000000000.0,
+      "iterations": 33,
+      "relativeStressError": 1.754067072423832e-11
+    }
+  ]
+}

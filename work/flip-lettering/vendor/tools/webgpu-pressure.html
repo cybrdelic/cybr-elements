@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8"><title>WebGPU pressure validation</title>
+<style>body{margin:40px;max-width:1050px;background:#10151b;color:#dce7ef;font:15px/1.6 monospace}h1{color:#91d8c5}pre{white-space:pre-wrap}a{color:#91d8c5}</style></head><body>
+<h1>WebGPU / GPU-owned pressure solve</h1>
+<p>Experimental pressure module. Real CPU FLIP matrices; no CPU feedback between GPU iterations. This page validates a rewrite component, not a full WebGPU water simulation.</p>
+<p id="status">Starting…</p><pre id="report"></pre>
+<script type="module">
+import {WebGPUPressure} from '../src/gpu/webgpu-pressure.js';
+import {FlipSolver} from '../src/flip.js';
+import {makePreset} from '../src/quality-profile.js';
+import {CSRMatrix} from '../src/numerics/multigrid.js';
+const status=document.querySelector('#status'),out=document.querySelector('#report');
+const report={scenes:[],errors:[],solveContract:'encode-only; no host feedback (covered by command-encoding regression)',scope:'pressure only; fixture uploads and post-solve validation explicitly use CPU'};
+function publish(){out.textContent=JSON.stringify(report,null,2);}
+let device,solver;
+try{
+ if(!navigator.gpu)throw Error('WebGPU is unavailable in this browser.');
+ const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
+ if(!adapter)throw Error('No WebGPU adapter available.');
+ device=await adapter.requestDevice();report.adapter={vendor:adapter.info.vendor,architecture:adapter.info.architecture,device:adapter.info.device,description:adapter.info.description};
+ device.addEventListener('uncapturederror',event=>{report.errors.push(event.error.message);publish();});
+ device.lost.then(info=>{if(info.reason!=='destroyed'){report.errors.push('Device lost: '+info.message);status.textContent='FAILED';publish();}});
+ for(const scene of ['breach','impact','slosh']){
+  status.textContent='Testing '+scene+'…';await new Promise(requestAnimationFrame);
+  const config=makePreset(scene,'live'),sim=new FlipSolver(config);sim.advance(1/120);
+  const matrix=CSRMatrix.fromMAC(sim),rhs=Float32Array.from(sim.active.subarray(0,sim.nActive),q=>sim.rhs[q]);
+  const system={...matrix,rhs};
+  solver=await WebGPUPressure.create(device,system,{tolerance:config.pressureTolerance,maxIterations:240});
+  let latest;const elapsed=[];
+  for(let trial=0;trial<4;trial++){
+   device.pushErrorScope('validation');const start=performance.now(),encoder=device.createCommandEncoder();solver.encode(encoder);device.queue.submit([encoder.finish()]);
+   // The test waits AFTER the entire solve, never between its iterations.
+   await device.queue.onSubmittedWorkDone();elapsed.push(performance.now()-start);
+   const error=await device.popErrorScope();if(error)throw Error(error.message);
+   latest=await solver.readDiagnostics();
+   const ax=new Float64Array(matrix.n);matrix.apply(latest.solution,ax);let r2=0,b2=0;
+   for(let i=0;i<rhs.length;i++){r2+=(rhs[i]-ax[i])**2;b2+=rhs[i]**2;}
+   latest.cpuCheckedResidual=Math.sqrt(r2/Math.max(b2,1e-30));
+   if(!latest.converged||latest.breakdown||latest.cpuCheckedResidual>config.pressureTolerance||!latest.solution.every(Number.isFinite))throw Error(scene+' validation: '+JSON.stringify({...latest,solution:undefined}));
+  }
+  const times=elapsed.slice(1).sort((a,b)=>a-b);
+  report.scenes.push({scene,rows:matrix.n,edges:matrix.column.length,particles:sim.count,tolerance:config.pressureTolerance,iterations:latest.iterations,gpuResidual:latest.relativeResidual,cpuCheckedResidual:latest.cpuCheckedResidual,completedSolveMedianMs:times[1],samplesMs:elapsed});publish();
+  // Exhausted budgets must fail explicitly. Zero RHS must require no iterations.
+  solver.maxIterations=1;
+  let encoder=device.createCommandEncoder();solver.encode(encoder);device.queue.submit([encoder.finish()]);
+  const exhausted=await solver.readDiagnostics();if(exhausted.converged)throw Error('One-iteration budget unexpectedly passed');
+  solver.setSystem({...system,rhs:new Float32Array(rhs.length)});
+  encoder=device.createCommandEncoder();solver.encode(encoder);device.queue.submit([encoder.finish()]);
+  const zero=await solver.readDiagnostics();if(!zero.converged||zero.iterations!==0||zero.solution.some(x=>x!==0))throw Error('Zero-RHS solve failed');
+  report.scenes.at(-1).budgetFailureVerified=true;report.scenes.at(-1).zeroRHSVerified=true;
+  solver.dispose();solver=null;
+ }
+ if(report.errors.length)throw Error('WebGPU validation errors');
+ report.passed=true;status.textContent='PASS — pressure module only; full FLIP port remains';publish();
+}catch(error){report.errors.push(error.message);report.passed=false;status.textContent='FAILED';publish();}
+finally{solver?.dispose();device?.destroy();}
+</script></body></html>

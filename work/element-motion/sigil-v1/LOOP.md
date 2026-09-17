@@ -1,0 +1,8 @@
+Scope: ten videos, five current bending materials in both established study-06 sigils. Preserve artwork, counters, l/i gap, black background, existing bending gallery and old sigil videos. Shared timing: 0.3–3.2s formation, completed mark through 6.2s, physical/model release through 10s. Sources/forces may be art directed; do not call a guided effect an unforced fluid or a plasma solver.
+
+Before each full render: capture a completed-mark frame and inspect it at 1280px and gallery size. Reject an obscured counter, missing i dot, merged l/i, unreadable silhouette or an oversized particle/spray field. Use native solver finite/pressure/volume checks and full video decoding. At most two pilot refinements per material before a full comparison. Keep production frames on disk, inspect reduced images individually, stream caches, and preserve a 1 GiB disk reserve. One GPU render at a time; no unbounded background jobs. No destructive baseline edits.
+
+Final evidence: previews, all ten complete video metadata and decode checks, same registered artwork, solo playback/downloads, numerical reports and explicit limitations. Readability is a visual judgment; mask overlap is supporting evidence, not a substitute for reading the mark.
+
+## Pilot budget exception
+Fire exceeded the initial two-pilot budget because the first pair obscured counters, while the depth-flow alternative flattened the material. Neither was published. The current trial preserves turbulent transport and adds an authored oxidizer field around the approved glyph during the hold. This control is part of the art direction, not a claim of an unconstrained fire shape.

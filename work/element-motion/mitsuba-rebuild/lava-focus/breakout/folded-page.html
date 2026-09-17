@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CYBRDELIC / Lava</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#000;color:#e6e2df;font:14px/1.6 system-ui,sans-serif}main{max-width:1360px;margin:auto;padding:28px 5% 50px}header{display:flex;justify-content:space-between;gap:24px;font-size:11px;letter-spacing:.12em;border-bottom:1px solid #252321;padding-bottom:16px}a{color:inherit;text-underline-offset:5px}.heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-top:24px}h1{font-size:clamp(30px,5vw,60px);font-weight:450;letter-spacing:-.055em;margin:0;line-height:1.15}.sub{font-size:12px;color:#938780;margin:8px 0 0}nav{display:flex;gap:6px;flex-wrap:wrap}button{font:inherit;font-size:12px;color:#988b82;background:#000;border:1px solid #302923;border-radius:4px;padding:7px 15px;cursor:pointer}button[aria-pressed=true]{color:#f0ddd0;border-color:#a35b34;background:#1a100b}figure{margin:0}figure img{display:block;width:100%;height:auto;max-height:72vh;object-fit:contain;background:#000}figcaption{display:flex;justify-content:space-between;gap:24px;border-top:1px solid #252321;padding:15px 0;font-size:12px;color:#c7bbb3}details{max-width:740px;font-size:12px;color:#968c86;margin-top:24px}summary{cursor:pointer;color:#c7bbb3}details p{margin:12px 0}a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid #c36937;outline-offset:5px}@media(max-width:600px){main{padding:20px 5%}.heading{align-items:start;flex-direction:column;gap:18px}figcaption{flex-direction:column;gap:10px}}
+</style>
+<main>
+<header><span>CYBRDELIC / MATERIALS</span><a href="../">Bending studies</a></header>
+<div class="heading"><div><h1>Lava.</h1><p class="sub">Folded basalt / molten breakouts</p></div>
+<nav aria-label="Lava version"><button type="button" aria-pressed="true" data-src="lava-folded.png" data-caption="Overlapping lobes / folded basalt skin" data-alt="Ropy dark basalt lava lobes with incandescent breakouts on pitch black" data-width="1280" data-height="720">Folded lava</button><button type="button" aria-pressed="false" data-src="lava-folded-detail.png" data-caption="Close-up / crust and molten breakouts" data-alt="Close-up of lava crust folds and ragged molten openings on pitch black" data-width="1024" data-height="717">Close-up</button><button type="button" aria-pressed="false" data-src="lava-refined.png" data-caption="Previous rough-basalt pass" data-alt="Earlier rough basalt material study" data-width="896" data-height="672">Previous pass</button><button type="button" aria-pressed="false" data-src="lava-restored-first.png" data-caption="Original saved rough pass" data-alt="Original granular lava material study" data-width="640" data-height="480">Original</button></nav></div>
+<figure><img id="lava" src="lava-folded.png" alt="Ropy dark basalt lava lobes with incandescent breakouts on pitch black" width="1280" height="720"><figcaption><span id="caption" aria-live="polite">Overlapping lobes / folded basalt skin</span><a id="download" href="lava-folded.png" download>Download image</a></figcaption></figure>
+<details><summary>Study notes</summary><p>This pass replaces the shallow slab with overlapping lava lobes, nested crust folds and broken cooling skin over a separate molten interior. The openings have thickness and cool banks around their hotter centers.</p><p>These are CPU Mitsuba material stills. The lobe shapes and folds are authored; the cooling calculation does not make this a fully simulated flow. Motion and sigil integration still need their own validation.</p><p>Form reference: <a href="https://www.nps.gov/articles/000/lava-flow-forms.htm">NPS lava flow forms</a>. <a href="review.json">Render and review record</a>. Earlier images are preserved.</p></details>
+</main>
+<script>
+const lava=document.querySelector('#lava'),caption=document.querySelector('#caption'),download=document.querySelector('#download');
+document.querySelectorAll('button[data-src]').forEach(button=>button.addEventListener('click',()=>{
+ document.querySelectorAll('button[data-src]').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));
+ lava.src=button.dataset.src;lava.width=Number(button.dataset.width);lava.height=Number(button.dataset.height);lava.alt=button.dataset.alt;caption.textContent=button.dataset.caption;download.href=button.dataset.src;
+}));
+</script>
+</html>

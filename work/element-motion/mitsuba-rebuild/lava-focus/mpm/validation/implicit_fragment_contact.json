@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "evidence": {
+    "velocity": [
+      -0.03333333333319999,
+      -0.03333333333340001
+    ],
+    "expectedVelocity": -0.03333333333333333,
+    "residual": 0.0,
+    "stiffResidual": 1.2412670766236363e-16,
+    "objectiveLossJ": 0.01333333333333333
+  },
+  "seconds": 0.0025610923767089844
+}

@@ -1,0 +1,26 @@
+{
+  "device": "CPU",
+  "seconds": 6.46,
+  "vertices": 842106,
+  "triangles": 1684568,
+  "bounds": [
+    [
+      -0.8620805144309998,
+      -0.48393604159355164,
+      -0.013886280357837677
+    ],
+    [
+      0.9460720419883728,
+      0.5735846161842346,
+      0.2804557681083679
+    ]
+  ],
+  "maxThermalEnergyResidual": 4.844033336681712e-15,
+  "meshSha256": "143c82555a09ba13c8f6da1f4a76f5db92ad3ed1a08da96861b24647682bed45",
+  "method": "Authored three-dimensional inflation lobes and compressed ropy folds, separate closed basalt crust with contour-clipped apertures, 1D enthalpy cooling and thermal emission",
+  "limits": [
+    "Geometry is a reference-led procedural material study, not a new validated flow simulation",
+    "Lobe intersections are overlapping opaque volumes; no two-way mechanics or motion has been validated"
+  ],
+  "reference": "https://www.nps.gov/articles/000/lava-flow-forms.htm"
+}

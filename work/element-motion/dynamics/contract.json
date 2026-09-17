@@ -1,0 +1,12 @@
+{
+  "scope": "Independent GPU material solvers and rendering for the 23 rejected studies; no Houdini dependency",
+  "sharedMotion": "../shared-trail.json",
+  "backdrop": "RGB 0,0,0; no visible floor or reference panel",
+  "baseline": "accepted-contact.jpg",
+  "families": ["MPM granular and plastic solids", "FLIP secondary and phase behavior", "constrained botanical and fractured structures", "reactive gas and discharge", "distinct abstract field mechanisms"],
+  "capture": "python review.py <family>; Blender render.py --frames 30,45,65,90",
+  "checks": ["finite states", "bounded velocities", "persistent particle identities", "constitutive differences", "source hash", "frame completeness", "black empty pixels", "visual motion and final-lighting inspection"],
+  "iterationsPerFamily": 3,
+  "editableScope": ["work/element-motion/dynamics", "reviewed replacement media and gallery pointers"],
+  "preserve": ["original sigil masters", "accepted fire/water/air", "rejected batch kept unpublished"]
+}

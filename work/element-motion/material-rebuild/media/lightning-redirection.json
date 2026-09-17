@@ -1,0 +1,25 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "avg_frame_rate": "30/1",
+  "duration": "4.000000",
+  "nb_frames": "120",
+  "id": "lightning-redirection",
+  "sha256": "5b48e496f669cea4797f1d695d9a4bc09b4245feceb3473381130a652efe2624",
+  "frameDigest": "cb6c366f88a92aa25794a32e19b2687e0eb6fa70eff616d40c535ddce62ab357",
+  "decodedFrames": 120,
+  "minimumBlackFraction": 0.9349320023148148,
+  "posterFrame": 10,
+  "selectedReviewFrames": [
+    10,
+    20,
+    30,
+    45,
+    57,
+    65,
+    80,
+    95
+  ],
+  "maximumFrameDifference": 3.428744212962963,
+  "status": "Technical checks pass; manual motion review is still required"
+}

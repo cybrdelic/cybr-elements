@@ -1,0 +1,56 @@
+{
+  "status": "pass",
+  "checks": {
+    "position": true,
+    "velocity": true,
+    "temperature": true,
+    "damage": true,
+    "mass": true,
+    "currentGpuSource": true,
+    "temperatureBalance": true
+  },
+  "positionMaxErrorM": 0.0,
+  "velocityRelativeDifference": 0.0,
+  "temperatureMaxErrorK": 0.0,
+  "damageMaxError": 0.0,
+  "massDifferenceKg": 0.0,
+  "cpuSource": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-26\\resolved-feed\\frame-0250",
+  "gpuSource": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-26\\cuda-pressure-27\\frame-0250",
+  "cpuStateSha256": "571576c12a3d504e848f751c0ab80dad8f3327d1b5442879ba806421a9f56878",
+  "gpuStateSha256": "571576c12a3d504e848f751c0ab80dad8f3327d1b5442879ba806421a9f56878",
+  "cpuSourceHashes": {
+    "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "bb756fab066adb11121ff3b978a304192b1f1bf8a31329de239cc892e5dea9bd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "0546246645a7be59787ae8d2ee9115200998844c511bdffd984d5f6bf4edf31f"
+  },
+  "gpuSourceHashes": {
+    "lava_mpm.py": "6fa9405540a817f500fc6c56684d3c879b27fe8bd993d6a7ba6bdd54a3fa46fc",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "bb756fab066adb11121ff3b978a304192b1f1bf8a31329de239cc892e5dea9bd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "75e45cceeec2d97b3ee722e709c5c78ea9105ffb62bc55396800ca7c44ee6d0e"
+  },
+  "linearBackend": {
+    "cpuFactors": 0,
+    "gpuFactors": 39,
+    "cpuTriangularSolves": 72,
+    "factorSeconds": 3.756048300070688,
+    "solveSeconds": 0.23379949992522597,
+    "maximumDofs": 1914,
+    "maximumAllocatedBytes": 58735616,
+    "fallbacks": [],
+    "backend": "cuda_dense",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "CUDA factorization for unilateral pressure only; CPU substitutions. The many-RHS friction system retains CPU sparse SuperLU. Counts cover this backend only, not CPU friction factors."
+  },
+  "simulatedSeconds": 0.25,
+  "scope": "Same initial condition, material, source quadrature and two 0.125 s steps, before the first emitted source layer. CPU reference is the recorded older equivalent pressure-solver run. This is not spatial convergence, a long-run accuracy claim or visual approval."
+}

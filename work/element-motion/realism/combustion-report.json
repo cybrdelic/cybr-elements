@@ -1,0 +1,17 @@
+{
+  "frames": 120,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    480,
+    128,
+    224
+  ],
+  "elapsed": 258.4689999999973,
+  "peakGpuMiB": 3416.3662109375,
+  "source": "sub-combustion.py",
+  "changes": "Short irregular fuel burst, reaction-driven divergence target for thermal expansion, turbulent transport and volume radiance. Low-Mach VFX approximation, not a compressible shock solver."
+}

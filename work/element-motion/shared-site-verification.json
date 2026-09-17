@@ -1,0 +1,61 @@
+{
+  "metadata": [
+    {
+      "src": "fire-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "water-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "air-shared.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "earth-packed.mp4",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "seekTimes": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "playTimes": [
+    1.579967,
+    1.579949,
+    1.579928,
+    1.579895
+  ],
+  "solo": [
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": false,
+      "time": 0.762627
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    }
+  ],
+  "overlays": 4,
+  "mobileOverflow": false,
+  "errors": []
+}

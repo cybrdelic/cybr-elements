@@ -1,0 +1,271 @@
+{
+  "nettle_plant": [
+    {
+      "type": "FRAME",
+      "name": "Frame",
+      "inputs": [],
+      "children": []
+    },
+    {
+      "type": "FRAME",
+      "name": "Frame.001",
+      "inputs": [],
+      "children": []
+    },
+    {
+      "type": "MAPPING",
+      "name": "Mapping",
+      "inputs": [
+        "Vector",
+        "Location",
+        "Rotation",
+        "Scale"
+      ],
+      "children": []
+    },
+    {
+      "type": "TEX_COORD",
+      "name": "Texture Coordinate",
+      "inputs": [],
+      "children": []
+    },
+    {
+      "type": "OUTPUT_MATERIAL",
+      "name": "Material Output",
+      "inputs": [
+        "Surface",
+        "Volume",
+        "Displacement",
+        "Thickness"
+      ],
+      "children": []
+    },
+    {
+      "type": "TEX_IMAGE",
+      "name": "Image Texture.001",
+      "inputs": [
+        "Vector"
+      ],
+      "children": []
+    },
+    {
+      "type": "TEX_IMAGE",
+      "name": "Image Texture.002",
+      "inputs": [
+        "Vector"
+      ],
+      "children": []
+    },
+    {
+      "type": "TEX_IMAGE",
+      "name": "Image Texture.003",
+      "inputs": [
+        "Vector"
+      ],
+      "children": []
+    },
+    {
+      "type": "TEX_IMAGE",
+      "name": "Image Texture",
+      "inputs": [
+        "Vector"
+      ],
+      "children": []
+    },
+    {
+      "type": "REROUTE",
+      "name": "Reroute",
+      "inputs": [
+        "Input"
+      ],
+      "children": []
+    },
+    {
+      "type": "TEX_IMAGE",
+      "name": "Image Texture.004",
+      "inputs": [
+        "Vector"
+      ],
+      "children": []
+    },
+    {
+      "type": "GROUP",
+      "name": "Group",
+      "inputs": [
+        "Diffuse",
+        "Diffuse Dead",
+        "Rough",
+        "Normal",
+        "Alpha",
+        "Specular",
+        "Dead Amount",
+        "Wetness",
+        "Translucency",
+        "Hue",
+        "Saturation",
+        "Value"
+      ],
+      "children": [
+        {
+          "type": "GROUP_INPUT",
+          "name": "Group Input",
+          "inputs": [],
+          "children": []
+        },
+        {
+          "type": "MIX",
+          "name": "Mix",
+          "inputs": [
+            "Factor",
+            "Factor",
+            "A",
+            "B",
+            "A",
+            "B",
+            "A",
+            "B",
+            "A",
+            "B"
+          ],
+          "children": []
+        },
+        {
+          "type": "BSDF_PRINCIPLED",
+          "name": "Principled BSDF",
+          "inputs": [
+            "Base Color",
+            "Metallic",
+            "Roughness",
+            "IOR",
+            "Alpha",
+            "Normal",
+            "Weight",
+            "Diffuse Roughness",
+            "Subsurface Weight",
+            "Subsurface Radius",
+            "Subsurface Scale",
+            "Subsurface IOR",
+            "Subsurface Anisotropy",
+            "Specular IOR Level",
+            "Specular Tint",
+            "Anisotropic",
+            "Anisotropic Rotation",
+            "Tangent",
+            "Transmission Weight",
+            "Coat Weight",
+            "Coat Roughness",
+            "Coat IOR",
+            "Coat Tint",
+            "Coat Normal",
+            "Sheen Weight",
+            "Sheen Roughness",
+            "Sheen Tint",
+            "Emission Color",
+            "Emission Strength",
+            "Thin Film Thickness",
+            "Thin Film IOR"
+          ],
+          "children": []
+        },
+        {
+          "type": "BSDF_TRANSLUCENT",
+          "name": "Translucent BSDF",
+          "inputs": [
+            "Color",
+            "Normal",
+            "Weight"
+          ],
+          "children": []
+        },
+        {
+          "type": "GROUP_OUTPUT",
+          "name": "Group Output",
+          "inputs": [
+            "Shader",
+            ""
+          ],
+          "children": []
+        },
+        {
+          "type": "MATH",
+          "name": "Math",
+          "inputs": [
+            "Value",
+            "Value",
+            "Value"
+          ],
+          "children": []
+        },
+        {
+          "type": "NORMAL_MAP",
+          "name": "Normal Map",
+          "inputs": [
+            "Strength",
+            "Color"
+          ],
+          "children": []
+        },
+        {
+          "type": "MIX",
+          "name": "rough amount",
+          "inputs": [
+            "Factor",
+            "Factor",
+            "A",
+            "B",
+            "A",
+            "B",
+            "A",
+            "B",
+            "A",
+            "B"
+          ],
+          "children": []
+        },
+        {
+          "type": "MIX_SHADER",
+          "name": "Mix Shader",
+          "inputs": [
+            "Fac",
+            "Shader",
+            "Shader"
+          ],
+          "children": []
+        },
+        {
+          "type": "HUE_SAT",
+          "name": "Hue Saturation Value",
+          "inputs": [
+            "Hue",
+            "Saturation",
+            "Value",
+            "Fac",
+            "Color"
+          ],
+          "children": []
+        },
+        {
+          "type": "HUE_SAT",
+          "name": "Hue Saturation Value.001",
+          "inputs": [
+            "Hue",
+            "Saturation",
+            "Value",
+            "Fac",
+            "Color"
+          ],
+          "children": []
+        },
+        {
+          "type": "ADD_SHADER",
+          "name": "Add Shader",
+          "inputs": [
+            "Shader",
+            "Shader"
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

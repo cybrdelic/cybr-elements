@@ -1,0 +1,34 @@
+[
+  {
+    "id": "fire",
+    "title": "Fire",
+    "video": "fire-material-v2.mp4",
+    "note": "Finer simulation cells, temperature-dependent color, less bloom and more reaction detail.",
+    "baseline": "fire-shared.mp4",
+    "poster": "fire-material-poster.jpg"
+  },
+  {
+    "id": "water",
+    "title": "Water",
+    "video": "water-material.mp4",
+    "note": "Finer, volume-checked reconstruction with broader reflections and thickness-dependent absorption.",
+    "baseline": "water-shared.mp4",
+    "poster": "water-material-poster.jpg"
+  },
+  {
+    "id": "air",
+    "title": "Air",
+    "video": "air-material-v2.mp4",
+    "note": "More transparent density, directional scattering and depth-dependent shadowing.",
+    "baseline": "air-shared.mp4",
+    "poster": "air-material-poster.jpg"
+  },
+  {
+    "id": "earth",
+    "title": "Earth",
+    "video": "earth-material.mp4",
+    "note": "Chipped edges, displaced fracture faces, mineral variation and finer surface relief.",
+    "poster": "earth-material-poster.jpg",
+    "baseline": "earth-packed.mp4"
+  }
+]

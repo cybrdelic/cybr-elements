@@ -1,0 +1,215 @@
+{
+  "count": 26,
+  "metadata": [
+    {
+      "id": "lava",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "ice",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "foam",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "metal",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "combustion",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "lightning",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "blue-fire",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "sand",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "mud",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "plants",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "steam",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "smoke",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "snow",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "glass",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "crystal",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "blood",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "healing",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "spirit",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "energy",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "lightning-redirection",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "seismic",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "sound",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "flight",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "spirit-projection",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "pressure",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    },
+    {
+      "id": "heat",
+      "duration": 4,
+      "width": 1920,
+      "height": 1080,
+      "time": 1
+    }
+  ],
+  "times": [
+    1.555381,
+    1.555206,
+    1.555189,
+    1.555058
+  ],
+  "solo": [
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": false,
+      "time": 0.762829
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    },
+    {
+      "paused": true,
+      "time": 0.5
+    }
+  ],
+  "fireTiles": 4,
+  "guides": 4,
+  "mobileOverflow": false,
+  "errors": []
+}

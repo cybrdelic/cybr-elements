@@ -1,0 +1,15 @@
+{
+  "device": "CPU",
+  "particles": 24000,
+  "frames": 120,
+  "grid": [
+    160,
+    112
+  ],
+  "dt": 0.005555555555555556,
+  "CFL": 0.3,
+  "peakDisplacement": 1.0494458675384521,
+  "peakSpeed": 0.9387132525444031,
+  "mechanism": "Localized inward force and rebound",
+  "limits": "Two-dimensional slowed witness; pressure effect is a prescribed body force"
+}

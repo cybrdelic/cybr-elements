@@ -1,0 +1,28 @@
+{
+  "status": "fail",
+  "runs": [
+    "upper-crust-load-23",
+    "upper-crust-load-23-fine"
+  ],
+  "time": 18.08,
+  "maxDtSeconds": [
+    0.02,
+    0.01
+  ],
+  "gates": {
+    "velocity": false,
+    "position": false,
+    "loadingWork": false,
+    "temperature": true
+  },
+  "massWeightedVelocityRelativeDifference": 8.794416928086243,
+  "maximumPositionDifferenceM": 0.00027625364406916954,
+  "boundaryWorkJ": [
+    0.028367374217672964,
+    0.011058861354022152
+  ],
+  "boundaryWorkRelativeDifference": 1.5651261291340486,
+  "maximumTemperatureDifferenceK": 0.6276702790980835,
+  "meaning": "Both runs form and export upper-crust fractures. Their trajectories/loading work must also converge; mechanism success alone is insufficient.",
+  "disposition": "Production render blocked until fracture time integration is resolved. No final simulation is claimed."
+}

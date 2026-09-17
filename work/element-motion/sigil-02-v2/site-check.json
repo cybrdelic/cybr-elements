@@ -1,0 +1,27 @@
+{
+  "http": [
+    {
+      "url": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/",
+      "status": 200,
+      "contentType": "text/html"
+    },
+    {
+      "url": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/fire-02.mp4",
+      "status": 200,
+      "contentType": "video/mp4"
+    },
+    {
+      "url": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/artwork-02.png",
+      "status": 200,
+      "contentType": "image/png"
+    }
+  ],
+  "browserVerified": [
+    "Page opened with correct 02 title and video",
+    "Compare 02 artwork expands and shows source image",
+    "Hide artwork collapses",
+    "Player restored for playback",
+    "Download link points to completed video"
+  ],
+  "activeRenderJobs": []
+}

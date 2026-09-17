@@ -1,0 +1,32 @@
+{
+  "startTime": 0.0,
+  "config": {
+    "plane": -0.024,
+    "half_width": 0.006,
+    "height": 0.003,
+    "peak_speed": 0.0,
+    "temperature": 1450.0
+  },
+  "period": 0.3333333333333333,
+  "nextEmission": 1000000000000.0,
+  "emissions": 6,
+  "bedTemperatureK": 1173.15,
+  "description": "Continuous-21 molten inlet pulse ends at its cached physical time. The existing mass, heat, velocity and fracture state continue in the full MPM/thermal solve with zero inlet velocity. No artificial cooling, motion targets, pore cuts, or added cracks.",
+  "cellSizeM": [
+    0.004,
+    0.003,
+    0.0005
+  ],
+  "sampleSizeM": [
+    0.002,
+    0.0015,
+    0.00025
+  ],
+  "stateSha256": "38a394adc8d8be7d1353a1252df4d03821fbc37587000ffb9866bdfa064fe89c",
+  "inletShutoffTime": 2.333333333333333,
+  "parent": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\continuous-21\\state.npz",
+    "sha256": "cab09a0738ca19fd953e49ca6b06f716c6088421aa963690534322110c151eee",
+    "physicalTime": 2.333333333333333
+  }
+}

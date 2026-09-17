@@ -1,0 +1,20 @@
+from pathlib import Path
+R=Path(__file__).resolve().parent
+source=R.parent/'realism/combustion.py'
+s=source.read_text(encoding='utf-8')
+s=s.replace("out = ROOT/'realism/combustion-frames'","out = ROOT/'dynamics/frames/combustion'")
+s=s.replace("out.mkdir(exist_ok=True)","out.mkdir(parents=True,exist_ok=True)")
+s=s.replace("video=ROOT.parent.parent/'outputs/cybrdelic-type/elements/motion/subelements/rebuild-combustion.mp4'","video=ROOT/'dynamics/combustion-review.mp4'")
+s=s.replace("cache_dir=ROOT/'realism/combustion-state'","cache_dir=ROOT/'dynamics/cache/combustion'")
+s=s.replace("cache_dir.mkdir(exist_ok=True)","cache_dir.mkdir(parents=True,exist_ok=True)")
+s=s.replace("np.savez_compressed(cache_dir/f'{frame:04}.npz',fields=state[0,[5,6,7]].cpu().numpy().astype('<f2'))", "fields=state[0,[5,6,7]].cpu().numpy(); fields[np.abs(fields)<.002]=0; np.savez_compressed(cache_dir/f'{frame:04}.npz',fields=fields.astype('<f2'))")
+s=s.replace("ROOT/'realism/combustion-report.json'","ROOT/'dynamics/combustion-report.json'")
+s=s.replace("blast=1.68<t<1.78","blast=1.68<t<1.755")
+s=s.replace("radius=.36 if blast else .075","radius=.23 if blast else .085")
+s=s.replace("nozzle*=torch.clamp(.45", "nozzle*=torch.exp(-((across/.18)**2+(y/.16)**2)*.8);nozzle*=torch.clamp(.45")
+s=s.replace("px/rr*16+shear*1.5", "px/rr*7+float(dx)*12+shear*1.1")
+s=s.replace("y/rr*16+shear*1.5", "y/rr*7+shear*1.1")
+s=s.replace("pz/rr*16+shear*1.5", "pz/rr*7+float(dz)*12+shear*1.1")
+s=s.replace("state[0,7]*18", "state[0,7]*7")
+(R/'reactive.py').write_text(s,encoding='utf-8')
+print('Prepared reactive.py; new cache and frame directories; no old batch resumed')

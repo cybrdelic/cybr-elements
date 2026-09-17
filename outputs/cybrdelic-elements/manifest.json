@@ -1,0 +1,74 @@
+[
+  {
+    "element": "water",
+    "style": "01",
+    "file": "cybrdelic-water-01-final.mp4",
+    "bytes": 95556794,
+    "sha256": "28e69c1a788105135932af07da2c785ef2fe056ddec99168ebbe3c3aebf0de3b",
+    "width": 3840,
+    "height": 2160,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  {
+    "element": "air",
+    "style": "01",
+    "file": "cybrdelic-air-01.mp4",
+    "bytes": 5894651,
+    "sha256": "4bf9456001be24be282dc7dfd5529646489b2dff819662f250e48f36650fe92c",
+    "width": 2560,
+    "height": 1440,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  {
+    "element": "earth",
+    "style": "01",
+    "file": "cybrdelic-earth-01.mp4",
+    "bytes": 24859186,
+    "sha256": "ce41a3b5ded7fee17588d25ca2b335c2eff74efce962283069008b9774e83ff7",
+    "width": 2560,
+    "height": 1440,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  {
+    "element": "water",
+    "style": "02",
+    "file": "cybrdelic-water-02-final.mp4",
+    "bytes": 104050088,
+    "sha256": "59311d9f7f748411285befc94848f7ddc91190cd092a926b12029bb43ab7cc91",
+    "width": 3840,
+    "height": 2160,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  {
+    "element": "air",
+    "style": "02",
+    "file": "cybrdelic-air-02.mp4",
+    "bytes": 6772365,
+    "sha256": "f9bcb13af4749f89620537348bb3fdbc58c2855386c0015ea1d09b48017de3b0",
+    "width": 2560,
+    "height": 1440,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  },
+  {
+    "element": "earth",
+    "style": "02",
+    "file": "cybrdelic-earth-02.mp4",
+    "bytes": 27694606,
+    "sha256": "cf984040fffa01ecead3905e3203b5cfff1f5e33bc0d032002c0dfe30eddaa59",
+    "width": 2560,
+    "height": 1440,
+    "r_frame_rate": "30/1",
+    "duration": "15.000000",
+    "nb_read_frames": "450"
+  }
+]

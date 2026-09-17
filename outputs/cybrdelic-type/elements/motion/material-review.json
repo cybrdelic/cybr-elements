@@ -1,0 +1,156 @@
+{
+  "acceptedByUser": [
+    "fire",
+    "water",
+    "air"
+  ],
+  "earth": "Rebuilt as earth-mass.mp4; rendered and verified, awaiting user review",
+  "constraint": "Preserve accepted fire, water and air videos; all materials share the same source trail. Independent playback is required.",
+  "acceptedVideoHashes": {
+    "fire": "cec7aa5e25fd49d49a0aa0dafa2fa7285fc3f61775481b636e2678953ba5e1c9",
+    "water": "414e287c1773423d0e07e703c4b62f47b34e4ca661360c7445b8babe9df7b805",
+    "air": "4044d52034e41eb17376655502e09c1d706ac2e18bb5fd0b0f1a0b35fac0fefc"
+  },
+  "acceptedMaterialPass": 2,
+  "acceptedMaterialVideos": {
+    "fire": {
+      "file": "fire-sheets.mp4",
+      "sha256": "4c44bc8d485b0341aa4730a1ee544913e0cb7986a9ac0a47599ebb711e6f9f58"
+    },
+    "water": {
+      "file": "water-optical.mp4",
+      "sha256": "f2e1f8001affdc84ffbcb87a16301fd4821e4102ec9c67ffbf0a8b5b3f7f793a"
+    },
+    "air": {
+      "file": "air-filaments-lit.mp4",
+      "sha256": "bdb7d06ba622ad102b51c4d48a53d7d17f1781498ab6fb979ab6fc72daaa2bef"
+    }
+  },
+  "earthRevision": {
+    "video": "earth-mass.mp4",
+    "rigidFragments": 660,
+    "fineGrains": 5940,
+    "largeSlabs": 12,
+    "sizeDistribution": "Sparse large slabs, medium fracture chips, many small grains",
+    "physics": "Bullet fragment contacts; fine-grain momentum, linear drag, scheduled gravity and floor contacts. Shared authored lift during the drawing beat.",
+    "validation": {
+      "comparisons": [
+        {
+          "original": {
+            "time": 1,
+            "file": "fire-shared.mp4"
+          },
+          "previous": {
+            "time": 1,
+            "file": "fire-material-v2.mp4"
+          },
+          "trial": {
+            "time": 1,
+            "file": "fire-sheets.mp4"
+          }
+        },
+        {
+          "original": {
+            "time": 1,
+            "file": "water-shared.mp4"
+          },
+          "previous": {
+            "time": 1,
+            "file": "water-material.mp4"
+          },
+          "trial": {
+            "time": 1,
+            "file": "water-optical.mp4"
+          }
+        },
+        {
+          "original": {
+            "time": 1,
+            "file": "air-shared.mp4"
+          },
+          "previous": {
+            "time": 1,
+            "file": "air-material-v2.mp4"
+          },
+          "trial": {
+            "time": 1,
+            "file": "air-filaments-lit.mp4"
+          }
+        },
+        {
+          "original": {
+            "time": 1,
+            "file": "earth-packed.mp4"
+          },
+          "previous": {
+            "time": 1,
+            "file": "earth-strata.mp4"
+          },
+          "trial": {
+            "time": 1,
+            "file": "earth-mass.mp4"
+          }
+        }
+      ],
+      "metadata": [
+        {
+          "src": "fire-sheets.mp4",
+          "duration": 4,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "src": "water-optical.mp4",
+          "duration": 4,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "src": "air-filaments-lit.mp4",
+          "duration": 4,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "src": "earth-mass.mp4",
+          "duration": 4,
+          "width": 1920,
+          "height": 1080
+        }
+      ],
+      "seekTimes": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "playTimes": [
+        1.587763,
+        1.587735,
+        1.587724,
+        1.587692
+      ],
+      "solo": [
+        {
+          "paused": true,
+          "time": 0.5
+        },
+        {
+          "paused": false,
+          "time": 0.757144
+        },
+        {
+          "paused": true,
+          "time": 0.5
+        },
+        {
+          "paused": true,
+          "time": 0.5
+        }
+      ],
+      "overlays": 4,
+      "mobileOverflow": false,
+      "errors": []
+    }
+  }
+}

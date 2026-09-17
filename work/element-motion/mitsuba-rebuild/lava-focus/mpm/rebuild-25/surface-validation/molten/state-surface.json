@@ -1,0 +1,28 @@
+{
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\surface-validation\\molten\\state.npz",
+  "sourceSha256": "a8dcbae526b29f4b06e300d237f4bf51d7013060276120e18497dcb267df276f",
+  "physicalSeconds": 0.0,
+  "vertices": 2154,
+  "triangles": 4304,
+  "solverParticleVolumeM3": 3.200000000000001e-08,
+  "reconstructedVolumeM3": 3.1999748433142395e-08,
+  "relativeVolumeDifference": 7.861464300414708e-06,
+  "kernelSigmaRenderCells": [
+    1.4285714285714286,
+    1.4285714285714286,
+    1.4285714285714286
+  ],
+  "kernelSigmaM": [
+    0.00025,
+    0.00025,
+    0.00025
+  ],
+  "renderCellSizeM": [
+    0.000175,
+    0.000175,
+    0.000175
+  ],
+  "method": "density reconstruction",
+  "fractureTopologyPreserved": true,
+  "limits": "Unfractured material reconstruction. Solidification does not switch the exterior to voxel cells. Explicit --method kernel on a fractured state does not preserve fracture topology. Material coordinates use local inverse deformation gradients."
+}

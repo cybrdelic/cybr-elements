@@ -1,0 +1,18 @@
+[
+  {
+    "kind": "combustion",
+    "script": "render_combustion.py"
+  },
+  {
+    "kind": "heat",
+    "script": "render_optics.py"
+  },
+  {
+    "kind": "sound",
+    "script": "render_optics.py"
+  },
+  {
+    "kind": "pressure",
+    "script": "render_optics.py"
+  }
+]

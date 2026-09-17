@@ -1,0 +1,83 @@
+{
+  "grid": [
+    112,
+    36,
+    108
+  ],
+  "lo": [
+    -5.5,
+    -1.8,
+    0.0
+  ],
+  "extent": [
+    11.0,
+    3.6,
+    8.1
+  ],
+  "frames": 300,
+  "finite": true,
+  "emitterCoupling": "Actual per-frame Bullet/kinematic fracture transforms",
+  "method": "CPU incompressible advection for the three new local atmospheres.\n\nPeriodic FFT pressure projection with padded, absorbing outer boundaries.\nAuthored emission/curl force, semi-Lagrangian transport, buoyancy, dissipation.\nPNG atlases retain the 3D density; they are sampled as a volume in Cycles.\n",
+  "rows": [
+    {
+      "frame": 0,
+      "maxDensity": 0.0,
+      "densitySum": 0.0,
+      "maxSpeed": 0.00797549169510603
+    },
+    {
+      "frame": 30,
+      "maxDensity": 0.07004189491271973,
+      "densitySum": 177.9892120361328,
+      "maxSpeed": 0.27775901556015015
+    },
+    {
+      "frame": 60,
+      "maxDensity": 0.27661508321762085,
+      "densitySum": 1365.47216796875,
+      "maxSpeed": 0.5387765765190125
+    },
+    {
+      "frame": 90,
+      "maxDensity": 0.334527850151062,
+      "densitySum": 2929.0400390625,
+      "maxSpeed": 0.7730278968811035
+    },
+    {
+      "frame": 120,
+      "maxDensity": 0.32968783378601074,
+      "densitySum": 4094.7900390625,
+      "maxSpeed": 1.0713982582092285
+    },
+    {
+      "frame": 150,
+      "maxDensity": 0.37595677375793457,
+      "densitySum": 4882.47705078125,
+      "maxSpeed": 1.3399051427841187
+    },
+    {
+      "frame": 180,
+      "maxDensity": 0.3576619029045105,
+      "densitySum": 5276.51025390625,
+      "maxSpeed": 1.5608383417129517
+    },
+    {
+      "frame": 210,
+      "maxDensity": 0.2580527067184448,
+      "densitySum": 5045.18603515625,
+      "maxSpeed": 1.6082874536514282
+    },
+    {
+      "frame": 240,
+      "maxDensity": 0.20467683672904968,
+      "densitySum": 4430.890625,
+      "maxSpeed": 1.4409037828445435
+    },
+    {
+      "frame": 270,
+      "maxDensity": 0.13129709661006927,
+      "densitySum": 3550.1591796875,
+      "maxSpeed": 1.3692338466644287
+    }
+  ]
+}

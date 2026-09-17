@@ -1,0 +1,146 @@
+{
+  "blue-fire": {
+    "videoHashes": {
+      "01": "10b0f345cd463e8e5bc89ba4e3159dc23d601af4d286011ae5d7bf0952f826d5",
+      "02": "65cccdad021284c0a93d4f692f18c43576323babda62306bdc94d9c41edbb548"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Both shapes present. Blue reaction sheets follow write-on, hold through 11s and extinguish by the late frames. Close framing clips plumes while following the source as designed.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "combustion": {
+    "videoHashes": {
+      "01": "8f975e4bd18b58f91f01eafa7cebbfe7da02c9ede1a5b50ad788edca71b2e1da",
+      "02": "33a9f4d0332c2b4c8cfb3e60ee0c18b7e23c533efaa0864f02a3afdc6cb580e6"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Warm gas sheets follow both original forms. Release accent is visible at 11.17s; flame extinguishes in the late frames. The accent is authored luminosity, not a detonation solve.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "steam": {
+    "videoHashes": {
+      "01": "2e7ee6f582abeffb77d379602cd8f202d109c0b8a70d7839d49a82655750ccd0",
+      "02": "f5afd49ad3182d9dab6b437afaf698e0f36bf1e0a8cbd5b7aab6700fbe2ece5a"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Scattering volume preserves both shapes through hold, with no flat white mask fill. Residual vapor dissipates after release.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "smoke": {
+    "videoHashes": {
+      "01": "9cca9a13d4efd6685d06870c126a995a236b0beb402df7e0f8f27867c4d2ab9e",
+      "02": "8022eb7415f165b5e0d05290cdfff5b27fc76a67c84716ba771c8877a74d8867"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Darker scattering volume on both shapes. Residual wisps decay after supply stops; black perimeter remains.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "heat": {
+    "videoHashes": {
+      "01": "b0a69dd089226cd41dbff8ffd6181adaf03766b3f9547c57c019dd2cad07f3be",
+      "02": "4b524710704c66ec0a66af80bb538eed350e1c2400a9c6e7b8b599f50bd5b7f8"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Optical gradient silhouette on both original forms, with thermal wisps and subsequent extinction. Abstract diagnostic, not visible heat on a textured backdrop.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "sound": {
+    "videoHashes": {
+      "01": "58c0c2c0fecc1da4dd8641f8fe9639806c860d400b830a3bdab48720e32918ea",
+      "02": "ecd7e1a5e7add016da83339ddf3b76b7456e56d5b9a6f1c1f55e29320e9ed39d"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Waveguide pulses remain around the original contours. Some phases soften legibility, with clearer crests at 10s; released waves decay into black.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "pressure": {
+    "videoHashes": {
+      "01": "a6622909b87c6e50114e2bd7a12d668d4381c49e72710a2f8f1a20f35bda1a8f",
+      "02": "02399ff3dc90321d097a12035be0e7f2efb7e9af3f367f558110bb1a3c40cc1d"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Confined compression field preserves both forms during hold. Pulse crests modulate contour visibility and decay after release.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  },
+  "metal": {
+    "videoHashes": {
+      "01": "98636bfd8f7ca135e9f85172c352b4bdacc426ce189fb1b1cfbaaeb36859e920",
+      "02": "13a13afd9e776c84e68af464fb40f8d7308cb86352cd31dd0b2026db0d0ce39e"
+    },
+    "sampledFrames": [
+      30,
+      90,
+      165,
+      240,
+      300,
+      335,
+      370,
+      420
+    ],
+    "observation": "Both original silhouettes are preserved. Reflective folded surfaces stay supported through hold and descend after 11s without the rejected fragment-group stretching; black tail is complete.",
+    "scope": "Original sigil, sequence, black framing and encode review; not certification of physical realism."
+  }
+}

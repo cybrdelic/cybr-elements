@@ -1,0 +1,16 @@
+* text=auto
+*.py text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.mp4 binary
+*.gif binary
+*.png binary
+*.jpg binary
+*.ttf binary
+*.woff2 binary
+*.npz binary
+*.f32 binary

@@ -1,0 +1,232 @@
+[
+  {
+    "id": "lava",
+    "script": "render_liquid_materials.py",
+    "family": "thermal liquid",
+    "identity": "Viscous interior and connected cooling skin",
+    "acceptance": "Crust folds under compression and tears under tension",
+    "limitation": "One-way thermal carrier; viscosity feedback still needs a new coupled solve",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "ice",
+    "script": "render_ice_body.py",
+    "family": "phase change",
+    "identity": "Coherent clear ice with internal fracture surfaces",
+    "acceptance": "Solid regions retain shape before stress-driven breakup",
+    "limitation": "Whole-body freeze transition is a rejected limitation pending progressive phase solve",
+    "engine": "blender",
+    "frame": 65
+  },
+  {
+    "id": "foam",
+    "script": "render_liquid_materials.py",
+    "family": "wet foam",
+    "identity": "Liquid-bearing connected cell structure",
+    "acceptance": "Surface attachment, cell packing, drainage and rupture",
+    "limitation": "Carrier attachment exists; explicit shared films and drainage are incomplete",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "metal",
+    "script": "render_solids.py",
+    "family": "plastic shell",
+    "identity": "Substantial brushed steel strip",
+    "acceptance": "Continuous thickness, localized folds and retained deformation",
+    "limitation": "Cached deformation needs an independent yield and springback check",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "glass",
+    "script": "render_constructed.py",
+    "family": "brittle dielectric",
+    "identity": "Thin clear glass with physical edges",
+    "acceptance": "Closed thickness, dark transparent faces, irregular fracture",
+    "limitation": "Optical fill and prefracture appearance require visual review",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "crystal",
+    "script": "render_minerals.py",
+    "family": "mineral clusters",
+    "identity": "Intergrown quartz-like clusters",
+    "acceptance": "Persistent growth structure and plausible optical depth",
+    "limitation": "Growth geometry retained; no new crystal-growth solver",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "sand",
+    "script": "render_solids.py",
+    "family": "frictional grains",
+    "identity": "Dense dry mineral sand",
+    "acceptance": "Packing, shear and nonelastic release",
+    "limitation": "Render children inherit continuum deformation; no separate child-grain solve",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "snow",
+    "script": "render_solids.py",
+    "family": "cohesive grains",
+    "identity": "Slightly cohesive powder snow",
+    "acceptance": "Compaction, irregular aggregates and fracture-born powder",
+    "limitation": "Cached MPM response must be compared with material test",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "mud",
+    "script": "render_solids.py",
+    "family": "yield fluid",
+    "identity": "Dense gritty wet mud",
+    "acceptance": "Slump under load, folds and restrained wet reflections",
+    "limitation": "Existing viscous carrier lacks verified yield-stress response",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "blood",
+    "script": "render_solids.py",
+    "family": "absorbing liquid",
+    "identity": "Dense red liquid with thin transmitting edges",
+    "acceptance": "Thickness-dependent absorption and coherent breakup",
+    "limitation": "Existing carrier lacks independently calibrated rheology",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "plants",
+    "script": "render_constructed.py",
+    "family": "branched rods",
+    "identity": "Connected living plant",
+    "acceptance": "Tapered stems, sound attachments, leaf lag and unfurling",
+    "limitation": "Scanned leaves do not replace a botanical attachment audit",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "healing",
+    "script": "render_healing.py",
+    "family": "fictional repair",
+    "identity": "A damaged original sigil restored by a traveling front",
+    "acceptance": "Actual gaps close behind a localized treatment",
+    "limitation": "Designed fictional restoration, not a medical model",
+    "engine": "blender",
+    "frame": 52
+  },
+  {
+    "id": "lightning",
+    "script": "lightning.py",
+    "family": "discharge",
+    "identity": "Intermittent branched electrical discharge",
+    "acceptance": "Leader, bright stroke, selective restrikes and dark intervals",
+    "limitation": "Authored slow-motion discharge; not calibrated electromagnetics",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "lightning-redirection",
+    "script": "lightning.py",
+    "family": "discharge transfer",
+    "identity": "A continuous incoming-guided-outgoing event",
+    "acceptance": "Readable transfer through the source trajectory",
+    "limitation": "Authored routing and temporal scale",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "combustion",
+    "script": "render_combustion.py",
+    "family": "reactive gas",
+    "identity": "Concentrated jet and localized expanding burst",
+    "acceptance": "Distinct reaction, temperature, soot and pressure response",
+    "limitation": "Current cache has a restrained burst; lighting alone cannot enlarge its physics",
+    "engine": "numpy",
+    "frame": 52
+  },
+  {
+    "id": "spirit",
+    "script": "render_channels.py",
+    "family": "fictional conversion",
+    "identity": "Agitated structure becoming ordered behind a front",
+    "acceptance": "A readable local change in topology and motion",
+    "limitation": "Art-directed fictional field",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "energy",
+    "script": "render_channels.py",
+    "family": "fictional exchange",
+    "identity": "Two interacting directed energy flows",
+    "acceptance": "Intensity transfers locally rather than illuminating everything uniformly",
+    "limitation": "Art-directed fictional field",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "spirit-projection",
+    "script": "render_projection.py",
+    "family": "fictional separation",
+    "identity": "Original sigil retaining identity through separation",
+    "acceptance": "Coherent silhouette, depth and progressive detachment",
+    "limitation": "Luminous membrane is a design interpretation",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "sound",
+    "script": "render_witness.py",
+    "family": "air oscillation",
+    "identity": "Compression waves revealed by fine suspended matter",
+    "acceptance": "Traveling compressions and interference, no static diagram rings",
+    "limitation": "Amplified slow-motion witness",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "pressure",
+    "script": "render_witness.py",
+    "family": "air pressure",
+    "identity": "Moving inward pull and rebound",
+    "acceptance": "Cavity formation, inward acceleration and release",
+    "limitation": "Reduced pressure-force witness",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "heat",
+    "script": "render_heat_witness.py",
+    "family": "thermal optics",
+    "identity": "Cooling matter revealing transported heat",
+    "acceptance": "Radiation changes with temperature and gradients weaken",
+    "limitation": "Visible witness, not self-luminous unlit air",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "flight",
+    "script": "render_channels.py",
+    "family": "wake",
+    "identity": "Coherent air displacement and lift wake",
+    "acceptance": "Counter-rotating structure and velocity-dependent fine tracers",
+    "limitation": "One-way integrated tracer wake",
+    "engine": "blender",
+    "frame": 45
+  },
+  {
+    "id": "seismic",
+    "script": "render_minerals.py",
+    "family": "elastic solid",
+    "identity": "Impulse traveling through a connected mineral structure",
+    "acceptance": "Source, propagation and boundary response remain readable",
+    "limitation": "Reduced elastic-wave witness, not tomography",
+    "engine": "blender",
+    "frame": 45
+  }
+]

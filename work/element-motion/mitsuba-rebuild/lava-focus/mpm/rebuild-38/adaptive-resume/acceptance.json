@@ -1,0 +1,19 @@
+{
+  "stateSha256": "a35651edd308ff4567044737e9beb3e4e527b34b0d23b8a3ccad34fb2df5adbc",
+  "time": 0.2,
+  "physicalChecks": true,
+  "acceptedStateNumerics": true,
+  "requestedIntervalComplete": true,
+  "substrateChecks": true,
+  "temporalChecks": true,
+  "formedFromHotMaterial": true,
+  "openFracture": false,
+  "maximumOpeningM": 0.0,
+  "visualReview": false,
+  "publishable": false,
+  "thermalResidual": 7.871133361172659e-13,
+  "mechanicalResidual": 1.3192140358362882e-10,
+  "massErrorKg": 0.0,
+  "nextGate": "Demonstrate actual open fracture",
+  "rule": "A new cache invalidates the prior visual review. Passing numerical checks never authorizes publication by itself."
+}

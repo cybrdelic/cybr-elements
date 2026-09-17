@@ -1,0 +1,32 @@
+         493074 function calls (486390 primitive calls) in 4.401 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1917 to 24 due to restriction <24>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    4.402    4.402 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py:330(step)
+        1    0.011    0.011    4.399    4.399 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_coupled.py:38(coupled_step)
+        1    0.185    0.185    4.386    4.386 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm.py:336(_step)
+        1    0.038    0.038    2.174    2.174 C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_sparse_pressure.py:12(contact)
+        5    0.000    0.000    1.476    0.295 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\linalg\_dsolve\linsolve.py:329(splu)
+        5    1.471    0.294    1.471    0.294 {built-in method scipy.sparse.linalg._dsolve._superlu.gstrf}
+        2    0.000    0.000    1.269    0.635 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numba\core\dispatcher.py:344(_compile_for_args)
+        2    0.000    0.000    1.004    0.502 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numba\core\dispatcher.py:862(compile)
+        2    0.000    0.000    1.003    0.501 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numba\core\caching.py:713(load_overload)
+    248/2    0.001    0.000    0.910    0.455 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numba\core\base.py:261(refresh)
+      119    0.000    0.000    0.822    0.007 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:919(__matmul__)
+      119    0.003    0.000    0.820    0.007 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_base.py:788(_matmul_dispatch)
+       30    0.002    0.000    0.767    0.026 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\scipy\sparse\_compressed.py:415(_matmul_sparse)
+4700/4488    0.014    0.000    0.615    0.000 <frozen importlib._bootstrap>:1390(_handle_fromlist)
+   135/86    0.002    0.000    0.610    0.007 <frozen importlib._bootstrap>:1349(_find_and_load)
+    91/42    0.001    0.000    0.605    0.014 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+      248    0.009    0.000    0.589    0.002 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numba\core\cpu.py:97(load_additional_registries)
+   237/50    0.001    0.000    0.578    0.012 <frozen importlib._bootstrap>:480(_call_with_frames_removed)
+    90/42    0.001    0.000    0.549    0.013 <frozen importlib._bootstrap>:911(_load_unlocked)
+    87/42    0.001    0.000    0.544    0.013 <frozen importlib._bootstrap_external>:993(exec_module)
+    55/34    0.001    0.000    0.531    0.016 {built-in method builtins.__import__}
+       28    0.455    0.016    0.455    0.016 {built-in method scipy.sparse._sparsetools.csr_matmat}
+    87/42    0.002    0.000    0.451    0.011 {built-in method builtins.exec}
+    248/2    0.001    0.000    0.403    0.202 C:\Users\alexf\AppData\Local\Programs\Python\Python312\Lib\site-packages\numba\core\typing\context.py:232(refresh)
+
+

@@ -1,0 +1,61 @@
+{
+  "startTime": 0.0,
+  "config": {
+    "plane": -0.09,
+    "half_width": 0.015,
+    "height": 0.015,
+    "peak_speed": 0.06,
+    "temperature": 1450.0,
+    "pipe_end": -0.075
+  },
+  "period": 0.08333333333333334,
+  "nextEmission": 0.6666666666666669,
+  "emissions": 7,
+  "description": "Six initially fractured cold basalt clasts resting in molten lava. Initial cracks are prescribed geometry, NOT generated fracture history. All subsequent velocities, contact, heating and incoming source material are solved by MPM.",
+  "initialClasts": [
+    {
+      "label": 1,
+      "particles": 268,
+      "volume": 3.331259398234249e-05,
+      "triangles": 47876
+    },
+    {
+      "label": 2,
+      "particles": 178,
+      "volume": 2.2998309964149832e-05,
+      "triangles": 31876
+    },
+    {
+      "label": 3,
+      "particles": 78,
+      "volume": 1.1167751236976054e-05,
+      "triangles": 22372
+    },
+    {
+      "label": 4,
+      "particles": 321,
+      "volume": 4.0055817366103324e-05,
+      "triangles": 51648
+    },
+    {
+      "label": 5,
+      "particles": 132,
+      "volume": 1.6598894797482748e-05,
+      "triangles": 30578
+    },
+    {
+      "label": 6,
+      "particles": 9,
+      "volume": 8.481401548927361e-07,
+      "triangles": 4192
+    }
+  ],
+  "initialHotK": 1450.0,
+  "initialColdK": [
+    890.0,
+    1040.0
+  ],
+  "boundaryResolutionM": 0.0007,
+  "porosity": "780 prescribed spherical vesicle candidates; radius 0.75\u20133.6 mm, truncated Pareto exponent 1.55. Mesh volume sets particle mass. Pore formation is not simulated.",
+  "stateSha256": "d41b4066806ac0081e5340a7469ab8d7d7d685f6c207cf626491675ad400bf3b"
+}

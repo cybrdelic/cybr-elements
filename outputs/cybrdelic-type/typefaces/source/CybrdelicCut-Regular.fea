@@ -1,0 +1,18 @@
+languagesystem DFLT dflt; languagesystem latn dflt;
+feature kern {
+pos uni0041 uni0056 -70;
+pos uni0056 uni0041 -70;
+pos uni0041 uni0057 -50;
+pos uni0057 uni0041 -50;
+pos uni0054 uni006F -65;
+pos uni0054 uni0061 -55;
+pos uni0059 uni006F -60;
+pos uni004C uni0054 -40;
+pos uni0046 uni0061 -35;
+pos uni0050 uni0061 -30;
+pos uni0072 uni0061 -20;
+pos uni0072 uni006F -20;
+pos uni006C uni0069 18;
+pos uni0069 uni0063 10;
+} kern;
+feature dlig { sub uni0063 uni0079 uni0062 uni0072 uni0064 uni0065 uni006C uni0069 uni0063 by brandmark; } dlig;

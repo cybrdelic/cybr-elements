@@ -1,0 +1,25 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "avg_frame_rate": "30/1",
+  "duration": "4.000000",
+  "nb_frames": "120",
+  "id": "heat",
+  "sha256": "3ba08c2b03957d88e0d98b56991a6f65f2b86527b3dc2224e76d9c450dfa88c6",
+  "frameDigest": "fdcb3a035fed433334b46645d142a8bd5caf7b6aa25d1827b44eb3f0361dd74a",
+  "decodedFrames": 120,
+  "minimumBlackFraction": 0.8715075231481482,
+  "posterFrame": 61,
+  "selectedReviewFrames": [
+    10,
+    20,
+    30,
+    45,
+    57,
+    65,
+    80,
+    95
+  ],
+  "maximumFrameDifference": 1.243113425925926,
+  "status": "Technical checks pass; manual motion review is still required"
+}

@@ -1,0 +1,275 @@
+{
+  "model": "Local moving 3D point-charge discharges, advancing leaders, stable return-stroke channels; authored guidance and approximate aerosol scattering",
+  "events": [
+    0.27940461536248523,
+    0.3095421642065048,
+    0.36652996639410657,
+    0.40303532779216766,
+    0.408744881550471,
+    0.4909315158923467,
+    0.5468060771624247,
+    0.585626482963562,
+    0.6352631946404775,
+    0.6398228009541829,
+    0.7168265879154205,
+    0.7604076663653055,
+    0.7974895040194193,
+    0.8087095816930135,
+    0.8620861868063608,
+    0.9267617464065552,
+    0.9922849337259928,
+    1.0379953384399414,
+    1.067970911661784,
+    1.1240370273590088,
+    1.132951299349467,
+    1.1799391309420268,
+    1.325175980726878,
+    1.329008162021637,
+    1.437535305817922,
+    1.4460771481196084,
+    1.5272686084111533,
+    1.5694935321807861,
+    1.5702674984931946,
+    1.6631362040837607
+  ],
+  "frames": 168,
+  "seconds": 271.80110359191895,
+  "aerosol": [
+    {
+      "frame": 0,
+      "finite": true,
+      "aerosolMass": 0.0,
+      "maxSpeed": 1.660546064376831
+    },
+    {
+      "frame": 20,
+      "finite": true,
+      "aerosolMass": 0.0011225102041298996,
+      "maxSpeed": 1.0058690309524536
+    },
+    {
+      "frame": 40,
+      "finite": true,
+      "aerosolMass": 0.0012547690360704524,
+      "maxSpeed": 0.7397801280021667
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "aerosolMass": 0.0016202666616010328,
+      "maxSpeed": 0.596660315990448
+    },
+    {
+      "frame": 80,
+      "finite": true,
+      "aerosolMass": 0.0028322372546555575,
+      "maxSpeed": 0.5203378200531006
+    },
+    {
+      "frame": 100,
+      "finite": true,
+      "aerosolMass": 0.003511800931573352,
+      "maxSpeed": 0.46944373846054077
+    },
+    {
+      "frame": 120,
+      "finite": true,
+      "aerosolMass": 0.0031609659932143007,
+      "maxSpeed": 0.423827588558197
+    },
+    {
+      "frame": 140,
+      "finite": true,
+      "aerosolMass": 0.00330836087822076,
+      "maxSpeed": 0.4241069257259369
+    },
+    {
+      "frame": 160,
+      "finite": true,
+      "aerosolMass": 0.0015807100919210536,
+      "maxSpeed": 0.38958975672721863
+    }
+  ],
+  "networks": [
+    {
+      "nodes": 2666,
+      "depthRange": 0.9913051101895103,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 62,
+      "depthRange": 0.3525220179026794,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 157,
+      "depthRange": 0.470663845071594,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 72,
+      "depthRange": 0.3728978979714257,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 294,
+      "depthRange": 0.6609933898187459,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 87,
+      "depthRange": 0.4661063454327687,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 636,
+      "depthRange": 0.8458701093152645,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 91,
+      "depthRange": 0.43694620424938774,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 128,
+      "depthRange": 0.4879382954971646,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 162,
+      "depthRange": 0.48047783143125306,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 24,
+      "depthRange": 0.13251266769491576,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 134,
+      "depthRange": 0.4672608028087356,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 203,
+      "depthRange": 0.7611684304513244,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 16,
+      "depthRange": 0.12580144018047293,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 61,
+      "depthRange": 0.46373282403333693,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 84,
+      "depthRange": 0.3642713563564145,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 91,
+      "depthRange": 0.3040340177892437,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 281,
+      "depthRange": 0.5729002351559709,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 101,
+      "depthRange": 0.48861782687237565,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 25,
+      "depthRange": 0.22374309983074872,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 27,
+      "depthRange": 0.1547825525181432,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 77,
+      "depthRange": 0.44576565382409067,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 467,
+      "depthRange": 0.8341972727142574,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 120,
+      "depthRange": 0.5427852358300569,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 413,
+      "depthRange": 0.6961905219263187,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 26,
+      "depthRange": 0.24104089837574497,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 545,
+      "depthRange": 0.8054085990426288,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 27,
+      "depthRange": 0.12005724582550055,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 308,
+      "depthRange": 0.6516288466903876,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 75,
+      "depthRange": 0.40117849284872475,
+      "finite": true,
+      "connected": true
+    }
+  ]
+}

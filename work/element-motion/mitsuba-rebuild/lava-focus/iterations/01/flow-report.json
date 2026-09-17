@@ -1,0 +1,67 @@
+{
+  "solver": "CPU position-based incompressibility and implicit temperature-dependent viscosity",
+  "particles": 15272,
+  "steps": 60,
+  "seconds": 16.33,
+  "restVolume": 0.21153247743379971,
+  "densityKgM3": 2700,
+  "neighborOverflow": 0,
+  "history": [
+    {
+      "step": 0,
+      "densityP95": 1.0127203422759843,
+      "maxSpeed": 0.7278804982272202,
+      "temperatureRange": [
+        1377.0511064901634,
+        1460.0
+      ],
+      "seconds": 5.13
+    },
+    {
+      "step": 15,
+      "densityP95": 1.0221342587688773,
+      "maxSpeed": 2.434528382837986,
+      "temperatureRange": [
+        1375.5270879404202,
+        1459.9989276965512
+      ],
+      "seconds": 8.31
+    },
+    {
+      "step": 30,
+      "densityP95": 1.0143638027455542,
+      "maxSpeed": 2.2478828746881754,
+      "temperatureRange": [
+        1373.6819807836448,
+        1459.994370184279
+      ],
+      "seconds": 11.34
+    },
+    {
+      "step": 45,
+      "densityP95": 1.0115129199272772,
+      "maxSpeed": 1.7297238724645585,
+      "temperatureRange": [
+        1371.5810462050624,
+        1459.7215246649237
+      ],
+      "seconds": 14.0
+    },
+    {
+      "step": 59,
+      "densityP95": 1.0103531621355775,
+      "maxSpeed": 1.1868827759350273,
+      "temperatureRange": [
+        1369.4636331139814,
+        1458.9009968336397
+      ],
+      "seconds": 16.3
+    }
+  ],
+  "limits": [
+    "A reduced PBF fluid, not a full validated Navier-Stokes/solidification solver",
+    "The study uses a physical contact plane; no plane is visible to the camera",
+    "Surface cooling includes an authored heat extraction term",
+    "Detailed crust is generated separately in advected material coordinates"
+  ]
+}

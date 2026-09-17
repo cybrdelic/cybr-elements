@@ -1,0 +1,101 @@
+{
+  "status": "complete",
+  "time": 1.0,
+  "particles": 47899,
+  "rocks": 45,
+  "pitch": 0.0035,
+  "velocityBasis": "B2",
+  "fluidMassKg": 5.5449079875,
+  "bodyMassKg": 6.8742289543151855,
+  "rows": [
+    {
+      "time": 0.0,
+      "maximumFluidSpeed": 0.04500000178813934,
+      "maximumBodySpeed": 0.0,
+      "minimumBodyHeight": 0.021015701815485954,
+      "fluidHeightRange": [
+        0.0017500000540167093,
+        0.04724999889731407
+      ],
+      "thermalLossJ": 185632.48546257912,
+      "thermalBalanceJ": -1.6209410529700108,
+      "skinTemperatureRange": [
+        1291.0933837890625,
+        1450.0
+      ],
+      "wallSeconds": 12.23399999999674
+    },
+    {
+      "time": 0.25000000000000017,
+      "maximumFluidSpeed": 0.01596381701529026,
+      "maximumBodySpeed": 0.2192283719778061,
+      "minimumBodyHeight": 0.02039092220366001,
+      "fluidHeightRange": [
+        -0.00046129635302349925,
+        0.04697505384683609
+      ],
+      "thermalLossJ": 190911.5082937326,
+      "thermalBalanceJ": 1.6331703812466003,
+      "skinTemperatureRange": [
+        1289.61474609375,
+        1449.9998779296875
+      ],
+      "wallSeconds": 71.1710000000021
+    },
+    {
+      "time": 0.5000000000000003,
+      "maximumFluidSpeed": 0.03852421045303345,
+      "maximumBodySpeed": 0.2332816869020462,
+      "minimumBodyHeight": 0.01989474706351757,
+      "fluidHeightRange": [
+        -0.0023179214913398027,
+        0.04685065895318985
+      ],
+      "thermalLossJ": 196254.20742517654,
+      "thermalBalanceJ": 2.96773822690011,
+      "skinTemperatureRange": [
+        1288.1715087890625,
+        1449.9976806640625
+      ],
+      "wallSeconds": 104.40599999998813
+    },
+    {
+      "time": 0.7500000000000006,
+      "maximumFluidSpeed": 0.012157785706222057,
+      "maximumBodySpeed": 0.3833041191101074,
+      "minimumBodyHeight": 0.014820575714111328,
+      "fluidHeightRange": [
+        -0.00365595705807209,
+        0.04667940363287926
+      ],
+      "thermalLossJ": 201667.43301059652,
+      "thermalBalanceJ": 3.024081303476123,
+      "skinTemperatureRange": [
+        1286.758056640625,
+        1449.9935302734375
+      ],
+      "wallSeconds": 124.31200000000536
+    },
+    {
+      "time": 1.0,
+      "maximumFluidSpeed": 0.014522417448461056,
+      "maximumBodySpeed": 0.23724022507667542,
+      "minimumBodyHeight": 0.008041098713874817,
+      "fluidHeightRange": [
+        -0.0036791993770748377,
+        0.04630334675312042
+      ],
+      "thermalLossJ": 207153.45927096697,
+      "thermalBalanceJ": 3.1686327669594903,
+      "skinTemperatureRange": [
+        1285.367431640625,
+        1449.99560546875
+      ],
+      "wallSeconds": 147.60899999999674
+    }
+  ],
+  "seconds": 147.60899999999674,
+  "sourceSha256": "7fb4e51b7199d19925647a0e510286941527f7e1e9ad8e87eea855a70d1e5e04",
+  "method": "Newton implicit viscous MPM, XPBD rigid contact, native bidirectional collider impulses, particle enthalpy conduction/radiation, sixteen-cell conservative subgrid skin heat model.",
+  "limitations": "Pre-existing basalt geometry and initial thermal state are authored. No new fracture formation, melting of rigid bodies, rock-fluid heat exchange or smoke solver. Skin temperature is subgrid; skin mechanics are unresolved. Finite release; nominal constitutive values; no convergence claim."
+}

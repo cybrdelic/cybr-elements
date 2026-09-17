@@ -1,0 +1,22 @@
+{
+  "scope": "All user-rejected subelements; preserve accepted fire, water, air and shared trail.",
+  "firstGates": [
+    "Photographed leaf structure and varied organic growth",
+    "Real studio reflections and rolled metal surface",
+    "Optical ice/glass with physically coherent shape and internal features"
+  ],
+  "capture": "Blender Cycles 1080p fixed times and 1600px contact sheets",
+  "rejectionCriteria": [
+    "Colored smoke reused as abstract technique",
+    "Repeated identical leaf silhouettes",
+    "Uniform glossy ribbons without surface detail",
+    "Large uncompressed spherical beads used as foam",
+    "Black-background waves drawn as diagram lines"
+  ],
+  "verification": [
+    "Inspect actual rendered frames at matching times",
+    "Check geometry/material diagnostics and render errors",
+    "Complete MP4 metadata and browser checks before linking replacements"
+  ],
+  "budget": "Pilot families first; full renders only after visible construction improves"
+}

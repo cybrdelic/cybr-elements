@@ -1,0 +1,12 @@
+{
+  "finite": true,
+  "pressureConverged": true,
+  "frames": 240,
+  "initialParcels": 24698,
+  "finalParcels": 24698,
+  "holdFloorContactsMax": 1,
+  "zeroPositionOverrides": true,
+  "notes": "Native FLIP with authored bending lift; a deterministic 1/193 parcel subset is exempted from upward recovery. No extra water particles spawned.",
+  "holdSagWorldP90": 0.14157051992863856,
+  "parcelsThatRecoveredAbovePriorHeight": 7572
+}

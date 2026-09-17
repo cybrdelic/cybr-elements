@@ -1,0 +1,654 @@
+{
+  "domain": {
+    "domain_resolution": {
+      "type": "INT",
+      "description": "Smoke Grid Resolution",
+      "enum": null
+    },
+    "resolution_max": {
+      "type": "INT",
+      "description": "Resolution used for the fluid domain. Value corresponds to the longest domain side (resolution for other domain sides is calculated automatically).",
+      "enum": null
+    },
+    "use_collision_border_front": {
+      "type": "BOOLEAN",
+      "description": "Enable collisions with front domain border",
+      "enum": null
+    },
+    "use_collision_border_back": {
+      "type": "BOOLEAN",
+      "description": "Enable collisions with back domain border",
+      "enum": null
+    },
+    "use_collision_border_right": {
+      "type": "BOOLEAN",
+      "description": "Enable collisions with right domain border",
+      "enum": null
+    },
+    "use_collision_border_left": {
+      "type": "BOOLEAN",
+      "description": "Enable collisions with left domain border",
+      "enum": null
+    },
+    "use_collision_border_top": {
+      "type": "BOOLEAN",
+      "description": "Enable collisions with top domain border",
+      "enum": null
+    },
+    "use_collision_border_bottom": {
+      "type": "BOOLEAN",
+      "description": "Enable collisions with bottom domain border",
+      "enum": null
+    },
+    "noise_time_anim": {
+      "type": "FLOAT",
+      "description": "Animation time of noise",
+      "enum": null
+    },
+    "particle_randomness": {
+      "type": "FLOAT",
+      "description": "Randomness factor for particle sampling",
+      "enum": null
+    },
+    "particle_number": {
+      "type": "INT",
+      "description": "Particle number factor (higher value results in more particles)",
+      "enum": null
+    },
+    "particle_min": {
+      "type": "INT",
+      "description": "Minimum number of particles per cell (ensures that each cell has at least this amount of particles)",
+      "enum": null
+    },
+    "particle_max": {
+      "type": "INT",
+      "description": "Maximum number of particles per cell (ensures that each cell has at most this amount of particles)",
+      "enum": null
+    },
+    "particle_radius": {
+      "type": "FLOAT",
+      "description": "Particle radius factor. Increase this value if the simulation appears to leak volume, decrease it if the simulation seems to gain volume.",
+      "enum": null
+    },
+    "particle_band_width": {
+      "type": "FLOAT",
+      "description": "Particle (narrow) band width (higher value results in thicker band and more particles)",
+      "enum": null
+    },
+    "use_flip_particles": {
+      "type": "BOOLEAN",
+      "description": "Create liquid particle system",
+      "enum": null
+    },
+    "sys_particle_maximum": {
+      "type": "INT",
+      "description": "Maximum number of fluid particles that are allowed in this simulation",
+      "enum": null
+    },
+    "use_viscosity": {
+      "type": "BOOLEAN",
+      "description": "Simulate fluids with high viscosity using a special solver",
+      "enum": null
+    },
+    "viscosity_value": {
+      "type": "FLOAT",
+      "description": "Viscosity of liquid (higher values result in more viscous fluids, a value of 0 will still apply some viscosity)",
+      "enum": null
+    },
+    "use_diffusion": {
+      "type": "BOOLEAN",
+      "description": "Enable fluid diffusion settings (e.g. viscosity, surface tension)",
+      "enum": null
+    },
+    "surface_tension": {
+      "type": "FLOAT",
+      "description": "Surface tension of liquid (higher value results in greater hydrophobic behavior)",
+      "enum": null
+    },
+    "viscosity_base": {
+      "type": "FLOAT",
+      "description": "Viscosity setting: value that is multiplied by 10 to the power of (exponent*-1)",
+      "enum": null
+    },
+    "viscosity_exponent": {
+      "type": "INT",
+      "description": "Negative exponent for the viscosity value (to simplify entering small values e.g. 5*10^-6)",
+      "enum": null
+    },
+    "mesh_concave_upper": {
+      "type": "FLOAT",
+      "description": "Upper mesh concavity bound (high values tend to smoothen and fill out concave regions)",
+      "enum": null
+    },
+    "mesh_concave_lower": {
+      "type": "FLOAT",
+      "description": "Lower mesh concavity bound (high values tend to smoothen and fill out concave regions)",
+      "enum": null
+    },
+    "mesh_smoothen_pos": {
+      "type": "INT",
+      "description": "Positive mesh smoothening",
+      "enum": null
+    },
+    "mesh_smoothen_neg": {
+      "type": "INT",
+      "description": "Negative mesh smoothening",
+      "enum": null
+    },
+    "mesh_scale": {
+      "type": "INT",
+      "description": "The mesh simulation is scaled up by this factor (compared to the base resolution of the domain). For best meshing, it is recommended to adjust the mesh particle radius alongside this value.",
+      "enum": null
+    },
+    "mesh_generator": {
+      "type": "ENUM",
+      "description": "Which particle level set generator to use",
+      "enum": [
+        "IMPROVED",
+        "UNION"
+      ]
+    },
+    "use_mesh": {
+      "type": "BOOLEAN",
+      "description": "Enable fluid mesh (using amplification)",
+      "enum": null
+    },
+    "mesh_particle_radius": {
+      "type": "FLOAT",
+      "description": "Particle radius factor (higher value results in larger (meshed) particles). Needs to be adjusted after changing the mesh scale.",
+      "enum": null
+    },
+    "sndparticle_potential_min_wavecrest": {
+      "type": "FLOAT",
+      "description": "Lower clamping threshold for marking fluid cells as wave crests (lower value results in more marked cells)",
+      "enum": null
+    },
+    "sndparticle_potential_max_wavecrest": {
+      "type": "FLOAT",
+      "description": "Upper clamping threshold for marking fluid cells as wave crests (higher value results in less marked cells)",
+      "enum": null
+    },
+    "sndparticle_potential_min_trappedair": {
+      "type": "FLOAT",
+      "description": "Lower clamping threshold for marking fluid cells where air is trapped (lower value results in more marked cells)",
+      "enum": null
+    },
+    "sndparticle_potential_max_trappedair": {
+      "type": "FLOAT",
+      "description": "Upper clamping threshold for marking fluid cells where air is trapped (higher value results in less marked cells)",
+      "enum": null
+    },
+    "sndparticle_potential_min_energy": {
+      "type": "FLOAT",
+      "description": "Lower clamping threshold that indicates the fluid speed where cells start to emit particles (lower values result in generally more particles)",
+      "enum": null
+    },
+    "sndparticle_potential_max_energy": {
+      "type": "FLOAT",
+      "description": "Upper clamping threshold that indicates the fluid speed where cells no longer emit more particles (higher value results in generally less particles)",
+      "enum": null
+    },
+    "sndparticle_sampling_wavecrest": {
+      "type": "INT",
+      "description": "Maximum number of particles generated per wave crest cell per frame",
+      "enum": null
+    },
+    "sndparticle_sampling_trappedair": {
+      "type": "INT",
+      "description": "Maximum number of particles generated per trapped air cell per frame",
+      "enum": null
+    },
+    "sndparticle_bubble_buoyancy": {
+      "type": "FLOAT",
+      "description": "Amount of buoyancy force that rises bubbles (high value results in bubble movement mainly upwards)",
+      "enum": null
+    },
+    "sndparticle_bubble_drag": {
+      "type": "FLOAT",
+      "description": "Amount of drag force that moves bubbles along with the fluid (high value results in bubble movement mainly along with the fluid)",
+      "enum": null
+    },
+    "sndparticle_life_min": {
+      "type": "FLOAT",
+      "description": "Lowest possible particle lifetime",
+      "enum": null
+    },
+    "sndparticle_life_max": {
+      "type": "FLOAT",
+      "description": "Highest possible particle lifetime",
+      "enum": null
+    },
+    "sndparticle_boundary": {
+      "type": "ENUM",
+      "description": "How particles that left the domain are treated",
+      "enum": [
+        "DELETE",
+        "PUSHOUT"
+      ]
+    },
+    "sndparticle_combined_export": {
+      "type": "ENUM",
+      "description": "Determines which particle systems are created from secondary particles",
+      "enum": [
+        "OFF",
+        "SPRAY_FOAM",
+        "SPRAY_BUBBLES",
+        "FOAM_BUBBLES",
+        "SPRAY_FOAM_BUBBLES"
+      ]
+    },
+    "sndparticle_potential_radius": {
+      "type": "INT",
+      "description": "Radius to compute potential for each cell (higher values are slower but create smoother potential grids)",
+      "enum": null
+    },
+    "sndparticle_update_radius": {
+      "type": "INT",
+      "description": "Radius to compute position update for each particle (higher values are slower but particles move less chaotic)",
+      "enum": null
+    },
+    "particle_scale": {
+      "type": "INT",
+      "description": "The particle simulation is scaled up by this factor (compared to the base resolution of the domain)",
+      "enum": null
+    },
+    "use_spray_particles": {
+      "type": "BOOLEAN",
+      "description": "Create spray particle system",
+      "enum": null
+    },
+    "use_bubble_particles": {
+      "type": "BOOLEAN",
+      "description": "Create bubble particle system",
+      "enum": null
+    },
+    "use_foam_particles": {
+      "type": "BOOLEAN",
+      "description": "Create foam particle system",
+      "enum": null
+    },
+    "use_tracer_particles": {
+      "type": "BOOLEAN",
+      "description": "Create tracer particle system",
+      "enum": null
+    },
+    "guide_alpha": {
+      "type": "FLOAT",
+      "description": "Guiding weight (higher value results in greater lag)",
+      "enum": null
+    },
+    "guide_beta": {
+      "type": "INT",
+      "description": "Guiding size (higher value results in larger vortices)",
+      "enum": null
+    },
+    "guide_vel_factor": {
+      "type": "FLOAT",
+      "description": "Guiding velocity factor (higher value results in greater guiding velocities)",
+      "enum": null
+    },
+    "guide_source": {
+      "type": "ENUM",
+      "description": "Choose where to get guiding velocities from",
+      "enum": [
+        "DOMAIN",
+        "EFFECTOR"
+      ]
+    },
+    "guide_parent": {
+      "type": "POINTER",
+      "description": "Use velocities from this object for the guiding effect (object needs to have fluid modifier and be of type domain))",
+      "enum": null
+    },
+    "use_guide": {
+      "type": "BOOLEAN",
+      "description": "Enable fluid guiding",
+      "enum": null
+    },
+    "cache_frame_start": {
+      "type": "INT",
+      "description": "Frame on which the simulation starts (first frame baked)",
+      "enum": null
+    },
+    "cache_frame_end": {
+      "type": "INT",
+      "description": "Frame on which the simulation stops (last frame baked)",
+      "enum": null
+    },
+    "cache_frame_offset": {
+      "type": "INT",
+      "description": "Frame offset that is used when loading the simulation from the cache. It is not considered when baking the simulation, only when loading it.",
+      "enum": null
+    },
+    "cache_frame_pause_data": {
+      "type": "INT",
+      "description": "",
+      "enum": null
+    },
+    "cache_frame_pause_noise": {
+      "type": "INT",
+      "description": "",
+      "enum": null
+    },
+    "cache_frame_pause_mesh": {
+      "type": "INT",
+      "description": "",
+      "enum": null
+    },
+    "cache_frame_pause_particles": {
+      "type": "INT",
+      "description": "",
+      "enum": null
+    },
+    "cache_frame_pause_guide": {
+      "type": "INT",
+      "description": "",
+      "enum": null
+    },
+    "cache_mesh_format": {
+      "type": "ENUM",
+      "description": "Select the file format to be used for caching surface data",
+      "enum": [
+        "UNI",
+        "OPENVDB",
+        "RAW"
+      ]
+    },
+    "cache_data_format": {
+      "type": "ENUM",
+      "description": "Select the file format to be used for caching volumetric data",
+      "enum": [
+        "UNI",
+        "OPENVDB",
+        "RAW"
+      ]
+    },
+    "cache_particle_format": {
+      "type": "ENUM",
+      "description": "Select the file format to be used for caching particle data",
+      "enum": [
+        "UNI",
+        "OPENVDB",
+        "RAW"
+      ]
+    },
+    "cache_noise_format": {
+      "type": "ENUM",
+      "description": "Select the file format to be used for caching noise data",
+      "enum": [
+        "UNI",
+        "OPENVDB",
+        "RAW"
+      ]
+    },
+    "cache_type": {
+      "type": "ENUM",
+      "description": "Change the cache type of the simulation",
+      "enum": [
+        "REPLAY",
+        "MODULAR",
+        "ALL"
+      ]
+    },
+    "cache_resumable": {
+      "type": "BOOLEAN",
+      "description": "Additional data will be saved so that the bake jobs can be resumed after pausing. Because more data will be written to disk it is recommended to avoid enabling this option when baking at high resolutions.",
+      "enum": null
+    },
+    "cache_directory": {
+      "type": "STRING",
+      "description": "Directory that contains fluid cache files",
+      "enum": null
+    },
+    "is_cache_baking_data": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "has_cache_baked_data": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "is_cache_baking_noise": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "has_cache_baked_noise": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "is_cache_baking_mesh": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "has_cache_baked_mesh": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "is_cache_baking_particles": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "has_cache_baked_particles": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "is_cache_baking_guide": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "has_cache_baked_guide": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "is_cache_baking_any": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "has_cache_baked_any": {
+      "type": "BOOLEAN",
+      "description": "",
+      "enum": null
+    },
+    "openvdb_cache_compress_type": {
+      "type": "ENUM",
+      "description": "Compression method to be used",
+      "enum": [
+        "ZIP",
+        "BLOSC",
+        "NONE"
+      ]
+    },
+    "time_scale": {
+      "type": "FLOAT",
+      "description": "Adjust simulation speed",
+      "enum": null
+    },
+    "use_adaptive_timesteps": {
+      "type": "BOOLEAN",
+      "description": "Automatically decide when to perform multiple simulation steps per frame",
+      "enum": null
+    },
+    "timesteps_min": {
+      "type": "INT",
+      "description": "Minimum number of simulation steps to perform for one frame",
+      "enum": null
+    },
+    "timesteps_max": {
+      "type": "INT",
+      "description": "Maximum number of simulation steps to perform for one frame",
+      "enum": null
+    }
+  },
+  "flow": {
+    "rna_type": {
+      "type": "POINTER",
+      "description": "RNA type definition",
+      "enum": null
+    },
+    "density": {
+      "type": "FLOAT",
+      "description": "",
+      "enum": null
+    },
+    "smoke_color": {
+      "type": "FLOAT",
+      "description": "Color of smoke",
+      "enum": null
+    },
+    "fuel_amount": {
+      "type": "FLOAT",
+      "description": "",
+      "enum": null
+    },
+    "temperature": {
+      "type": "FLOAT",
+      "description": "Temperature difference to ambient temperature",
+      "enum": null
+    },
+    "particle_system": {
+      "type": "POINTER",
+      "description": "Particle systems emitted from the object",
+      "enum": null
+    },
+    "flow_type": {
+      "type": "ENUM",
+      "description": "Change type of fluid in the simulation",
+      "enum": [
+        "SMOKE",
+        "BOTH",
+        "FIRE",
+        "LIQUID"
+      ]
+    },
+    "flow_behavior": {
+      "type": "ENUM",
+      "description": "Change flow behavior in the simulation",
+      "enum": [
+        "INFLOW",
+        "OUTFLOW",
+        "GEOMETRY"
+      ]
+    },
+    "flow_source": {
+      "type": "ENUM",
+      "description": "Change how fluid is emitted",
+      "enum": [
+        "NONE"
+      ]
+    },
+    "use_absolute": {
+      "type": "BOOLEAN",
+      "description": "Only allow given density value in emitter area and will not add up",
+      "enum": null
+    },
+    "use_initial_velocity": {
+      "type": "BOOLEAN",
+      "description": "Fluid has some initial velocity when it is emitted",
+      "enum": null
+    },
+    "velocity_factor": {
+      "type": "FLOAT",
+      "description": "Multiplier of source velocity passed to fluid (source velocity is non-zero only if object is moving)",
+      "enum": null
+    },
+    "velocity_normal": {
+      "type": "FLOAT",
+      "description": "Amount of normal directional velocity",
+      "enum": null
+    },
+    "velocity_random": {
+      "type": "FLOAT",
+      "description": "Amount of random velocity",
+      "enum": null
+    },
+    "velocity_coord": {
+      "type": "FLOAT",
+      "description": "Additional initial velocity in X, Y and Z direction (added to source velocity)",
+      "enum": null
+    },
+    "volume_density": {
+      "type": "FLOAT",
+      "description": "Controls fluid emission from within the mesh (higher value results in greater emissions from inside the mesh)",
+      "enum": null
+    },
+    "surface_distance": {
+      "type": "FLOAT",
+      "description": "Height (in domain grid units) of fluid emission above the mesh surface. Higher values result in emission further away from the mesh surface. If this value and the emitter size are smaller than the domain grid unit, fluid will not be created",
+      "enum": null
+    },
+    "use_plane_init": {
+      "type": "BOOLEAN",
+      "description": "Treat this object as a planar and unclosed mesh. Fluid will only be emitted from the mesh surface and based on the surface emission value.",
+      "enum": null
+    },
+    "particle_size": {
+      "type": "FLOAT",
+      "description": "Particle size in simulation cells",
+      "enum": null
+    },
+    "use_particle_size": {
+      "type": "BOOLEAN",
+      "description": "Set particle size in simulation cells or use nearest cell",
+      "enum": null
+    },
+    "use_inflow": {
+      "type": "BOOLEAN",
+      "description": "Control when to apply fluid flow",
+      "enum": null
+    },
+    "subframes": {
+      "type": "INT",
+      "description": "Number of additional samples to take between frames to improve quality of fast moving flows",
+      "enum": null
+    },
+    "density_vertex_group": {
+      "type": "STRING",
+      "description": "Name of vertex group which determines surface emission rate",
+      "enum": null
+    },
+    "use_texture": {
+      "type": "BOOLEAN",
+      "description": "Use a texture to control emission strength",
+      "enum": null
+    },
+    "texture_map_type": {
+      "type": "ENUM",
+      "description": "Texture mapping type",
+      "enum": [
+        "AUTO",
+        "UV"
+      ]
+    },
+    "uv_layer": {
+      "type": "STRING",
+      "description": "UV map name",
+      "enum": null
+    },
+    "noise_texture": {
+      "type": "POINTER",
+      "description": "Texture that controls emission strength",
+      "enum": null
+    },
+    "texture_size": {
+      "type": "FLOAT",
+      "description": "Size of texture mapping",
+      "enum": null
+    },
+    "texture_offset": {
+      "type": "FLOAT",
+      "description": "Z-offset of texture mapping",
+      "enum": null
+    }
+  }
+}

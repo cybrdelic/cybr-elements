@@ -1,0 +1,117 @@
+{
+  "model": "Local moving 3D point-charge discharges, advancing leaders, stable return-stroke channels; authored guidance and approximate aerosol scattering",
+  "events": [
+    0.16,
+    0.327,
+    0.506,
+    0.744,
+    0.913,
+    1.087,
+    1.306,
+    1.494,
+    1.674,
+    1.84
+  ],
+  "frames": 120,
+  "seconds": 221.49959874153137,
+  "aerosol": [
+    {
+      "frame": 0,
+      "finite": true,
+      "aerosolMass": 0.0,
+      "maxSpeed": 1.660546064376831
+    },
+    {
+      "frame": 20,
+      "finite": true,
+      "aerosolMass": 0.005752004964053181,
+      "maxSpeed": 1.0057207345962524
+    },
+    {
+      "frame": 40,
+      "finite": true,
+      "aerosolMass": 0.009297171862088931,
+      "maxSpeed": 0.7402227520942688
+    },
+    {
+      "frame": 60,
+      "finite": true,
+      "aerosolMass": 0.0072942779208106925,
+      "maxSpeed": 0.5976641774177551
+    },
+    {
+      "frame": 80,
+      "finite": true,
+      "aerosolMass": 0.003480609164617353,
+      "maxSpeed": 0.5157164931297302
+    },
+    {
+      "frame": 100,
+      "finite": true,
+      "aerosolMass": 0.0016683802879848644,
+      "maxSpeed": 0.46608424186706543
+    }
+  ],
+  "networks": [
+    {
+      "nodes": 45,
+      "depthRange": 0.4026642861399481,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 165,
+      "depthRange": 0.8311115667090958,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 891,
+      "depthRange": 1.4113765736756774,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 565,
+      "depthRange": 1.4595679558699135,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 944,
+      "depthRange": 1.9831098102772429,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 814,
+      "depthRange": 1.888673901814193,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 393,
+      "depthRange": 0.694661481309764,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 1106,
+      "depthRange": 1.5247666235467787,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 722,
+      "depthRange": 1.51789128633016,
+      "finite": true,
+      "connected": true
+    },
+    {
+      "nodes": 469,
+      "depthRange": 1.2959478523957793,
+      "finite": true,
+      "connected": true
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "tabId": "5",
+  "url": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/?element=water",
+  "observedPlayback": [
+    {
+      "element": "water",
+      "file": "water-02-r4.mp4",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "duration": 10,
+      "readyState": 4,
+      "paused": false,
+      "error": null
+    },
+    {
+      "element": "earth",
+      "file": "earth-02-r4.mp4",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "duration": 10,
+      "readyState": 4,
+      "paused": false,
+      "error": null
+    },
+    {
+      "element": "lightning",
+      "file": "lightning-02-r4.mp4",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "duration": 10,
+      "readyState": 4,
+      "paused": false,
+      "error": null
+    }
+  ],
+  "previousWaterLoadsR3": true,
+  "returnLoadsR4": true,
+  "previousEarthLoadsR3": true,
+  "elementSelectionResetsComparison": true,
+  "leftOn": "water r4",
+  "markedDeliverable": true
+}

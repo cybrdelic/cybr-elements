@@ -1,0 +1,142 @@
+{
+  "count": 16,
+  "metadata": [
+    {
+      "id": "metal-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "metal-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "combustion-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "combustion-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "blue-fire-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "blue-fire-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "steam-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "steam-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "smoke-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "smoke-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "sound-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "sound-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "pressure-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "pressure-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "heat-01",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    },
+    {
+      "id": "heat-02",
+      "width": 1920,
+      "height": 1080,
+      "duration": 15,
+      "time": 8
+    }
+  ],
+  "times": [
+    8.626571,
+    8.626244
+  ],
+  "solo": [
+    {
+      "paused": true,
+      "time": 8.626571
+    },
+    {
+      "paused": false,
+      "time": 9.005279
+    }
+  ],
+  "fireTiles": 3,
+  "links": [
+    "http://127.0.0.1:8767/elements/motion/subelements/dynamics/",
+    "http://127.0.0.1:8767/fire.html?edge=ember",
+    "http://127.0.0.1:8767/typefaces/",
+    "http://127.0.0.1:8767/elements/sigils/blue-fire-01.mp4",
+    "http://127.0.0.1:8767/elements/sigils/blue-fire-02.mp4",
+    "http://127.0.0.1:8767/elements/sigils/notes.html"
+  ],
+  "mobileOverflow": false,
+  "errors": []
+}

@@ -1,0 +1,65 @@
+{
+  "artifact": "Fire using approved sigil 02",
+  "constraints": [
+    "Pitch-black backdrop",
+    "Original 02 stroke geometry is required",
+    "Material and momentum first; textual readability secondary",
+    "No silhouette mask on existing gas or rendered light",
+    "Simulated fuel depletion and cooling at the end"
+  ],
+  "geometryCheck": {
+    "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\outputs\\cybrdelic-type\\exploration-v6\\cybrdelic-brandmark-refined.png",
+    "sourceSha256": "171ab385e515ef2b375b0c2cb291095e55d5cc00489341a3aa431ae62cf5e961",
+    "variant": "02",
+    "method": "Full tapered artwork cross-section, extruded into a corrugated fuel sheet; geodesic ignition order",
+    "sourceGrid": [
+      768,
+      432
+    ],
+    "worldWidth": 8.0,
+    "centerZ": 1.95,
+    "sourceIntersectionOverUnion": 0.9940962761126249,
+    "artworkTopology": {
+      "components": 5,
+      "holes": 1
+    },
+    "sourceTopology": {
+      "components": 5,
+      "holes": 1
+    },
+    "start": 0.3,
+    "writeEnd": 3.9,
+    "supplyEnd": 6.8,
+    "duration": 9.8,
+    "sourceOnly": true,
+    "noRenderMask": true,
+    "noCombustionMask": true
+  },
+  "sourceProgression": [
+    {
+      "time": 0.3,
+      "sourceCoverage": 0.0
+    },
+    {
+      "time": 1,
+      "sourceCoverage": 0.226
+    },
+    {
+      "time": 2,
+      "sourceCoverage": 0.5394
+    },
+    {
+      "time": 3,
+      "sourceCoverage": 0.766
+    },
+    {
+      "time": 3.9,
+      "sourceCoverage": 1.0
+    },
+    {
+      "time": 4.2,
+      "sourceCoverage": 1.0
+    }
+  ],
+  "renderStatus": "in progress; review before publication"
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_newton28_flow.py", line 89, in run
+    if time.monotonic()-ticks>wall:raise TimeoutError('Bounded simulation budget reached')
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: Bounded simulation budget reached

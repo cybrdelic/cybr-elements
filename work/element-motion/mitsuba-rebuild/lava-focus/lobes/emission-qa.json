@@ -1,0 +1,9 @@
+{
+  "device": "CPU",
+  "barycentricRadianceMaxError": 8.082389829633385e-08,
+  "sampleRadianceOverPdfMaxError": 3.706257009628011e-09,
+  "pdfConsistencyError": 2.384185791015625e-07,
+  "occludedSampleZero": true,
+  "tests": "Three analytic ray hits, a sampled surface point, and an occluded sample",
+  "pass": true
+}

@@ -1,0 +1,447 @@
+{
+  "status": "pass",
+  "intact": {
+    "method": "locally connected advected material domains",
+    "particles": 576,
+    "vertices": 845,
+    "triangles": 960,
+    "brokenFacePairs": 0,
+    "openFacePairs": 0,
+    "maximumOpeningM": 0.0,
+    "minimumOpeningM": 0.0,
+    "crackWallTriangles": 0,
+    "globalMaterialComponents": 1,
+    "solidMaterialComponents": 1,
+    "relativeVolumeDifference": 0.0,
+    "cellVolumeRelativeErrorP95": 5.583469134732937e-15,
+    "maximumCellVolumeRelativeError": 1.3234889800848441e-14,
+    "minimumCellVolumeM3": 9.99999999999988e-10,
+    "maximumDeformationCondition": 1.0000000000000016,
+    "solverParticleVolumeM3": 5.760000000000001e-07,
+    "reconstructedVolumeM3": 5.760000000000001e-07,
+    "openingPairs": [],
+    "openingM": [],
+    "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+    "unresolvedAffineCells": 0,
+    "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+  },
+  "closed": {
+    "method": "locally connected advected material domains",
+    "particles": 576,
+    "vertices": 890,
+    "triangles": 960,
+    "brokenFacePairs": 36,
+    "openFacePairs": 0,
+    "maximumOpeningM": 4.0657581468206416e-20,
+    "minimumOpeningM": -2.236166980751353e-19,
+    "crackWallTriangles": 0,
+    "globalMaterialComponents": 1,
+    "solidMaterialComponents": 1,
+    "relativeVolumeDifference": 0.0,
+    "cellVolumeRelativeErrorP95": 5.583469134732937e-15,
+    "maximumCellVolumeRelativeError": 1.3234889800848441e-14,
+    "minimumCellVolumeM3": 9.99999999999988e-10,
+    "maximumDeformationCondition": 1.0000000000000016,
+    "solverParticleVolumeM3": 5.760000000000001e-07,
+    "reconstructedVolumeM3": 5.760000000000001e-07,
+    "openingPairs": [
+      [
+        240,
+        288
+      ],
+      [
+        241,
+        289
+      ],
+      [
+        242,
+        290
+      ],
+      [
+        243,
+        291
+      ],
+      [
+        244,
+        292
+      ],
+      [
+        245,
+        293
+      ],
+      [
+        246,
+        294
+      ],
+      [
+        247,
+        295
+      ],
+      [
+        248,
+        296
+      ],
+      [
+        249,
+        297
+      ],
+      [
+        250,
+        298
+      ],
+      [
+        251,
+        299
+      ],
+      [
+        252,
+        300
+      ],
+      [
+        253,
+        301
+      ],
+      [
+        254,
+        302
+      ],
+      [
+        255,
+        303
+      ],
+      [
+        256,
+        304
+      ],
+      [
+        257,
+        305
+      ],
+      [
+        258,
+        306
+      ],
+      [
+        259,
+        307
+      ],
+      [
+        260,
+        308
+      ],
+      [
+        261,
+        309
+      ],
+      [
+        262,
+        310
+      ],
+      [
+        263,
+        311
+      ],
+      [
+        264,
+        312
+      ],
+      [
+        265,
+        313
+      ],
+      [
+        266,
+        314
+      ],
+      [
+        267,
+        315
+      ],
+      [
+        268,
+        316
+      ],
+      [
+        269,
+        317
+      ],
+      [
+        270,
+        318
+      ],
+      [
+        271,
+        319
+      ],
+      [
+        272,
+        320
+      ],
+      [
+        273,
+        321
+      ],
+      [
+        274,
+        322
+      ],
+      [
+        275,
+        323
+      ]
+    ],
+    "openingM": [
+      -3.3881317890172014e-20,
+      -8.131516293641283e-20,
+      -1.8295911660692887e-19,
+      -1.3552527156068805e-19,
+      -8.809142651444728e-20,
+      -1.3552527156068805e-20,
+      -2.0328790734103208e-20,
+      -9.486769009248166e-20,
+      -2.168404344971009e-19,
+      -2.710505431213761e-20,
+      2.710505431213761e-20,
+      -1.0842021724855044e-19,
+      -2.168404344971009e-19,
+      -2.710505431213761e-20,
+      2.710505431213761e-20,
+      -1.0842021724855044e-19,
+      -2.168404344971009e-19,
+      -2.710505431213761e-20,
+      2.710505431213761e-20,
+      -1.0842021724855044e-19,
+      -2.168404344971009e-19,
+      -2.710505431213761e-20,
+      2.710505431213761e-20,
+      -1.0842021724855044e-19,
+      -2.168404344971009e-19,
+      -2.710505431213761e-20,
+      2.710505431213761e-20,
+      -1.0842021724855044e-19,
+      -2.236166980751353e-19,
+      -1.3552527156068805e-20,
+      4.0657581468206416e-20,
+      -1.2874900798265365e-19,
+      -1.1519648082658485e-19,
+      2.3509887016445745e-35,
+      2.710505431213761e-20,
+      -7.453889935837843e-20
+    ],
+    "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+    "unresolvedAffineCells": 0,
+    "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+  },
+  "opened": {
+    "method": "locally connected advected material domains",
+    "particles": 576,
+    "vertices": 890,
+    "triangles": 1104,
+    "brokenFacePairs": 36,
+    "openFacePairs": 36,
+    "maximumOpeningM": 0.0008120489493867663,
+    "minimumOpeningM": 0.00012015364795051135,
+    "crackWallTriangles": 144,
+    "globalMaterialComponents": 1,
+    "solidMaterialComponents": 1,
+    "relativeVolumeDifference": 2.023427449614175e-05,
+    "cellVolumeRelativeErrorP95": 0.006336374538380675,
+    "maximumCellVolumeRelativeError": 0.011983954904501722,
+    "minimumCellVolumeM3": 9.935254453300184e-10,
+    "maximumDeformationCondition": 1.1425181900299817,
+    "solverParticleVolumeM3": 5.760000000000001e-07,
+    "reconstructedVolumeM3": 5.759883450578903e-07,
+    "openingPairs": [
+      [
+        240,
+        288
+      ],
+      [
+        241,
+        289
+      ],
+      [
+        242,
+        290
+      ],
+      [
+        243,
+        291
+      ],
+      [
+        244,
+        292
+      ],
+      [
+        245,
+        293
+      ],
+      [
+        246,
+        294
+      ],
+      [
+        247,
+        295
+      ],
+      [
+        248,
+        296
+      ],
+      [
+        249,
+        297
+      ],
+      [
+        250,
+        298
+      ],
+      [
+        251,
+        299
+      ],
+      [
+        252,
+        300
+      ],
+      [
+        253,
+        301
+      ],
+      [
+        254,
+        302
+      ],
+      [
+        255,
+        303
+      ],
+      [
+        256,
+        304
+      ],
+      [
+        257,
+        305
+      ],
+      [
+        258,
+        306
+      ],
+      [
+        259,
+        307
+      ],
+      [
+        260,
+        308
+      ],
+      [
+        261,
+        309
+      ],
+      [
+        262,
+        310
+      ],
+      [
+        263,
+        311
+      ],
+      [
+        264,
+        312
+      ],
+      [
+        265,
+        313
+      ],
+      [
+        266,
+        314
+      ],
+      [
+        267,
+        315
+      ],
+      [
+        268,
+        316
+      ],
+      [
+        269,
+        317
+      ],
+      [
+        270,
+        318
+      ],
+      [
+        271,
+        319
+      ],
+      [
+        272,
+        320
+      ],
+      [
+        273,
+        321
+      ],
+      [
+        274,
+        322
+      ],
+      [
+        275,
+        323
+      ]
+    ],
+    "openingM": [
+      0.0007999999999999999,
+      0.0007999999999999997,
+      0.0007999999999999997,
+      0.0007999999999999998,
+      0.0007999999999999998,
+      0.0007999999999999998,
+      0.0007999999999999999,
+      0.0007999999999999999,
+      0.0007999999999999997,
+      0.0007999999999999998,
+      0.0007999999999999999,
+      0.0007999999999999999,
+      0.0007999999999999997,
+      0.0007999999999999998,
+      0.0007999999999999999,
+      0.0007999999999999999,
+      0.0008120002896399389,
+      0.0008108269900324314,
+      0.0008108049261759863,
+      0.0008120489493867663,
+      0.0008027760331272523,
+      0.0007990343550246852,
+      0.0007990790250030847,
+      0.0008026921459170742,
+      0.0006650753238478945,
+      0.0006617364453849849,
+      0.0006615556006601644,
+      0.0006654387183283907,
+      0.00039439589135477587,
+      0.00039561501919780864,
+      0.00039524629608392667,
+      0.0003951369981893283,
+      0.00012025768056746292,
+      0.0001218873224292799,
+      0.00012194103347534865,
+      0.00012015364795051135
+    ],
+    "deformationSource": "Affine least-squares map of intact material neighbors, normalized to each solved material volume",
+    "unresolvedAffineCells": 0,
+    "limits": "Structured material lattice only; volume and distortion are checked. Rank-deficient cells retain measured polar rotation and volume. No liquid remeshing or manufactured subgrid surface detail."
+  },
+  "affineVolumeRelativeError": 2.220446049250313e-16,
+  "farFromTipOpeningErrorM": 3.2526065174565133e-19,
+  "creaseShadingPreservesGeometry": true,
+  "proof": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\surface-proof-22\\surface-tests.png",
+  "fixture": "prescribed geometric validation coupon, never published as simulated lava"
+}

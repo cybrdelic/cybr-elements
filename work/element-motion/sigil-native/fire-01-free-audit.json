@@ -1,0 +1,3087 @@
+{
+  "video": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\sigil-native\\fire-01-free.mp4",
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "30/1",
+        "nb_frames": "255"
+      }
+    ],
+    "format": {
+      "duration": "8.500000"
+    }
+  },
+  "decodedFrames": 255,
+  "maxCornerValue": 0,
+  "peakMeanLuma": 4.478447869791666,
+  "endMeanLuma": 0.003248470486111111,
+  "reviewFrames": [
+    30,
+    75,
+    120,
+    150,
+    195,
+    240
+  ],
+  "frames": [
+    {
+      "frame": 0,
+      "meanLuma": 0.0,
+      "litPixels": 0,
+      "cornerMax": 0,
+      "bounds": null
+    },
+    {
+      "frame": 1,
+      "meanLuma": 0.0,
+      "litPixels": 0,
+      "cornerMax": 0,
+      "bounds": null
+    },
+    {
+      "frame": 2,
+      "meanLuma": 0.0,
+      "litPixels": 0,
+      "cornerMax": 0,
+      "bounds": null
+    },
+    {
+      "frame": 3,
+      "meanLuma": 0.0,
+      "litPixels": 0,
+      "cornerMax": 0,
+      "bounds": null
+    },
+    {
+      "frame": 4,
+      "meanLuma": 0.09502267447916668,
+      "litPixels": 322,
+      "cornerMax": 0,
+      "bounds": [
+        132,
+        198,
+        148,
+        223
+      ]
+    },
+    {
+      "frame": 5,
+      "meanLuma": 0.3126564435763889,
+      "litPixels": 721,
+      "cornerMax": 0,
+      "bounds": [
+        134,
+        199,
+        163,
+        229
+      ]
+    },
+    {
+      "frame": 6,
+      "meanLuma": 0.4497451527777777,
+      "litPixels": 967,
+      "cornerMax": 0,
+      "bounds": [
+        137,
+        201,
+        175,
+        235
+      ]
+    },
+    {
+      "frame": 7,
+      "meanLuma": 0.5714699418402777,
+      "litPixels": 1256,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        203,
+        189,
+        246
+      ]
+    },
+    {
+      "frame": 8,
+      "meanLuma": 0.7895348315972222,
+      "litPixels": 1636,
+      "cornerMax": 0,
+      "bounds": [
+        139,
+        205,
+        205,
+        256
+      ]
+    },
+    {
+      "frame": 9,
+      "meanLuma": 1.0034123090277778,
+      "litPixels": 2003,
+      "cornerMax": 0,
+      "bounds": [
+        141,
+        207,
+        221,
+        259
+      ]
+    },
+    {
+      "frame": 10,
+      "meanLuma": 1.1462294592013889,
+      "litPixels": 2329,
+      "cornerMax": 0,
+      "bounds": [
+        142,
+        209,
+        230,
+        260
+      ]
+    },
+    {
+      "frame": 11,
+      "meanLuma": 1.2602795859375,
+      "litPixels": 2830,
+      "cornerMax": 0,
+      "bounds": [
+        142,
+        208,
+        231,
+        261
+      ]
+    },
+    {
+      "frame": 12,
+      "meanLuma": 1.4464129461805555,
+      "litPixels": 3535,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        190,
+        232,
+        262
+      ]
+    },
+    {
+      "frame": 13,
+      "meanLuma": 1.6269741631944445,
+      "litPixels": 4202,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        179,
+        234,
+        263
+      ]
+    },
+    {
+      "frame": 14,
+      "meanLuma": 1.626591762152778,
+      "litPixels": 4532,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        174,
+        236,
+        263
+      ]
+    },
+    {
+      "frame": 15,
+      "meanLuma": 1.594081934895833,
+      "litPixels": 4830,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        170,
+        238,
+        264
+      ]
+    },
+    {
+      "frame": 16,
+      "meanLuma": 1.5776793350694442,
+      "litPixels": 5094,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        167,
+        241,
+        264
+      ]
+    },
+    {
+      "frame": 17,
+      "meanLuma": 1.6238175651041669,
+      "litPixels": 5507,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        158,
+        242,
+        265
+      ]
+    },
+    {
+      "frame": 18,
+      "meanLuma": 1.6444961041666666,
+      "litPixels": 5732,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        151,
+        244,
+        265
+      ]
+    },
+    {
+      "frame": 19,
+      "meanLuma": 1.7333936805555554,
+      "litPixels": 6122,
+      "cornerMax": 0,
+      "bounds": [
+        138,
+        144,
+        245,
+        266
+      ]
+    },
+    {
+      "frame": 20,
+      "meanLuma": 1.9368752864583336,
+      "litPixels": 6603,
+      "cornerMax": 0,
+      "bounds": [
+        132,
+        139,
+        246,
+        266
+      ]
+    },
+    {
+      "frame": 21,
+      "meanLuma": 2.1415856692708335,
+      "litPixels": 7062,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        137,
+        247,
+        266
+      ]
+    },
+    {
+      "frame": 22,
+      "meanLuma": 2.274971845486111,
+      "litPixels": 7440,
+      "cornerMax": 0,
+      "bounds": [
+        110,
+        135,
+        248,
+        266
+      ]
+    },
+    {
+      "frame": 23,
+      "meanLuma": 2.3504230052083335,
+      "litPixels": 7918,
+      "cornerMax": 0,
+      "bounds": [
+        108,
+        132,
+        249,
+        266
+      ]
+    },
+    {
+      "frame": 24,
+      "meanLuma": 2.5067365086805564,
+      "litPixels": 8484,
+      "cornerMax": 0,
+      "bounds": [
+        107,
+        130,
+        249,
+        266
+      ]
+    },
+    {
+      "frame": 25,
+      "meanLuma": 2.670889823784722,
+      "litPixels": 9054,
+      "cornerMax": 0,
+      "bounds": [
+        106,
+        128,
+        250,
+        266
+      ]
+    },
+    {
+      "frame": 26,
+      "meanLuma": 2.7319804670138885,
+      "litPixels": 9429,
+      "cornerMax": 0,
+      "bounds": [
+        105,
+        125,
+        251,
+        266
+      ]
+    },
+    {
+      "frame": 27,
+      "meanLuma": 2.6485779340277773,
+      "litPixels": 9488,
+      "cornerMax": 0,
+      "bounds": [
+        104,
+        122,
+        252,
+        265
+      ]
+    },
+    {
+      "frame": 28,
+      "meanLuma": 2.5362569262152777,
+      "litPixels": 9505,
+      "cornerMax": 0,
+      "bounds": [
+        103,
+        119,
+        252,
+        264
+      ]
+    },
+    {
+      "frame": 29,
+      "meanLuma": 2.419760277777778,
+      "litPixels": 9491,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        116,
+        253,
+        264
+      ]
+    },
+    {
+      "frame": 30,
+      "meanLuma": 2.2940333064236116,
+      "litPixels": 9427,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        114,
+        253,
+        263
+      ]
+    },
+    {
+      "frame": 31,
+      "meanLuma": 2.2012037491319445,
+      "litPixels": 9240,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        112,
+        254,
+        257
+      ]
+    },
+    {
+      "frame": 32,
+      "meanLuma": 2.1132859383680556,
+      "litPixels": 9078,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        110,
+        254,
+        256
+      ]
+    },
+    {
+      "frame": 33,
+      "meanLuma": 2.2604090130208334,
+      "litPixels": 9568,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        108,
+        255,
+        254
+      ]
+    },
+    {
+      "frame": 34,
+      "meanLuma": 2.3386518767361113,
+      "litPixels": 9805,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        106,
+        255,
+        252
+      ]
+    },
+    {
+      "frame": 35,
+      "meanLuma": 2.3468413532986108,
+      "litPixels": 9755,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        104,
+        255,
+        251
+      ]
+    },
+    {
+      "frame": 36,
+      "meanLuma": 2.3096721232638893,
+      "litPixels": 9894,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        103,
+        255,
+        247
+      ]
+    },
+    {
+      "frame": 37,
+      "meanLuma": 2.420575659722222,
+      "litPixels": 10006,
+      "cornerMax": 0,
+      "bounds": [
+        102,
+        101,
+        255,
+        247
+      ]
+    },
+    {
+      "frame": 38,
+      "meanLuma": 2.410704549479167,
+      "litPixels": 9894,
+      "cornerMax": 0,
+      "bounds": [
+        103,
+        100,
+        256,
+        258
+      ]
+    },
+    {
+      "frame": 39,
+      "meanLuma": 2.426592435763889,
+      "litPixels": 10135,
+      "cornerMax": 0,
+      "bounds": [
+        103,
+        99,
+        248,
+        258
+      ]
+    },
+    {
+      "frame": 40,
+      "meanLuma": 2.5469371041666675,
+      "litPixels": 10308,
+      "cornerMax": 0,
+      "bounds": [
+        103,
+        97,
+        263,
+        246
+      ]
+    },
+    {
+      "frame": 41,
+      "meanLuma": 2.5696539470486117,
+      "litPixels": 10389,
+      "cornerMax": 0,
+      "bounds": [
+        104,
+        94,
+        289,
+        246
+      ]
+    },
+    {
+      "frame": 42,
+      "meanLuma": 2.6297145086805562,
+      "litPixels": 10463,
+      "cornerMax": 0,
+      "bounds": [
+        104,
+        92,
+        291,
+        247
+      ]
+    },
+    {
+      "frame": 43,
+      "meanLuma": 2.612122052083333,
+      "litPixels": 10550,
+      "cornerMax": 0,
+      "bounds": [
+        104,
+        90,
+        291,
+        247
+      ]
+    },
+    {
+      "frame": 44,
+      "meanLuma": 2.5462446284722224,
+      "litPixels": 10457,
+      "cornerMax": 0,
+      "bounds": [
+        105,
+        88,
+        290,
+        246
+      ]
+    },
+    {
+      "frame": 45,
+      "meanLuma": 2.600646873263889,
+      "litPixels": 10698,
+      "cornerMax": 0,
+      "bounds": [
+        105,
+        86,
+        290,
+        245
+      ]
+    },
+    {
+      "frame": 46,
+      "meanLuma": 2.576193438368056,
+      "litPixels": 10713,
+      "cornerMax": 0,
+      "bounds": [
+        106,
+        85,
+        290,
+        245
+      ]
+    },
+    {
+      "frame": 47,
+      "meanLuma": 2.5538814739583344,
+      "litPixels": 10727,
+      "cornerMax": 0,
+      "bounds": [
+        106,
+        83,
+        289,
+        245
+      ]
+    },
+    {
+      "frame": 48,
+      "meanLuma": 2.635458868923611,
+      "litPixels": 10891,
+      "cornerMax": 0,
+      "bounds": [
+        106,
+        82,
+        289,
+        245
+      ]
+    },
+    {
+      "frame": 49,
+      "meanLuma": 2.712706657986111,
+      "litPixels": 10954,
+      "cornerMax": 0,
+      "bounds": [
+        107,
+        83,
+        289,
+        245
+      ]
+    },
+    {
+      "frame": 50,
+      "meanLuma": 2.722136719618056,
+      "litPixels": 10923,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        80,
+        289,
+        245
+      ]
+    },
+    {
+      "frame": 51,
+      "meanLuma": 2.707301469618055,
+      "litPixels": 10801,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        78,
+        289,
+        245
+      ]
+    },
+    {
+      "frame": 52,
+      "meanLuma": 2.7576140711805555,
+      "litPixels": 10853,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        76,
+        293,
+        245
+      ]
+    },
+    {
+      "frame": 53,
+      "meanLuma": 2.8179470416666668,
+      "litPixels": 11061,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        73,
+        302,
+        245
+      ]
+    },
+    {
+      "frame": 54,
+      "meanLuma": 2.8372074878472215,
+      "litPixels": 11337,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        70,
+        303,
+        245
+      ]
+    },
+    {
+      "frame": 55,
+      "meanLuma": 2.793849478298611,
+      "litPixels": 11562,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        67,
+        304,
+        244
+      ]
+    },
+    {
+      "frame": 56,
+      "meanLuma": 2.8306949887152775,
+      "litPixels": 11904,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        63,
+        309,
+        244
+      ]
+    },
+    {
+      "frame": 57,
+      "meanLuma": 2.881205921006944,
+      "litPixels": 12248,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        60,
+        320,
+        243
+      ]
+    },
+    {
+      "frame": 58,
+      "meanLuma": 2.8399245017361108,
+      "litPixels": 12401,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        57,
+        333,
+        243
+      ]
+    },
+    {
+      "frame": 59,
+      "meanLuma": 2.8351085026041676,
+      "litPixels": 12655,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        54,
+        344,
+        243
+      ]
+    },
+    {
+      "frame": 60,
+      "meanLuma": 2.9386663697916666,
+      "litPixels": 13157,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        52,
+        362,
+        243
+      ]
+    },
+    {
+      "frame": 61,
+      "meanLuma": 3.0004598784722223,
+      "litPixels": 13571,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        49,
+        373,
+        243
+      ]
+    },
+    {
+      "frame": 62,
+      "meanLuma": 2.972504047743056,
+      "litPixels": 13765,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        47,
+        379,
+        243
+      ]
+    },
+    {
+      "frame": 63,
+      "meanLuma": 2.9651163098958335,
+      "litPixels": 14163,
+      "cornerMax": 0,
+      "bounds": [
+        115,
+        45,
+        379,
+        243
+      ]
+    },
+    {
+      "frame": 64,
+      "meanLuma": 2.9529477803819444,
+      "litPixels": 14476,
+      "cornerMax": 0,
+      "bounds": [
+        115,
+        43,
+        381,
+        243
+      ]
+    },
+    {
+      "frame": 65,
+      "meanLuma": 2.9705132934027776,
+      "litPixels": 14782,
+      "cornerMax": 0,
+      "bounds": [
+        115,
+        41,
+        384,
+        243
+      ]
+    },
+    {
+      "frame": 66,
+      "meanLuma": 2.970056403645834,
+      "litPixels": 15003,
+      "cornerMax": 0,
+      "bounds": [
+        115,
+        39,
+        386,
+        243
+      ]
+    },
+    {
+      "frame": 67,
+      "meanLuma": 2.9237754592013885,
+      "litPixels": 15219,
+      "cornerMax": 0,
+      "bounds": [
+        115,
+        38,
+        389,
+        243
+      ]
+    },
+    {
+      "frame": 68,
+      "meanLuma": 2.986695144097222,
+      "litPixels": 15410,
+      "cornerMax": 0,
+      "bounds": [
+        115,
+        36,
+        390,
+        243
+      ]
+    },
+    {
+      "frame": 69,
+      "meanLuma": 3.0755646059027772,
+      "litPixels": 15680,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        34,
+        392,
+        244
+      ]
+    },
+    {
+      "frame": 70,
+      "meanLuma": 3.0904207630208327,
+      "litPixels": 15747,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        33,
+        393,
+        244
+      ]
+    },
+    {
+      "frame": 71,
+      "meanLuma": 3.063088338541667,
+      "litPixels": 15856,
+      "cornerMax": 0,
+      "bounds": [
+        116,
+        32,
+        395,
+        244
+      ]
+    },
+    {
+      "frame": 72,
+      "meanLuma": 3.020769058159722,
+      "litPixels": 15857,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        30,
+        402,
+        244
+      ]
+    },
+    {
+      "frame": 73,
+      "meanLuma": 3.081253598958333,
+      "litPixels": 16181,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        29,
+        447,
+        244
+      ]
+    },
+    {
+      "frame": 74,
+      "meanLuma": 3.06536203125,
+      "litPixels": 16224,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        28,
+        446,
+        244
+      ]
+    },
+    {
+      "frame": 75,
+      "meanLuma": 3.0473513906250007,
+      "litPixels": 16419,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        27,
+        446,
+        244
+      ]
+    },
+    {
+      "frame": 76,
+      "meanLuma": 3.116840730034722,
+      "litPixels": 16722,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        26,
+        446,
+        244
+      ]
+    },
+    {
+      "frame": 77,
+      "meanLuma": 3.2182561935763894,
+      "litPixels": 16923,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        26,
+        447,
+        244
+      ]
+    },
+    {
+      "frame": 78,
+      "meanLuma": 3.231624033854166,
+      "litPixels": 16913,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        24,
+        448,
+        244
+      ]
+    },
+    {
+      "frame": 79,
+      "meanLuma": 3.22172120486111,
+      "litPixels": 17099,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        23,
+        449,
+        244
+      ]
+    },
+    {
+      "frame": 80,
+      "meanLuma": 3.2647539774305563,
+      "litPixels": 17228,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        22,
+        450,
+        244
+      ]
+    },
+    {
+      "frame": 81,
+      "meanLuma": 3.2803217673611105,
+      "litPixels": 17291,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        21,
+        450,
+        244
+      ]
+    },
+    {
+      "frame": 82,
+      "meanLuma": 3.284741042534722,
+      "litPixels": 17372,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        20,
+        451,
+        244
+      ]
+    },
+    {
+      "frame": 83,
+      "meanLuma": 3.3308462543402775,
+      "litPixels": 17694,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        28,
+        451,
+        244
+      ]
+    },
+    {
+      "frame": 84,
+      "meanLuma": 3.406562375,
+      "litPixels": 17758,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        33,
+        452,
+        244
+      ]
+    },
+    {
+      "frame": 85,
+      "meanLuma": 3.4948384427083328,
+      "litPixels": 17849,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        32,
+        452,
+        244
+      ]
+    },
+    {
+      "frame": 86,
+      "meanLuma": 3.484794818576389,
+      "litPixels": 17992,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        31,
+        453,
+        244
+      ]
+    },
+    {
+      "frame": 87,
+      "meanLuma": 3.4943062178819444,
+      "litPixels": 18387,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        30,
+        453,
+        244
+      ]
+    },
+    {
+      "frame": 88,
+      "meanLuma": 3.5869831276041664,
+      "litPixels": 18706,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        30,
+        453,
+        244
+      ]
+    },
+    {
+      "frame": 89,
+      "meanLuma": 3.645511576388889,
+      "litPixels": 18598,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        30,
+        454,
+        244
+      ]
+    },
+    {
+      "frame": 90,
+      "meanLuma": 3.6561288871527773,
+      "litPixels": 18643,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        32,
+        454,
+        244
+      ]
+    },
+    {
+      "frame": 91,
+      "meanLuma": 3.633130876736111,
+      "litPixels": 18525,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        47,
+        454,
+        245
+      ]
+    },
+    {
+      "frame": 92,
+      "meanLuma": 3.656562191840278,
+      "litPixels": 18349,
+      "cornerMax": 0,
+      "bounds": [
+        117,
+        46,
+        454,
+        245
+      ]
+    },
+    {
+      "frame": 93,
+      "meanLuma": 3.757729615451389,
+      "litPixels": 18475,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        44,
+        455,
+        245
+      ]
+    },
+    {
+      "frame": 94,
+      "meanLuma": 3.795129884548611,
+      "litPixels": 18520,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        42,
+        461,
+        245
+      ]
+    },
+    {
+      "frame": 95,
+      "meanLuma": 3.7619019036458328,
+      "litPixels": 18573,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        41,
+        470,
+        245
+      ]
+    },
+    {
+      "frame": 96,
+      "meanLuma": 3.8371903281250006,
+      "litPixels": 18808,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        52,
+        470,
+        245
+      ]
+    },
+    {
+      "frame": 97,
+      "meanLuma": 3.9748650078125003,
+      "litPixels": 19112,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        51,
+        470,
+        245
+      ]
+    },
+    {
+      "frame": 98,
+      "meanLuma": 4.011210604166667,
+      "litPixels": 19271,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        51,
+        471,
+        245
+      ]
+    },
+    {
+      "frame": 99,
+      "meanLuma": 3.982966671006944,
+      "litPixels": 19518,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        51,
+        473,
+        245
+      ]
+    },
+    {
+      "frame": 100,
+      "meanLuma": 3.978770778645834,
+      "litPixels": 19935,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        51,
+        475,
+        247
+      ]
+    },
+    {
+      "frame": 101,
+      "meanLuma": 4.006054119791666,
+      "litPixels": 20283,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        51,
+        477,
+        250
+      ]
+    },
+    {
+      "frame": 102,
+      "meanLuma": 3.8951516501736108,
+      "litPixels": 20385,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        64,
+        487,
+        252
+      ]
+    },
+    {
+      "frame": 103,
+      "meanLuma": 3.8626108003472224,
+      "litPixels": 20781,
+      "cornerMax": 0,
+      "bounds": [
+        118,
+        63,
+        494,
+        254
+      ]
+    },
+    {
+      "frame": 104,
+      "meanLuma": 3.9114931458333335,
+      "litPixels": 21097,
+      "cornerMax": 0,
+      "bounds": [
+        119,
+        62,
+        508,
+        255
+      ]
+    },
+    {
+      "frame": 105,
+      "meanLuma": 4.018672137152778,
+      "litPixels": 21520,
+      "cornerMax": 0,
+      "bounds": [
+        119,
+        60,
+        524,
+        257
+      ]
+    },
+    {
+      "frame": 106,
+      "meanLuma": 4.054848977430555,
+      "litPixels": 21700,
+      "cornerMax": 0,
+      "bounds": [
+        120,
+        59,
+        537,
+        258
+      ]
+    },
+    {
+      "frame": 107,
+      "meanLuma": 3.997495591145833,
+      "litPixels": 21833,
+      "cornerMax": 0,
+      "bounds": [
+        120,
+        58,
+        541,
+        260
+      ]
+    },
+    {
+      "frame": 108,
+      "meanLuma": 4.070598027777778,
+      "litPixels": 22250,
+      "cornerMax": 0,
+      "bounds": [
+        120,
+        57,
+        543,
+        261
+      ]
+    },
+    {
+      "frame": 109,
+      "meanLuma": 4.1788681232638885,
+      "litPixels": 22687,
+      "cornerMax": 0,
+      "bounds": [
+        120,
+        61,
+        545,
+        261
+      ]
+    },
+    {
+      "frame": 110,
+      "meanLuma": 4.208090054687499,
+      "litPixels": 22970,
+      "cornerMax": 0,
+      "bounds": [
+        120,
+        63,
+        548,
+        261
+      ]
+    },
+    {
+      "frame": 111,
+      "meanLuma": 4.166820172743055,
+      "litPixels": 23431,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        62,
+        549,
+        262
+      ]
+    },
+    {
+      "frame": 112,
+      "meanLuma": 4.110120245659722,
+      "litPixels": 23609,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        551,
+        262
+      ]
+    },
+    {
+      "frame": 113,
+      "meanLuma": 4.065549552083334,
+      "litPixels": 23704,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        59,
+        553,
+        261
+      ]
+    },
+    {
+      "frame": 114,
+      "meanLuma": 3.9818343463541663,
+      "litPixels": 23602,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        58,
+        554,
+        260
+      ]
+    },
+    {
+      "frame": 115,
+      "meanLuma": 3.8552019062499987,
+      "litPixels": 23570,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        556,
+        256
+      ]
+    },
+    {
+      "frame": 116,
+      "meanLuma": 3.8300287664930557,
+      "litPixels": 23468,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        557,
+        256
+      ]
+    },
+    {
+      "frame": 117,
+      "meanLuma": 3.901703448784722,
+      "litPixels": 23640,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        56,
+        559,
+        246
+      ]
+    },
+    {
+      "frame": 118,
+      "meanLuma": 3.95484853125,
+      "litPixels": 23683,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        56,
+        560,
+        246
+      ]
+    },
+    {
+      "frame": 119,
+      "meanLuma": 3.9441455729166672,
+      "litPixels": 23578,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        561,
+        246
+      ]
+    },
+    {
+      "frame": 120,
+      "meanLuma": 3.943448124131945,
+      "litPixels": 23373,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        53,
+        562,
+        245
+      ]
+    },
+    {
+      "frame": 121,
+      "meanLuma": 3.9361305625,
+      "litPixels": 23344,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        52,
+        563,
+        245
+      ]
+    },
+    {
+      "frame": 122,
+      "meanLuma": 3.923895217013889,
+      "litPixels": 22948,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        51,
+        564,
+        245
+      ]
+    },
+    {
+      "frame": 123,
+      "meanLuma": 3.8450393671875,
+      "litPixels": 22620,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        49,
+        564,
+        245
+      ]
+    },
+    {
+      "frame": 124,
+      "meanLuma": 3.832017599826388,
+      "litPixels": 22413,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        48,
+        565,
+        245
+      ]
+    },
+    {
+      "frame": 125,
+      "meanLuma": 3.9776970329861117,
+      "litPixels": 22651,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        46,
+        566,
+        245
+      ]
+    },
+    {
+      "frame": 126,
+      "meanLuma": 4.0931926328125,
+      "litPixels": 22678,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        46,
+        567,
+        245
+      ]
+    },
+    {
+      "frame": 127,
+      "meanLuma": 4.153510519097222,
+      "litPixels": 22605,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        46,
+        568,
+        245
+      ]
+    },
+    {
+      "frame": 128,
+      "meanLuma": 4.2144770234375,
+      "litPixels": 22608,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        45,
+        568,
+        245
+      ]
+    },
+    {
+      "frame": 129,
+      "meanLuma": 4.370680026909723,
+      "litPixels": 23065,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        45,
+        569,
+        245
+      ]
+    },
+    {
+      "frame": 130,
+      "meanLuma": 4.478447869791666,
+      "litPixels": 23395,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        44,
+        569,
+        246
+      ]
+    },
+    {
+      "frame": 131,
+      "meanLuma": 4.441300169270833,
+      "litPixels": 23457,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        47,
+        569,
+        246
+      ]
+    },
+    {
+      "frame": 132,
+      "meanLuma": 4.336189993055555,
+      "litPixels": 23515,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        47,
+        569,
+        245
+      ]
+    },
+    {
+      "frame": 133,
+      "meanLuma": 4.203964344618055,
+      "litPixels": 23605,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        50,
+        569,
+        246
+      ]
+    },
+    {
+      "frame": 134,
+      "meanLuma": 4.051391415798612,
+      "litPixels": 23492,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        48,
+        567,
+        246
+      ]
+    },
+    {
+      "frame": 135,
+      "meanLuma": 3.9092711579861112,
+      "litPixels": 23540,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        50,
+        567,
+        246
+      ]
+    },
+    {
+      "frame": 136,
+      "meanLuma": 3.7619878585069446,
+      "litPixels": 23458,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        51,
+        563,
+        246
+      ]
+    },
+    {
+      "frame": 137,
+      "meanLuma": 3.629486907986112,
+      "litPixels": 23387,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        53,
+        556,
+        246
+      ]
+    },
+    {
+      "frame": 138,
+      "meanLuma": 3.4959780538194445,
+      "litPixels": 23150,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        52,
+        555,
+        245
+      ]
+    },
+    {
+      "frame": 139,
+      "meanLuma": 3.378989118055556,
+      "litPixels": 23095,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        51,
+        555,
+        245
+      ]
+    },
+    {
+      "frame": 140,
+      "meanLuma": 3.253932029513889,
+      "litPixels": 22807,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        47,
+        555,
+        245
+      ]
+    },
+    {
+      "frame": 141,
+      "meanLuma": 3.1389994661458336,
+      "litPixels": 22813,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        48,
+        554,
+        245
+      ]
+    },
+    {
+      "frame": 142,
+      "meanLuma": 3.0159472604166666,
+      "litPixels": 22581,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        44,
+        554,
+        245
+      ]
+    },
+    {
+      "frame": 143,
+      "meanLuma": 2.9113782421875007,
+      "litPixels": 22453,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        553,
+        245
+      ]
+    },
+    {
+      "frame": 144,
+      "meanLuma": 2.8045896293402772,
+      "litPixels": 22354,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        59,
+        553,
+        245
+      ]
+    },
+    {
+      "frame": 145,
+      "meanLuma": 2.718057345486111,
+      "litPixels": 22312,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        58,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 146,
+      "meanLuma": 2.6309525251736114,
+      "litPixels": 22118,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 147,
+      "meanLuma": 2.5650205477430563,
+      "litPixels": 21989,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        54,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 148,
+      "meanLuma": 2.492436694444444,
+      "litPixels": 21819,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        62,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 149,
+      "meanLuma": 2.4402603680555552,
+      "litPixels": 21757,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        61,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 150,
+      "meanLuma": 2.3868304131944447,
+      "litPixels": 21471,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 151,
+      "meanLuma": 2.3511026701388893,
+      "litPixels": 21139,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        59,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 152,
+      "meanLuma": 2.3103078593749995,
+      "litPixels": 20664,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        58,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 153,
+      "meanLuma": 2.286151063368056,
+      "litPixels": 20175,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 154,
+      "meanLuma": 2.252993050347222,
+      "litPixels": 19657,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 155,
+      "meanLuma": 2.233974376736111,
+      "litPixels": 19422,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        56,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 156,
+      "meanLuma": 2.2036646241319446,
+      "litPixels": 19087,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 157,
+      "meanLuma": 2.1903254453125,
+      "litPixels": 18879,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 158,
+      "meanLuma": 2.1688291050347224,
+      "litPixels": 18614,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        56,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 159,
+      "meanLuma": 2.163519858506944,
+      "litPixels": 18558,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 160,
+      "meanLuma": 2.1517603819444444,
+      "litPixels": 18376,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 161,
+      "meanLuma": 2.1552217829861116,
+      "litPixels": 18408,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 162,
+      "meanLuma": 2.14931171875,
+      "litPixels": 18328,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        54,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 163,
+      "meanLuma": 2.1504896866319445,
+      "litPixels": 18322,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        52,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 164,
+      "meanLuma": 2.142652477430555,
+      "litPixels": 18232,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        51,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 165,
+      "meanLuma": 2.1431634939236113,
+      "litPixels": 18261,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        49,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 166,
+      "meanLuma": 2.1323483810763886,
+      "litPixels": 18233,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        48,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 167,
+      "meanLuma": 2.1280627899305555,
+      "litPixels": 18159,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 168,
+      "meanLuma": 2.1148648194444446,
+      "litPixels": 18065,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        54,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 169,
+      "meanLuma": 2.1122409965277775,
+      "litPixels": 17997,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        53,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 170,
+      "meanLuma": 2.1023606822916667,
+      "litPixels": 17909,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        52,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 171,
+      "meanLuma": 2.0989397612847225,
+      "litPixels": 17828,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 172,
+      "meanLuma": 2.089189259548611,
+      "litPixels": 17710,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        58,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 173,
+      "meanLuma": 2.0923068081597225,
+      "litPixels": 17808,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        59,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 174,
+      "meanLuma": 2.083132064236111,
+      "litPixels": 17723,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 175,
+      "meanLuma": 2.082490543402778,
+      "litPixels": 17806,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        56,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 176,
+      "meanLuma": 2.0737130147569443,
+      "litPixels": 17810,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        54,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 177,
+      "meanLuma": 2.0806976519097224,
+      "litPixels": 17879,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 178,
+      "meanLuma": 2.076321947916666,
+      "litPixels": 17909,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        59,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 179,
+      "meanLuma": 2.0780441631944444,
+      "litPixels": 17891,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 180,
+      "meanLuma": 2.0702023940972225,
+      "litPixels": 17851,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        56,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 181,
+      "meanLuma": 2.0737939982638895,
+      "litPixels": 17930,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 182,
+      "meanLuma": 2.067897691840278,
+      "litPixels": 17844,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 183,
+      "meanLuma": 2.072002403645833,
+      "litPixels": 17907,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        62,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 184,
+      "meanLuma": 2.0675645902777777,
+      "litPixels": 17874,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        539,
+        245
+      ]
+    },
+    {
+      "frame": 185,
+      "meanLuma": 2.070614703993056,
+      "litPixels": 17980,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        59,
+        540,
+        245
+      ]
+    },
+    {
+      "frame": 186,
+      "meanLuma": 2.0668293072916666,
+      "litPixels": 17988,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        540,
+        245
+      ]
+    },
+    {
+      "frame": 187,
+      "meanLuma": 2.0688214366319446,
+      "litPixels": 18108,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        55,
+        540,
+        245
+      ]
+    },
+    {
+      "frame": 188,
+      "meanLuma": 2.064939509548611,
+      "litPixels": 18134,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        57,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 189,
+      "meanLuma": 2.068090430555556,
+      "litPixels": 18210,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        58,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 190,
+      "meanLuma": 2.0497269696180553,
+      "litPixels": 18115,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        63,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 191,
+      "meanLuma": 2.0218557994791664,
+      "litPixels": 18173,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        61,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 192,
+      "meanLuma": 1.9751417656250003,
+      "litPixels": 18066,
+      "cornerMax": 0,
+      "bounds": [
+        121,
+        60,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 193,
+      "meanLuma": 1.927113805555556,
+      "litPixels": 17997,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        59,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 194,
+      "meanLuma": 1.8557793802083336,
+      "litPixels": 17726,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        59,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 195,
+      "meanLuma": 1.785025592881944,
+      "litPixels": 17454,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        60,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 196,
+      "meanLuma": 1.6976692256944443,
+      "litPixels": 17007,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        59,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 197,
+      "meanLuma": 1.6190195815972221,
+      "litPixels": 16454,
+      "cornerMax": 0,
+      "bounds": [
+        122,
+        61,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 198,
+      "meanLuma": 1.5302625564236112,
+      "litPixels": 15763,
+      "cornerMax": 0,
+      "bounds": [
+        123,
+        60,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 199,
+      "meanLuma": 1.4483994973958334,
+      "litPixels": 15122,
+      "cornerMax": 0,
+      "bounds": [
+        123,
+        59,
+        538,
+        245
+      ]
+    },
+    {
+      "frame": 200,
+      "meanLuma": 1.3597985625,
+      "litPixels": 14317,
+      "cornerMax": 0,
+      "bounds": [
+        123,
+        58,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 201,
+      "meanLuma": 1.2840721744791663,
+      "litPixels": 13500,
+      "cornerMax": 0,
+      "bounds": [
+        123,
+        57,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 202,
+      "meanLuma": 1.2024984114583335,
+      "litPixels": 12639,
+      "cornerMax": 0,
+      "bounds": [
+        123,
+        57,
+        537,
+        245
+      ]
+    },
+    {
+      "frame": 203,
+      "meanLuma": 1.129354087673611,
+      "litPixels": 11749,
+      "cornerMax": 0,
+      "bounds": [
+        123,
+        56,
+        536,
+        245
+      ]
+    },
+    {
+      "frame": 204,
+      "meanLuma": 1.0534506831597221,
+      "litPixels": 10822,
+      "cornerMax": 0,
+      "bounds": [
+        124,
+        55,
+        535,
+        245
+      ]
+    },
+    {
+      "frame": 205,
+      "meanLuma": 0.9873950659722224,
+      "litPixels": 9899,
+      "cornerMax": 0,
+      "bounds": [
+        124,
+        55,
+        535,
+        245
+      ]
+    },
+    {
+      "frame": 206,
+      "meanLuma": 0.9171825069444448,
+      "litPixels": 9016,
+      "cornerMax": 0,
+      "bounds": [
+        124,
+        56,
+        535,
+        245
+      ]
+    },
+    {
+      "frame": 207,
+      "meanLuma": 0.8531258541666666,
+      "litPixels": 7992,
+      "cornerMax": 0,
+      "bounds": [
+        125,
+        55,
+        535,
+        245
+      ]
+    },
+    {
+      "frame": 208,
+      "meanLuma": 0.7892691059027779,
+      "litPixels": 7097,
+      "cornerMax": 0,
+      "bounds": [
+        126,
+        55,
+        534,
+        245
+      ]
+    },
+    {
+      "frame": 209,
+      "meanLuma": 0.733797545138889,
+      "litPixels": 6274,
+      "cornerMax": 0,
+      "bounds": [
+        127,
+        55,
+        533,
+        245
+      ]
+    },
+    {
+      "frame": 210,
+      "meanLuma": 0.6780238949652777,
+      "litPixels": 5594,
+      "cornerMax": 0,
+      "bounds": [
+        127,
+        54,
+        533,
+        245
+      ]
+    },
+    {
+      "frame": 211,
+      "meanLuma": 0.6288339461805555,
+      "litPixels": 4932,
+      "cornerMax": 0,
+      "bounds": [
+        128,
+        74,
+        533,
+        245
+      ]
+    },
+    {
+      "frame": 212,
+      "meanLuma": 0.5779869600694444,
+      "litPixels": 4341,
+      "cornerMax": 0,
+      "bounds": [
+        129,
+        80,
+        533,
+        245
+      ]
+    },
+    {
+      "frame": 213,
+      "meanLuma": 0.5340942734375,
+      "litPixels": 3725,
+      "cornerMax": 0,
+      "bounds": [
+        131,
+        79,
+        533,
+        244
+      ]
+    },
+    {
+      "frame": 214,
+      "meanLuma": 0.49087975694444447,
+      "litPixels": 3268,
+      "cornerMax": 0,
+      "bounds": [
+        132,
+        83,
+        533,
+        244
+      ]
+    },
+    {
+      "frame": 215,
+      "meanLuma": 0.45071514843749994,
+      "litPixels": 2705,
+      "cornerMax": 0,
+      "bounds": [
+        132,
+        82,
+        532,
+        244
+      ]
+    },
+    {
+      "frame": 216,
+      "meanLuma": 0.4106520407986111,
+      "litPixels": 2306,
+      "cornerMax": 0,
+      "bounds": [
+        133,
+        81,
+        532,
+        237
+      ]
+    },
+    {
+      "frame": 217,
+      "meanLuma": 0.3779394244791667,
+      "litPixels": 1945,
+      "cornerMax": 0,
+      "bounds": [
+        133,
+        79,
+        532,
+        235
+      ]
+    },
+    {
+      "frame": 218,
+      "meanLuma": 0.34173309461805557,
+      "litPixels": 1631,
+      "cornerMax": 0,
+      "bounds": [
+        136,
+        78,
+        531,
+        243
+      ]
+    },
+    {
+      "frame": 219,
+      "meanLuma": 0.3110629592013889,
+      "litPixels": 1244,
+      "cornerMax": 0,
+      "bounds": [
+        141,
+        77,
+        540,
+        236
+      ]
+    },
+    {
+      "frame": 220,
+      "meanLuma": 0.2817832300347222,
+      "litPixels": 1021,
+      "cornerMax": 0,
+      "bounds": [
+        142,
+        76,
+        530,
+        236
+      ]
+    },
+    {
+      "frame": 221,
+      "meanLuma": 0.2591370138888889,
+      "litPixels": 862,
+      "cornerMax": 0,
+      "bounds": [
+        140,
+        99,
+        516,
+        236
+      ]
+    },
+    {
+      "frame": 222,
+      "meanLuma": 0.23160353124999997,
+      "litPixels": 757,
+      "cornerMax": 0,
+      "bounds": [
+        141,
+        99,
+        540,
+        236
+      ]
+    },
+    {
+      "frame": 223,
+      "meanLuma": 0.2079558359375,
+      "litPixels": 604,
+      "cornerMax": 0,
+      "bounds": [
+        143,
+        99,
+        516,
+        235
+      ]
+    },
+    {
+      "frame": 224,
+      "meanLuma": 0.18573259375,
+      "litPixels": 517,
+      "cornerMax": 0,
+      "bounds": [
+        141,
+        99,
+        516,
+        235
+      ]
+    },
+    {
+      "frame": 225,
+      "meanLuma": 0.16983789583333336,
+      "litPixels": 418,
+      "cornerMax": 0,
+      "bounds": [
+        142,
+        101,
+        516,
+        234
+      ]
+    },
+    {
+      "frame": 226,
+      "meanLuma": 0.1494949262152778,
+      "litPixels": 355,
+      "cornerMax": 0,
+      "bounds": [
+        142,
+        100,
+        510,
+        234
+      ]
+    },
+    {
+      "frame": 227,
+      "meanLuma": 0.131229328125,
+      "litPixels": 254,
+      "cornerMax": 0,
+      "bounds": [
+        139,
+        101,
+        510,
+        233
+      ]
+    },
+    {
+      "frame": 228,
+      "meanLuma": 0.11368006510416667,
+      "litPixels": 186,
+      "cornerMax": 0,
+      "bounds": [
+        146,
+        122,
+        507,
+        229
+      ]
+    },
+    {
+      "frame": 229,
+      "meanLuma": 0.10319250694444446,
+      "litPixels": 157,
+      "cornerMax": 0,
+      "bounds": [
+        146,
+        141,
+        507,
+        225
+      ]
+    },
+    {
+      "frame": 230,
+      "meanLuma": 0.08924851388888888,
+      "litPixels": 127,
+      "cornerMax": 0,
+      "bounds": [
+        147,
+        139,
+        507,
+        225
+      ]
+    },
+    {
+      "frame": 231,
+      "meanLuma": 0.07835000260416668,
+      "litPixels": 93,
+      "cornerMax": 0,
+      "bounds": [
+        147,
+        138,
+        472,
+        224
+      ]
+    },
+    {
+      "frame": 232,
+      "meanLuma": 0.0677076953125,
+      "litPixels": 77,
+      "cornerMax": 0,
+      "bounds": [
+        147,
+        137,
+        471,
+        224
+      ]
+    },
+    {
+      "frame": 233,
+      "meanLuma": 0.061637329861111124,
+      "litPixels": 67,
+      "cornerMax": 0,
+      "bounds": [
+        148,
+        135,
+        471,
+        223
+      ]
+    },
+    {
+      "frame": 234,
+      "meanLuma": 0.05253722569444444,
+      "litPixels": 50,
+      "cornerMax": 0,
+      "bounds": [
+        148,
+        134,
+        471,
+        225
+      ]
+    },
+    {
+      "frame": 235,
+      "meanLuma": 0.04563234982638889,
+      "litPixels": 39,
+      "cornerMax": 0,
+      "bounds": [
+        149,
+        133,
+        470,
+        224
+      ]
+    },
+    {
+      "frame": 236,
+      "meanLuma": 0.03900134027777778,
+      "litPixels": 31,
+      "cornerMax": 0,
+      "bounds": [
+        149,
+        148,
+        455,
+        224
+      ]
+    },
+    {
+      "frame": 237,
+      "meanLuma": 0.03478027170138889,
+      "litPixels": 18,
+      "cornerMax": 0,
+      "bounds": [
+        149,
+        148,
+        455,
+        223
+      ]
+    },
+    {
+      "frame": 238,
+      "meanLuma": 0.02949295572916667,
+      "litPixels": 12,
+      "cornerMax": 0,
+      "bounds": [
+        150,
+        147,
+        455,
+        218
+      ]
+    },
+    {
+      "frame": 239,
+      "meanLuma": 0.025304419270833333,
+      "litPixels": 9,
+      "cornerMax": 0,
+      "bounds": [
+        150,
+        162,
+        277,
+        214
+      ]
+    },
+    {
+      "frame": 240,
+      "meanLuma": 0.02127178211805556,
+      "litPixels": 8,
+      "cornerMax": 0,
+      "bounds": [
+        150,
+        162,
+        454,
+        213
+      ]
+    },
+    {
+      "frame": 241,
+      "meanLuma": 0.019140995659722222,
+      "litPixels": 9,
+      "cornerMax": 0,
+      "bounds": [
+        150,
+        161,
+        454,
+        212
+      ]
+    },
+    {
+      "frame": 242,
+      "meanLuma": 0.016230959201388888,
+      "litPixels": 7,
+      "cornerMax": 0,
+      "bounds": [
+        151,
+        127,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 243,
+      "meanLuma": 0.013915438368055557,
+      "litPixels": 6,
+      "cornerMax": 0,
+      "bounds": [
+        151,
+        127,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 244,
+      "meanLuma": 0.011916392361111111,
+      "litPixels": 5,
+      "cornerMax": 0,
+      "bounds": [
+        152,
+        199,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 245,
+      "meanLuma": 0.011002822916666669,
+      "litPixels": 5,
+      "cornerMax": 0,
+      "bounds": [
+        152,
+        198,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 246,
+      "meanLuma": 0.009167606770833333,
+      "litPixels": 5,
+      "cornerMax": 0,
+      "bounds": [
+        152,
+        176,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 247,
+      "meanLuma": 0.00768946875,
+      "litPixels": 4,
+      "cornerMax": 0,
+      "bounds": [
+        152,
+        197,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 248,
+      "meanLuma": 0.007013284722222223,
+      "litPixels": 4,
+      "cornerMax": 0,
+      "bounds": [
+        153,
+        175,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 249,
+      "meanLuma": 0.006098190104166667,
+      "litPixels": 4,
+      "cornerMax": 0,
+      "bounds": [
+        153,
+        195,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 250,
+      "meanLuma": 0.0054303897569444445,
+      "litPixels": 3,
+      "cornerMax": 0,
+      "bounds": [
+        154,
+        194,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 251,
+      "meanLuma": 0.004916551215277778,
+      "litPixels": 2,
+      "cornerMax": 0,
+      "bounds": [
+        154,
+        209,
+        155,
+        209
+      ]
+    },
+    {
+      "frame": 252,
+      "meanLuma": 0.004022140625000001,
+      "litPixels": 2,
+      "cornerMax": 0,
+      "bounds": [
+        155,
+        193,
+        454,
+        209
+      ]
+    },
+    {
+      "frame": 253,
+      "meanLuma": 0.003768776041666667,
+      "litPixels": 1,
+      "cornerMax": 0,
+      "bounds": [
+        454,
+        191,
+        454,
+        191
+      ]
+    },
+    {
+      "frame": 254,
+      "meanLuma": 0.003248470486111111,
+      "litPixels": 1,
+      "cornerMax": 0,
+      "bounds": [
+        454,
+        191,
+        454,
+        191
+      ]
+    }
+  ],
+  "visualStatus": "Rejected as a sigil delivery: centerline extraction loses approved stroke geometry",
+  "visualReview": {
+    "observed": [
+      "Broad moving flame front and turbulent wake restored",
+      "No opaque typography overlay",
+      "Pure black corners",
+      "Fuel-driven burn-out reaches near black"
+    ],
+    "remaining": [
+      "Persistent gas is much dimmer than the travelling flame",
+      "Disconnected stroke transitions can produce isolated flame heads",
+      "Uniform-width centerline does not preserve the original 01 sigil identity"
+    ],
+    "legibility": "Secondary under the latest user instruction; no counter-shape or letter-recognition gate"
+  }
+}

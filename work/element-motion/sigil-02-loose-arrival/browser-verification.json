@@ -1,0 +1,32 @@
+{
+  "tabId": "5",
+  "url": "http://127.0.0.1:8767/elements/motion/bending/sigils/02/?element=water",
+  "checks": {
+    "water": {
+      "revision": "water-02-r7.mp4",
+      "previous": "water-02-r6.mp4",
+      "width": 1920,
+      "height": 1080,
+      "duration": 10,
+      "previousDuration": 13,
+      "readyState": 4,
+      "paused": false,
+      "error": null,
+      "downloadTracksSelection": true
+    },
+    "earth": {
+      "revision": "earth-02-r6.mp4",
+      "previous": "earth-02-r5.mp4",
+      "width": 1920,
+      "height": 1080,
+      "duration": 10,
+      "previousDuration": 13,
+      "readyState": 4,
+      "paused": false,
+      "error": null,
+      "downloadTracksSelection": true
+    }
+  },
+  "selectionResetsPrevious": true,
+  "returnedToRevisedWater": true
+}

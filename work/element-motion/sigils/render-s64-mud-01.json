@@ -1,0 +1,13 @@
+{
+  "kind": "mud",
+  "variant": "01",
+  "frames": [
+    240
+  ],
+  "configuration": "6167f4f219249ecc16ca68b7a5816dd867e1b209d4f351218e650969c586b531",
+  "seconds": 9.412606000900269,
+  "reusedSettledFrames": 0,
+  "sourceSha256": "daa4f6ee0737c9f645cd5e4becf31f8223f6c032dbfcc937d162b72669ad025e",
+  "method": "Original source geometry, reviewed shader recipes, supported damped motion and gravity release",
+  "limits": "Authored bending support; this retargeting pass does not rerun the earlier FLIP/MPM solves"
+}

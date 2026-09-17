@@ -1,0 +1,49 @@
+{
+  "status": "incomplete",
+  "error": "TimeoutError('CPU mixed contact deadline reached')",
+  "time": 0.5,
+  "target": 2.0,
+  "steps": 4,
+  "wallSeconds": 122.09399999998277,
+  "particles": 916,
+  "maximumDamage": 0.0015824842718360115,
+  "brokenEdges": 0,
+  "temperatureRange": [
+    1037.0610630099109,
+    1450.0
+  ],
+  "sourceHashes": {
+    "lava_mpm.py": "6ce0cc7022e487284b79725f9930314e402aa46a52c34d5e8c81ccefd96e5ae8",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "bb756fab066adb11121ff3b978a304192b1f1bf8a31329de239cc892e5dea9bd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "0546246645a7be59787ae8d2ee9115200998844c511bdffd984d5f6bf4edf31f"
+  },
+  "massErrorKg": -8.543513119185775e-17,
+  "ledger": {
+    "radiation": 1005.9156194597679,
+    "convection": 84.75593181665649,
+    "bed": -106.33835620312189,
+    "viscous_heat": 0.00027260064109683286,
+    "fracture": 1.2002652508312383e-07,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0,
+    "friction_work": 3.072029235544526e-07,
+    "conduit_impulse_norm": 0.0,
+    "solid_floor_impulse_norm": 0.5288657905858951,
+    "contact_objective_loss": 6.985279130127895e-05,
+    "inlet_boundary_work": 0.0002577526234996087,
+    "friction_heat": 3.0740703940362055e-07,
+    "interface_heat": 3.783910043631736e-05,
+    "source_mass": 0.0012764249999999999,
+    "source_enthalpy": 934.6239134999997,
+    "source_kinetic": 1.903004179403517e-09,
+    "inlet_particles": 48,
+    "inlet_reference_layers": 2
+  },
+  "visualStatus": "unreviewed; geometry must demonstrate open fractures before a beauty render"
+}

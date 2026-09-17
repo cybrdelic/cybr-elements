@@ -1,0 +1,15 @@
+{
+  "solverVolumeM3": 9.238147538405053e-05,
+  "reconstructedVolumeM3": 9.934339230551826e-05,
+  "relativeVolumeError": 0.07536052972227898,
+  "brokenBonds": 31,
+  "vertices": 1484,
+  "triangles": 3124,
+  "numericalGate": false,
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\crust-local-10\\state.npz",
+  "sourceSha256": "41e5c0fc710fc6d861554b209ae62ce6c5bccd8cb84207a200d2aeb32df2cb39",
+  "time": 66.78217740558523,
+  "method": "Corotated material-domain reconstruction with local fracture connectivity; no aperture scaling",
+  "limits": "Particle-domain shear shape is approximated by rotation and volume. Coarse quadrature remains visible. Neighbor-domain welding changes reconstructed volume; thermal values are interpolated from actual particles. This is not a finer simulation.",
+  "visualStatus": "rejected: particle-grid terraces and holes; not acceptable basalt"
+}

@@ -1,0 +1,11 @@
+{
+  "frames": 300,
+  "channelFamilies": 12,
+  "channelsPerFamily": 300,
+  "events": 52,
+  "seed": 68122,
+  "holdUntil": 5.8,
+  "currentOff": 6.15,
+  "method": "Stochastic local leader propagation, short return pulses and afterglow over a persistent low-current glyph network",
+  "limitations": "Authored visual discharge model, not calibrated plasma physics."
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "healing",
+  "frame": 52,
+  "status": "complete",
+  "seconds": 7.136,
+  "peakResidentMB": 641.1,
+  "device": "CPU",
+  "threads": 2,
+  "processorAffinity": [
+    0,
+    1
+  ],
+  "samples": 24,
+  "sourceHash": "52d675b0d2b54b618bf918fefe1e3935a7003be96f47acba4e1400e24a7769a3",
+  "returncode": 0,
+  "images": [
+    "healing-0052.png"
+  ],
+  "key": "0eb6fff51be0d07b"
+}

@@ -1,0 +1,17 @@
+{
+  "frames": 294,
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    896,
+    56,
+    504
+  ],
+  "elapsed": 503.0309999999881,
+  "peakGpuMiB": 5897.6953125,
+  "source": "bending-fire.py with full approved 02 source geometry",
+  "changes": "Original reactive-flow solver/radiance, sourced from the complete approved style-02 artwork. Full approved 02 tapered geometry supplies a corrugated fuel sheet. A travelling ignition front and source momentum feed free reactive flow; fuel supply closes at 6.8s and drains. No render mask, oxygen boundary or glyph-shaped confinement. No silhouette clipping or filled glyph volume. Art-directed source, free reacting wake."
+}

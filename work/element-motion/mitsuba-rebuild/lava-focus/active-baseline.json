@@ -1,0 +1,20 @@
+{
+  "id": "lava-earlier-rough-pass",
+  "status": "Restored visual baseline; not a finished film",
+  "restoredAt": "2026-09-14T11:52:45.479853+00:00",
+  "referenceComment": "The first view is too flat and too busy\u2014it reads as a granular puddle.",
+  "referenceCommentTimestamp": "2026-09-14T10:49:54.056Z",
+  "image": "renders/hero-0059-640-24spp.png",
+  "imageSha256": "3e1eabbde8653b89b2cbae18b9f965da2b33a5c38e4e5a288aa59cf7ce26826f",
+  "sourceSnapshot": "iterations/01",
+  "surfaceSha256": "abd4b1f011dcaf764b75c7b7ee0d16fb161180f9b754fad27407f5bf506feaf3",
+  "flowSha256": "3f48a0c60e89e74e1899f15db1b6d3e4d0feb052c8163f2df5c9246d3fe7d855",
+  "rejectedReplacement": "renders/clean-light-detail-0029-640-16spp.png",
+  "restorationUsedRendering": false,
+  "preserve": [
+    "Dense rough structure",
+    "Scattered incandescent openings",
+    "Local contrast and depth"
+  ],
+  "scope": "This selects an immutable saved baseline. Later experimental scripts and renderer fixes are retained separately; they have not been applied to or used to regenerate this image."
+}

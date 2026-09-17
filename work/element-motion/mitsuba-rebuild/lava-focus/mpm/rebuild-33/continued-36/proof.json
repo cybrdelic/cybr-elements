@@ -1,0 +1,25 @@
+{
+  "status": "incomplete",
+  "time": 2.2,
+  "target": 3.0,
+  "error": "TimeoutError('CPU solve deadline reached; trial rolled back')",
+  "steps": 11,
+  "particles": 4314,
+  "damage": 0.019243521696642125,
+  "broken": 0,
+  "wallSeconds": 446.0779999999795,
+  "sourceHashes": {
+    "lava_mpm.py": "984b1cdaf808be8f1871ae65d9cc70cf486e20f482a3aa9e10608c8fdcf4d69a",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "5b8330bde83bae6ec7dbbcbc87182e2cfd4e6df148b74c8a818b59a9b4a99e42",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "f22cd70afa4adca04f494bd9e54b59f27f7fcc33edcf627ec6ff3aa4b64de59a",
+    "lava_mpm_linear27.py": "75db2a18102f05446c4edbe2a75d95b49ed279d195bc2701997210471fbba27a",
+    "lava_mpm_cuda_contact27.py": "a1bf79691b8b1015e8dd886929a85f399c2cfe1eca944404dd9ff5f9f421a52f",
+    "lava_mpm_active_contact33.py": "b3cd58dc31025b6f787468d3a1868f535b1fe63afa5036ed861341a8a31db977",
+    "lava_mpm_inlet.py": "5ab67120e74d5564929254e075b1f1c05fe8c8892658c5637ad491ec8554f3db"
+  },
+  "visualStatus": "Not yet reviewed"
+}

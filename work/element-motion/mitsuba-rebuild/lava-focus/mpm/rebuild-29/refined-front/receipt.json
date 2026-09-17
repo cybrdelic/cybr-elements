@@ -1,0 +1,268 @@
+{
+  "status": "complete",
+  "time": 1.9999999999999793,
+  "particles": 56539,
+  "rocks": 33,
+  "pitch": 0.0035,
+  "velocityBasis": "B2",
+  "fluidMassKg": 6.545095987500001,
+  "bodyMassKg": 3.2121825218200684,
+  "rows": [
+    {
+      "time": 0.0,
+      "maximumFluidSpeed": 0.04500000178813934,
+      "maximumBodySpeed": 0.0,
+      "minimumBodyHeight": 0.017600495368242264,
+      "fluidHeightRange": [
+        0.0017500000540167093,
+        0.04724999889731407
+      ],
+      "thermalLossJ": 0.0,
+      "wallSeconds": 0.1720000000204891
+    },
+    {
+      "time": 0.10000000000000002,
+      "maximumFluidSpeed": 0.013627157546579838,
+      "maximumBodySpeed": 0.030923787504434586,
+      "minimumBodyHeight": 0.017102673649787903,
+      "fluidHeightRange": [
+        0.0005584258469752967,
+        0.04702324792742729
+      ],
+      "thermalLossJ": 3567.442006098994,
+      "wallSeconds": 19.562000000005355
+    },
+    {
+      "time": 0.2000000000000001,
+      "maximumFluidSpeed": 0.025502914562821388,
+      "maximumBodySpeed": 0.059342216700315475,
+      "minimumBodyHeight": 0.016889045014977455,
+      "fluidHeightRange": [
+        -0.0005379780777730048,
+        0.04686028137803078
+      ],
+      "thermalLossJ": 7164.408157372646,
+      "wallSeconds": 24.234000000025844
+    },
+    {
+      "time": 0.30000000000000016,
+      "maximumFluidSpeed": 0.030204808339476585,
+      "maximumBodySpeed": 0.20446743071079254,
+      "minimumBodyHeight": 0.016751810908317566,
+      "fluidHeightRange": [
+        -0.0018726924899965525,
+        0.04667750746011734
+      ],
+      "thermalLossJ": 10789.601236313254,
+      "wallSeconds": 29.17200000002049
+    },
+    {
+      "time": 0.40000000000000024,
+      "maximumFluidSpeed": 0.03543761000037193,
+      "maximumBodySpeed": 0.29961854219436646,
+      "minimumBodyHeight": 0.009837726131081581,
+      "fluidHeightRange": [
+        -0.0021133602131158113,
+        0.046490393579006195
+      ],
+      "thermalLossJ": 14434.77811505513,
+      "wallSeconds": 33.469000000011874
+    },
+    {
+      "time": 0.5000000000000003,
+      "maximumFluidSpeed": 0.01702130027115345,
+      "maximumBodySpeed": 0.1205620989203453,
+      "minimumBodyHeight": 0.009803138673305511,
+      "fluidHeightRange": [
+        -0.0023632762022316456,
+        0.046335577964782715
+      ],
+      "thermalLossJ": 18094.239141941776,
+      "wallSeconds": 37.437000000005355
+    },
+    {
+      "time": 0.6000000000000004,
+      "maximumFluidSpeed": 0.02768324501812458,
+      "maximumBodySpeed": 0.10790878534317017,
+      "minimumBodyHeight": 0.009805744513869286,
+      "fluidHeightRange": [
+        -0.002984758699312806,
+        0.04621804505586624
+      ],
+      "thermalLossJ": 21763.791928487048,
+      "wallSeconds": 41.5
+    },
+    {
+      "time": 0.7000000000000005,
+      "maximumFluidSpeed": 0.013470974750816822,
+      "maximumBodySpeed": 0.3170967102050781,
+      "minimumBodyHeight": 0.009809128940105438,
+      "fluidHeightRange": [
+        -0.003186331130564213,
+        0.04611055180430412
+      ],
+      "thermalLossJ": 25440.27709711553,
+      "wallSeconds": 45.51500000001397
+    },
+    {
+      "time": 0.8000000000000006,
+      "maximumFluidSpeed": 0.012873182073235512,
+      "maximumBodySpeed": 0.01992099918425083,
+      "minimumBodyHeight": 0.009812494739890099,
+      "fluidHeightRange": [
+        -0.0034064047504216433,
+        0.04591480642557144
+      ],
+      "thermalLossJ": 29123.675989401912,
+      "wallSeconds": 49.29700000002049
+    },
+    {
+      "time": 0.9000000000000007,
+      "maximumFluidSpeed": 0.015878085047006607,
+      "maximumBodySpeed": 0.08754566311836243,
+      "minimumBodyHeight": 0.009816966950893402,
+      "fluidHeightRange": [
+        -0.0035476218909025192,
+        0.045771773904561996
+      ],
+      "thermalLossJ": 32817.48021834258,
+      "wallSeconds": 53.01500000001397
+    },
+    {
+      "time": 1.0000000000000007,
+      "maximumFluidSpeed": 0.03566170111298561,
+      "maximumBodySpeed": 0.30751723051071167,
+      "minimumBodyHeight": 0.008572548627853394,
+      "fluidHeightRange": [
+        -0.003672555787488818,
+        0.04560314118862152
+      ],
+      "thermalLossJ": 36526.641376730506,
+      "wallSeconds": 56.703000000008615
+    },
+    {
+      "time": 1.0999999999999985,
+      "maximumFluidSpeed": 0.01253034733235836,
+      "maximumBodySpeed": 0.2513158917427063,
+      "minimumBodyHeight": 0.007818728685379028,
+      "fluidHeightRange": [
+        -0.0037597520276904106,
+        0.04534369334578514
+      ],
+      "thermalLossJ": 40254.357368657016,
+      "wallSeconds": 60.328000000008615
+    },
+    {
+      "time": 1.1999999999999964,
+      "maximumFluidSpeed": 0.015915419906377792,
+      "maximumBodySpeed": 0.205329030752182,
+      "minimumBodyHeight": 0.008853735402226448,
+      "fluidHeightRange": [
+        -0.0038303949404507875,
+        0.045171432197093964
+      ],
+      "thermalLossJ": 44000.79658752384,
+      "wallSeconds": 64.09400000001187
+    },
+    {
+      "time": 1.2999999999999943,
+      "maximumFluidSpeed": 0.018602892756462097,
+      "maximumBodySpeed": 0.1045469269156456,
+      "minimumBodyHeight": 0.010100364685058594,
+      "fluidHeightRange": [
+        -0.003880102885887027,
+        0.045005425810813904
+      ],
+      "thermalLossJ": 47764.52605750271,
+      "wallSeconds": 67.73400000002584
+    },
+    {
+      "time": 1.3999999999999921,
+      "maximumFluidSpeed": 0.018687596544623375,
+      "maximumBodySpeed": 0.04209858179092407,
+      "minimumBodyHeight": 0.008841928094625473,
+      "fluidHeightRange": [
+        -0.00391280697658658,
+        0.044838834553956985
+      ],
+      "thermalLossJ": 51546.13414512306,
+      "wallSeconds": 71.34400000001187
+    },
+    {
+      "time": 1.49999999999999,
+      "maximumFluidSpeed": 0.011281774379312992,
+      "maximumBodySpeed": 0.06789794564247131,
+      "minimumBodyHeight": 0.008596870116889477,
+      "fluidHeightRange": [
+        -0.003939162474125624,
+        0.0446462444961071
+      ],
+      "thermalLossJ": 55345.94447027398,
+      "wallSeconds": 74.93700000000536
+    },
+    {
+      "time": 1.5999999999999879,
+      "maximumFluidSpeed": 0.012949077412486076,
+      "maximumBodySpeed": 0.1561993807554245,
+      "minimumBodyHeight": 0.00848811212927103,
+      "fluidHeightRange": [
+        -0.003960956819355488,
+        0.0444459430873394
+      ],
+      "thermalLossJ": 59163.249407339354,
+      "wallSeconds": 78.51500000001397
+    },
+    {
+      "time": 1.6999999999999857,
+      "maximumFluidSpeed": 0.011527367867529392,
+      "maximumBodySpeed": 0.2368144690990448,
+      "minimumBodyHeight": 0.008368597365915775,
+      "fluidHeightRange": [
+        -0.003979427274316549,
+        0.04423670470714569
+      ],
+      "thermalLossJ": 62995.75771824027,
+      "wallSeconds": 82.14000000001397
+    },
+    {
+      "time": 1.7999999999999836,
+      "maximumFluidSpeed": 0.010328731499612331,
+      "maximumBodySpeed": 0.3347623348236084,
+      "minimumBodyHeight": 0.008234087377786636,
+      "fluidHeightRange": [
+        -0.004002927802503109,
+        0.04407401382923126
+      ],
+      "thermalLossJ": 66840.30835422636,
+      "wallSeconds": 85.95300000000861
+    },
+    {
+      "time": 1.8999999999999815,
+      "maximumFluidSpeed": 0.009575406089425087,
+      "maximumBodySpeed": 0.19219715893268585,
+      "minimumBodyHeight": 0.008112512528896332,
+      "fluidHeightRange": [
+        -0.004034688696265221,
+        0.04386378824710846
+      ],
+      "thermalLossJ": 70695.53212575521,
+      "wallSeconds": 89.76500000001397
+    },
+    {
+      "time": 1.9999999999999793,
+      "maximumFluidSpeed": 0.008909336291253567,
+      "maximumBodySpeed": 0.20008668303489685,
+      "minimumBodyHeight": 0.007987327873706818,
+      "fluidHeightRange": [
+        -0.004057045094668865,
+        0.04372435435652733
+      ],
+      "thermalLossJ": 74561.06617586363,
+      "wallSeconds": 93.5
+    }
+  ],
+  "seconds": 93.5,
+  "sourceSha256": "2dfde0f9d8e66ccc326072610a0f2fece36aefe47e231fdda9d91a554f09963f",
+  "method": "Newton implicit viscous MPM, XPBD rigid contact, native bidirectional collider impulses, particle enthalpy conduction/radiation.",
+  "limitations": "Pre-existing basalt geometry and initial thermal state are authored. No new fracture formation, melting of rigid bodies, rock-fluid heat exchange or smoke solver. Finite release; nominal constitutive values; no convergence claim."
+}

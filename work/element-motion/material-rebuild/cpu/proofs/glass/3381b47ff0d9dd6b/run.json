@@ -1,0 +1,20 @@
+{
+  "kind": "glass",
+  "frame": 45,
+  "status": "complete",
+  "seconds": 10.441,
+  "peakResidentMB": 612.9,
+  "device": "CPU",
+  "threads": 2,
+  "processorAffinity": [
+    0,
+    1
+  ],
+  "samples": 24,
+  "sourceHash": "ef896d58b3e203bfaf8434428630d8655967c99726094814f8fc45ce3764633c",
+  "returncode": 0,
+  "images": [
+    "glass-0045.png"
+  ],
+  "key": "3381b47ff0d9dd6b"
+}

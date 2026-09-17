@@ -1,0 +1,14 @@
+{
+  "status": "fail",
+  "error": "Adaptive CPU wall budget reached at last accepted state",
+  "startTime": 0.05800000000000004,
+  "endTime": 0.058086221957080894,
+  "requestedEndTime": 0.06800000000000003,
+  "maximumDamage": 0.7697890919077987,
+  "meanDamage": 0.7379507346760866,
+  "maximumFCondition": 1.0022145256780461,
+  "boundaryWorkJ": 0.0002356124859282434,
+  "adaptive": {},
+  "wallSeconds": 100.81102585792542,
+  "limit": "Local-error-controlled continuation of the failed tensile specimen, not an independent refinement comparison."
+}

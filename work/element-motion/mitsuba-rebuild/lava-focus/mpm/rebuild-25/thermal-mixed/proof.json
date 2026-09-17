@@ -1,0 +1,28 @@
+{
+  "status": "incomplete",
+  "error": "CPU mixed contact deadline reached",
+  "time": 5.75,
+  "targetTime": 12.0,
+  "steps": 10,
+  "particles": 2024,
+  "temperatureRange": [
+    1190.377905281256,
+    1467.213014325477
+  ],
+  "maximumDamage": 3.137934132678066e-11,
+  "brokenEdges": 0,
+  "coherentParticles": 48,
+  "maximumDeformationCondition": 1.687279746057959,
+  "thermalBalanceRelative": 7.052455509243922e-12,
+  "wallSeconds": 143.46800000000803,
+  "sourceHashes": {
+    "lava_mpm.py": "9e2f37989df72637f81456fec2a36b10879c719d5c6e0302c834bfa1afd2e640",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "1ce8a4725184b70401e3d2a5adcf8e576fb5119bc2c5a8676a2e9b50320f0da6",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "7db796316dccb802c72991cb2135d68774d5d9acba31007e9c3486ab74475330"
+  },
+  "limits": "CPU physical screening case; no spatial convergence or final appearance claim."
+}

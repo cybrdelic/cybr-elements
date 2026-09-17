@@ -1,0 +1,101 @@
+{
+  "status": "pass",
+  "rejectedInaccurateInterval": true,
+  "acceptedSmallerIntervals": 7,
+  "maximumAcceptedNormalizedError": 0.7148177234846571,
+  "report": {
+    "accepted": 7,
+    "rejected": 3,
+    "trials": 10,
+    "records": [
+      {
+        "time": 5.012499999999999,
+        "dt": 0.012499999999999956,
+        "errors": {
+          "velocity": 0.07728929335414955,
+          "position": 0.0055634892044708634,
+          "damage": 0.09047305679517614,
+          "temperature": 0.5824613968920858,
+          "work": 0.16658706047622962,
+          "substrateTemperature": 0.001169631529023718
+        }
+      },
+      {
+        "time": 5.02642179918562,
+        "dt": 0.013921799185621368,
+        "errors": {
+          "velocity": 0.05377328938100004,
+          "position": 0.00454479286412532,
+          "damage": 0.10100004265682916,
+          "temperature": 0.6569356981626697,
+          "work": 0.09215739243222214,
+          "substrateTemperature": 0.0014988547633265625
+        }
+      },
+      {
+        "time": 5.041021799313741,
+        "dt": 0.014600000128121318,
+        "errors": {
+          "velocity": 0.03714336524479195,
+          "position": 0.003196218464757002,
+          "damage": 0.10474983511092884,
+          "temperature": 0.6902770025892551,
+          "work": 0.071106465786194,
+          "substrateTemperature": 0.0016938592107180739
+        }
+      },
+      {
+        "time": 5.05595868588447,
+        "dt": 0.014936886570728912,
+        "errors": {
+          "velocity": 0.028880116514595464,
+          "position": 0.0025343892594176195,
+          "damage": 0.10547688337944616,
+          "temperature": 0.7051783565193546,
+          "work": 0.060301715567569296,
+          "substrateTemperature": 0.0018062116689634422
+        }
+      },
+      {
+        "time": 5.071077910585556,
+        "dt": 0.015119224701087348,
+        "errors": {
+          "velocity": 0.023654069904757873,
+          "position": 0.0021423005744527794,
+          "damage": 0.10486577861893442,
+          "temperature": 0.7118422236019342,
+          "work": 0.05159558647036875,
+          "substrateTemperature": 0.0018789346802350337
+        }
+      },
+      {
+        "time": 5.086309898089263,
+        "dt": 0.015231987503706752,
+        "errors": {
+          "velocity": 0.020328378524950435,
+          "position": 0.0018957805477319255,
+          "damage": 0.10366311159573094,
+          "temperature": 0.7148177234846571,
+          "work": 0.0443638393087264,
+          "substrateTemperature": 0.001933372102712383
+        }
+      },
+      {
+        "time": 5.1,
+        "dt": 0.013690101910736274,
+        "errors": {
+          "velocity": 0.01959907117992256,
+          "position": 0.0016938549336789814,
+          "damage": 0.09003393984022834,
+          "temperature": 0.6321881166891217,
+          "work": 0.042811710011189885,
+          "substrateTemperature": 0.0015450891899035923
+        }
+      }
+    ],
+    "nextDt": 0.014635327416018175,
+    "thermalPreflightRejected": 3
+  },
+  "wallSeconds": 123.01500000001397,
+  "scope": "Local adaptive interval; not whole-sequence or spatial convergence"
+}

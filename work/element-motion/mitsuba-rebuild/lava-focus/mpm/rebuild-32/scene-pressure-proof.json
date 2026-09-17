@@ -1,0 +1,62 @@
+{
+  "status": "pass",
+  "time": 0.8999999999999999,
+  "seconds": 29.562000000005355,
+  "pressure": {
+    "solves": 3,
+    "iterations": 11,
+    "maximumIterations": 7,
+    "warmSolves": 2
+  },
+  "row": {
+    "time": 0.8999999999999999,
+    "dt": 0.1,
+    "particles": 3432,
+    "mass": 0.06505307319727892,
+    "volume": 2.4091413328582952e-05,
+    "temperatureRange": [
+      1027.1603521616394,
+      1446.658183884535
+    ],
+    "meanSolidFraction": 0.6097720016348227,
+    "solidParticles": 1554,
+    "damagedParticles": 0,
+    "maximumDamage": 0.0034557656718603186,
+    "maximumSpeed": 0.0068433519927637776,
+    "thermalBalanceRelative": 1.884232652078224e-12,
+    "stepHeatResidualJ": 1.4098233691584028e-09,
+    "mechanicalResidual": 7.73041462905014e-12,
+    "heatNewtonIterations": 7,
+    "viscousHeatJ": 1.6702344051915152e-05,
+    "fractureEnergyJ": 7.120182184385069e-08,
+    "seconds": 5.759850025177002,
+    "materialVelocityFields": 2,
+    "brokenConnectivityEdges": 0,
+    "contactImpulses": 261,
+    "contactMomentumError": 0.0,
+    "splitGridNodes": 464,
+    "massBalanceErrorKg": -1.0842021724855044e-17,
+    "heatTransfer": {
+      "flipFraction": 1.0,
+      "unlimitedMaximumOvershootJPerKg": 0.0,
+      "transferEnergyErrorJ": -5.144556780578573e-16
+    },
+    "damageCouplingIterations": 3,
+    "damageCouplingResidual": 1.8745535861411367e-09,
+    "damageCouplingVelocityResidual": 1.0674362867131887e-09,
+    "damageAcceleration": "anderson",
+    "accelerationRestarts": 0,
+    "creepCouplingLogStressResidual": 3.028196351451129e-07,
+    "phaseField": {
+      "kktResidual": 6.93399602375756e-19,
+      "iterations": 2,
+      "fractureEnergyJ": 1.883349119225377e-07,
+      "previousFractureEnergyJ": 1.1713309007868701e-07,
+      "incrementalEnergyBeforeJ": 0.00015216121075179993,
+      "incrementalEnergyAfterJ": 0.00015215272793440377,
+      "lengthM": 0.004,
+      "model": "reference finite-volume AT2",
+      "maximumDamageIncrement": 0.0007327323206190177
+    }
+  }
+}

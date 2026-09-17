@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "error": "TimeoutError('Pressure solve deadline reached; trial must roll back')",
+  "time": 1.5,
+  "particles": 5874,
+  "broken": 0,
+  "maximumDamage": 0.0,
+  "solidPoints": 0,
+  "rejects": 1,
+  "wallSeconds": 90.06200000000536,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\nozzle-fine\\frame-01500",
+    "sha256": "350293fb4a4ea21be862ee83888a91cdfc798b7b301bdf6fed0834713bbb3053"
+  },
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

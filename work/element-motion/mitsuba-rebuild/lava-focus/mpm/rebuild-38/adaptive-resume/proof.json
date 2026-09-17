@@ -1,0 +1,24 @@
+{
+  "status": "complete",
+  "error": null,
+  "time": 0.2,
+  "targetTime": 0.2,
+  "particles": 884,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.0,
+  "solidPoints": 0,
+  "rejects": 1,
+  "wallSeconds": 6.157000000006519,
+  "source": {
+    "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-38\\adaptive-start",
+    "sha256": "9d4d7ee59d5ca08dc821f0195e7245d274637bcf76f8009c4ab71f778e03ba2f"
+  },
+  "bedKind": "finite",
+  "temporalControl": "step doubling",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

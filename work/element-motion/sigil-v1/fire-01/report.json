@@ -1,0 +1,85 @@
+{
+  "element": "fire",
+  "variant": "01",
+  "frames": 300,
+  "fps": 30,
+  "grid": [
+    640,
+    80,
+    360
+  ],
+  "method": "Projected 3D velocity, limited MacCormack scalar advection; registered glyph gas supply; fuel/oxygen reaction for fire, passive tracer for air; source shutoff at 6.2s, no image fade",
+  "rows": [
+    {
+      "frame": 0,
+      "seconds": 2.9,
+      "finite": true,
+      "divergence": 0.0,
+      "gpuMiB": 4648
+    },
+    {
+      "frame": 30,
+      "seconds": 41.7,
+      "finite": true,
+      "divergence": 2.1207931695244042e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 60,
+      "seconds": 75.2,
+      "finite": true,
+      "divergence": 3.895215286320308e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 90,
+      "seconds": 108.7,
+      "finite": true,
+      "divergence": 4.903470198769355e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 120,
+      "seconds": 142.3,
+      "finite": true,
+      "divergence": 5.498516657098662e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 150,
+      "seconds": 247.4,
+      "finite": true,
+      "divergence": 5.660336682922207e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 180,
+      "seconds": 281.0,
+      "finite": true,
+      "divergence": 5.733577381761279e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 210,
+      "seconds": 314.6,
+      "finite": true,
+      "divergence": 4.174708919890691e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 240,
+      "seconds": 348.7,
+      "finite": true,
+      "divergence": 3.2302223189617507e-06,
+      "gpuMiB": 5281
+    },
+    {
+      "frame": 270,
+      "seconds": 382.8,
+      "finite": true,
+      "divergence": 2.636442559378338e-06,
+      "gpuMiB": 5281
+    }
+  ],
+  "seconds": 416.48452377319336
+}

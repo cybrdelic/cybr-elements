@@ -1,0 +1,221 @@
+[
+  {
+    "id": "lava",
+    "title": "Lava",
+    "group": "Earth",
+    "note": "Advected basalt plates over viscous liquid, with age-dependent heat and cooling.",
+    "video": "refined-lava.mp4?v=4ffbc8043d",
+    "poster": "refined-lava.jpg?v=4ffbc8043d",
+    "previous": "lava.mp4"
+  },
+  {
+    "id": "ice",
+    "title": "Ice",
+    "group": "Water",
+    "note": "Clear ice with internal air pockets, fractures, and uneven surface roughness.",
+    "video": "photo-ice.mp4",
+    "poster": "photo-ice.jpg",
+    "previous": "ice.mp4"
+  },
+  {
+    "id": "foam",
+    "title": "Foam",
+    "group": "Water",
+    "note": "Dense wet bubbles carried by the fluid stream.",
+    "video": "photo-foam.mp4?v=78461932b9",
+    "poster": "photo-foam.jpg?v=78461932b9",
+    "previous": "foam.mp4"
+  },
+  {
+    "id": "metal",
+    "title": "Metal",
+    "group": "Earth",
+    "note": "Brushed steel with rolled edges.",
+    "video": "photo-metal.mp4?v=b1d600b4fe",
+    "poster": "photo-metal.jpg?v=b1d600b4fe",
+    "previous": "metal.mp4"
+  },
+  {
+    "id": "combustion",
+    "title": "Combustion",
+    "group": "Fire",
+    "note": "A focused discharge followed by a reactive volumetric blast.",
+    "video": "combustion.mp4",
+    "poster": "combustion.jpg"
+  },
+  {
+    "id": "lightning",
+    "title": "Lightning",
+    "group": "Fire",
+    "note": "Branching three-dimensional discharge channels with a narrow luminous core.",
+    "video": "photo-lightning.mp4",
+    "poster": "photo-lightning.jpg",
+    "previous": "lightning.mp4"
+  },
+  {
+    "id": "blue-fire",
+    "title": "Blue fire",
+    "group": "Fire",
+    "note": "Thin reactive flame sheets with a blue emission spectrum.",
+    "video": "blue-fire.mp4",
+    "poster": "blue-fire.jpg"
+  },
+  {
+    "id": "sand",
+    "title": "Sand",
+    "group": "Earth",
+    "note": "Fine granular flow with many small grains and ground settling.",
+    "video": "sand.mp4",
+    "poster": "sand.jpg"
+  },
+  {
+    "id": "mud",
+    "title": "Mud",
+    "group": "Earth",
+    "note": "Thick wet flow with a rough, coated surface.",
+    "video": "photo-mud.mp4?v=1d5effed7c",
+    "poster": "photo-mud.jpg?v=1d5effed7c",
+    "previous": "mud.mp4"
+  },
+  {
+    "id": "plants",
+    "title": "Plants",
+    "group": "Water",
+    "note": "Curved leaves with translucent edges and growing vines.",
+    "video": "photo-plants.mp4?v=b9ae83db96",
+    "poster": "photo-plants.jpg?v=b9ae83db96",
+    "previous": "plants.mp4"
+  },
+  {
+    "id": "steam",
+    "title": "Steam / cloud",
+    "group": "Water",
+    "note": "A buoyant mist tracer with soft scattering and turbulent breakup.",
+    "video": "steam.mp4",
+    "poster": "steam.jpg"
+  },
+  {
+    "id": "smoke",
+    "title": "Smoke",
+    "group": "Fire",
+    "note": "Dense, self-shadowed hot-gas tracer.",
+    "video": "smoke.mp4",
+    "poster": "smoke.jpg"
+  },
+  {
+    "id": "snow",
+    "title": "Snow",
+    "group": "Water",
+    "note": "Light powder and small fragments with increased drag.",
+    "video": "snow.mp4",
+    "poster": "snow.jpg"
+  },
+  {
+    "id": "glass",
+    "title": "Glass",
+    "group": "Earth",
+    "note": "Thin fractured panes with beveled edges and depth-dependent transmission.",
+    "video": "photo-glass.mp4",
+    "poster": "photo-glass.jpg",
+    "previous": "glass.mp4"
+  },
+  {
+    "id": "crystal",
+    "title": "Crystal",
+    "group": "Earth",
+    "note": "Intergrown quartz and amethyst prisms on mineral roots.",
+    "video": "photo-crystal.mp4",
+    "poster": "photo-crystal.jpg"
+  },
+  {
+    "id": "blood",
+    "title": "Blood",
+    "group": "Water",
+    "note": "Dark fluid with wet surface highlights.",
+    "video": "photo-blood.mp4?v=d7b0d45dcb",
+    "poster": "photo-blood.jpg?v=d7b0d45dcb",
+    "previous": "blood.mp4"
+  },
+  {
+    "id": "healing",
+    "title": "Healing",
+    "group": "Techniques",
+    "note": "Broken fibers reconnect behind a traveling restoration front.",
+    "video": "field-healing.mp4?v=02bd58cb0c",
+    "poster": "field-healing.jpg?v=02bd58cb0c",
+    "previous": "healing.mp4"
+  },
+  {
+    "id": "spirit",
+    "title": "Spiritbending",
+    "group": "Techniques",
+    "note": "A green luminous water-flow interpretation.",
+    "video": "spirit.mp4",
+    "poster": "spirit.jpg"
+  },
+  {
+    "id": "energy",
+    "title": "Energybending",
+    "group": "Techniques",
+    "note": "Opposing amber and blue fields exchange along the gesture.",
+    "video": "field-energy.mp4?v=6c58d8ca1f",
+    "poster": "field-energy.jpg?v=6c58d8ca1f",
+    "previous": "energy.mp4"
+  },
+  {
+    "id": "lightning-redirection",
+    "title": "Lightning redirection",
+    "group": "Techniques",
+    "note": "An electrical pulse changes direction through the same conductor path.",
+    "video": "lightning-redirection.mp4",
+    "poster": "lightning-redirection.jpg"
+  },
+  {
+    "id": "seismic",
+    "title": "Seismic sense",
+    "group": "Techniques",
+    "note": "Propagating ground-wave visualization.",
+    "video": "seismic.mp4",
+    "poster": "seismic.jpg"
+  },
+  {
+    "id": "sound",
+    "title": "Sound",
+    "group": "Techniques",
+    "note": "Repeated compression-wave visualization.",
+    "video": "sound.mp4",
+    "poster": "sound.jpg"
+  },
+  {
+    "id": "flight",
+    "title": "Flight",
+    "group": "Techniques",
+    "note": "A light aerodynamic wake visualizes sustained flight.",
+    "video": "flight.mp4",
+    "poster": "flight.jpg"
+  },
+  {
+    "id": "spirit-projection",
+    "title": "Spirit projection",
+    "group": "Techniques",
+    "note": "Translucent echoes detach from the shared gesture.",
+    "video": "spirit-projection.mp4",
+    "poster": "spirit-projection.jpg"
+  },
+  {
+    "id": "pressure",
+    "title": "Pressure / vacuum",
+    "group": "Techniques",
+    "note": "Inward-moving pressure fronts visualize evacuation.",
+    "video": "pressure.mp4",
+    "poster": "pressure.jpg"
+  },
+  {
+    "id": "heat",
+    "title": "Heat",
+    "group": "Techniques",
+    "note": "Fine shimmering currents visualize thermal transport.",
+    "video": "heat.mp4",
+    "poster": "heat.jpg"
+  }
+]

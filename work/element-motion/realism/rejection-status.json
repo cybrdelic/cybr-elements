@@ -1,0 +1,24 @@
+{
+  "status": "rejected-and-stopped",
+  "date": "2026-09-13",
+  "userFeedback": "these are all still horrible and potentially worse",
+  "published": false,
+  "renderQueuesRunning": false,
+  "doNotResumeOrPublishThisBatch": true,
+  "verified": {
+    "galleryHasNoRebuildEntries": true,
+    "acceptedFireWaterAirHashesUnchanged": true,
+    "readyForFinalReviewFlagExists": false
+  },
+  "problems": [
+    "Ice reads as molded plastic; glass reads as polished tubing.",
+    "Abstract effects were replaced with tinted rigid objects instead of convincing distinct behaviors.",
+    "Material geometry and composition drifted from the accepted shared flow.",
+    "Older frame folders contain mixed revisions and must not be treated as complete current sequences."
+  ],
+  "constraints": [
+    "Pitch-black backdrops with no visible floors or reference panels.",
+    "Preserve the accepted shared motion, original sigils, and accepted core materials.",
+    "The requested material rebuild remains incomplete."
+  ]
+}

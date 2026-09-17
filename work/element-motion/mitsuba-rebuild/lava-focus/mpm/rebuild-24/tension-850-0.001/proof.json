@@ -1,0 +1,18 @@
+{
+  "name": "tension-850-0.001",
+  "complete": true,
+  "failure": null,
+  "temperatureK": 850.0,
+  "dt": 0.001,
+  "duration": 0.02,
+  "requestedDuration": 0.02,
+  "refinement": 1,
+  "particles": 128,
+  "maximumDamage": 0.24737750588589474,
+  "meanDamage": 0.24422153931916807,
+  "speed": 8.306343280884244e-05,
+  "boundaryWorkJ": 8.107122477020754e-05,
+  "wallSeconds": 1.6665284633636475,
+  "adaptive": {},
+  "limits": "Small laboratory tensile test; no cooling or free-flow claim."
+}

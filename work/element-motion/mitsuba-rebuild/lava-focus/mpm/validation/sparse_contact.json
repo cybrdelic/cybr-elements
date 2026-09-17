@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "comparisons": [
+    {
+      "condition": 1,
+      "absoluteVelocityError": 1.427155060795826e-10,
+      "relativeVelocityError": 3.0565667065110804e-10,
+      "iterations": 140,
+      "seconds": 0.022261381149291992
+    },
+    {
+      "condition": 100,
+      "absoluteVelocityError": 2.6001827720025655e-10,
+      "relativeVelocityError": 6.590924548737499e-08,
+      "iterations": 230,
+      "seconds": 0.0383610725402832
+    },
+    {
+      "condition": 10000,
+      "absoluteVelocityError": 2.55794441617746e-11,
+      "relativeVelocityError": 2.3374972837324878e-08,
+      "iterations": 520,
+      "seconds": 0.07760286331176758
+    }
+  ],
+  "limits": "Algebraic contact equivalence; not lava grid convergence."
+}

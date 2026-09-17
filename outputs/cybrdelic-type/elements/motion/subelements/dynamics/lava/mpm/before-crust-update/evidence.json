@@ -1,0 +1,457 @@
+{
+  "status": "incomplete; full simulation not accepted",
+  "device": "CPU",
+  "passedChecks": 21,
+  "failedChecks": 1,
+  "tests": {
+    "bed_exchange": {
+      "status": "pass",
+      "evidence": {
+        "exchangeMismatchJ": 0.0,
+        "bed": {
+          "time": 0.25,
+          "storedHeatJ": 21.656472155255607,
+          "receivedHeatJ": 21.65647220637952,
+          "bottomLossJ": 4.479203244045493e-08,
+          "energyErrorJ": 6.331880797461054e-09,
+          "maximumTemperature": 294.00730811427616
+        }
+      },
+      "seconds": 0.181410551071167
+    },
+    "contact": {
+      "status": "pass",
+      "evidence": {
+        "penetrationM": 0.0,
+        "initialMechanicalJ": 0.006115095000000001,
+        "finalMechanicalJ": 0.00447281529871141,
+        "groundImpulseNs": 0.0
+      },
+      "seconds": 1.2858226299285889
+    },
+    "coupled_cooling": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.8,
+          "dt": 0.2,
+          "particles": 27,
+          "mass": 0.07289999999999999,
+          "volume": 2.6998202029988125e-05,
+          "temperatureRange": [
+            1420.4203876197473,
+            1422.3707750558758
+          ],
+          "meanSolidFraction": 0.007698960411260352,
+          "solidParticles": 0,
+          "damagedParticles": 0,
+          "maximumDamage": 0.0,
+          "maximumSpeed": 0.0,
+          "thermalBalanceRelative": 5.93621039193516e-16,
+          "stepHeatResidualJ": 4.433786671143025e-12,
+          "mechanicalResidual": 0.0,
+          "heatNewtonIterations": 3,
+          "viscousHeatJ": 0.0,
+          "fractureEnergyJ": 0.0,
+          "seconds": 0.01480412483215332,
+          "materialVelocityFields": 1,
+          "brokenConnectivityEdges": 0,
+          "contactImpulses": 0,
+          "contactMomentumError": 0.0
+        },
+        "ledger": {
+          "radiation": 439.79116441989987,
+          "convection": 27.44478536674323,
+          "bed": 0.0,
+          "viscous_heat": 0.0,
+          "fracture": 0.0,
+          "pressure_cavitation": 0.0,
+          "ground_impulse": 0.0,
+          "ground_dissipation": 0.0,
+          "contact_heat": 0.0
+        }
+      },
+      "seconds": 0.06075310707092285
+    },
+    "enthalpy": {
+      "status": "pass",
+      "evidence": {
+        "roundtripK": 1.7053025658242404e-13,
+        "latentHeatJPerKg": 400000.0
+      },
+      "seconds": 0.0
+    },
+    "fracture": {
+      "status": "pass",
+      "evidence": {
+        "lengthTests": [
+          {
+            "dx": 0.004,
+            "softeningEnergyJPerM2": 99.99999528864336,
+            "relativeError": 4.7113566381540295e-08
+          },
+          {
+            "dx": 0.008,
+            "softeningEnergyJPerM2": 99.99999848616366,
+            "relativeError": 1.5138363380629018e-08
+          },
+          {
+            "dx": 0.016,
+            "softeningEnergyJPerM2": 99.99999781905287,
+            "relativeError": 2.180947134888811e-08
+          }
+        ],
+        "noDamageAtUnloadedRepeat": true
+      },
+      "seconds": 0.01668834686279297
+    },
+    "fracture_topology": {
+      "status": "pass",
+      "evidence": {
+        "intactFields": 1,
+        "fracturedFields": 2,
+        "refrozenFields": 1
+      },
+      "seconds": 0.00774383544921875
+    },
+    "fragment_contact": {
+      "status": "pass",
+      "evidence": {
+        "approachingImpulses": 41,
+        "separatingImpulses": 0,
+        "momentumError": 1.0842021724855044e-19,
+        "dissipatedEnergyJ": 5.876257324218754e-05
+      },
+      "seconds": 2.7946767807006836
+    },
+    "gas_displacement": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.02,
+          "substeps": 1,
+          "maxProjectionResidual": 2.1212456748847563e-08,
+          "massErrorKg": 2.168404344971009e-19,
+          "waterErrorKg": 0.0,
+          "temperatureRange": [
+            292.53586659673294,
+            293.72310874626265
+          ],
+          "maximumSpeed": 0.038482335610036694,
+          "dustMassErrorKg": 0.0,
+          "dustHeatErrorJ": 0.0,
+          "dustMassKg": 0.0
+        },
+        "fluidVolumeChangeM3": 0.0
+      },
+      "seconds": 0.024931907653808594
+    },
+    "gas_fracture_dust": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.05,
+          "substeps": 1,
+          "maxProjectionResidual": 3.321924881940304e-10,
+          "massErrorKg": 0.0,
+          "waterErrorKg": -8.470329472543003e-22,
+          "temperatureRange": [
+            293.14999998034284,
+            300.61175275209814
+          ],
+          "maximumSpeed": 0.0025629962935540904,
+          "dustMassErrorKg": -3.308722450212111e-24,
+          "dustHeatErrorJ": 3.144186300207963e-18,
+          "dustMassKg": 9.999999999980528e-09
+        },
+        "ledger": {
+          "heat_in": 0.0,
+          "mass_out": 3.2564696674317883e-08,
+          "water_in": 0.0,
+          "water_out": 2.605175733945431e-10,
+          "heat_out": 0.009594072534240234,
+          "pressure_work_error": 0.0,
+          "dust_in": 1e-08,
+          "dust_out": 1.9468108828292865e-20,
+          "dust_enthalpy_in": -0.0008778000000000012,
+          "dust_enthalpy_out": -2.0558322922511505e-14,
+          "dust_heat_to_air": 0.009594072321957407,
+          "conduction_out": 2.7581102099887878e-11
+        }
+      },
+      "seconds": 0.07676005363464355
+    },
+    "gas_heat_plume": {
+      "status": "pass",
+      "evidence": {
+        "final": {
+          "time": 0.08,
+          "substeps": 1,
+          "maxProjectionResidual": 9.22402040945934e-10,
+          "massErrorKg": 0.0,
+          "waterErrorKg": -3.3881317890172014e-21,
+          "temperatureRange": [
+            293.14999996799645,
+            310.46840358438794
+          ],
+          "maximumSpeed": 0.018090451749585314,
+          "dustMassErrorKg": 0.0,
+          "dustHeatErrorJ": 0.0,
+          "dustMassKg": 0.0
+        },
+        "ledger": {
+          "heat_in": 0.025,
+          "mass_out": 8.485599081770199e-08,
+          "water_in": 0.0,
+          "water_out": 6.788479265416161e-10,
+          "heat_out": 0.024999911376828367,
+          "pressure_work_error": 0.0,
+          "dust_in": 0.0,
+          "dust_out": 0.0,
+          "dust_enthalpy_in": 0.0,
+          "dust_enthalpy_out": 0.0,
+          "dust_heat_to_air": 0.0,
+          "conduction_out": 8.852102956893176e-08
+        }
+      },
+      "seconds": 0.1721177101135254
+    },
+    "gas_still_air": {
+      "status": "pass",
+      "evidence": {
+        "time": 0.05,
+        "substeps": 1,
+        "maxProjectionResidual": 4.999305329563797e-16,
+        "massErrorKg": 0.0,
+        "waterErrorKg": 0.0,
+        "temperatureRange": [
+          293.1500000000001,
+          293.1500000000001
+        ],
+        "maximumSpeed": 0.0,
+        "dustMassErrorKg": 0.0,
+        "dustHeatErrorJ": 0.0,
+        "dustMassKg": 0.0
+      },
+      "seconds": 0.010174989700317383
+    },
+    "gas_thermal_exchange": {
+      "status": "pass",
+      "evidence": {
+        "exchangeMismatchJ": 0.0,
+        "material": {
+          "time": 0.02,
+          "dt": 0.02,
+          "particles": 18,
+          "mass": 0.04860000000000001,
+          "volume": 1.7999952913105226e-05,
+          "temperatureRange": [
+            1449.86432051198,
+            1449.9286419978507
+          ],
+          "meanSolidFraction": 0.0,
+          "solidParticles": 0,
+          "damagedParticles": 0,
+          "maximumDamage": 0.0,
+          "maximumSpeed": 0.0,
+          "thermalBalanceRelative": 3.014077781415072e-16,
+          "stepHeatResidualJ": 7.148948100166308e-12,
+          "mechanicalResidual": 0.0,
+          "heatNewtonIterations": 8,
+          "viscousHeatJ": 0.0,
+          "fractureEnergyJ": 0.0,
+          "seconds": 0.5911648273468018,
+          "materialVelocityFields": 1,
+          "brokenConnectivityEdges": 0,
+          "contactImpulses": 0,
+          "contactMomentumError": 0.0
+        },
+        "gas": {
+          "time": 0.02,
+          "substeps": 1,
+          "maxProjectionResidual": 1.4418349575905098e-08,
+          "massErrorKg": -4.336808689942018e-19,
+          "waterErrorKg": -3.3881317890172014e-21,
+          "temperatureRange": [
+            293.1499245610986,
+            315.32953561162014
+          ],
+          "maximumSpeed": 0.007612237295993845,
+          "dustMassErrorKg": 0.0,
+          "dustHeatErrorJ": 0.0,
+          "dustMassKg": 0.0
+        }
+      },
+      "seconds": 0.6280796527862549
+    },
+    "gravity": {
+      "status": "pass",
+      "evidence": {
+        "velocityErrorMPerS": 3.8334338058992915e-13,
+        "mechanicalResidual": 3.869864240615005e-11,
+        "massErrorKg": 0.0
+      },
+      "seconds": 3.7632060050964355
+    },
+    "implicit_fragment_contact": {
+      "status": "pass",
+      "evidence": {
+        "velocity": [
+          -0.03333333333319999,
+          -0.03333333333340001
+        ],
+        "expectedVelocity": -0.03333333333333333,
+        "residual": 0.0,
+        "stiffResidual": 0.0,
+        "objectiveLossJ": 0.01333333333333333
+      },
+      "seconds": 0.00863194465637207
+    },
+    "insulated_heat": {
+      "status": "pass",
+      "evidence": {
+        "relativeEnergyError": 1.7841551677664417e-16,
+        "rangeK": [
+          1050.0000078751248,
+          1499.9999925072682
+        ]
+      },
+      "seconds": 0.011991739273071289
+    },
+    "liquid_memory": {
+      "status": "pass",
+      "evidence": {
+        "initialKineticJ": 0.000108,
+        "finalKineticJ": 9.218402582295254e-05,
+        "storedElasticStressPa": 0.0
+      },
+      "seconds": 0.21751093864440918
+    },
+    "material_grid_refinement": {
+      "status": "fail",
+      "durationSeconds": 0.5,
+      "grids": [
+        {
+          "dx": 0.01,
+          "particles": 744,
+          "time": 0.5,
+          "centerDisplacement": [
+            0.0010485832928854464,
+            -6.65476120171872e-12,
+            -0.0010969163162758751
+          ],
+          "initialVolume": 9.300000000000004e-05,
+          "finalVolume": 9.298892764861646e-05,
+          "meanTemperature": 1445.0389030925257,
+          "rmsSpeed": 0.003937177421928846,
+          "maximumSpeed": 0.007246387248699967
+        },
+        {
+          "dx": 0.005,
+          "particles": 5860,
+          "time": 0.5,
+          "centerDisplacement": [
+            0.0009637841978381915,
+            9.168365983782684e-13,
+            -0.0008506201127041774
+          ],
+          "initialVolume": 9.156250000000004e-05,
+          "finalVolume": 9.154378259037936e-05,
+          "meanTemperature": 1441.4806213548118,
+          "rmsSpeed": 0.0032952359728826534,
+          "maximumSpeed": 0.006218607917714465
+        }
+      ],
+      "relativeRmsSpeedDifference": 0.19480894671243407,
+      "centerDifferenceM": 0.0002604855205470442,
+      "scope": "Early molten flow only. Does not validate long-time fracture, gas refinement, or final render quality.",
+      "seconds": 88.04198098182678
+    },
+    "melting_reset": {
+      "status": "pass",
+      "evidence": {
+        "remainingSolidStressPa": 0.0
+      },
+      "seconds": 0.013192415237426758
+    },
+    "shear_decay": {
+      "status": "pass",
+      "evidence": {
+        "analyticAmplitude": 0.35769171609909733,
+        "grids": [
+          {
+            "dx": 0.01,
+            "measuredAmplitude": 0.37458391204952335,
+            "relativeError": 0.04722557216210757
+          },
+          {
+            "dx": 0.005,
+            "measuredAmplitude": 0.3630872106669577,
+            "relativeError": 0.01508420330977295
+          },
+          {
+            "dx": 0.0025,
+            "measuredAmplitude": 0.36021755531724786,
+            "relativeError": 0.007061497665354799
+          }
+        ]
+      },
+      "seconds": 2.2884693145751953
+    },
+    "solid_collision_scene": {
+      "status": "pass",
+      "evidence": {
+        "initialKineticJ": 2.16e-06,
+        "finalKineticJ": 2.2606724159539733e-13,
+        "maximumSpeed": 2.813305991673086e-05,
+        "contactConstraints": 57,
+        "maximumMomentumError": 0.0
+      },
+      "seconds": 0.7949016094207764
+    },
+    "stefan": {
+      "status": "pass",
+      "evidence": {
+        "analyticFrontM": 0.0028950111604503486,
+        "grids": [
+          {
+            "dx": 0.00025,
+            "front": 0.0028927058456603323,
+            "relativeError": 0.0007963060113584074
+          },
+          {
+            "dx": 0.000125,
+            "front": 0.0028942130284881564,
+            "relativeError": 0.0002756921883741854
+          }
+        ]
+      },
+      "seconds": 0.27541351318359375
+    },
+    "transfers": {
+      "status": "pass",
+      "evidence": {
+        "weight": 2.220446049250313e-16,
+        "gradient": 2.7010511882696875e-14,
+        "affineVelocity": 1.6653345369377348e-16,
+        "affineGradient": 1.8596235662471372e-14,
+        "momentum": 3.197442310920451e-14
+      },
+      "seconds": 0.4515652656555176
+    }
+  },
+  "materialCheckpoint": {
+    "physicalSeconds": 42.33854709335417,
+    "particles": 744,
+    "sourceSha256": "80ac2c970987ae74f92b407f504c5f670bafb87a6c9f746e9403ecaa2ca1be9c"
+  },
+  "limits": [
+    "The 10 mm \u2192 5 mm material-grid comparison changed RMS speed by 19.48%; the 15% gate failed.",
+    "Long-time fracture convergence, a Coulomb interfragment friction solve, and a complete free-energy audit remain unfinished.",
+    "The gas has heat, pressure and energy-limited fracture dust. Volcanic degassing, bubbles and steam condensation are not implemented.",
+    "The finite rock bed passed a heat-exchange test. It was not used in the material-only cache shown above.",
+    "The current sample is approximately 10 cm across. Nominal material properties and dust parameters have not been experimentally calibrated.",
+    "The old separately authored magma/lava/basalt/obsidian images are not results from this solver."
+  ],
+  "renders": "CPU diagnostics only; no final Mitsuba render or movie batch was started"
+}

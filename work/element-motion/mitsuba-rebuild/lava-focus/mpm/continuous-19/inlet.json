@@ -1,0 +1,26 @@
+{
+  "startTime": 0.0,
+  "config": {
+    "plane": -0.024,
+    "half_width": 0.006,
+    "height": 0.003,
+    "peak_speed": 0.0015,
+    "temperature": 1450.0
+  },
+  "period": 1.3333333333333333,
+  "nextEmission": 4.0,
+  "emissions": 2,
+  "bedTemperatureK": 1173.15,
+  "description": "Continuous molten inlet over a declared hot rock reservoir on an 8-degree slope. All material begins at 1450 K. Crust phase and damage develop from solved thermal/mechanical state. No initial crust pieces, pores or cracks.",
+  "cellSizeM": [
+    0.004,
+    0.003,
+    0.0005
+  ],
+  "sampleSizeM": [
+    0.002,
+    0.0015,
+    0.00025
+  ],
+  "stateSha256": "3b1c80a9ce8e979314b007cc9763758953d27f87a974d98ef5c2cb901cd3514a"
+}

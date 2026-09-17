@@ -1,0 +1,24 @@
+{
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "r_frame_rate": "24/1",
+    "duration": "10.000000",
+    "nb_read_frames": "240"
+  },
+  "simulation": {
+    "states": 240,
+    "finite": true,
+    "pressureConverged": true,
+    "solidViolations": 0,
+    "holdGuideMeanDistanceMax": 0.021994866982326857
+  },
+  "choreography": "Single gated source, soft external guidance, right-to-left release into an exiting stream",
+  "surface": "DetailReconstruction with sigma 0.6, 1.08h support, four smoothing passes",
+  "spray": "Original primary droplets; sparse passive secondary births gated by speed and local extension, bounded Pareto sizes, persistent motion and lifetimes; no fixed fragment clusters",
+  "render": "Cycles 48 samples, GPU denoising, 1080p",
+  "physicsSeconds": 2.5,
+  "screenSeconds": 10,
+  "maximumSecondaryParticles": 120,
+  "sha256": "56a6ea543f67ce198fcec6eba3b560edaf60f716558781ddcf9fb6b44c1b5fe8"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "sand",
+  "variant": "01",
+  "frames": [
+    360
+  ],
+  "configuration": "543a271ed1cbf446fe466723548b0c9fca64c19d0f67b464f77a0ebaf034f9bf",
+  "seconds": 40.1593120098114,
+  "reusedSettledFrames": 0,
+  "sourceSha256": "daa4f6ee0737c9f645cd5e4becf31f8223f6c032dbfcc937d162b72669ad025e",
+  "method": "Original source geometry, reviewed shader recipes, supported damped motion and gravity release",
+  "limits": "Authored bending support; this retargeting pass does not rerun the earlier FLIP/MPM solves"
+}

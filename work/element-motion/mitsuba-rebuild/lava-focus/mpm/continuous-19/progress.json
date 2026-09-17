@@ -1,0 +1,36 @@
+{
+  "run": "continuous-19",
+  "elapsed": 3.4315158624733844,
+  "wallSeconds": 106.66900539398193,
+  "completed": false,
+  "latest": {
+    "time": 3.4315158624733844,
+    "dt": 0.01487765266146735,
+    "particles": 2978,
+    "mass": 0.005796628637695314,
+    "volume": 2.1411815264677926e-06,
+    "temperatureRange": [
+      1135.1938401847274,
+      1420.8857443676807
+    ],
+    "meanSolidFraction": 0.3286776490069647,
+    "solidParticles": 230,
+    "damagedParticles": 212,
+    "maximumDamage": 1.0,
+    "maximumSpeed": 0.000950856138306511,
+    "thermalBalanceRelative": 5.383063563694845e-12,
+    "stepHeatResidualJ": 5.17808018685173e-13,
+    "mechanicalResidual": 2.3934234871748237e-14,
+    "heatNewtonIterations": 8,
+    "viscousHeatJ": 1.4962674672119453e-05,
+    "fractureEnergyJ": 8.775004943288958e-09,
+    "seconds": 1.8150827884674072,
+    "materialVelocityFields": 7,
+    "brokenConnectivityEdges": 152,
+    "contactImpulses": 248,
+    "contactMomentumError": 3.298432787892221e-19,
+    "splitGridNodes": 323,
+    "massBalanceErrorKg": -1.0842021724855044e-19
+  },
+  "initialCondition": "Continuous molten inlet over a declared hot rock reservoir on an 8-degree slope. All material begins at 1450 K. Crust phase and damage develop from solved thermal/mechanical state. No initial crust pieces, pores or cracks."
+}

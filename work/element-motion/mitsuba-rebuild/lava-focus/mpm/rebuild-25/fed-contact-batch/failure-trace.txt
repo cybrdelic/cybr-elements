@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\alexf\Documents\Codex\2026-09-10\u\work\element-motion\mitsuba-rebuild\lava_mpm_inflation25.py", line 49, in run
+    if time.monotonic()>start+wall:raise TimeoutError('CPU screening budget reached')
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: CPU screening budget reached

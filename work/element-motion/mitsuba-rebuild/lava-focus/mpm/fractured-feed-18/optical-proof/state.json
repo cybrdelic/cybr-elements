@@ -1,0 +1,50 @@
+{
+  "status": "visually inspected CPU study; not accepted as world-class or production-complete",
+  "renderer": "Mitsuba 3.9.1",
+  "variant": "scalar_rgb",
+  "device": "CPU",
+  "threads": 2,
+  "width": 800,
+  "height": 500,
+  "samples": 12,
+  "exposure": 3.0,
+  "lightMultiplier": 5.0,
+  "seconds": 106.3841564655304,
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\state-surface.npz",
+  "sourceSha256": "bf8db9c38d01a10dc2f758379608beef6f5dd52d7e10ff8e1ec7955a28042c60",
+  "image": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\optical-proof\\state.png",
+  "geometry": "Embedded initial clast boundaries with measured affine fits to MPM material displacement; conservative free-melt kernel reconstruction",
+  "temperature": "Interpolated simulated enthalpy temperatures; Planck radiance with grey emissivity 0.94",
+  "optics": "Nominal rough dielectric basalt and melt. Filtered subgrid pore bump is an optical approximation, not simulated fracture geometry.",
+  "background": "Exact black; black absorbing ground; no environment or bloom overlay",
+  "limits": "Existing spatial refinement failure and coarse crust geometry remain. This still does not validate motion, gas, or photorealism.",
+  "visualReview": {
+    "status": "visually inspected CPU study; not accepted as world-class or production-complete",
+    "inspectedImage": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\optical-proof\\state.png",
+    "imageSha256": "90454061bc55dd4f0204f2e384b0043d069bdf805bb117da20d6a4d9390d401e",
+    "improved": [
+      "Actual thick, separate basalt surfaces instead of a smooth red lump",
+      "Rough relief and pores are visible in the CPU path-traced image",
+      "Fracture gaps open through solved clast motion; the larger piece moves about 8 mm",
+      "Object is framed fully against black"
+    ],
+    "remaining": [
+      "Exposed melt is too uniform in orange color and lacks resolved surface cooling detail",
+      "Several main fracture faces still look too clean and cut",
+      "Initial cracks and pores are authored initial volume, not simulated formation",
+      "The 0.658 s interval is a brief test; no full lava/gas/bed result",
+      "Affine surface fit has up to 0.863 mm residual and 3.26% per-clast volume mismatch"
+    ],
+    "blackBorderMaximum": 0,
+    "size": [
+      800,
+      500
+    ],
+    "device": "CPU",
+    "initialBoundaryAudit": {
+      "path": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\fractured-feed-18\\initial-boundaries.npz",
+      "sha256": "0d858b7bcee8e0ba19cad29c2ecc50083c3a11986158070870f7039953305dbe",
+      "note": "Hash captured during review; the boundary was generated before simulation."
+    }
+  }
+}

@@ -1,0 +1,1071 @@
+{
+  "sourceHashes": {
+    "lava_mpm.py": "d17cdb386170c17ba13ce763fac57ac2c08708fdaa4668e6509b13a8ac83248f",
+    "lava_mpm_coupled.py": "81de6b189a0a75524158e8b5e7fbdf304217b13b2343ef97f1b3b15d2e3c879f",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+    "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0"
+  },
+  "componentValidation": {
+    "status": "pass",
+    "tests": {
+      "creep": {
+        "status": "pass",
+        "details": {
+          "temperaturesK": [
+            850.0,
+            933.15,
+            1050.0,
+            1164.0,
+            1260.0
+          ],
+          "relaxationSeconds": [
+            44924.54599142099,
+            83.33333333333333,
+            0.06504743242576574,
+            0.00024138824735014887,
+            1.7106100821048875e-05
+          ],
+          "packingContinuity": 7.550846413877616e-06,
+          "analyticRelaxationErrors": [
+            0.009010041701557947,
+            0.004551182526364106,
+            0.0022873455888585137
+          ],
+          "calibration": "Nominal, not composition-fitted"
+        },
+        "wallSeconds": 0.0
+      },
+      "phase": {
+        "status": "pass",
+        "details": {
+          "homogeneousAnalyticError": 8.881784197001252e-16,
+          "kktResidual": 5.059610138265687e-16,
+          "crackEnergyJPerM2": [
+            103.08256782125827,
+            100.77855276872369,
+            100.19514319680879
+          ],
+          "exactCrackEnergyJPerM2": 100.0,
+          "irreversible": true,
+          "compressionDoesNotFracture": true,
+          "meltResets": true
+        },
+        "wallSeconds": 0.024107933044433594
+      },
+      "friction": {
+        "status": "pass",
+        "details": {
+          "analyticCases": [
+            {
+              "tangentialSpeed": 0.05,
+              "error": 1.3331002968186567e-13,
+              "momentumError": 0.0,
+              "iterations": 1,
+              "naturalResidual": 0.0,
+              "stationarity": 0.0,
+              "slidingDissipationJ": 1.6664910192548862e-16,
+              "maximumConeViolation": 0.0
+            },
+            {
+              "tangentialSpeed": 0.8,
+              "error": 1.3331002968186567e-13,
+              "momentumError": 0.0,
+              "iterations": 1,
+              "naturalResidual": 0.0,
+              "stationarity": 0.0,
+              "slidingDissipationJ": 0.07439999999996373,
+              "maximumConeViolation": 0.0
+            },
+            {
+              "tangentialSpeed": 0.05,
+              "error": 1.1976530878143876e-13,
+              "momentumError": 0.0,
+              "iterations": 1,
+              "naturalResidual": 0.0,
+              "stationarity": 0.0,
+              "slidingDissipationJ": 1.683083253546689e-16,
+              "maximumConeViolation": 0.0
+            },
+            {
+              "tangentialSpeed": 0.8,
+              "error": 1.1790568521519162e-13,
+              "momentumError": 1.1102230246251565e-16,
+              "iterations": 1,
+              "naturalResidual": 0.0,
+              "stationarity": 1.3084103822364793e-16,
+              "slidingDissipationJ": 0.07439999999996372,
+              "maximumConeViolation": 0.0
+            }
+          ],
+          "coupled": {
+            "iterations": 11,
+            "naturalResidual": 1.0937704162229027e-10,
+            "stationarity": 2.3699166777534206e-16,
+            "slidingDissipationJ": 0.08677208653673457,
+            "maximumConeViolation": 0.0
+          }
+        },
+        "wallSeconds": 0.04428887367248535
+      },
+      "pressure": {
+        "status": "pass",
+        "details": {
+          "velocity": [
+            0.05,
+            0.11111111111111112
+          ],
+          "analyticVelocity": [
+            0.05,
+            0.1111111111111111
+          ],
+          "maximumError": 1.3877787807814457e-17,
+          "tensileLiquidPressure": 0.0
+        },
+        "wallSeconds": 0.005202293395996094
+      },
+      "transfers": {
+        "status": "pass",
+        "details": {
+          "zeroTimeIdentity": true,
+          "momentumError": 2.3714374201337736e-16,
+          "initialAffineKineticJ": 3.3646813694921827,
+          "filteredKineticJ": [
+            0.5758325076605695,
+            0.5750527284168006,
+            0.5746626542254268
+          ],
+          "experimental": true
+        },
+        "wallSeconds": 2.374051094055176
+      },
+      "coupled": {
+        "status": "pass",
+        "details": {
+          "gravityVelocityError": 4.508358963928316e-12,
+          "adaptive": {
+            "accepted": 2,
+            "rejected": 1,
+            "trials": 3,
+            "records": [
+              {
+                "time": 0.001,
+                "dt": 0.001,
+                "errors": {
+                  "velocity": 5.2927890592468544e-08,
+                  "position": 0.4904999985313324,
+                  "damage": 0.0,
+                  "temperature": 0.0,
+                  "work": 0.0
+                }
+              },
+              {
+                "time": 0.002,
+                "dt": 0.001,
+                "errors": {
+                  "velocity": 8.866699158687936e-09,
+                  "position": 0.4905000014748112,
+                  "damage": 0.0,
+                  "temperature": 0.0,
+                  "work": 0.0
+                }
+              }
+            ]
+          },
+          "rollback": true,
+          "damage": 0.0
+        },
+        "wallSeconds": 0.6508874893188477
+      },
+      "collision": {
+        "status": "pass",
+        "details": {
+          "particles": 32,
+          "momentumError": 1.7659341000367275e-18,
+          "initialKineticJ": 8.64e-08,
+          "finalKineticJ": 3.834897732423311e-08,
+          "frictionHeatJ": 2.5556480128119416e-08,
+          "maximumSpeed": 0.03256235896818877,
+          "contact": {
+            "iterations": 11,
+            "naturalResidual": 2.5682642496901468e-12,
+            "stationarity": 1.4270749374781911e-12,
+            "slidingDissipationJ": 2.6307903055857652e-09,
+            "maximumConeViolation": 0.0
+          }
+        },
+        "wallSeconds": 0.9130771160125732
+      },
+      "surface": {
+        "status": "pass",
+        "details": {
+          "method": "liquid-only volume constrained fairing",
+          "mobileVertices": 217,
+          "crustUnchanged": true,
+          "maximumDisplacementM": 9.279979177960514e-05,
+          "relativeVolumeError": 0.0,
+          "cellVolumeChangeP95": 0.036272057058886246,
+          "minimumCellVolumeM3": 8.817002477943312e-10,
+          "topologyUnchanged": true,
+          "limit": "Surface reconstruction only; no capillary force or subgrid basalt fracture is claimed.",
+          "translationEquivarianceErrorM": 9.540979117872439e-18,
+          "diagnostic": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-24\\surface.png"
+        },
+        "wallSeconds": 0.6220934391021729
+      },
+      "baseline_transfers": {
+        "status": "pass",
+        "details": {
+          "weight": 2.220446049250313e-16,
+          "gradient": 2.7010511882696875e-14,
+          "affineVelocity": 1.6653345369377348e-16,
+          "affineGradient": 1.8596235662471372e-14,
+          "momentum": 3.197442310920451e-14
+        },
+        "wallSeconds": 0.05740976333618164
+      },
+      "baseline_enthalpy": {
+        "status": "pass",
+        "details": {
+          "roundtripK": 1.7053025658242404e-13,
+          "latentHeatJPerKg": 400000.0
+        },
+        "wallSeconds": 0.0009987354278564453
+      },
+      "baseline_insulated_heat": {
+        "status": "pass",
+        "details": {
+          "relativeEnergyError": 1.7841551677664417e-16,
+          "rangeK": [
+            1050.0000078751248,
+            1499.9999925072682
+          ]
+        },
+        "wallSeconds": 0.04293465614318848
+      },
+      "baseline_stefan": {
+        "status": "pass",
+        "details": {
+          "analyticFrontM": 0.0028950111604503486,
+          "grids": [
+            {
+              "dx": 0.00025,
+              "front": 0.0028927058456603323,
+              "relativeError": 0.0007963060113584074
+            },
+            {
+              "dx": 0.000125,
+              "front": 0.0028942130284881564,
+              "relativeError": 0.0002756921883741854
+            }
+          ]
+        },
+        "wallSeconds": 1.2229440212249756
+      },
+      "baseline_fracture": {
+        "status": "pass",
+        "details": {
+          "lengthTests": [
+            {
+              "dx": 0.004,
+              "softeningEnergyJPerM2": 99.99999528864336,
+              "relativeError": 4.7113566381540295e-08
+            },
+            {
+              "dx": 0.008,
+              "softeningEnergyJPerM2": 99.99999848616366,
+              "relativeError": 1.5138363380629018e-08
+            },
+            {
+              "dx": 0.016,
+              "softeningEnergyJPerM2": 99.99999781905287,
+              "relativeError": 2.180947134888811e-08
+            }
+          ],
+          "noDamageAtUnloadedRepeat": true
+        },
+        "wallSeconds": 0.02499675750732422
+      },
+      "baseline_gravity": {
+        "status": "pass",
+        "details": {
+          "velocityErrorMPerS": 1.0411377966845564e-17,
+          "mechanicalResidual": 4.2693678591277875e-16,
+          "massErrorKg": 0.0
+        },
+        "wallSeconds": 0.029005050659179688
+      },
+      "baseline_shear_decay": {
+        "status": "pass",
+        "details": {
+          "analyticAmplitude": 0.35769171609909733,
+          "grids": [
+            {
+              "dx": 0.01,
+              "measuredAmplitude": 0.37458391204952335,
+              "relativeError": 0.04722557216210757
+            },
+            {
+              "dx": 0.005,
+              "measuredAmplitude": 0.3630872106669577,
+              "relativeError": 0.01508420330977295
+            },
+            {
+              "dx": 0.0025,
+              "measuredAmplitude": 0.36021755531724786,
+              "relativeError": 0.007061497665354799
+            }
+          ]
+        },
+        "wallSeconds": 1.780437707901001
+      },
+      "baseline_coupled_cooling": {
+        "status": "pass",
+        "details": {
+          "final": {
+            "time": 0.8,
+            "dt": 0.2,
+            "particles": 27,
+            "mass": 0.07289999999999999,
+            "volume": 2.6998202029988125e-05,
+            "temperatureRange": [
+              1420.4203876197473,
+              1422.3707750558758
+            ],
+            "meanSolidFraction": 0.007698960411260352,
+            "solidParticles": 0,
+            "damagedParticles": 0,
+            "maximumDamage": 0.0,
+            "maximumSpeed": 0.0,
+            "thermalBalanceRelative": 5.93621039193516e-16,
+            "stepHeatResidualJ": 4.433786671143025e-12,
+            "mechanicalResidual": 0.0,
+            "heatNewtonIterations": 3,
+            "viscousHeatJ": 0.0,
+            "fractureEnergyJ": 0.0,
+            "seconds": 0.023453235626220703,
+            "materialVelocityFields": 1,
+            "brokenConnectivityEdges": 0,
+            "contactImpulses": 0,
+            "contactMomentumError": 0.0,
+            "splitGridNodes": 0,
+            "massBalanceErrorKg": 0.0,
+            "damageCouplingIterations": 1,
+            "damageCouplingResidual": 0.0,
+            "damageCouplingVelocityResidual": 0.0,
+            "phaseField": {
+              "kktResidual": 0.0,
+              "iterations": 0,
+              "fractureEnergyJ": 0.0,
+              "previousFractureEnergyJ": 0.0,
+              "incrementalEnergyBeforeJ": 0.0,
+              "incrementalEnergyAfterJ": 0.0,
+              "lengthM": 0.005,
+              "model": "reference finite-volume AT2",
+              "maximumDamageIncrement": 0.0
+            }
+          },
+          "ledger": {
+            "radiation": 439.79116441989987,
+            "convection": 27.44478536674323,
+            "bed": 0.0,
+            "viscous_heat": 0.0,
+            "fracture": 0.0,
+            "pressure_cavitation": 0.0,
+            "ground_impulse": 0.0,
+            "ground_dissipation": 0.0,
+            "contact_heat": 0.0,
+            "conduit_impulse_norm": 0.0,
+            "solid_floor_impulse_norm": 0.0,
+            "contact_objective_loss": 0.0
+          }
+        },
+        "wallSeconds": 0.10372567176818848
+      },
+      "baseline_liquid_memory": {
+        "status": "pass",
+        "details": {
+          "initialKineticJ": 0.000108,
+          "finalKineticJ": 9.218678394238032e-05,
+          "storedElasticStressPa": 0.0
+        },
+        "wallSeconds": 0.332949161529541
+      },
+      "baseline_melting_reset": {
+        "status": "pass",
+        "details": {
+          "remainingSolidStressPa": 0.0
+        },
+        "wallSeconds": 0.023373842239379883
+      },
+      "baseline_bed_exchange": {
+        "status": "pass",
+        "details": {
+          "exchangeMismatchJ": 0.0,
+          "bed": {
+            "time": 0.25,
+            "storedHeatJ": 21.656472155255607,
+            "receivedHeatJ": 21.65647220637952,
+            "bottomLossJ": 4.479203244045493e-08,
+            "energyErrorJ": 6.331880797461054e-09,
+            "maximumTemperature": 294.00730811427616
+          }
+        },
+        "wallSeconds": 0.334336519241333
+      }
+    },
+    "sourceHashes": {
+      "lava_mpm.py": "d17cdb386170c17ba13ce763fac57ac2c08708fdaa4668e6509b13a8ac83248f",
+      "lava_mpm_coupled.py": "81de6b189a0a75524158e8b5e7fbdf304217b13b2343ef97f1b3b15d2e3c879f",
+      "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+      "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+      "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+      "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0"
+    },
+    "wallSeconds": 8.589820146560669,
+    "device": "CPU",
+    "gpuUsed": false
+  },
+  "integrationValidation": {
+    "status": "pass",
+    "tests": {
+      "sparse_contact": {
+        "status": "pass",
+        "wallSeconds": 0.1960282325744629
+      },
+      "partial_crack_transfer": {
+        "status": "pass",
+        "wallSeconds": 3.406689167022705
+      },
+      "phase_transition": {
+        "status": "pass",
+        "wallSeconds": 0.24747967720031738
+      },
+      "liquid_ground": {
+        "status": "pass",
+        "wallSeconds": 2.003946542739868
+      },
+      "production_gate": {
+        "status": "pass",
+        "gate": {
+          "status": "blocked",
+          "checks": {
+            "currentSource": true,
+            "topology": true,
+            "openFractures": false,
+            "volume": true,
+            "upperCrust": false,
+            "horizontalResolution": false,
+            "noInversion": true,
+            "resolvedDeformation": true,
+            "productionScene": false,
+            "fractureTimestepConvergence": false,
+            "currentSolver": true,
+            "validatedConfiguration": false,
+            "materialCalibration": false,
+            "spatialFractureConvergence": false,
+            "naturalFlowBreakup": false
+          },
+          "upperShareOfDamagedParticles": 0.25,
+          "message": "Geometric preflight only; passing still requires visual and motion review. Controlled fracture coupons are diagnostic-only.",
+          "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-24\\tension-850-0.001\\state-surface.npz"
+        }
+      }
+    },
+    "sourceHashes": {
+      "lava_mpm.py": "d17cdb386170c17ba13ce763fac57ac2c08708fdaa4668e6509b13a8ac83248f",
+      "lava_mpm_coupled.py": "81de6b189a0a75524158e8b5e7fbdf304217b13b2343ef97f1b3b15d2e3c879f",
+      "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+      "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+      "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+      "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0"
+    }
+  },
+  "shortTemporalValidation": {
+    "status": "pass",
+    "gates": {
+      "completed": true,
+      "work": true,
+      "velocity": true,
+      "position": true,
+      "damage": true,
+      "decreasingWorkError": true
+    },
+    "runs": [
+      {
+        "name": "tension-850-0.002",
+        "complete": true,
+        "failure": null,
+        "temperatureK": 850.0,
+        "dt": 0.002,
+        "duration": 0.02,
+        "requestedDuration": 0.02,
+        "refinement": 1,
+        "particles": 128,
+        "maximumDamage": 0.24738001940934232,
+        "meanDamage": 0.24422318813847413,
+        "speed": 8.307912726325425e-05,
+        "boundaryWorkJ": 8.389787026733868e-05,
+        "wallSeconds": 13.273017168045044,
+        "adaptive": {},
+        "limits": "Small laboratory tensile test; no cooling or free-flow claim."
+      },
+      {
+        "name": "tension-850-0.001",
+        "complete": true,
+        "failure": null,
+        "temperatureK": 850.0,
+        "dt": 0.001,
+        "duration": 0.02,
+        "requestedDuration": 0.02,
+        "refinement": 1,
+        "particles": 128,
+        "maximumDamage": 0.24737759602099318,
+        "meanDamage": 0.24422153843156802,
+        "speed": 8.30631769652835e-05,
+        "boundaryWorkJ": 8.107403600109589e-05,
+        "wallSeconds": 32.702168703079224,
+        "adaptive": {},
+        "limits": "Small laboratory tensile test; no cooling or free-flow claim."
+      },
+      {
+        "name": "tension-850-0.0005",
+        "complete": true,
+        "failure": null,
+        "temperatureK": 850.0,
+        "dt": 0.0005,
+        "duration": 0.02,
+        "requestedDuration": 0.02,
+        "refinement": 1,
+        "particles": 128,
+        "maximumDamage": 0.2473763862360091,
+        "meanDamage": 0.2442207155190063,
+        "speed": 8.305487167602832e-05,
+        "boundaryWorkJ": 7.963003366843707e-05,
+        "wallSeconds": 46.3926260471344,
+        "adaptive": {},
+        "limits": "Small laboratory tensile test; no cooling or free-flow claim."
+      }
+    ],
+    "comparisons": [
+      {
+        "velocityRelative": 0.0006734854404775491,
+        "positionM": 2.5531939429026426e-11,
+        "damageAbsolute": 2.4260362782579925e-06,
+        "workRelative": 0.034830315666098226
+      },
+      {
+        "velocityRelative": 0.0003494681397734459,
+        "positionM": 1.2693606039719403e-11,
+        "damageAbsolute": 1.2105285285834988e-06,
+        "workRelative": 0.018133890771305634
+      }
+    ],
+    "sourceHashes": {
+      "lava_mpm.py": "d17cdb386170c17ba13ce763fac57ac2c08708fdaa4668e6509b13a8ac83248f",
+      "lava_mpm_coupled.py": "81de6b189a0a75524158e8b5e7fbdf304217b13b2343ef97f1b3b15d2e3c879f",
+      "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+      "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+      "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+      "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0"
+    },
+    "scope": "Tensile loading through approximately 25% continuum damage. Not full crack separation, natural lava breakup or a rerun of structure-23.",
+    "fullFractureValidated": false
+  },
+  "experimentalRecovery": {
+    "status": "pass",
+    "error": null,
+    "startTime": 0.058131028415423516,
+    "endTime": 0.058171028415423515,
+    "requestedEndTime": 0.058171028415423515,
+    "maximumDamage": 0.9486690117238965,
+    "meanDamage": 0.7954524851782298,
+    "maximumFCondition": 1.0063161935827492,
+    "boundaryWorkJ": 0.00023569099996174168,
+    "adaptive": {
+      "accepted": 41,
+      "rejected": 9,
+      "trials": 50,
+      "records": [
+        {
+          "time": 0.05813352841542352,
+          "dt": 2.499999999999898e-06,
+          "errors": {
+            "velocity": 0.5639676669421089,
+            "position": 0.003529901496456998,
+            "damage": 0.04299039162822815,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.053763834602580024
+          }
+        },
+        {
+          "time": 0.05813494323752583,
+          "dt": 1.4148221023046093e-06,
+          "errors": {
+            "velocity": 0.7446252875104035,
+            "position": 0.001185997392329994,
+            "damage": 0.014804776693977395,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.0027906874379986764
+          }
+        },
+        {
+          "time": 0.05813565064857698,
+          "dt": 7.074110511523046e-07,
+          "errors": {
+            "velocity": 0.8115309512777381,
+            "position": 0.0003355304485373267,
+            "damage": 0.003976116943116281,
+            "temperature": 0.0,
+            "work": 0.01665913329521601
+          }
+        },
+        {
+          "time": 0.058136358059628135,
+          "dt": 7.074110511523046e-07,
+          "errors": {
+            "velocity": 0.9806273944665557,
+            "position": 0.00033798039386488606,
+            "damage": 0.004019818936917829,
+            "temperature": 0.0,
+            "work": 0.01911446624570795
+          }
+        },
+        {
+          "time": 0.05813671176515371,
+          "dt": 3.537055255761523e-07,
+          "errors": {
+            "velocity": 0.9272189161135441,
+            "position": 9.768785293723415e-05,
+            "damage": 0.0010826959836229832,
+            "temperature": 0.0,
+            "work": 0.01840526770296098
+          }
+        },
+        {
+          "time": 0.05813706547067929,
+          "dt": 3.537055255761523e-07,
+          "errors": {
+            "velocity": 0.9364474793568155,
+            "position": 9.516248705256437e-05,
+            "damage": 0.0010226643701982674,
+            "temperature": 0.0,
+            "work": 0.016753341789590866
+          }
+        },
+        {
+          "time": 0.058137419176204866,
+          "dt": 3.537055255761523e-07,
+          "errors": {
+            "velocity": 0.9698207402570314,
+            "position": 9.338613657126783e-05,
+            "damage": 0.0010166019842938745,
+            "temperature": 0.0,
+            "work": 0.015654069476885704
+          }
+        },
+        {
+          "time": 0.05813759602896765,
+          "dt": 1.7685276278807616e-07,
+          "errors": {
+            "velocity": 0.837333032498377,
+            "position": 2.74523094405995e-05,
+            "damage": 0.00028134039795624233,
+            "temperature": 0.0,
+            "work": 0.013181827534740807
+          }
+        },
+        {
+          "time": 0.05813777288173043,
+          "dt": 1.7685276278807616e-07,
+          "errors": {
+            "velocity": 0.7621380535181915,
+            "position": 2.6136108132637096e-05,
+            "damage": 0.0002733902160212409,
+            "temperature": 0.0,
+            "work": 0.011430831331144666
+          }
+        },
+        {
+          "time": 0.05813794973449321,
+          "dt": 1.7685276278807616e-07,
+          "errors": {
+            "velocity": 0.7077587741925311,
+            "position": 2.517431777005306e-05,
+            "damage": 0.0002680058744042313,
+            "temperature": 0.0,
+            "work": 0.010150590759356015
+          }
+        },
+        {
+          "time": 0.05813812841951252,
+          "dt": 1.7868501930608132e-07,
+          "errors": {
+            "velocity": 0.6674614074454378,
+            "position": 2.4901528502710038e-05,
+            "damage": 0.0002694680797166171,
+            "temperature": 0.0,
+            "work": 0.009201350170808696
+          }
+        },
+        {
+          "time": 0.058138314325761914,
+          "dt": 1.8590624938804917e-07,
+          "errors": {
+            "velocity": 0.6411039812193098,
+            "position": 2.6145096195955662e-05,
+            "damage": 0.0002448230002616292,
+            "temperature": 0.0,
+            "work": 0.008551777923878977
+          }
+        },
+        {
+          "time": 0.058138511681009225,
+          "dt": 1.97355247310836e-07,
+          "errors": {
+            "velocity": 0.625794075582017,
+            "position": 2.8684360499391225e-05,
+            "damage": 0.00024323242003854162,
+            "temperature": 0.0,
+            "work": 0.008175873218183253
+          }
+        },
+        {
+          "time": 0.05813872373765128,
+          "dt": 2.1205664205396352e-07,
+          "errors": {
+            "velocity": 0.6168784238381008,
+            "position": 3.238703819694181e-05,
+            "damage": 0.00027022901664119914,
+            "temperature": 0.0,
+            "work": 0.00804540203695164
+          }
+        },
+        {
+          "time": 0.05813895323148212,
+          "dt": 2.2949383083486764e-07,
+          "errors": {
+            "velocity": 0.6090715914507296,
+            "position": 3.724126443312154e-05,
+            "damage": 0.000317178204201074,
+            "temperature": 0.0,
+            "work": 0.008133993838024009
+          }
+        },
+        {
+          "time": 0.05813920318299484,
+          "dt": 2.4995151272813495e-07,
+          "errors": {
+            "velocity": 0.5983053686530215,
+            "position": 4.347320772160775e-05,
+            "damage": 0.0003778675263355069,
+            "temperature": 0.0,
+            "work": 0.00843153413611998
+          }
+        },
+        {
+          "time": 0.05813947785427098,
+          "dt": 2.746712761472751e-07,
+          "errors": {
+            "velocity": 0.5818135369580243,
+            "position": 5.163495826159203e-05,
+            "damage": 0.00045803261415899854,
+            "temperature": 0.0,
+            "work": 0.008882438976891836
+          }
+        },
+        {
+          "time": 0.058139783938011586,
+          "dt": 3.0608374059881324e-07,
+          "errors": {
+            "velocity": 0.5632486022170041,
+            "position": 6.301703389889501e-05,
+            "damage": 0.0005726460536870093,
+            "temperature": 0.0,
+            "work": 0.009714681699767923
+          }
+        },
+        {
+          "time": 0.05814013060231549,
+          "dt": 3.466643038959671e-07,
+          "errors": {
+            "velocity": 0.5424705070182704,
+            "position": 7.912202223002947e-05,
+            "damage": 0.0007395780012187103,
+            "temperature": 0.0,
+            "work": 0.010955711343756776
+          }
+        },
+        {
+          "time": 0.05814053067599874,
+          "dt": 4.0007368324486423e-07,
+          "errors": {
+            "velocity": 0.5187858024008011,
+            "position": 0.00010226290115918067,
+            "damage": 0.0002983380814614023,
+            "temperature": 0.0,
+            "work": 0.012662699551204883
+          }
+        },
+        {
+          "time": 0.05814100280955575,
+          "dt": 4.7213355701116153e-07,
+          "errors": {
+            "velocity": 0.4932528352465843,
+            "position": 0.00013640647431706812,
+            "damage": 0.00025098614060414803,
+            "temperature": 0.0,
+            "work": 0.015258960953423549
+          }
+        },
+        {
+          "time": 0.058141574221086165,
+          "dt": 5.714115304179124e-07,
+          "errors": {
+            "velocity": 0.4634971918499493,
+            "position": 0.0001939532424890134,
+            "damage": 0.0003849567419833555,
+            "temperature": 0.0,
+            "work": 0.019351055201440544
+          }
+        },
+        {
+          "time": 0.05814228763959392,
+          "dt": 7.134185077595301e-07,
+          "errors": {
+            "velocity": 0.42565890410963114,
+            "position": 0.0003015859593652925,
+            "damage": 0.0006140241293528526,
+            "temperature": 0.0,
+            "work": 0.026181995422222697
+          }
+        },
+        {
+          "time": 0.05814321710330042,
+          "dt": 9.294637064949525e-07,
+          "errors": {
+            "velocity": 0.380312365221739,
+            "position": 0.000507810616616862,
+            "damage": 0.001019741062591173,
+            "temperature": 0.0,
+            "work": 0.03858738623429661
+          }
+        },
+        {
+          "time": 0.05814449819771851,
+          "dt": 1.2810944180883366e-06,
+          "errors": {
+            "velocity": 0.37882318531361103,
+            "position": 0.0009309468000230185,
+            "damage": 0.0017593622401279596,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.06330929638460177
+          }
+        },
+        {
+          "time": 0.058146267417509556,
+          "dt": 1.7692197910433395e-06,
+          "errors": {
+            "velocity": 0.5595487650738985,
+            "position": 0.0015009982503419424,
+            "damage": 0.0024062091283583165,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.10242548461708666
+          }
+        },
+        {
+          "time": 0.05814827781412203,
+          "dt": 2.010396612479819e-06,
+          "errors": {
+            "velocity": 0.6684589879176556,
+            "position": 0.0013515154358600587,
+            "damage": 0.003318007621933017,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.11245202891737979
+          }
+        },
+        {
+          "time": 0.058150367895933835,
+          "dt": 2.0900818118100336e-06,
+          "errors": {
+            "velocity": 0.6749881642280864,
+            "position": 0.0010116917355726415,
+            "damage": 0.003988469357374402,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.09401761212373941
+          }
+        },
+        {
+          "time": 0.05815253028647446,
+          "dt": 2.1623905406225623e-06,
+          "errors": {
+            "velocity": 0.6506168962955523,
+            "position": 0.0014431980568513753,
+            "damage": 0.0042932265437833905,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.06245727879529889
+          }
+        },
+        {
+          "time": 0.05815480900346122,
+          "dt": 2.2787169867507235e-06,
+          "errors": {
+            "velocity": 0.6123210713398375,
+            "position": 0.0017635521279872938,
+            "damage": 0.0047404141463758265,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.021498065675800752
+          }
+        },
+        {
+          "time": 0.05815728425713147,
+          "dt": 2.47525367026004e-06,
+          "errors": {
+            "velocity": 0.8276101893360059,
+            "position": 0.002080028691295689,
+            "damage": 0.006355243516598108,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.029347063532444064
+          }
+        },
+        {
+          "time": 0.0581585218839666,
+          "dt": 1.23762683513002e-06,
+          "errors": {
+            "velocity": 0.8746121733015181,
+            "position": 0.0006202414877902807,
+            "damage": 0.002234764263286948,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.0188951290871216
+          }
+        },
+        {
+          "time": 0.058159759510801726,
+          "dt": 1.23762683513002e-06,
+          "errors": {
+            "velocity": 0.9620617859790068,
+            "position": 0.000687893471445787,
+            "damage": 0.0027365457690775585,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.025020036761437714
+          }
+        },
+        {
+          "time": 0.05816099713763685,
+          "dt": 1.23762683513002e-06,
+          "errors": {
+            "velocity": 0.9380599478843125,
+            "position": 0.0007298129731287126,
+            "damage": 0.0032178722987774577,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.030185018607414005
+          }
+        },
+        {
+          "time": 0.05816223476447198,
+          "dt": 1.23762683513002e-06,
+          "errors": {
+            "velocity": 0.8442431752841121,
+            "position": 0.0007461760193785633,
+            "damage": 0.003614352983261071,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.03407767020537862
+          }
+        },
+        {
+          "time": 0.058163472391307106,
+          "dt": 1.23762683513002e-06,
+          "errors": {
+            "velocity": 0.7395824100931586,
+            "position": 0.0007383139059693126,
+            "damage": 0.003527852433982126,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.03664450780446289
+          }
+        },
+        {
+          "time": 0.05816471001814223,
+          "dt": 1.23762683513002e-06,
+          "errors": {
+            "velocity": 0.6426940487973622,
+            "position": 0.0007091694996844923,
+            "damage": 0.0025765088656148905,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.037967418696982655
+          }
+        },
+        {
+          "time": 0.05816602223769282,
+          "dt": 1.3122195505942666e-06,
+          "errors": {
+            "velocity": 0.5689226733879054,
+            "position": 0.0007330367455999642,
+            "damage": 0.0,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.04089799134631376
+          }
+        },
+        {
+          "time": 0.05816750100148625,
+          "dt": 1.4787637934340057e-06,
+          "errors": {
+            "velocity": 0.5355601430623215,
+            "position": 0.0007932413206867051,
+            "damage": 0.0,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.04578744204637412
+          }
+        },
+        {
+          "time": 0.058169218568180026,
+          "dt": 1.717566693767592e-06,
+          "errors": {
+            "velocity": 0.5748576297813427,
+            "position": 0.0007861377408011415,
+            "damage": 0.0,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.04993579614259622
+          }
+        },
+        {
+          "time": 0.058171028415423515,
+          "dt": 1.8098472434890933e-06,
+          "errors": {
+            "velocity": 0.5853564492571428,
+            "position": 0.0005328356817106327,
+            "damage": 0.0,
+            "temperature": 2.2737367544323206e-13,
+            "work": 0.04360839878458295
+          }
+        }
+      ]
+    },
+    "wallSeconds": 84.25447106361389,
+    "limit": "Local-error-controlled continuation of the failed tensile specimen, not an independent refinement comparison.",
+    "sourceHashes": {
+      "lava_mpm.py": "61c19faa87e1ebd44f8c3d6afabb195ab19b1680540b9156048a619f3cea95a2",
+      "lava_mpm_coupled.py": "07b01f9e1045f366345a65a4c253354b133222d11582af89df506ff5bf795877",
+      "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+      "lava_mpm_fracture.py": "261e7a5272fda9bb929fe3ea40a54d57f015f79678e53af459c593f350ae9414",
+      "lava_mpm_friction.py": "f7ab149103076fe06be863ccc1aecbe86dd3b6084941906c518c8fa98e295e13",
+      "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0"
+    },
+    "parentCache": "softening-impulse-4/state.npz",
+    "parentCacheSha256": "393f83c5f421d8cb68785231504cc71c532f7f0ffeb839927cffedaa7e6a2856"
+  },
+  "productionReady": false,
+  "fullFractureTemporal": {
+    "status": "not demonstrated"
+  },
+  "fullFractureSpatial": {
+    "status": "not demonstrated"
+  },
+  "naturalFlow": {
+    "status": "not demonstrated"
+  },
+  "materialCalibration": {
+    "status": "nominal parameters; no composition-specific fit"
+  },
+  "gpuUsed": false
+}

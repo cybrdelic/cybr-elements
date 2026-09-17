@@ -1,0 +1,24 @@
+{
+  "status": "pass",
+  "evidence": {
+    "lengthTests": [
+      {
+        "dx": 0.004,
+        "softeningEnergyJPerM2": 99.99999528864336,
+        "relativeError": 4.7113566381540295e-08
+      },
+      {
+        "dx": 0.008,
+        "softeningEnergyJPerM2": 99.99999848616366,
+        "relativeError": 1.5138363380629018e-08
+      },
+      {
+        "dx": 0.016,
+        "softeningEnergyJPerM2": 99.99999781905287,
+        "relativeError": 2.180947134888811e-08
+      }
+    ],
+    "noDamageAtUnloadedRepeat": true
+  },
+  "seconds": 0.02077484130859375
+}

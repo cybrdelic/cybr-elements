@@ -1,0 +1,11 @@
+import {FlipSolver,makeProductionPreset} from '../flip-lettering/vendor/src/main.js';import fs from 'node:fs';import zlib from 'node:zlib';
+const out=new URL('water-shared-cache/',import.meta.url);fs.mkdirSync(out,{recursive:true});const c=makeProductionPreset('jets');Object.assign(c,{nameKey:'motion',h:.024,nx:175,ny:100,nz:75,extent:[4.2,2.4,1.8],obstacles:[],maxParticles:220000,seed:6271});
+const trail=JSON.parse(fs.readFileSync(new URL('shared-trail.json',import.meta.url))),timeScale=.3,spaceScale=.4;
+function pose(t){const q=Math.max(0,Math.min(trail.frames.length-1,t*trail.sampleRate)),i=Math.floor(q),u=q-i,a=trail.frames[i],b=trail.frames[Math.min(i+1,trail.frames.length-1)];return {p:a.p.map((v,k)=>v*(1-u)+b.p[k]*u),d:a.d.map((v,k)=>v*(1-u)+b.d[k]*u),on:a.on*(1-u)+b.on*u,speed:a.speed};}
+class Flow extends FlipSolver{
+ emit(dt){this.carry??=0;const a=pose(this.time/timeScale);if(a.on<=0)return;const radius=.058,speed=2.3;this.carry+=Math.PI*radius*radius*(a.speed*spaceScale/timeScale)*a.on*dt/(this.h*.5)**3;const count=Math.floor(this.carry);this.carry-=count;
+ for(let i=0;i<count;i++){const angle=this.random()*Math.PI*2,r=radius*Math.sqrt(this.random()),u=(this.random()-.5)*.028;const x=2.1+a.p[0]*spaceScale-a.d[1]*r*Math.cos(angle)+a.d[0]*u,y=a.p[1]*spaceScale+a.d[0]*r*Math.cos(angle)+a.d[1]*u,z=.9+r*Math.sin(angle);if(this.add(x,y,z,a.d[0]*speed,a.d[1]*speed,.13*Math.sin(this.time*35))){this.spawned++;}}
+ }
+}
+const sim=new Flow(c),m={config:c,frameDt:.3/30,frames:[],playbackFps:30,source:'Shared source trail and 30 fps screen timing; space scale .4 and time scale .3; native FLIP release'};let start=performance.now();
+for(let f=0;f<120;f++){let info=sim.advance(m.frameDt);if(!info.finite||!info.pressure.converged||info.capacityRejected)throw Error(JSON.stringify(info));let n=sim.count,raw=Buffer.concat([Buffer.from(sim.p.buffer,0,n*12),Buffer.from(sim.v.buffer,0,n*12)]);fs.writeFileSync(new URL(`${String(f).padStart(4,'0')}.gz`,out),zlib.gzipSync(raw,{level:1}));m.frames.push({frame:f,...info});fs.writeFileSync(new URL('manifest.json',out),JSON.stringify(m));if(f%12===0)console.log(JSON.stringify({frame:f,n,elapsed:(performance.now()-start)/1000}));}m.complete=true;fs.writeFileSync(new URL('manifest.json',out),JSON.stringify(m));console.log('COMPLETE');

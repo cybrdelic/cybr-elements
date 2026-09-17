@@ -1,0 +1,15 @@
+{
+  "status": "pass",
+  "evidence": {
+    "exchangeMismatchJ": 0.0,
+    "bed": {
+      "time": 0.25,
+      "storedHeatJ": 21.656472155255607,
+      "receivedHeatJ": 21.65647220637952,
+      "bottomLossJ": 4.479203244045493e-08,
+      "energyErrorJ": 6.331880797461054e-09,
+      "maximumTemperature": 294.00730811427616
+    }
+  },
+  "seconds": 0.25521063804626465
+}

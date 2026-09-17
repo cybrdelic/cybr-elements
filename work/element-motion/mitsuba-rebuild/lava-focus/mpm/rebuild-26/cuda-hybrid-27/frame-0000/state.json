@@ -1,0 +1,110 @@
+{
+  "material": {
+    "density": 2700.0,
+    "cp": 1200.0,
+    "solidus": 1173.15,
+    "liquidus": 1423.15,
+    "latent_heat": 400000.0,
+    "conductivity": 1.6,
+    "emissivity": 0.94,
+    "convection": 12.0,
+    "ambient": 293.15,
+    "young": 30000000000.0,
+    "poisson": 0.25,
+    "liquid_bulk": 20000000000.0,
+    "expansion": 8e-06,
+    "tensile_strength": 8000000.0,
+    "fracture_energy": 100.0,
+    "viscosity_reference": 150.0,
+    "viscosity_temperature": 1450.0,
+    "activation_over_R": 60000.0,
+    "friction": 0.6,
+    "crystal_lock_fraction": 0.65,
+    "rheology": "basalt_power_creep",
+    "creep_viscosity_reference": 1000000000000.0,
+    "creep_temperature": 933.15,
+    "creep_activation_over_R": 60000.0,
+    "fracture_model": "phase_field",
+    "fracture_length": 0.016,
+    "melt_viscosity_law": "farrell_180719",
+    "vft_a": -4.55,
+    "vft_b": 5978.4,
+    "vft_c": 595.3,
+    "rock_creep_a": 610000000.0,
+    "rock_creep_n": 3.6,
+    "rock_creep_q": 456000.0
+  },
+  "dx": 0.016,
+  "spacing": 0.008,
+  "cell_size": [
+    0.016,
+    0.016,
+    0.008
+  ],
+  "sample_size": [
+    0.008,
+    0.008,
+    0.004
+  ],
+  "contact_solver": "friction",
+  "bonded_bed": false,
+  "coherent_fraction": 0.65,
+  "failure_fraction": 0.65,
+  "origin": [
+    -0.112,
+    -0.08,
+    -0.016
+  ],
+  "shape": [
+    19,
+    11,
+    17
+  ],
+  "gravity": [
+    0.855,
+    0.0,
+    -9.773
+  ],
+  "ground": true,
+  "initial_energy": 259311.71827209918,
+  "initial_mass": 0.5999616000000001,
+  "ledger": {
+    "radiation": 0.0,
+    "convection": 0.0,
+    "bed": 0.0,
+    "viscous_heat": 0.0,
+    "fracture": 0.0,
+    "pressure_cavitation": 0.0,
+    "ground_impulse": 0.0,
+    "ground_dissipation": 0.0,
+    "contact_heat": 0.0
+  },
+  "time": 0.0,
+  "rows": [],
+  "sourceHashes": {
+    "lava_mpm.py": "6fa9405540a817f500fc6c56684d3c879b27fe8bd993d6a7ba6bdd54a3fa46fc",
+    "lava_mpm_coupled.py": "9e417118610036b0ff64ba633b933c63fb6645bf63f3f4c863e650567afcd2ed",
+    "lava_mpm_phase_field.py": "726eed0d918751f2f2da30e32617f949633e7845c33d45d8155e572edff50f50",
+    "lava_mpm_fracture.py": "f6286519e504119f849d8445caa0528146509e2fc404348eb828359426c1ed21",
+    "lava_mpm_friction.py": "cbdbdc1efc6d07c126e7f8da0d1c0618dedc48ae8a94a6a038440d03b0ed80dd",
+    "lava_mpm_transfer.py": "ee5de8d811c0eaed4cdb7d996b2853405201340fa9fdd8d3d723b58e826d35b0",
+    "lava_mpm_sparse_pressure.py": "d576788aa418d167221bd96c03f937bbcb3c2ccbbef51a6204740806de81c605",
+    "lava_mpm_linear27.py": "0618dd020be87e631dd88a9aef601bc6e7072f108539cbd425d958cce3d0cbf1"
+  },
+  "linearBackend": {
+    "cpuFactors": 0,
+    "gpuFactors": 0,
+    "cpuTriangularSolves": 0,
+    "factorSeconds": 0.0,
+    "solveSeconds": 0.0,
+    "maximumDofs": 0,
+    "maximumAllocatedBytes": 0,
+    "fallbacks": [],
+    "backend": "cuda_dense",
+    "precision": "float64",
+    "maximumGpuDofs": 6144,
+    "scope": "CUDA factorization only. CPU triangular solves, assembly and nonlinear MPM. Small repeated GPU solves were rejected after an end-to-end slowdown."
+  },
+  "transfer": "apic",
+  "transfer_filter_seconds": 0.001
+}

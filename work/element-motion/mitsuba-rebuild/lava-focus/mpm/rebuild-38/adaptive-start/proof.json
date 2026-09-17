@@ -1,0 +1,21 @@
+{
+  "status": "complete",
+  "error": null,
+  "time": 0.1,
+  "targetTime": 0.1,
+  "particles": 884,
+  "broken": 0,
+  "fracturedSolidEdges": 0,
+  "maximumDamage": 0.0,
+  "solidPoints": 0,
+  "rejects": 2,
+  "wallSeconds": 13.125,
+  "source": null,
+  "bedKind": "finite",
+  "temporalControl": "step doubling",
+  "initialTemperatureK": 1450,
+  "preparedSkin": false,
+  "authoredFragments": false,
+  "seededDamage": false,
+  "scope": "Coupled cooling, source flux and grounded mechanical loading. Mechanism screen, not production."
+}

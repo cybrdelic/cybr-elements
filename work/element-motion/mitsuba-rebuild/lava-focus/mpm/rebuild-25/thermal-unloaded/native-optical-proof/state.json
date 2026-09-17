@@ -1,0 +1,24 @@
+{
+  "status": "unreviewed optical proof",
+  "device": "CPU",
+  "variant": "scalar_rgb",
+  "width": 320,
+  "height": 200,
+  "samples": 4,
+  "seconds": 2.2189999999827705,
+  "atlas": {
+    "size": [
+      1554,
+      1554
+    ],
+    "triangles": 12292,
+    "pixelsPerTriangleTile": 14,
+    "method": "Unique per-triangle atlas; interpolated solved temperature evaluated through Planck radiance. Optical pores sampled in advected reference coordinates. Native Mitsuba bitmap emitters and bump maps."
+  },
+  "source": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\thermal-unloaded\\state-surface.npz",
+  "sourceSha256": "57a7af71774a920abf9603845feb8068b1171a9c5c8f52335e608b32c80f43ee",
+  "image": "C:\\Users\\alexf\\Documents\\Codex\\2026-09-10\\u\\work\\element-motion\\mitsuba-rebuild\\lava-focus\\mpm\\rebuild-25\\thermal-unloaded\\native-optical-proof\\state.png",
+  "imageSha256": "6124078fe83777094760747915f72ed542d51a5c3545a6fac8dd84e7621868d8",
+  "background": "Exact black; no environment, bloom or overlays",
+  "limitations": "Nominal basalt/melt BRDF and unresolved optical pores. Baking has finite texture resolution. Geometry and physics acceptance are independent; this is not a production approval."
+}

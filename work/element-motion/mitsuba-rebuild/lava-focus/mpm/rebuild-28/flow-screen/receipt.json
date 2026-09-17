@@ -1,0 +1,179 @@
+{
+  "status": "incomplete",
+  "error": "TimeoutError('Bounded simulation budget reached')",
+  "time": 7.639999999999965,
+  "target": 8.0,
+  "steps": 350,
+  "seconds": 122.375,
+  "particles": 21840,
+  "pitchM": 0.0015,
+  "voxelM": 0.003,
+  "initialEnergyJ": 145724.22774,
+  "ledger": {
+    "boundaryLossJ": 28823.326627836672,
+    "pairConductionResidualJ": -3.674153745344966e-07,
+    "plasticHeatJ": 0.004815417650063,
+    "fractureWorkJ": 0.0
+  },
+  "rows": [
+    {
+      "time": 0.5,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1424.2265625,
+      "maximumSpeedMPerS": 0.017266543582081795,
+      "thermalBalanceRelative": 1.2277168197902121e-08,
+      "wallSeconds": 9.655999999988126
+    },
+    {
+      "time": 1.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1413.691162109375,
+      "maximumSpeedMPerS": 0.03280177712440491,
+      "thermalBalanceRelative": 1.846376778627018e-08,
+      "wallSeconds": 17.203000000008615
+    },
+    {
+      "time": 1.5,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1403.612548828125,
+      "maximumSpeedMPerS": 0.04066474735736847,
+      "thermalBalanceRelative": 2.1610028052258404e-08,
+      "wallSeconds": 14.78100000001723
+    },
+    {
+      "time": 2.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1393.8665771484375,
+      "maximumSpeedMPerS": 0.04384245350956917,
+      "thermalBalanceRelative": 2.396240521831442e-08,
+      "wallSeconds": 21.625
+    },
+    {
+      "time": 2.5,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1384.2633056640625,
+      "maximumSpeedMPerS": 0.018256833776831627,
+      "thermalBalanceRelative": 2.593607827382788e-08,
+      "wallSeconds": 29.344000000011874
+    },
+    {
+      "time": 3.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1374.349365234375,
+      "maximumSpeedMPerS": 0.003912482410669327,
+      "thermalBalanceRelative": 2.7333792917274678e-08,
+      "wallSeconds": 37.375
+    },
+    {
+      "time": 3.5,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1364.644775390625,
+      "maximumSpeedMPerS": 0.09049888700246811,
+      "thermalBalanceRelative": 2.8563123368351122e-08,
+      "wallSeconds": 46.75
+    },
+    {
+      "time": 4.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1355.44140625,
+      "maximumSpeedMPerS": 0.19032981991767883,
+      "thermalBalanceRelative": 2.950391757945152e-08,
+      "wallSeconds": 51.39000000001397
+    },
+    {
+      "time": 4.5,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1346.528076171875,
+      "maximumSpeedMPerS": 0.04415794461965561,
+      "thermalBalanceRelative": 2.9562625205026788e-08,
+      "wallSeconds": 64.53100000001723
+    },
+    {
+      "time": 5.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1337.998291015625,
+      "maximumSpeedMPerS": 0.03359946981072426,
+      "thermalBalanceRelative": 2.847296297972255e-08,
+      "wallSeconds": 74.09400000001187
+    },
+    {
+      "time": 5.5,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1329.88671875,
+      "maximumSpeedMPerS": 0.006905152462422848,
+      "thermalBalanceRelative": 2.8326401905956646e-08,
+      "wallSeconds": 77.875
+    },
+    {
+      "time": 6.0,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1322.19580078125,
+      "maximumSpeedMPerS": 0.007716144900768995,
+      "thermalBalanceRelative": 2.9626103949607532e-08,
+      "wallSeconds": 90.26500000001397
+    },
+    {
+      "time": 6.499999999999989,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1314.7998046875,
+      "maximumSpeedMPerS": 0.012913331389427185,
+      "thermalBalanceRelative": 2.9149322967298667e-08,
+      "wallSeconds": 98.34400000001187
+    },
+    {
+      "time": 6.999999999999979,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1307.6541748046875,
+      "maximumSpeedMPerS": 0.007616691291332245,
+      "thermalBalanceRelative": 2.91591549754255e-08,
+      "wallSeconds": 105.875
+    },
+    {
+      "time": 7.499999999999968,
+      "maximumDamage": 0.0,
+      "damagedParticles": 0,
+      "coherentParticles": 0,
+      "minimumTemperatureK": 1300.7425537109375,
+      "maximumSpeedMPerS": 0.005116710439324379,
+      "thermalBalanceRelative": 2.932299121863686e-08,
+      "wallSeconds": 117.93700000000536
+    }
+  ],
+  "sourceHashes": {
+    "lava_newton28_flow.py": "1558e0cd0f22d5088a2bb1ec852e30eb12b2f0fa1b151923e0b23ba5b48aee9e",
+    "lava_newton28_thermal.py": "b664d7f572657c80d4c96759412fedf046ece58d3c3b648935af6c15621f7ccc"
+  },
+  "newtonVersion": "1.6.0",
+  "warpVersion": "1.17.0",
+  "method": "3D implicit elastoviscoplastic MPM; SPH enthalpy conduction; surface radiation/convection; thermal rest strain; local energy-scaled cohesive softening; no seeded damage, moving mesh, path force or painted heat.",
+  "limitations": "Crack-band constitutive parameters are nominal, not composition calibrated. No variational fracture convergence claim. Surface heat area uses particle occupancy gradient. Semi-infinite bed is a metered reservoir. Mechanical/plastic energy transfer is approximate. One finite volume release, not a continuous inlet.",
+  "visualStatus": "unreviewed"
+}

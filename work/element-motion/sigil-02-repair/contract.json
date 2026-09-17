@@ -1,0 +1,26 @@
+{
+  "scope": [
+    "water",
+    "earth",
+    "lightning"
+  ],
+  "preserve": [
+    "fire",
+    "air"
+  ],
+  "background": "black",
+  "firstGate": "Water: actual fluid transport and silhouette change in a short sequence, before full render",
+  "qualityGates": [
+    "Full02 artwork informs variable source widths",
+    "Fluid rolls and sheds small spray, rather than moving an intact glass glyph",
+    "Stone motion comes from momentum and rigid-body contacts, not per-stone target springs",
+    "Electrical leaders and brief return strokes; no permanent wire fill"
+  ],
+  "pilotIterations": 3,
+  "resolution": "CPU simulation previews and selected CPU renders first; 1080p final if pilot warrants it",
+  "rejected": {
+    "water": "User rejected: static glass-like cutout, insufficient fluid momentum and depth; worst of the three.",
+    "earth": "User rejected: gravel arranged as typography, target-pinned movement instead of convincing stone transport.",
+    "lightning": "User rejected: persistent wire drawing and overly uniform small branches."
+  }
+}

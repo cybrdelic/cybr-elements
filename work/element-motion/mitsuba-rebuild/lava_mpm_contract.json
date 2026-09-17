@@ -1,0 +1,30 @@
+{
+  "request": "A physically coupled three-dimensional lava simulation, CPU validated before Mitsuba rendering",
+  "supersedes": "The authored material stages and depth-averaged flow are not simulation inputs",
+  "scope": [
+    "new lava_mpm modules",
+    "new CPU validation and cache",
+    "separate simulation evidence page"
+  ],
+  "capture": "CPU field sections and reconstructed particle surface; bounded CUDA simulation and Mitsuba optical proofs are permitted. Optical proofs are diagnostic and must not be promoted as a visual fix when fracture geometry fails review.",
+  "gates": [
+    "APIC partition of unity and affine reproduction",
+    "momentum and force balance",
+    "implicit viscous analytic solution",
+    "enthalpy and Stefan conduction benchmarks",
+    "constitutive fracture energy",
+    "thermal expansion stress",
+    "gravity and obstacle contact",
+    "timestep and grid sensitivity",
+    "gas source and energy exchange accounting"
+  ],
+  "visual_audit": "No pre-cut crust, no moving authored fragments, no heat painted onto meshes; inspect actual phase, stress, damage, velocity and gas fields at physical timestamps",
+  "budget": "CPU default; opt-in CUDA FP64 pressure factorization up to 6144 DOFs and batched contact up to 4096 DOFs, with a conservative 1.5 GiB estimated allocation gate and explicit recorded CPU fallback. Bounded 120-second simulation runs. Native CUDA Mitsuba proofs allowed. No final movie queue before geometry and motion pass visual review.",
+  "iterations": 5,
+  "status": "Batched CUDA contact and pressure pass component and checkpoint checks. Same-core 0.25-second checkpoint: CUDA 26.25 s, CPU 110.25 s under concurrent system load. CUDA completed 0.5 simulated seconds in 47.735 s; fresh CPU timed out after 0.25 simulated seconds. Native CUDA Mitsuba proof inspected. Zero broken edges, inadequate crust resolution and omitted prior 3D cooling stress remain unresolved. Public preview unchanged; no movie queued.",
+  "deviceAuthorization": {
+    "userInstruction": "u can use the gpu if itll reall y heelp",
+    "date": "2026-09-15",
+    "meaning": "CUDA use is authorized when measured to help. Numerical and visual acceptance remain required."
+  }
+}

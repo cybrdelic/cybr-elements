@@ -1,0 +1,1044 @@
+{
+  "element": "lightning",
+  "frames": 168,
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "30/1",
+        "nb_frames": "168"
+      }
+    ],
+    "format": {
+      "duration": "5.600000"
+    }
+  },
+  "sha256": "495b4ddc41a1077c628691f85fcb9c29a8eb239896e93120f334f3670c431c12",
+  "visualStatus": "user-rejected",
+  "endLuma": 0.0,
+  "maxCorner": 0,
+  "rows": [
+    {
+      "frame": 0,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 1,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 2,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 3,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 4,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 5,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 6,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 7,
+      "meanLuma": 0.4325659756944445,
+      "cornerMax": 0,
+      "frameDifference": 0.4561429398148148
+    },
+    {
+      "frame": 8,
+      "meanLuma": 2.210509536458333,
+      "cornerMax": 0,
+      "frameDifference": 1.9736284722222222
+    },
+    {
+      "frame": 9,
+      "meanLuma": 1.4075749019097226,
+      "cornerMax": 0,
+      "frameDifference": 1.1234809027777777
+    },
+    {
+      "frame": 10,
+      "meanLuma": 0.14916250520833332,
+      "cornerMax": 0,
+      "frameDifference": 1.505033275462963
+    },
+    {
+      "frame": 11,
+      "meanLuma": 0.3841239045138889,
+      "cornerMax": 0,
+      "frameDifference": 0.32526475694444446
+    },
+    {
+      "frame": 12,
+      "meanLuma": 1.386885933159722,
+      "cornerMax": 0,
+      "frameDifference": 1.3462919560185185
+    },
+    {
+      "frame": 13,
+      "meanLuma": 0.28546289409722225,
+      "cornerMax": 0,
+      "frameDifference": 1.2329456018518519
+    },
+    {
+      "frame": 14,
+      "meanLuma": 0.20671872135416666,
+      "cornerMax": 0,
+      "frameDifference": 0.4955295138888889
+    },
+    {
+      "frame": 15,
+      "meanLuma": 0.21168403993055557,
+      "cornerMax": 0,
+      "frameDifference": 0.45130497685185184
+    },
+    {
+      "frame": 16,
+      "meanLuma": 0.9572610017361111,
+      "cornerMax": 0,
+      "frameDifference": 0.9995674189814815
+    },
+    {
+      "frame": 17,
+      "meanLuma": 0.48398232638888883,
+      "cornerMax": 0,
+      "frameDifference": 0.7792404513888889
+    },
+    {
+      "frame": 18,
+      "meanLuma": 0.1072803125,
+      "cornerMax": 0,
+      "frameDifference": 0.6186024305555555
+    },
+    {
+      "frame": 19,
+      "meanLuma": 0.5599325729166666,
+      "cornerMax": 0,
+      "frameDifference": 0.5004991319444444
+    },
+    {
+      "frame": 20,
+      "meanLuma": 0.444847248263889,
+      "cornerMax": 0,
+      "frameDifference": 0.5800245949074074
+    },
+    {
+      "frame": 21,
+      "meanLuma": 0.12531343576388887,
+      "cornerMax": 0,
+      "frameDifference": 0.5422106481481481
+    },
+    {
+      "frame": 22,
+      "meanLuma": 0.32329109201388884,
+      "cornerMax": 0,
+      "frameDifference": 0.4326027199074074
+    },
+    {
+      "frame": 23,
+      "meanLuma": 0.2855465451388889,
+      "cornerMax": 0,
+      "frameDifference": 0.6149508101851852
+    },
+    {
+      "frame": 24,
+      "meanLuma": 0.4971688350694444,
+      "cornerMax": 0,
+      "frameDifference": 0.43129774305555557
+    },
+    {
+      "frame": 25,
+      "meanLuma": 0.3044724513888889,
+      "cornerMax": 0,
+      "frameDifference": 0.5378877314814815
+    },
+    {
+      "frame": 26,
+      "meanLuma": 0.10581654079861108,
+      "cornerMax": 0,
+      "frameDifference": 0.2601982060185185
+    },
+    {
+      "frame": 27,
+      "meanLuma": 0.3371382708333333,
+      "cornerMax": 0,
+      "frameDifference": 0.26579137731481484
+    },
+    {
+      "frame": 28,
+      "meanLuma": 0.07898619097222223,
+      "cornerMax": 0,
+      "frameDifference": 0.4517390046296296
+    },
+    {
+      "frame": 29,
+      "meanLuma": 0.30074034288194446,
+      "cornerMax": 0,
+      "frameDifference": 0.36779224537037036
+    },
+    {
+      "frame": 30,
+      "meanLuma": 0.17292726215277776,
+      "cornerMax": 0,
+      "frameDifference": 0.46337384259259257
+    },
+    {
+      "frame": 31,
+      "meanLuma": 0.5724004149305555,
+      "cornerMax": 0,
+      "frameDifference": 0.5643460648148149
+    },
+    {
+      "frame": 32,
+      "meanLuma": 0.4088741501736111,
+      "cornerMax": 0,
+      "frameDifference": 0.6304528356481481
+    },
+    {
+      "frame": 33,
+      "meanLuma": 0.46954418749999993,
+      "cornerMax": 0,
+      "frameDifference": 0.32362991898148147
+    },
+    {
+      "frame": 34,
+      "meanLuma": 0.16499275954861112,
+      "cornerMax": 0,
+      "frameDifference": 0.5251591435185186
+    },
+    {
+      "frame": 35,
+      "meanLuma": 0.3644676510416667,
+      "cornerMax": 0,
+      "frameDifference": 0.3981177662037037
+    },
+    {
+      "frame": 36,
+      "meanLuma": 0.24030540190972222,
+      "cornerMax": 0,
+      "frameDifference": 0.29222800925925924
+    },
+    {
+      "frame": 37,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.25831597222222225
+    },
+    {
+      "frame": 38,
+      "meanLuma": 0.16244416753472218,
+      "cornerMax": 0,
+      "frameDifference": 0.17114583333333333
+    },
+    {
+      "frame": 39,
+      "meanLuma": 0.7627370347222222,
+      "cornerMax": 0,
+      "frameDifference": 0.8073162615740741
+    },
+    {
+      "frame": 40,
+      "meanLuma": 0.14472125347222223,
+      "cornerMax": 0,
+      "frameDifference": 0.7839901620370371
+    },
+    {
+      "frame": 41,
+      "meanLuma": 0.4683957005208333,
+      "cornerMax": 0,
+      "frameDifference": 0.4912311921296296
+    },
+    {
+      "frame": 42,
+      "meanLuma": 0.12460967100694445,
+      "cornerMax": 0,
+      "frameDifference": 0.589732349537037
+    },
+    {
+      "frame": 43,
+      "meanLuma": 0.6624630086805555,
+      "cornerMax": 0,
+      "frameDifference": 0.586908275462963
+    },
+    {
+      "frame": 44,
+      "meanLuma": 0.48269503472222225,
+      "cornerMax": 0,
+      "frameDifference": 0.42498842592592595
+    },
+    {
+      "frame": 45,
+      "meanLuma": 0.6017412612847222,
+      "cornerMax": 0,
+      "frameDifference": 1.0464887152777778
+    },
+    {
+      "frame": 46,
+      "meanLuma": 0.11139057465277775,
+      "cornerMax": 0,
+      "frameDifference": 0.6909085648148148
+    },
+    {
+      "frame": 47,
+      "meanLuma": 0.7966266215277777,
+      "cornerMax": 0,
+      "frameDifference": 0.7513556134259259
+    },
+    {
+      "frame": 48,
+      "meanLuma": 0.2848759435763889,
+      "cornerMax": 0,
+      "frameDifference": 0.6502358217592593
+    },
+    {
+      "frame": 49,
+      "meanLuma": 0.10990162152777777,
+      "cornerMax": 0,
+      "frameDifference": 0.38894820601851854
+    },
+    {
+      "frame": 50,
+      "meanLuma": 0.24630543749999997,
+      "cornerMax": 0,
+      "frameDifference": 0.1773003472222222
+    },
+    {
+      "frame": 51,
+      "meanLuma": 0.2200021605902778,
+      "cornerMax": 0,
+      "frameDifference": 0.32969618055555555
+    },
+    {
+      "frame": 52,
+      "meanLuma": 1.8802083333333332e-06,
+      "cornerMax": 0,
+      "frameDifference": 0.23684027777777777
+    },
+    {
+      "frame": 53,
+      "meanLuma": 1.8802083333333332e-06,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 54,
+      "meanLuma": 0.045753749999999996,
+      "cornerMax": 0,
+      "frameDifference": 0.049113136574074075
+    },
+    {
+      "frame": 55,
+      "meanLuma": 6.267361111111111e-07,
+      "cornerMax": 0,
+      "frameDifference": 0.049107349537037034
+    },
+    {
+      "frame": 56,
+      "meanLuma": 6.267361111111111e-07,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 57,
+      "meanLuma": 6.267361111111111e-07,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 58,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 2.8935185185185184e-06
+    },
+    {
+      "frame": 59,
+      "meanLuma": 0.4379843420138889,
+      "cornerMax": 0,
+      "frameDifference": 0.45155671296296296
+    },
+    {
+      "frame": 60,
+      "meanLuma": 3.8232389374999998,
+      "cornerMax": 0,
+      "frameDifference": 4.168624131944444
+    },
+    {
+      "frame": 61,
+      "meanLuma": 8.738747420138889,
+      "cornerMax": 0,
+      "frameDifference": 5.753540219907407
+    },
+    {
+      "frame": 62,
+      "meanLuma": 3.8002938315972234,
+      "cornerMax": 0,
+      "frameDifference": 5.3884100115740745
+    },
+    {
+      "frame": 63,
+      "meanLuma": 2.910859088541667,
+      "cornerMax": 0,
+      "frameDifference": 4.868964120370371
+    },
+    {
+      "frame": 64,
+      "meanLuma": 2.663628472222222e-05,
+      "cornerMax": 0,
+      "frameDifference": 3.2079890046296295
+    },
+    {
+      "frame": 65,
+      "meanLuma": 2.5092738871527773,
+      "cornerMax": 0,
+      "frameDifference": 2.703640046296296
+    },
+    {
+      "frame": 66,
+      "meanLuma": 1.064481779513889,
+      "cornerMax": 0,
+      "frameDifference": 3.430719039351852
+    },
+    {
+      "frame": 67,
+      "meanLuma": 1.5355034722222227e-05,
+      "cornerMax": 0,
+      "frameDifference": 1.142845775462963
+    },
+    {
+      "frame": 68,
+      "meanLuma": 1.284809027777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 1.1574074074074073e-05
+    },
+    {
+      "frame": 69,
+      "meanLuma": 1.284809027777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 70,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 5.931712962962963e-05
+    },
+    {
+      "frame": 71,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 72,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 73,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 74,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 75,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 76,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 77,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 78,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 79,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 80,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 81,
+      "meanLuma": 0.16102864583333334,
+      "cornerMax": 0,
+      "frameDifference": 0.16102864583333334
+    },
+    {
+      "frame": 82,
+      "meanLuma": 2.046737253472222,
+      "cornerMax": 0,
+      "frameDifference": 2.1971788194444444
+    },
+    {
+      "frame": 83,
+      "meanLuma": 6.755010568576389,
+      "cornerMax": 0,
+      "frameDifference": 5.197398726851852
+    },
+    {
+      "frame": 84,
+      "meanLuma": 3.0570974809027778,
+      "cornerMax": 0,
+      "frameDifference": 5.562135416666667
+    },
+    {
+      "frame": 85,
+      "meanLuma": 2.6864482083333336,
+      "cornerMax": 0,
+      "frameDifference": 4.0576953125
+    },
+    {
+      "frame": 86,
+      "meanLuma": 0.03475723958333333,
+      "cornerMax": 0,
+      "frameDifference": 2.880613425925926
+    },
+    {
+      "frame": 87,
+      "meanLuma": 1.5540170052083333,
+      "cornerMax": 0,
+      "frameDifference": 1.6771166087962963
+    },
+    {
+      "frame": 88,
+      "meanLuma": 1.115196923611111,
+      "cornerMax": 0,
+      "frameDifference": 2.759503761574074
+    },
+    {
+      "frame": 89,
+      "meanLuma": 1.0027777777777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 1.1846238425925926
+    },
+    {
+      "frame": 90,
+      "meanLuma": 1.0027777777777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 91,
+      "meanLuma": 1.0027777777777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 92,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 4.6296296296296294e-05
+    },
+    {
+      "frame": 93,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 94,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 95,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 96,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 97,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 98,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 99,
+      "meanLuma": 0.6871834557291665,
+      "cornerMax": 0,
+      "frameDifference": 0.7060445601851851
+    },
+    {
+      "frame": 100,
+      "meanLuma": 4.373850430555555,
+      "cornerMax": 0,
+      "frameDifference": 4.815778356481482
+    },
+    {
+      "frame": 101,
+      "meanLuma": 6.442290254340277,
+      "cornerMax": 0,
+      "frameDifference": 7.828249421296296
+    },
+    {
+      "frame": 102,
+      "meanLuma": 3.575190427083333,
+      "cornerMax": 0,
+      "frameDifference": 6.531607349537037
+    },
+    {
+      "frame": 103,
+      "meanLuma": 2.0079745989583335,
+      "cornerMax": 0,
+      "frameDifference": 5.1526909722222225
+    },
+    {
+      "frame": 104,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 2.2002647569444442
+    },
+    {
+      "frame": 105,
+      "meanLuma": 2.646896458333334,
+      "cornerMax": 0,
+      "frameDifference": 2.841166087962963
+    },
+    {
+      "frame": 106,
+      "meanLuma": 0.7883389340277778,
+      "cornerMax": 0,
+      "frameDifference": 3.121824363425926
+    },
+    {
+      "frame": 107,
+      "meanLuma": 2.412934027777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 0.8452604166666666
+    },
+    {
+      "frame": 108,
+      "meanLuma": 1.848871527777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 4.9189814814814815e-05
+    },
+    {
+      "frame": 109,
+      "meanLuma": 1.848871527777778e-05,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 110,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 8.53587962962963e-05
+    },
+    {
+      "frame": 111,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 112,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 113,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 114,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 115,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 116,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 117,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 118,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 119,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 120,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 121,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 122,
+      "meanLuma": 1.0918542951388888,
+      "cornerMax": 0,
+      "frameDifference": 1.1320008680555556
+    },
+    {
+      "frame": 123,
+      "meanLuma": 5.462283745659723,
+      "cornerMax": 0,
+      "frameDifference": 6.018002025462963
+    },
+    {
+      "frame": 124,
+      "meanLuma": 4.907662901041666,
+      "cornerMax": 0,
+      "frameDifference": 6.54640625
+    },
+    {
+      "frame": 125,
+      "meanLuma": 4.025027215277777,
+      "cornerMax": 0,
+      "frameDifference": 4.6173307291666665
+    },
+    {
+      "frame": 126,
+      "meanLuma": 1.263984103298611,
+      "cornerMax": 0,
+      "frameDifference": 4.412123842592592
+    },
+    {
+      "frame": 127,
+      "meanLuma": 0.786712361111111,
+      "cornerMax": 0,
+      "frameDifference": 2.1753530092592595
+    },
+    {
+      "frame": 128,
+      "meanLuma": 1.9298621267361113,
+      "cornerMax": 0,
+      "frameDifference": 2.8408608217592595
+    },
+    {
+      "frame": 129,
+      "meanLuma": 0.2940569661458334,
+      "cornerMax": 0,
+      "frameDifference": 2.3235127314814816
+    },
+    {
+      "frame": 130,
+      "meanLuma": 1.4414930555555554e-05,
+      "cornerMax": 0,
+      "frameDifference": 0.31432002314814816
+    },
+    {
+      "frame": 131,
+      "meanLuma": 8.774305555555554e-06,
+      "cornerMax": 0,
+      "frameDifference": 2.604166666666667e-05
+    },
+    {
+      "frame": 132,
+      "meanLuma": 8.774305555555554e-06,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 133,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 4.050925925925926e-05
+    },
+    {
+      "frame": 134,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 135,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 136,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 137,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 138,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 139,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 140,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 141,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 142,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 143,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 144,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 145,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 146,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 147,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 148,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 149,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 150,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 151,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 152,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 153,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 154,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 155,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 156,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 157,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 158,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 159,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 160,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 161,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 162,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 163,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 164,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 165,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 166,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    },
+    {
+      "frame": 167,
+      "meanLuma": 0.0,
+      "cornerMax": 0,
+      "frameDifference": 0.0
+    }
+  ],
+  "observations": [
+    "Reviewed decoded formation, several full discharges, and black ending against the preceding lightning-review.jpg.",
+    "Distinct later channels and visible branch hierarchy replace a fixed dense wire fill.",
+    "Dark intervals and short return-stroke trains make the movement substantially different from the previous continuously lit outline."
+  ],
+  "limitations": [
+    "Authored electrical growth approximation; not calibrated plasma physics.",
+    "Still a stylized sigil discharge. Secondary aerosol is subtle and does not resemble a large smoke plume.",
+    "User acceptance remains pending."
+  ],
+  "userFeedback": "User requests clean full silhouette and legibility like the approved fire and retained air/smoke."
+}

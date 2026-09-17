@@ -1,0 +1,414 @@
+{
+  "updated": "2026-09-16T00:42:39.407196+00:00",
+  "finalVisualAccepted": false,
+  "beautyRenderPublished": false,
+  "runs": [
+    {
+      "name": "hot-nozzle",
+      "label": "Heated-floor control",
+      "status": "test interval complete",
+      "time": 30.0,
+      "particles": 1660,
+      "gridMm": 3.0,
+      "fracturedSolidEdges": 0,
+      "thermalResidual": 4.9096317837837136e-12,
+      "mechanicalResidual": 9.090531506548228e-09,
+      "timeAccuracy": "not validated",
+      "stateSha256": "fc6778e4e2088dea4a78e3ead6e8e1f5166e9768872f134ef785e6cbded92c99"
+    },
+    {
+      "name": "fine-repaired",
+      "label": "Finer-grid pressure test",
+      "status": "paused at compute limit",
+      "time": 3.0,
+      "particles": 6066,
+      "gridMm": 1.5,
+      "fracturedSolidEdges": 0,
+      "thermalResidual": 6.402399416166844e-13,
+      "mechanicalResidual": 2.580584274425324e-09,
+      "timeAccuracy": "not validated",
+      "stateSha256": "697d26d60bffd0ca52176f8297e4ac1cbd36aaf87629fa78ff1f8ed3e1cc85ef"
+    },
+    {
+      "name": "finite-bed-continued",
+      "label": "Rock heat-exchange test",
+      "status": "paused at compute limit",
+      "time": 12.2,
+      "particles": 1100,
+      "gridMm": 3.0,
+      "fracturedSolidEdges": 0,
+      "thermalResidual": 1.0487635571376516e-11,
+      "mechanicalResidual": 8.319028694534008e-10,
+      "timeAccuracy": "not validated",
+      "stateSha256": "a4d98ecd6e2b52524f0ea71b5e987f7733699c1fdb25b06b9704e150aead784c"
+    },
+    {
+      "name": "integrated-flow-10",
+      "label": "Corrected starting surface",
+      "status": "paused at compute limit",
+      "time": 7.758630833468516,
+      "particles": 1124,
+      "gridMm": 3.0,
+      "fracturedSolidEdges": 0,
+      "thermalResidual": 8.340398022864328e-12,
+      "mechanicalResidual": 7.691250895001252e-10,
+      "timeAccuracy": "not validated",
+      "stateSha256": "5f4fa44099ca40489c85ac247e047a20ce6c6ffed80f5c85d4e270a9ad70a86e"
+    },
+    {
+      "name": "adaptive-resume",
+      "label": "Error-controlled startup / resume",
+      "status": "test interval complete",
+      "time": 0.2,
+      "particles": 884,
+      "gridMm": 3.0,
+      "fracturedSolidEdges": 0,
+      "thermalResidual": 7.871133361172659e-13,
+      "mechanicalResidual": 1.3192140358362882e-10,
+      "timeAccuracy": "passes to saved time",
+      "stateSha256": "a35651edd308ff4567044737e9beb3e4e527b34b0d23b8a3ccad34fb2df5adbc"
+    },
+    {
+      "name": "validated-flow",
+      "label": "Adaptive cooled-flow run",
+      "status": "paused at compute limit",
+      "time": 4.184148210742068,
+      "particles": 1012,
+      "gridMm": 3.0,
+      "fracturedSolidEdges": 0,
+      "thermalResidual": 2.4662964725771918e-11,
+      "mechanicalResidual": 1.3192140358362882e-10,
+      "timeAccuracy": "passes to saved time",
+      "stateSha256": "5d8c5640c4586a3f8990c45855d25a8c6ca6796c61aaef14c7c8a1ea72ad484f"
+    }
+  ],
+  "checks": {
+    "process": {
+      "status": "pass",
+      "expiredPressureSolveRejected": true,
+      "failedWritePreservesAcceptedCheckpoint": true,
+      "mixedCheckpointRejected": true
+    },
+    "degradation": {
+      "status": "pass",
+      "saturatedTrialsHaveIdenticalPhysicalResponse": true,
+      "viscousHeatJ": 5.578551437101297e-13,
+      "maximumStressPa": 4941.118630301359
+    },
+    "inlet": {
+      "status": "pass",
+      "pipeEndFaceBlocksBackwardPenetration": true,
+      "finiteMouthCornerRecovery": true,
+      "unresolvedSourceRejectedWithoutStateMutation": true
+    },
+    "pipe-heat": {
+      "status": "pass",
+      "partitionConservesArea": true,
+      "enclosedNozzleRetainsEquilibrium": true,
+      "reservoirEnergyErrorJ": 2.4868995751603507e-13
+    },
+    "bed-resume": {
+      "status": "pass",
+      "resumedPositionErrorM": 0.0,
+      "resumedRockTemperatureErrorK": 0.0,
+      "rockEnergyErrorJ": 6.064055924070999e-10,
+      "equalOppositeHeatExchange": true
+    },
+    "linesearch": {
+      "status": "pass",
+      "cases": 20,
+      "maximumStepError": 1.35922016419876e-08,
+      "kinkMinimumCorrect": true
+    },
+    "publication": {
+      "status": "pass",
+      "unapprovedPublicationBlocked": true,
+      "previousMediaUnchanged": true,
+      "initialHotStateVerified": true
+    },
+    "initial-volume": {
+      "status": "pass",
+      "referenceVolumeM3": 2.3930760892733002e-06,
+      "cases": [
+        {
+          "case": "hot-nozzle",
+          "relativeVolumeError": 0.00978820139973624,
+          "volumeM3": 2.4165000000000005e-06
+        },
+        {
+          "case": "integrated-coarse",
+          "relativeVolumeError": 2.6151530233550583e-05,
+          "volumeM3": 2.393138671875e-06
+        },
+        {
+          "case": "nozzle-fine",
+          "relativeVolumeError": 0.0016788687767635936,
+          "volumeM3": 2.3970937500000007e-06
+        },
+        {
+          "case": "integrated-fine",
+          "relativeVolumeError": 0.0001067544816748347,
+          "volumeM3": 2.3928206176757814e-06
+        }
+      ],
+      "reference": "1024 squared vertical-column integration of the continuous union"
+    },
+    "backend": {
+      "status": "pass",
+      "cases": [
+        {
+          "backend": "cpu",
+          "seconds": 6.5310000000172295,
+          "warmupSeconds": 0.0,
+          "residual": 1.528605599222642e-09,
+          "velocityRelativeDifference": 0.0,
+          "gpuFactors": 0,
+          "fallbacks": []
+        },
+        {
+          "backend": "cuda_dense",
+          "seconds": 7.734000000025844,
+          "warmupSeconds": 1.7189999999827705,
+          "residual": 1.628777799107839e-09,
+          "velocityRelativeDifference": 5.723791699549053e-11,
+          "gpuFactors": 16,
+          "fallbacks": []
+        }
+      ],
+      "selected": "cpu"
+    },
+    "friction-backend": {
+      "status": "pass",
+      "cases": [
+        {
+          "backend": "cpu",
+          "seconds": 0.5780000000086147,
+          "velocityDifference": 0.0,
+          "residual": 1.330434782838524e-15,
+          "gpuFactors": 0,
+          "fallbacks": []
+        },
+        {
+          "backend": "cuda_batched",
+          "seconds": 1.75,
+          "velocityDifference": 1.9048426427805956e-10,
+          "residual": 1.1753184448525897e-15,
+          "gpuFactors": 1,
+          "fallbacks": []
+        }
+      ],
+      "selected": "cpu"
+    },
+    "temporal": {
+      "status": "fail",
+      "initialTime": 5.0,
+      "duration": 0.1,
+      "normalizedErrors": {
+        "velocity": 0.01669614568797811,
+        "position": 0.014168474369130636,
+        "damage": 0.5338066482898196,
+        "temperature": 3.433834223223812,
+        "work": 0.009622297728564483,
+        "substrateTemperature": 0.06906524285534488
+      },
+      "limits": "Local estimate at one cooling state only. It is not whole-sequence temporal or spatial convergence."
+    },
+    "adaptive": {
+      "status": "pass",
+      "rejectedInaccurateInterval": true,
+      "acceptedSmallerIntervals": 7,
+      "maximumAcceptedNormalizedError": 0.7148177234846571,
+      "report": {
+        "accepted": 7,
+        "rejected": 3,
+        "trials": 10,
+        "records": [
+          {
+            "time": 5.012499999999999,
+            "dt": 0.012499999999999956,
+            "errors": {
+              "velocity": 0.07728929335414955,
+              "position": 0.0055634892044708634,
+              "damage": 0.09047305679517614,
+              "temperature": 0.5824613968920858,
+              "work": 0.16658706047622962,
+              "substrateTemperature": 0.001169631529023718
+            }
+          },
+          {
+            "time": 5.02642179918562,
+            "dt": 0.013921799185621368,
+            "errors": {
+              "velocity": 0.05377328938100004,
+              "position": 0.00454479286412532,
+              "damage": 0.10100004265682916,
+              "temperature": 0.6569356981626697,
+              "work": 0.09215739243222214,
+              "substrateTemperature": 0.0014988547633265625
+            }
+          },
+          {
+            "time": 5.041021799313741,
+            "dt": 0.014600000128121318,
+            "errors": {
+              "velocity": 0.03714336524479195,
+              "position": 0.003196218464757002,
+              "damage": 0.10474983511092884,
+              "temperature": 0.6902770025892551,
+              "work": 0.071106465786194,
+              "substrateTemperature": 0.0016938592107180739
+            }
+          },
+          {
+            "time": 5.05595868588447,
+            "dt": 0.014936886570728912,
+            "errors": {
+              "velocity": 0.028880116514595464,
+              "position": 0.0025343892594176195,
+              "damage": 0.10547688337944616,
+              "temperature": 0.7051783565193546,
+              "work": 0.060301715567569296,
+              "substrateTemperature": 0.0018062116689634422
+            }
+          },
+          {
+            "time": 5.071077910585556,
+            "dt": 0.015119224701087348,
+            "errors": {
+              "velocity": 0.023654069904757873,
+              "position": 0.0021423005744527794,
+              "damage": 0.10486577861893442,
+              "temperature": 0.7118422236019342,
+              "work": 0.05159558647036875,
+              "substrateTemperature": 0.0018789346802350337
+            }
+          },
+          {
+            "time": 5.086309898089263,
+            "dt": 0.015231987503706752,
+            "errors": {
+              "velocity": 0.020328378524950435,
+              "position": 0.0018957805477319255,
+              "damage": 0.10366311159573094,
+              "temperature": 0.7148177234846571,
+              "work": 0.0443638393087264,
+              "substrateTemperature": 0.001933372102712383
+            }
+          },
+          {
+            "time": 5.1,
+            "dt": 0.013690101910736274,
+            "errors": {
+              "velocity": 0.01959907117992256,
+              "position": 0.0016938549336789814,
+              "damage": 0.09003393984022834,
+              "temperature": 0.6321881166891217,
+              "work": 0.042811710011189885,
+              "substrateTemperature": 0.0015450891899035923
+            }
+          }
+        ],
+        "nextDt": 0.014635327416018175,
+        "thermalPreflightRejected": 3
+      },
+      "wallSeconds": 123.01500000001397,
+      "scope": "Local adaptive interval; not whole-sequence or spatial convergence"
+    },
+    "creep-damping": {
+      "status": "pass",
+      "fallbackRelaxation": 0.4347826086956522,
+      "cases": [
+        {
+          "temperatureK": 1100.0,
+          "trialStressPa": 10000000.0,
+          "iterations": 43,
+          "relativeStressError": 1.0333828918028494e-10
+        },
+        {
+          "temperatureK": 1100.0,
+          "trialStressPa": 1000000000.0,
+          "iterations": 39,
+          "relativeStressError": 7.314808362027919e-11
+        },
+        {
+          "temperatureK": 1100.0,
+          "trialStressPa": 10000000000.0,
+          "iterations": 17,
+          "relativeStressError": 8.708880052518336e-12
+        },
+        {
+          "temperatureK": 1200.0,
+          "trialStressPa": 10000000.0,
+          "iterations": 43,
+          "relativeStressError": 1.0319962322362678e-10
+        },
+        {
+          "temperatureK": 1200.0,
+          "trialStressPa": 1000000000.0,
+          "iterations": 15,
+          "relativeStressError": 4.173779699265783e-11
+        },
+        {
+          "temperatureK": 1200.0,
+          "trialStressPa": 10000000000.0,
+          "iterations": 30,
+          "relativeStressError": 1.2941238961345067e-11
+        },
+        {
+          "temperatureK": 1250.0,
+          "trialStressPa": 10000000.0,
+          "iterations": 43,
+          "relativeStressError": 1.0293112867886822e-10
+        },
+        {
+          "temperatureK": 1250.0,
+          "trialStressPa": 1000000000.0,
+          "iterations": 11,
+          "relativeStressError": 3.522580786179736e-11
+        },
+        {
+          "temperatureK": 1250.0,
+          "trialStressPa": 10000000000.0,
+          "iterations": 33,
+          "relativeStressError": 1.754067072423832e-11
+        }
+      ]
+    },
+    "preflight": {
+      "status": "pass",
+      "maximumStateDifferences": {
+        "x": 1.734723475976807e-18,
+        "v": 7.204523436166177e-17,
+        "h": 2.3283064365386963e-10,
+        "damage": 0.0,
+        "deviator": 5.155698090675287e-11,
+        "bedTemperature": 0.0
+      },
+      "maximumLedgerDifference": 6.938893903907228e-18,
+      "acceptedRowsUnchanged": true,
+      "bedHeatDifference": 0.0,
+      "scope": "Thermal-preview rollback at the same accepted dt"
+    },
+    "trbdf2-coupled": {
+      "status": "fail",
+      "error": "Nonlinear heat solve failed; cache not advanced",
+      "initialTime": 5.0,
+      "duration": 0.1,
+      "selectedForMainRun": false
+    }
+  },
+  "remaining": [
+    "Sustained crust fracture and breakup",
+    "Whole-sequence temporal and spatial convergence",
+    "Geometry and motion at converged resolution",
+    "Smoke/heat coupling",
+    "Mitsuba material and final visual review"
+  ],
+  "thermalColumnEstimate": {
+    "firstCoherentTopSeconds": 10.975000000000001,
+    "firstTopBelow1000KSeconds": 38.85,
+    "scope": "Independent 1D conduction/enthalpy timescale screen, not a 3D lava cache.\n\nSix millimetres of hot lava on twelve millimetres of finite cold rock.\nOnly the exposed top radiates/convects. This omits lateral cooling, feed,\ndeformation and gas transport, so it estimates a mechanism, not the shot.\n",
+    "timeRefinementK": 0.2294633984427037,
+    "spaceRefinementK": 6.140744207965781
+  }
+}

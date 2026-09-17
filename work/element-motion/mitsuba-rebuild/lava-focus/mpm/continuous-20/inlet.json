@@ -1,0 +1,26 @@
+{
+  "startTime": 0.0,
+  "config": {
+    "plane": -0.024,
+    "half_width": 0.006,
+    "height": 0.003,
+    "peak_speed": 0.006,
+    "temperature": 1450.0
+  },
+  "period": 0.3333333333333333,
+  "nextEmission": 1.3333333333333333,
+  "emissions": 3,
+  "bedTemperatureK": 1173.15,
+  "description": "Continuous molten inlet over a declared perfectly wetting/bonded hot rock reservoir on an 8-degree slope. All material begins at 1450 K. Crust phase and damage develop from solved thermal/mechanical state. No initial crust pieces, pores or cracks. The fixed substrate is an idealized boundary, not a calibrated adhesion model.",
+  "cellSizeM": [
+    0.004,
+    0.003,
+    0.0005
+  ],
+  "sampleSizeM": [
+    0.002,
+    0.0015,
+    0.00025
+  ],
+  "stateSha256": "e045736e05e6a9087ca130b028dfb0566874a65d5e7518cce39d8bac27e38ee0"
+}

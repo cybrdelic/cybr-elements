@@ -1,0 +1,48 @@
+{
+  "url": "http://127.0.0.1:8767/elements/motion/subelements/dynamics/lava/?v=folded-lava",
+  "assets": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "bytes": 4497,
+      "matchesDisk": true
+    },
+    {
+      "file": "lava-folded.png",
+      "status": 200,
+      "bytes": 513956,
+      "matchesDisk": true
+    },
+    {
+      "file": "lava-folded-detail.png",
+      "status": 200,
+      "bytes": 649239,
+      "matchesDisk": true
+    },
+    {
+      "file": "lava-refined.png",
+      "status": 200,
+      "bytes": 409841,
+      "matchesDisk": true
+    },
+    {
+      "file": "lava-restored-first.png",
+      "status": 200,
+      "bytes": 294418,
+      "matchesDisk": true
+    },
+    {
+      "file": "review.json",
+      "status": 200,
+      "bytes": 7997,
+      "matchesDisk": true
+    }
+  ],
+  "views": [
+    "lava-folded.png",
+    "lava-folded-detail.png",
+    "lava-refined.png",
+    "lava-restored-first.png"
+  ],
+  "default": "lava-folded.png"
+}

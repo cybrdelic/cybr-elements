@@ -1,0 +1,19 @@
+{
+  "size": 1914,
+  "nonzeros": 628759,
+  "cpuSeconds": 0.14255079999566078,
+  "gpu": [
+    {
+      "seconds": 0.045181999972555786,
+      "relativeDifference": 6.588325671789623e-08,
+      "residual": 2.0387557777051785e-13
+    },
+    {
+      "seconds": 0.031038699991768226,
+      "relativeDifference": 6.588325671789623e-08,
+      "residual": 2.0387557777051785e-13
+    }
+  ],
+  "peakAllocatedMB": 88.12032,
+  "device": "NVIDIA GeForce RTX 4060 Laptop GPU"
+}
