@@ -2,7 +2,12 @@ name: Elements regression
 
 on:
   push:
-    branches: [fix/simulation-rendering-audit-20260917]
+    branches: [master, fix/simulation-rendering-audit-20260917]
+    paths:
+      - 'work/element-motion/**'
+      - 'work/flip-lettering/vendor/**'
+      - 'tests/**'
+      - '.github/workflows/elements-regression.yml'
   pull_request:
   workflow_dispatch:
 
@@ -12,30 +17,46 @@ permissions:
 jobs:
   regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '2'
+      OMP_NUM_THREADS: '2'
+      OPENCV_IO_ENABLE_OPENEXR: '1'
     steps:
       - uses: actions/checkout@v4
+      - name: Require regression source
+        run: test -f tests/test_audit_repairs.py
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tests/requirements.txt
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Export reviewed source snapshot
-        run: git archive --format=tar.gz -o "$RUNNER_TEMP/elements-source.tar.gz" HEAD
-      - uses: actions/upload-artifact@v4
-        with:
-          name: elements-source
-          path: ${{ runner.temp }}/elements-source.tar.gz
-          retention-days: 3
-      - name: Run focused regression suite when present
+      - name: Install CPU numerical dependencies
+        run: python -m pip install -r tests/requirements.txt
+      - name: Install pinned native Blender runtime
         shell: bash
         run: |
-          if [ -f tests/requirements.txt ]; then
-            python -m pip install -r tests/requirements.txt
-          fi
-          if [ -f tests/test_audit_repairs.py ]; then
-            python -m unittest discover -s tests -v
-          else
-            echo 'Bootstrap only: regression suite is not installed yet.'
-          fi
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          curl --fail --location --retry 3 https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz -o blender.tar.xz
+          echo '975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845  blender.tar.xz' | sha256sum -c -
+          tar -xf blender.tar.xz
+          echo "BLENDER=$RUNNER_TEMP/blender-4.5.3-linux-x64/blender" >> "$GITHUB_ENV"
+      - name: Numerical, process, cache, shader, collision and Cycles regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p verification
+          python -m unittest discover -s tests -v 2>&1 | tee verification/unit-tests.log
+          node --check work/element-motion/sigil_02_active_water.mjs
+          git diff --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: elements-regression-evidence
+          path: verification/
+          retention-days: 14
+          if-no-files-found: ignore
