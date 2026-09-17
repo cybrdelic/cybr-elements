@@ -1,0 +1,41 @@
+name: Elements regression
+
+on:
+  push:
+    branches: [fix/simulation-rendering-audit-20260917]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Export reviewed source snapshot
+        run: git archive --format=tar.gz -o "$RUNNER_TEMP/elements-source.tar.gz" HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: elements-source
+          path: ${{ runner.temp }}/elements-source.tar.gz
+          retention-days: 3
+      - name: Run focused regression suite when present
+        shell: bash
+        run: |
+          if [ -f tests/requirements.txt ]; then
+            python -m pip install -r tests/requirements.txt
+          fi
+          if [ -f tests/test_audit_repairs.py ]; then
+            python -m unittest discover -s tests -v
+          else
+            echo 'Bootstrap only: regression suite is not installed yet.'
+          fi
