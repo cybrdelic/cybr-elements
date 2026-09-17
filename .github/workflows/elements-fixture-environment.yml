@@ -1,0 +1,62 @@
+name: Elements verification environment
+
+on:
+  push:
+    branches: [fix/simulation-rendering-audit-20260917]
+    paths: [.github/workflows/elements-fixture-environment.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore selected original assets with manifest checksums
+        shell: python
+        run: |
+          import hashlib, json, pathlib, shutil, urllib.request, zipfile
+          manifest = json.loads(pathlib.Path('docs/assets.json').read_text())
+          prefixes = ['work/element-motion/sigil-02-bending-ground/cpu/', 'work/element-motion/sigil-02-repair/scans/rock_09/']
+          exact = {'work/element-motion/sigil-02-v2/source.npz', 'work/element-motion/sigil-02-coherent/earth-geometry.json', 'work/element-motion/sigil-02-active-elements/lightning/channels.json'}
+          wanted = [a for a in manifest['assets'] if a['path'] in exact or any(a['path'].startswith(p) for p in prefixes)]
+          packs = {p['name']: p for p in manifest['packs']}
+          output = pathlib.Path('verification-fixtures'); output.mkdir()
+          for name in sorted({a['pack'] for a in wanted}):
+              archive = pathlib.Path(name)
+              url = f"https://github.com/{manifest['repository']}/releases/download/{manifest['tag']}/{name}"
+              urllib.request.urlretrieve(url, archive)
+              with archive.open('rb') as f: digest = hashlib.file_digest(f, 'sha256').hexdigest()
+              assert digest == packs[name]['sha256'], name
+              with zipfile.ZipFile(archive) as z:
+                  for a in wanted:
+                      if a['pack'] != name: continue
+                      data = z.read(a['member'])
+                      assert len(data) == a['bytes'] and hashlib.sha256(data).hexdigest() == a['sha256']
+                      target = output / a['path']; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(data)
+              archive.unlink()
+          shutil.make_archive('verification-fixtures', 'zip', output)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: active-verification-fixtures
+          path: verification-fixtures.zip
+          retention-days: 3
+      - name: Download pinned official Blender build
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz -o blender-4.5.3-linux-x64.tar.xz
+          sha256sum blender-4.5.3-linux-x64.tar.xz > blender-archive.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blender-verification-runtime
+          path: |
+            blender-4.5.3-linux-x64.tar.xz
+            blender-archive.sha256
+          compression-level: 0
+          retention-days: 1
