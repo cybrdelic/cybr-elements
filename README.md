@@ -164,6 +164,11 @@ resolution, timing and SHA-256. Existing fire, air and earth clips were preserve
 [Playback checks](work/element-motion/sigil-02-active-elements/browser-verification.json) ·
 [Water physics audit](work/element-motion/sigil-02-active-elements/water-full/physics-audit.json)
 
+All **50 release archives** were verified against GitHub's asset digests. A fresh,
+unauthenticated download through the included restoration script also passed.
+[Release checks](docs/release-verification.json) ·
+[Public download check](docs/public-download-verification.json)
+
 To regenerate only the README showcase, with FFmpeg and Pillow installed:
 
 ```sh
