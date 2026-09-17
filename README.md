@@ -63,6 +63,7 @@ meshes. These larger assets are published in the
 [versioned release](https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0)
 instead of inflating Git history. The downloader restores original paths,
 verifies SHA-256, skips matching files, and refuses to overwrite changed files.
+The downloader requires **Python 3.11+**.
 
 ```sh
 # All historical galleries, films, browser meshes and downloadable design packs
@@ -137,6 +138,21 @@ electrical channels are a visual discharge model, not a plasma simulation.
 Earlier material and solver studies remain available as research history.
 The current delivery is the **02 player** above; older gallery entries are not
 claims of equivalent visual quality or physical accuracy.
+
+<details>
+<summary><strong>Explore the wider material library</strong></summary>
+
+The archive also includes metal, foam, sand, mud, plants, snow, glass, crystal,
+blood, steam, blue fire, combustion, healing, spirit and energy studies, along
+with lightning redirection, seismic sense, sound, flight, spirit projection,
+pressure and heat. It preserves shared-trail motion tests, both original sigil
+styles, material comparisons, and the lava/MPM research sequence.
+
+After restoring the site assets, explore the
+[motion gallery](http://127.0.0.1:8767/elements/motion/) and
+[subelement studies](http://127.0.0.1:8767/elements/motion/subelements/).
+
+</details>
 
 ## Verification
 
