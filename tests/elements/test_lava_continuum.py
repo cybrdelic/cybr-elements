@@ -84,8 +84,18 @@ def test_material_phase_controls_are_monotone_without_hot_mask():
     assert c['crust'][0] == pytest.approx(1.) and c['crust'][-1] == pytest.approx(0.)
     assert c['fracture'][0] > c['fracture'][2] > c['fracture'][-1]
     assert c['fracture'][-1] == pytest.approx(0.)
-    assert c['coat'][-1] > c['coat'][0]
+    assert c['coat'][-1] > 0
+    assert c['obsidian'][0] > c['obsidian'][1] > c['obsidian'][2]
+    assert c['obsidian'][-1] == pytest.approx(0.)
 
+
+def test_obsidian_is_glossier_than_fresh_transition_crust():
+    c = material_controls(np.array([1040., 1250., 1530.]), np.array([.2,.2,.2]))
+    assert c['obsidian'][0] > .9
+    assert c['transitionalCrust'][1] > .99
+    assert c['roughness'][0] < c['roughness'][1]
+    assert c['coat'][0] > c['coat'][1]
+    assert c['roughness'][2] < c['roughness'][1]
 
 def test_damage_changes_crust_relief_not_thermal_radiance():
     temperature = np.full(5, 1325.)
