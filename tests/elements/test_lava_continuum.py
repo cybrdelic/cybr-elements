@@ -131,7 +131,7 @@ def test_material_controls_reject_invalid_state():
 def test_pour_formation_starts_as_feed_columns_above_the_cavity():
     source = Path('work/element-motion/sigil-02-v2/source.npz')
     assert source.is_file()
-    c = LavaConfig(spacing=.018, shape=(96,68,58), origin=(-.864,-.612,0.),
+    c = LavaConfig(spacing=.018, shape=(96,68,82), origin=(-.864,-.612,0.),
                    max_dt=.0007, support_start=-1., support_end=-.5)
     formation = PourFormationConfig()
     pos,H,V,velocity,mold,report = build_pour_initial_state(source,c,samples_per_axis=1,formation=formation)
