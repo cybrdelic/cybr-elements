@@ -169,7 +169,7 @@ def main():
  bpy.ops.mesh.primitive_plane_add(size=8,location=(0,0,floor_height));bpy.context.object.data.materials.append(floor)
  lava=build_lava_material()
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
-  'adaptiveThreshold':.018,'denoiser':'OpenImageDenoISE','fps':a.fps,'frames':a.frames,'frame':a.frame,
+  'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
   'floor':floor_height,'exposure':a.exposure,'view':a.view,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
   'material':'resolved temperature/damage phase controls + Planck-band emission + transported-coordinate multiscale crust relief',
   'subgridDisclosure':'noise/voronoi are BSDF microstructure anchored to material coordinates; damage gates crease relief; no resolved crack geometry is claimed'}
