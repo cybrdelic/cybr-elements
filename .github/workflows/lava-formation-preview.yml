@@ -38,7 +38,7 @@ jobs:
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-formation/physics \
             --formation pour --seconds 1.4 --fps 20 \
-            --samples-per-axis 2 --threads 2 --viscosity 92
+            --samples-per-axis 2 --threads 2 --viscosity 38
       - name: Reconstruct particle surfaces
         env:
           PYTHONPATH: work/element-motion
