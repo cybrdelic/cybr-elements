@@ -32,8 +32,8 @@ class PourFormationConfig:
     wall_margin_fraction: float = .22
     inlet_speed: float = .22
     initial_down_speed: float = .05
-    skin_temperature: float = 1120.
-    core_temperature: float = 1610.
+    skin_temperature: float = 1190.
+    core_temperature: float = 1650.
     significant_component_pixels: int = 100
 
     def __post_init__(self):
