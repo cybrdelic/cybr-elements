@@ -297,8 +297,51 @@ class LavaMPM:
         self.time=0.;self.steps=0;self.radiative_loss=0.;self.convective_loss=0.;self.viscous_heat=0.
         self.initial_energy=float(self.mass@self.H);self.contact_corrections=0
         self.initial_count=n
+        self.injected_particles=0;self.injected_mass=0.;self.injected_energy=0.
         self._loss=np.zeros(2);self._visc=np.zeros(1);self._contact=np.zeros(1,np.int64)
         self.validate()
+
+    def inject(self,positions,enthalpy,particle_volumes,velocities=None,material_coordinates=None):
+        """Inject an open-boundary source batch without kinematic target forces.
+
+        Source particles enter at their physical inlet state.  Their mass and
+        enthalpy are added to the run's conservation reference at injection
+        time, so subsequent balance metrics remain meaningful.
+        """
+        x=np.asarray(positions,dtype=np.float64)
+        n=len(x)
+        if n==0:return 0
+        H=np.asarray(enthalpy,dtype=np.float64)
+        V=np.asarray(particle_volumes,dtype=np.float64)
+        if x.shape!=(n,3) or H.shape!=(n,) or V.shape!=(n,) or np.any(V<=0):
+            raise ValueError('Invalid injected particle state')
+        if velocities is None:v=np.zeros((n,3),np.float64)
+        else:
+            v=np.asarray(velocities,dtype=np.float64)
+            if v.shape!=(n,3):raise ValueError('Invalid injected velocity state')
+        rest=x.copy() if material_coordinates is None else np.asarray(material_coordinates,dtype=np.float64)
+        if rest.shape!=(n,3):raise ValueError('Invalid injected material coordinates')
+        if not all(np.isfinite(a).all() for a in (x,H,V,v,rest)):
+            raise FloatingPointError('Nonfinite injected source state')
+        mass=V*self.config.density
+        self.x=np.concatenate((self.x,x),axis=0)
+        self.rest=np.concatenate((self.rest,rest),axis=0)
+        self.v=np.concatenate((self.v,v),axis=0)
+        self.C=np.concatenate((self.C,np.zeros((n,3,3),np.float64)),axis=0)
+        self.J=np.concatenate((self.J,np.ones(n,np.float64)),axis=0)
+        self.H=np.concatenate((self.H,H),axis=0)
+        self.V0=np.concatenate((self.V0,V),axis=0)
+        self.mass=np.concatenate((self.mass,mass),axis=0)
+        self.S=np.concatenate((self.S,np.zeros((n,3,3),np.float64)),axis=0)
+        self.damage=np.concatenate((self.damage,np.zeros(n,np.float64)),axis=0)
+        added_energy=float(mass@H)
+        self.initial_energy+=added_energy
+        self.initial_count+=n
+        self.injected_particles+=n
+        self.injected_mass+=float(mass.sum())
+        self.injected_energy+=added_energy
+        self.validate()
+        return n
 
     def support(self,t):
         c=self.config
@@ -352,6 +395,8 @@ class LavaMPM:
         expected=self.initial_energy+self.viscous_heat-self.radiative_loss-self.convective_loss
         thermal_energy=float(self.mass@self.H)
         return {'time':self.time,'steps':self.steps,'particles':len(self.x),'massKg':float(self.mass.sum()),
+            'sourceInjectedParticles':int(self.injected_particles),'sourceInjectedMassKg':float(self.injected_mass),
+            'sourceInjectedEnergyJ':float(self.injected_energy),
             'massDifferenceKg':float(self.mass.sum()-self.V0.sum()*c.density),
             'initialVolumeM3':float(self.V0.sum()),'currentVolumeM3':float(self.V0@self.J),
             'volumeChangeRelative':float((self.V0@self.J)/self.V0.sum()-1),
