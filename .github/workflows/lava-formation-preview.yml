@@ -63,6 +63,8 @@ jobs:
             --resolution 768 432 --samples 20 --threads 2 --exposure 0
       - name: Encode video without interpolated frames
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
           ffmpeg -hide_banner -loglevel error -y \
             -framerate 20 -i /tmp/lava-formation/render/frames/%04d.png \
             -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -movflags +faststart \
