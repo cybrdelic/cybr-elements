@@ -16,6 +16,11 @@ _C = 299792458.0
 _K = 1.380649e-23
 _VISIBLE_WAVELENGTHS = np.array([610.0, 550.0, 460.0], dtype=np.float64) * 1e-9
 _VISIBLE_BAND_WIDTH = 60e-9
+# Blender's RGB emission strength is not a spectral radiance unit.  Keep the
+# physical three-band radiance for audit, then map it into scene-linear shader
+# strength with one explicit conversion constant rather than letting AgX clip
+# raw W m^-2 sr^-1 values toward white.
+_SCENE_VISIBLE_RADIANCE_UNIT = 12.0
 
 
 def smoothstep01(x):
@@ -67,6 +72,10 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     base = hot[None, :] * melt.reshape(-1, 1) + cool[None, :] * crust.reshape(-1, 1)
     base *= (1.0 - .22 * fracture.reshape(-1, 1))
     base = base.reshape(t.shape + (3,))
+    radiance = planck_rgb(t, emissivity=.90)
+    peak = np.maximum(np.max(radiance, axis=-1, keepdims=True), 1e-30)
+    thermal_color = radiance / peak
+    thermal_strength = np.sum(radiance, axis=-1) / _SCENE_VISIBLE_RADIANCE_UNIT
     return {
         'crust': crust,
         'melt': melt,
@@ -74,5 +83,7 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
         'roughness': roughness,
         'coat': coat,
         'baseColor': base,
-        'thermalRadiance': planck_rgb(t, emissivity=.90),
+        'thermalRadiance': radiance,
+        'thermalColor': thermal_color,
+        'thermalStrength': thermal_strength,
     }
