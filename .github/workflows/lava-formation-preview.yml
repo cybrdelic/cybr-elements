@@ -1,0 +1,93 @@
+name: Lava formation preview
+
+on:
+  push:
+    branches:
+      - fix/lava-material-texture-20260918
+    paths:
+      - 'work/element-motion/elements_core/lava_*.py'
+      - 'work/element-motion/sigil_02_lava_*.py'
+      - '.github/workflows/lava-formation-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lava-formation-preview
+  cancel-in-progress: true
+
+jobs:
+  formation-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU simulation dependencies
+        run: python -m pip install numpy scipy numba scikit-image pillow opencv-python-headless
+      - name: Rebuild approved source field
+        run: python work/element-motion/sigil_02_source.py sigil-02-v2
+      - name: Simulate gravity-fed lava
+        env:
+          PYTHONPATH: work/element-motion
+        run: |
+          python work/element-motion/sigil_02_lava_continuum.py \
+            --source work/element-motion/sigil-02-v2/source.npz \
+            --out /tmp/lava-formation/physics \
+            --formation pour --seconds 2.4 --fps 20 \
+            --samples-per-axis 2 --threads 2 --viscosity 92
+      - name: Reconstruct particle surfaces
+        env:
+          PYTHONPATH: work/element-motion
+        run: |
+          python work/element-motion/sigil_02_lava_surface.py \
+            --run /tmp/lava-formation/physics \
+            --out /tmp/lava-formation/surface \
+            --frames 48 --spacing .0075
+      - name: Install Blender 4.5.3 LTS
+        run: |
+          curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
+          tar -xf /tmp/blender.tar.xz -C /tmp
+          test -x /tmp/blender-4.5.3-linux-x64/blender
+      - name: Render native Cycles CPU sequence
+        run: |
+          /tmp/blender-4.5.3-linux-x64/blender --background \
+            --python work/element-motion/sigil_02_lava_continuum_render.py -- \
+            --surface /tmp/lava-formation/surface \
+            --source work/element-motion/sigil-02-v2/source.npz \
+            --out /tmp/lava-formation/render \
+            --frames 48 --fps 20 --view formation \
+            --resolution 768 432 --samples 20 --threads 2 --exposure 0
+      - name: Encode video without interpolated frames
+        run: |
+          ffmpeg -hide_banner -loglevel error -y \
+            -framerate 20 -i /tmp/lava-formation/render/frames/%04d.png \
+            -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -movflags +faststart \
+            /tmp/lava-formation/lava-formation.mp4
+          ffprobe -v error -show_entries stream=width,height,avg_frame_rate,nb_frames \
+            -show_entries format=duration -of json /tmp/lava-formation/lava-formation.mp4 \
+            > /tmp/lava-formation/video-probe.json
+      - name: Package review frames
+        run: |
+          mkdir -p /tmp/lava-formation/review
+          cp /tmp/lava-formation/render/frames/0000.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0010.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0020.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0035.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0047.png /tmp/lava-formation/review/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lava-formation-preview
+          path: |
+            /tmp/lava-formation/lava-formation.mp4
+            /tmp/lava-formation/video-probe.json
+            /tmp/lava-formation/review/*.png
+            /tmp/lava-formation/physics/formation.json
+            /tmp/lava-formation/physics/metrics.json
+            /tmp/lava-formation/surface/metrics.json
+            /tmp/lava-formation/render/render-settings.json
+          if-no-files-found: error
+          retention-days: 7
