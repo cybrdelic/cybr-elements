@@ -164,7 +164,12 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
             effective_radius=radius*(.58+.42*growth)
             lattice=np.arange(-effective_radius,effective_radius+step*.5,step)
             disk=np.array([(a,b) for a in lattice for b in lattice if a*a+b*b<=effective_radius*effective_radius],np.float64)
-            if len(disk)<4:raise RuntimeError('nozzle cross-section is under-resolved')
+            if len(disk)<4:
+                # Preserve a narrow feed at coarse review spacing with a
+                # deterministic center + four-point ring instead of silently
+                # inflating the physical nozzle radius.
+                rr=min(effective_radius*.62,step*.72)
+                disk=np.array([[0.,0.],[rr,0.],[-rr,0.],[0.,rr],[0.,-rr]],np.float64)
             take=min(len(disk),total-built)
             wobble=np.array([.006*math.sin(phase+layer*.61),.0045*math.cos(phase*.7+layer*.47)])
             for a,b in disk[:take]:
