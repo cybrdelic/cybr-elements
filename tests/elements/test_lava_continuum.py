@@ -1,4 +1,5 @@
 from dataclasses import replace
+from pathlib import Path
 import math
 import numpy as np
 import pytest
@@ -9,6 +10,7 @@ from elements_core.lava_mpm import (
 )
 from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights
 from elements_core.lava_material import material_controls, planck_rgb
+from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state
 
 
 def block(config=None, temperature=1500.0):
@@ -124,3 +126,22 @@ def test_material_controls_reject_invalid_state():
     with pytest.raises(ValueError): material_controls(np.array([np.nan]), np.array([0.]))
     with pytest.raises(ValueError): material_controls(np.array([1200.]), np.array([0.]), solidus=1450, liquidus=1250)
     with pytest.raises(ValueError): planck_rgb(np.array([0.]))
+
+
+def test_pour_formation_starts_as_feed_columns_above_the_cavity():
+    source = Path('work/element-motion/sigil-02-v2/source.npz')
+    assert source.is_file()
+    c = LavaConfig(spacing=.018, shape=(96,68,58), origin=(-.864,-.612,0.),
+                   max_dt=.0007, support_start=-1., support_end=-.5)
+    formation = PourFormationConfig()
+    pos,H,V,velocity,mold,report = build_pour_initial_state(source,c,samples_per_axis=1,formation=formation)
+    assert len(pos) > 1000
+    assert report['noTargetPositionForces'] is True
+    assert len(report['inlets']) >= 3
+    assert np.min(pos[:,2]) > mold['wallTop']
+    assert np.max(pos[:,2]) < c.origin[2] + c.spacing*(c.shape[2]-6)
+    assert np.linalg.norm(velocity[:,:2],axis=1).max() > 0
+    temperature = temperature_from_enthalpy(H,c)
+    assert temperature.max() > c.liquidus
+    assert temperature.min() < c.solidus
+    assert np.all(V > 0)
