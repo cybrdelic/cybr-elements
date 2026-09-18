@@ -62,14 +62,15 @@ def build_lava_material():
  base=attribute(nodes,'baseColor')
  rough_base=attribute(nodes,'roughnessBase')
  coat=attribute(nodes,'coatWeight')
- thermal=attribute(nodes,'thermalRadiance')
+ thermal=attribute(nodes,'thermalColor')
+ thermal_strength=attribute(nodes,'thermalStrength')
  rest=attribute(nodes,'materialCoordinates')
  fracture=attribute(nodes,'fracturePotential')
  crust=attribute(nodes,'crustAmount')
  links.new(base.outputs['Color'],p.inputs['Base Color'])
  links.new(coat.outputs['Fac'],p.inputs['Coat Weight'])
  links.new(thermal.outputs['Color'],p.inputs['Emission Color'])
- p.inputs['Emission Strength'].default_value=1.0
+ links.new(thermal_strength.outputs['Fac'],p.inputs['Emission Strength'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
  macro.inputs['Scale'].default_value=23.;macro.inputs['Detail'].default_value=5.2
@@ -171,7 +172,7 @@ def main():
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
   'floor':floor_height,'exposure':a.exposure,'view':a.view,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
-  'material':'resolved temperature/damage phase controls + Planck-band emission + transported-coordinate multiscale crust relief',
+  'material':'resolved temperature/damage phase controls + normalized Planck-band chroma + explicit visible-radiance-to-scene strength + transported-coordinate multiscale crust relief',
   'subgridDisclosure':'noise/voronoi are BSDF microstructure anchored to material coordinates; damage gates crease relief; no resolved crack geometry is claimed'}
  run=RunIdentity(a.out,settings,{'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'})
  (a.out/'frames').mkdir(exist_ok=True);atomic_json(a.out/'render-settings.json',settings)
@@ -201,6 +202,8 @@ def main():
    add_vector_attribute(me,'materialCoordinates',data['rest'])
    add_color_attribute(me,'baseColor',controls['baseColor'])
    add_color_attribute(me,'thermalRadiance',controls['thermalRadiance'])
+   add_color_attribute(me,'thermalColor',controls['thermalColor'])
+   add_float_attribute(me,'thermalStrength',controls['thermalStrength'])
   s.frame_set(f);s.cycles.seed=1739+f
   exr=a.out/'frames'/f'{f:04d}.exr';png=a.out/'frames'/f'{f:04d}.png'
   s.render.image_settings.file_format='OPEN_EXR';s.render.image_settings.color_mode='RGBA';s.render.image_settings.color_depth='32';s.render.filepath=str(exr)
@@ -210,7 +213,10 @@ def main():
   run.receipt(f'render-{f:04d}',[exr,png],frame=f,sourceSHA256=digest(src))
   row={'frame':f,'time':f/a.fps,'sourceSHA256':digest(src),'vertices':len(me.vertices),'triangles':len(me.polygons),
        'temperatureMinK':float(temp.min()),'temperatureMaxK':float(temp.max()),'crustMean':float(controls['crust'].mean()),
-       'fracturePotentialMean':float(controls['fracture'].mean()),'wallSeconds':time.perf_counter()-start}
+       'fracturePotentialMean':float(controls['fracture'].mean()),
+       'thermalStrengthMean':float(controls['thermalStrength'].mean()),
+       'thermalStrengthMax':float(controls['thermalStrength'].max()),
+       'wallSeconds':time.perf_counter()-start}
   rows.append(row);atomic_json(a.out/'frames'/f'{f:04d}.json',row);print('LAVA_FRAME',json.dumps(row),flush=True)
   if a.save_blend:bpy.ops.wm.save_as_mainfile(filepath=str(a.out/f'frame-{f:04d}.blend'))
  atomic_json(a.out/'manifest.json',dict(complete=True,frames=len(rows),fps=a.fps,resolution=a.resolution,
