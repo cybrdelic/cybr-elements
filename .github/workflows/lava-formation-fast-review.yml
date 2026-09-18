@@ -1,0 +1,71 @@
+name: Lava formation fast review
+
+on:
+  push:
+    branches:
+      - fix/lava-material-texture-20260918
+    paths:
+      - '.github/workflows/lava-formation-fast-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fast-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install numpy scipy numba scikit-image pillow opencv-python-headless
+      - name: Build source
+        run: python work/element-motion/sigil_02_source.py sigil-02-v2
+      - name: Simulate review pour
+        env:
+          PYTHONPATH: work/element-motion
+        run: |
+          python work/element-motion/sigil_02_lava_continuum.py \
+            --source work/element-motion/sigil-02-v2/source.npz \
+            --out /tmp/lava-fast/physics --formation pour \
+            --seconds 1.0 --fps 16 --samples-per-axis 1 --threads 2 --viscosity 92
+      - name: Reconstruct
+        env:
+          PYTHONPATH: work/element-motion
+        run: |
+          python work/element-motion/sigil_02_lava_surface.py \
+            --run /tmp/lava-fast/physics --out /tmp/lava-fast/surface \
+            --frames 16 --spacing .011
+      - name: Install Blender
+        run: |
+          curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
+          tar -xf /tmp/blender.tar.xz -C /tmp
+      - name: Render
+        run: |
+          /tmp/blender-4.5.3-linux-x64/blender --background \
+            --python work/element-motion/sigil_02_lava_continuum_render.py -- \
+            --surface /tmp/lava-fast/surface \
+            --source work/element-motion/sigil-02-v2/source.npz \
+            --out /tmp/lava-fast/render --frames 16 --fps 16 --view formation \
+            --resolution 640 360 --samples 12 --threads 2 --exposure 0
+      - name: Encode
+        run: |
+          ffmpeg -hide_banner -loglevel error -y -framerate 16 \
+            -i /tmp/lava-fast/render/frames/%04d.png \
+            -c:v libx264 -preset medium -crf 17 -pix_fmt yuv420p -movflags +faststart \
+            /tmp/lava-fast/lava-formation-fast.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lava-formation-fast-review
+          path: |
+            /tmp/lava-fast/lava-formation-fast.mp4
+            /tmp/lava-fast/render/frames/0000.png
+            /tmp/lava-fast/render/frames/0004.png
+            /tmp/lava-fast/render/frames/0008.png
+            /tmp/lava-fast/render/frames/0015.png
+            /tmp/lava-fast/physics/formation.json
+            /tmp/lava-fast/physics/metrics.json
+          if-no-files-found: error
+          retention-days: 7
