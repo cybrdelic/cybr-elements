@@ -70,9 +70,9 @@ def build_lava_material():
  crust=attribute(nodes,'crustAmount')
  relief=attribute(nodes,'reliefAmount')
  obsidian=attribute(nodes,'obsidianAmount')
+ melt=attribute(nodes,'meltAmount')
  links.new(base.outputs['Color'],p.inputs['Base Color'])
  links.new(thermal.outputs['Color'],p.inputs['Emission Color'])
- links.new(thermal_strength.outputs['Fac'],p.inputs['Emission Strength'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
  macro.inputs['Scale'].default_value=23.;macro.inputs['Detail'].default_value=5.2
@@ -92,6 +92,18 @@ def build_lava_material():
  links.new(cells.outputs['Distance'],edge.inputs['Value'])
  fracture_edge=math_node(nodes,'MULTIPLY',label='resolved damage × sub-grid edge')
  links.new(fracture.outputs['Fac'],fracture_edge.inputs[0]);links.new(edge.outputs['Result'],fracture_edge.inputs[1])
+
+ # Cooling crust is optically opaque: thermal radiance is visible through
+ # resolved melt and re-opens locally along damage-gated fissures.
+ fissure_glow=math_node(nodes,'MULTIPLY',b=.46,label='fissure thermal reveal')
+ links.new(fracture_edge.outputs[0],fissure_glow.inputs[0])
+ glow_floor=math_node(nodes,'ADD',a=.035,label='minimum subsurface leak')
+ links.new(fissure_glow.outputs[0],glow_floor.inputs[1])
+ emission_visibility=math_node(nodes,'MAXIMUM',label='melt or fissure visibility')
+ links.new(melt.outputs['Fac'],emission_visibility.inputs[0]);links.new(glow_floor.outputs[0],emission_visibility.inputs[1])
+ emission_strength=math_node(nodes,'MULTIPLY',label='blackbody × visible molten fraction')
+ links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
+ links.new(emission_strength.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
  macro_gain.inputs['From Min'].default_value=.12;macro_gain.inputs['From Max'].default_value=.88
@@ -226,9 +238,9 @@ def main():
  camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
  camera.data.type='ORTHO';camera.data.ortho_scale=1.52 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
  if view=='formation':
-  area('Large neutral key',(-.55,-.55,1.35),12,(.88,.91,1.),1.25,target)
-  area('Grazing rim',(.65,.45,.95),18,(.80,.86,.98),.90,target)
-  area('Soft front fill',(-.25,-.8,.45),3,(1.,.84,.70),1.45,target)
+  area('Large neutral key',(-.55,-.55,1.35),6,(.88,.91,1.),1.25,target)
+  area('Grazing rim',(.65,.45,.95),8,(.80,.86,.98),.90,target)
+  area('Soft front fill',(-.25,-.8,.45),1.2,(1.,.84,.70),1.45,target)
  else:
   area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
   area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
@@ -275,6 +287,7 @@ def main():
    add_float_attribute(me,'fracturePotential',controls['fracture'])
    add_float_attribute(me,'reliefAmount',controls['relief'])
    add_float_attribute(me,'obsidianAmount',controls['obsidian'])
+   add_float_attribute(me,'meltAmount',controls['melt'])
    add_float_attribute(me,'roughnessBase',controls['roughness'])
    add_float_attribute(me,'coatWeight',controls['coat'])
    add_vector_attribute(me,'materialCoordinates',data['rest'])
