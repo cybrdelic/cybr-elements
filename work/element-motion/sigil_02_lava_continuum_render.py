@@ -67,8 +67,9 @@ def build_lava_material():
  rest=attribute(nodes,'materialCoordinates')
  fracture=attribute(nodes,'fracturePotential')
  crust=attribute(nodes,'crustAmount')
+ relief=attribute(nodes,'reliefAmount')
+ obsidian=attribute(nodes,'obsidianAmount')
  links.new(base.outputs['Color'],p.inputs['Base Color'])
- links.new(coat.outputs['Fac'],p.inputs['Coat Weight'])
  links.new(thermal.outputs['Color'],p.inputs['Emission Color'])
  links.new(thermal_strength.outputs['Fac'],p.inputs['Emission Strength'])
 
@@ -112,11 +113,25 @@ def build_lava_material():
 
  macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.28;macro_bump.inputs['Distance'].default_value=.0032
  links.new(macro.outputs['Fac'],macro_bump.inputs['Height'])
- macro_strength=math_node(nodes,'MULTIPLY',a=.36,label='crust relief weight');links.new(crust.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
- micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='vesicle-scale relief';micro_bump.inputs['Strength'].default_value=.24;micro_bump.inputs['Distance'].default_value=.00065
+ macro_strength=math_node(nodes,'MULTIPLY',a=.44,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
+ micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Strength'].default_value=.22;micro_bump.inputs['Distance'].default_value=.00055
  links.new(micro.outputs['Fac'],micro_bump.inputs['Height']);links.new(macro_bump.outputs['Normal'],micro_bump.inputs['Normal'])
- fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.50;fissure_bump.inputs['Distance'].default_value=.0015
- links.new(fracture_edge.outputs[0],fissure_bump.inputs['Height']);links.new(micro_bump.outputs['Normal'],fissure_bump.inputs['Normal']);links.new(fissure_bump.outputs['Normal'],p.inputs['Normal'])
+ vesicles=nodes.new('ShaderNodeTexVoronoi');vesicles.voronoi_dimensions='3D';vesicles.feature='F1';vesicles.distance='EUCLIDEAN'
+ vesicles.label='advected vesicle centers';vesicles.inputs['Scale'].default_value=118.
+ links.new(rest.outputs['Vector'],vesicles.inputs['Vector'])
+ pit=nodes.new('ShaderNodeMapRange');pit.clamp=True;pit.interpolation_type='SMOOTHERSTEP';pit.label='vesicle pits'
+ pit.inputs['From Min'].default_value=.035;pit.inputs['From Max'].default_value=.145
+ pit.inputs['To Min'].default_value=1.;pit.inputs['To Max'].default_value=0.
+ links.new(vesicles.outputs['Distance'],pit.inputs['Value'])
+ pit_gate=math_node(nodes,'MULTIPLY',label='phase-gated vesicles');links.new(relief.outputs['Fac'],pit_gate.inputs[0]);links.new(pit.outputs['Result'],pit_gate.inputs[1])
+ pit_bump=nodes.new('ShaderNodeBump');pit_bump.label='quenched vesicle depressions';pit_bump.invert=True;pit_bump.inputs['Strength'].default_value=.38;pit_bump.inputs['Distance'].default_value=.00105
+ links.new(pit_gate.outputs[0],pit_bump.inputs['Height']);links.new(micro_bump.outputs['Normal'],pit_bump.inputs['Normal'])
+ fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.62;fissure_bump.inputs['Distance'].default_value=.0017
+ links.new(fracture_edge.outputs[0],fissure_bump.inputs['Height']);links.new(pit_bump.outputs['Normal'],fissure_bump.inputs['Normal']);links.new(fissure_bump.outputs['Normal'],p.inputs['Normal'])
+ crack_coat=math_node(nodes,'MULTIPLY',a=-.82,label='coat loss in fissures');links.new(fracture_edge.outputs[0],crack_coat.inputs[1])
+ coat_keep=math_node(nodes,'ADD',a=1.,label='fissure coat mask');links.new(crack_coat.outputs[0],coat_keep.inputs[1])
+ coat_final=math_node(nodes,'MULTIPLY',label='phase coat × fissure mask');links.new(coat.outputs['Fac'],coat_final.inputs[0]);links.new(coat_keep.outputs[0],coat_final.inputs[1])
+ links.new(coat_final.outputs[0],p.inputs['Coat Weight'])
 
  coat_rough=math_node(nodes,'MULTIPLY',b=.34,label='coat roughness from phase');links.new(rough_clamp.outputs['Result'],coat_rough.inputs[0]);links.new(coat_rough.outputs[0],p.inputs['Coat Roughness'])
  return lava
@@ -197,6 +212,8 @@ def main():
    add_float_attribute(me,'damage',damage)
    add_float_attribute(me,'crustAmount',controls['crust'])
    add_float_attribute(me,'fracturePotential',controls['fracture'])
+   add_float_attribute(me,'reliefAmount',controls['relief'])
+   add_float_attribute(me,'obsidianAmount',controls['obsidian'])
    add_float_attribute(me,'roughnessBase',controls['roughness'])
    add_float_attribute(me,'coatWeight',controls['coat'])
    add_vector_attribute(me,'materialCoordinates',data['rest'])
@@ -214,6 +231,8 @@ def main():
   row={'frame':f,'time':f/a.fps,'sourceSHA256':digest(src),'vertices':len(me.vertices),'triangles':len(me.polygons),
        'temperatureMinK':float(temp.min()),'temperatureMaxK':float(temp.max()),'crustMean':float(controls['crust'].mean()),
        'fracturePotentialMean':float(controls['fracture'].mean()),
+       'obsidianMean':float(controls['obsidian'].mean()),
+       'reliefMean':float(controls['relief'].mean()),
        'thermalStrengthMean':float(controls['thermalStrength'].mean()),
        'thermalStrengthMax':float(controls['thermalStrength'].max()),
        'wallSeconds':time.perf_counter()-start}
