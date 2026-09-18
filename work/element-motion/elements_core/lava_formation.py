@@ -23,17 +23,17 @@ from .lava_mpm import LavaConfig, LavaMPM, enthalpy_from_temperature
 class PourFormationConfig:
     stage_scale: float = .15
     source_center_z: float = 1.95
-    fill_height: float = .060
-    wall_height: float = .115
-    nozzle_bottom: float = .27
-    nozzle_radius_main: float = .055
+    fill_height: float = .048
+    wall_height: float = .052
+    nozzle_bottom: float = .22
+    nozzle_radius_main: float = .050
     nozzle_radius_small: float = .038
     main_nozzles: int = 3
     wall_margin_fraction: float = .22
     inlet_speed: float = .22
     initial_down_speed: float = .05
-    skin_temperature: float = 1190.
-    core_temperature: float = 1650.
+    skin_temperature: float = 1380.
+    core_temperature: float = 1700.
     significant_component_pixels: int = 100
 
     def __post_init__(self):
@@ -155,27 +155,29 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
         if not total:
             continue
         radius=formation.nozzle_radius_main if component==components[0][0] else formation.nozzle_radius_small
-        lattice=np.arange(-radius,radius+step*.5,step)
-        disk=np.array([(a,b) for a in lattice for b in lattice if a*a+b*b<=radius*radius],np.float64)
-        if len(disk)<4:
-            raise RuntimeError('nozzle cross-section is under-resolved')
         tangent=np.array([dirx[iy0,ix0],dirz[iy0,ix0]],np.float64)
         tangent/=max(float(np.linalg.norm(tangent)),1e-12)
         built=0;layer=0;start=len(positions)
+        phase=1.7*inlet_index
         while built<total:
+            growth=min(1.,layer/18.)
+            effective_radius=radius*(.58+.42*growth)
+            lattice=np.arange(-effective_radius,effective_radius+step*.5,step)
+            disk=np.array([(a,b) for a in lattice for b in lattice if a*a+b*b<=effective_radius*effective_radius],np.float64)
+            if len(disk)<4:raise RuntimeError('nozzle cross-section is under-resolved')
             take=min(len(disk),total-built)
+            wobble=np.array([.006*math.sin(phase+layer*.61),.0045*math.cos(phase*.7+layer*.47)])
             for a,b in disk[:take]:
-                jitter=(rng.random(3)-.5)*step*.12
+                jitter=(rng.random(3)-.5)*step*.15
                 z=formation.nozzle_bottom+layer*step
-                positions.append([center[0]+a+jitter[0],center[1]+b+jitter[1],z+jitter[2]])
-                radial=min(1.,math.hypot(a,b)/radius)
-                core=(1.-radial)**.5
+                positions.append([center[0]+wobble[0]+a+jitter[0],center[1]+wobble[1]+b+jitter[1],z+jitter[2]])
+                radial=min(1.,math.hypot(a,b)/effective_radius)
+                core=(1.-radial)**.55
                 temperatures.append(formation.skin_temperature+
                                     (formation.core_temperature-formation.skin_temperature)*core)
-                velocities.append([tangent[0]*formation.inlet_speed,
-                                   tangent[1]*formation.inlet_speed,
-                                   -(formation.initial_down_speed+
-                                     .18*layer/max(1,math.ceil(total/len(disk))))])
+                velocities.append([tangent[0]*formation.inlet_speed+.025*math.sin(layer*.43+phase),
+                                   tangent[1]*formation.inlet_speed+.018*math.cos(layer*.37+phase),
+                                   -(formation.initial_down_speed+.22*growth)])
             built+=take;layer+=1
         nozzle_rows.append({'component':int(component),'particles':total,'radius':radius,
                             'center':center.tolist(),'layers':layer,
@@ -218,6 +220,37 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
         'contactModel':'post-G2P unilateral signed-distance mold projection',
     }
     return positions,enthalpy_from_temperature(temperatures,lava),volumes,velocities,mold,report
+
+
+
+def build_mold_mesh(source: Path,lava: LavaConfig,formation: PourFormationConfig|None=None):
+    """Build a closed shallow stone mold with genuinely lowered glyph cavities."""
+    formation=formation or PourFormationConfig()
+    from scipy.ndimage import gaussian_filter
+    from skimage.measure import marching_cubes
+    with np.load(source,allow_pickle=False) as data:
+        sdf=np.asarray(data['sdf'],np.float64);lo=np.asarray(data['lo'],np.float64);extent=np.asarray(data['extent'],np.float64)
+    dx=.008;dy=.008;dz=.005
+    xs=np.arange(-.74,.740001,dx);ys=np.arange(-.36,.360001,dy)
+    z0=lava.floor-.035;z1=lava.floor+formation.wall_height+.018
+    zs=np.arange(z0,z1+dz*.5,dz)
+    xx,yy=np.meshgrid(xs,ys,indexing='xy')
+    cv,cu=_source_coords(np.stack([xx,yy],axis=-1),lo,extent,sdf.shape,formation)
+    d=_bilinear(sdf,cv,cu)*formation.stage_scale
+    cavity=d>.004
+    solid=np.zeros((len(zs),len(ys),len(xs)),np.float32)
+    for k,z in enumerate(zs):
+        if z<=lava.floor:
+            solid[k]=1.
+        elif z<=lava.floor+formation.wall_height:
+            solid[k]=(~cavity).astype(np.float32)
+    solid=gaussian_filter(solid,.55,mode='nearest')
+    verts,faces,_,_=marching_cubes(solid,.5,spacing=(dz,dy,dx),allow_degenerate=False)
+    verts=verts[:,[2,1,0]]+np.array([xs[0],ys[0],zs[0]])
+    report={'vertices':len(verts),'triangles':len(faces),'voxelSpacing':[dx,dy,dz],
+            'wallHeight':formation.wall_height,'cavityClearance':.004,
+            'method':'binary extruded mold softened only at the sub-voxel boundary'}
+    return {'vertices':verts.astype(np.float32),'faces':faces.astype(np.int32)},report
 
 
 @njit(cache=True,inline='always')
