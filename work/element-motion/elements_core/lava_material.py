@@ -20,7 +20,7 @@ _VISIBLE_BAND_WIDTH = 60e-9
 # physical three-band radiance for audit, then map it into scene-linear shader
 # strength with one explicit conversion constant rather than letting AgX clip
 # raw W m^-2 sr^-1 values toward white.
-_SCENE_VISIBLE_RADIANCE_UNIT = 45.0
+_SCENE_VISIBLE_RADIANCE_UNIT = 62.0
 
 
 def smoothstep01(x):
@@ -70,9 +70,9 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     transitional = crust * (1.0 - obsidian)
     fracture = crust * smoothstep01(np.clip((d - .08) / .82, 0.0, 1.0))
     relief = np.clip(transitional + .24 * obsidian + .34 * fracture, 0.0, 1.0)
-    roughness = .14 * melt + .78 * transitional + .30 * obsidian + .10 * fracture
+    roughness = .26 * melt + .78 * transitional + .30 * obsidian + .10 * fracture
     roughness = np.clip(roughness, .16, .94)
-    coat = .17 * melt + .045 * transitional + .28 * obsidian * (1.0 - .58 * fracture)
+    coat = .035 * melt + .045 * transitional + .28 * obsidian * (1.0 - .58 * fracture)
     coat = np.clip(coat, .025, .30)
     hot = np.array([.012, .0032, .0012])
     crust_color = np.array([.010, .0080, .0065])
