@@ -1,0 +1,78 @@
+"""Auditable shading controls for the continuum lava surface.
+
+The continuum solver carries the material state.  This module converts the
+resolved surface temperature and constitutive damage into slowly varying BSDF
+controls and thermal radiance.  It deliberately does *not* invent a second
+motion field or a hidden hot mask.  Fine spatial breakup is supplied later by
+material-coordinate procedural textures and is documented as sub-grid optical
+roughness, not resolved fracture geometry.
+"""
+from __future__ import annotations
+from dataclasses import dataclass
+import numpy as np
+
+_H = 6.62607015e-34
+_C = 299792458.0
+_K = 1.380649e-23
+_VISIBLE_WAVELENGTHS = np.array([610.0, 550.0, 460.0], dtype=np.float64) * 1e-9
+_VISIBLE_BAND_WIDTH = 60e-9
+
+
+def smoothstep01(x):
+    x = np.clip(np.asarray(x, dtype=np.float64), 0.0, 1.0)
+    return x * x * (3.0 - 2.0 * x)
+
+
+def planck_rgb(temperature, emissivity=.90):
+    """Three narrow visible bands of Planck spectral radiance.
+
+    The returned values are linear radiance-like RGB controls.  They are not a
+    calibrated camera response or a claim of full spectral transport.
+    """
+    t = np.asarray(temperature, dtype=np.float64)
+    if np.any(~np.isfinite(t)) or np.any(t <= 0):
+        raise ValueError('temperature must be positive and finite')
+    if not np.isfinite(emissivity) or not 0 <= emissivity <= 1:
+        raise ValueError('emissivity must lie in [0, 1]')
+    wl = _VISIBLE_WAVELENGTHS
+    exponent = _H * _C / (wl[None, :] * _K * t.reshape(-1, 1))
+    radiance = (2.0 * _H * _C**2 / wl**5) / np.expm1(exponent)
+    radiance *= _VISIBLE_BAND_WIDTH * emissivity
+    return radiance.reshape(t.shape + (3,))
+
+
+def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
+    """Return resolved-state BSDF controls for the surface vertices.
+
+    ``crust`` comes only from the phase interval. ``fracture`` is a *shading
+    weight* for damage-gated sub-grid relief; it is intentionally not presented
+    as a resolved crack topology.  The hot melt remains smoother and glossier,
+    while the cooled load-bearing skin becomes rougher and more diffuse.
+    """
+    t = np.asarray(temperature, dtype=np.float64)
+    d = np.asarray(damage, dtype=np.float64)
+    if t.shape != d.shape or np.any(~np.isfinite(t)) or np.any(~np.isfinite(d)):
+        raise ValueError('temperature and damage must be finite arrays of the same shape')
+    if liquidus <= solidus:
+        raise ValueError('liquidus must exceed solidus')
+    d = np.clip(d, 0.0, 1.0)
+    crust_linear = np.clip((liquidus - t) / (liquidus - solidus), 0.0, 1.0)
+    crust = smoothstep01(crust_linear)
+    melt = 1.0 - crust
+    fracture = crust * smoothstep01(np.clip((d - .08) / .82, 0.0, 1.0))
+    roughness = np.clip(.20 + .68 * crust + .08 * fracture, .18, .96)
+    coat = np.clip(.17 * melt + .055 * crust * (1.0 - .70 * fracture), .02, .18)
+    hot = np.array([.018, .0060, .0020])
+    cool = np.array([.018, .020, .023])
+    base = hot[None, :] * melt.reshape(-1, 1) + cool[None, :] * crust.reshape(-1, 1)
+    base *= (1.0 - .22 * fracture.reshape(-1, 1))
+    base = base.reshape(t.shape + (3,))
+    return {
+        'crust': crust,
+        'melt': melt,
+        'fracture': fracture,
+        'roughness': roughness,
+        'coat': coat,
+        'baseColor': base,
+        'thermalRadiance': planck_rgb(t, emissivity=.90),
+    }
