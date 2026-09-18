@@ -1,5 +1,5 @@
 name: Lava formation fast review
-# revision: low-wall-tapered-feed
+# revision: channel-flow-crust-occlusion
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
           python work/element-motion/sigil_02_lava_continuum.py \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-fast/physics --formation pour \
-            --seconds 1.0 --fps 16 --samples-per-axis 1 --threads 2 --viscosity 92
+            --seconds 1.0 --fps 16 --samples-per-axis 1 --threads 2 --viscosity 38
       - name: Reconstruct
         env:
           PYTHONPATH: work/element-motion
