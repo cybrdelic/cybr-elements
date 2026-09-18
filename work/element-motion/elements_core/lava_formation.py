@@ -26,14 +26,14 @@ class PourFormationConfig:
     fill_height: float = .048
     wall_height: float = .052
     nozzle_bottom: float = .22
-    nozzle_radius_main: float = .050
-    nozzle_radius_small: float = .038
+    nozzle_radius_main: float = .036
+    nozzle_radius_small: float = .029
     main_nozzles: int = 3
     wall_margin_fraction: float = .22
-    inlet_speed: float = .22
-    initial_down_speed: float = .05
-    skin_temperature: float = 1380.
-    core_temperature: float = 1700.
+    inlet_speed: float = .55
+    initial_down_speed: float = .55
+    skin_temperature: float = 1310.
+    core_temperature: float = 1690.
     significant_component_pixels: int = 100
 
     def __post_init__(self):
@@ -177,7 +177,7 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
                                     (formation.core_temperature-formation.skin_temperature)*core)
                 velocities.append([tangent[0]*formation.inlet_speed+.025*math.sin(layer*.43+phase),
                                    tangent[1]*formation.inlet_speed+.018*math.cos(layer*.37+phase),
-                                   -(formation.initial_down_speed+.22*growth)])
+                                   -(formation.initial_down_speed+.35*growth)])
             built+=take;layer+=1
         nozzle_rows.append({'component':int(component),'particles':total,'radius':radius,
                             'center':center.tolist(),'layers':layer,
