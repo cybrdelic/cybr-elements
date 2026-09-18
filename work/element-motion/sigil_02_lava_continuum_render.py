@@ -167,35 +167,42 @@ def bilinear(field,y,x):
          (1-fx)*fy*field[y1,x0]+fx*fy*field[y1,x1])
 
 
-def build_mold(source,formation,floor_height):
+def build_mold(source,formation,floor_height,mold_path=None):
  if not formation:return None
- with np.load(source,allow_pickle=False) as data:
-  sdf=np.asarray(data['sdf'],np.float64);lo=np.asarray(data['lo'],np.float64);extent=np.asarray(data['extent'],np.float64)
- scale=float(formation['stage_scale']);center=float(formation['source_center_z']);wall=float(formation['wall_height'])
- nx,ny=184,84
- xs=np.linspace(-.74,.74,nx);ys=np.linspace(-.36,.36,ny);xx,yy=np.meshgrid(xs,ys,indexing='xy')
- sx=xx/scale;sz=yy/scale+center
- u=(sx-lo[0])/extent[0]*(sdf.shape[1]-1);v=(sz-lo[2])/extent[2]*(sdf.shape[0]-1)
- d=bilinear(sdf,v,u)*scale
- t=np.clip((.008-d)/.018,0,1);t=t*t*(3-2*t)
- zz=floor_height+wall*t
- verts=np.column_stack([xx.ravel(),yy.ravel(),zz.ravel()])
- faces=[]
- for j in range(ny-1):
-  for i in range(nx-1):
-   a=j*nx+i;b=a+1;c=a+nx;d0=c+1
-   faces.extend([(a,b,d0),(a,d0,c)])
- me=bpy.data.meshes.new('Basalt glyph mold');me.from_pydata(verts.tolist(),[],faces);me.update()
+ if mold_path is not None and Path(mold_path).is_file():
+  with np.load(mold_path,allow_pickle=False) as data:
+   verts=np.asarray(data['vertices'],np.float64);faces=np.asarray(data['faces'],np.int32)
+ else:
+  with np.load(source,allow_pickle=False) as data:
+   sdf=np.asarray(data['sdf'],np.float64);lo=np.asarray(data['lo'],np.float64);extent=np.asarray(data['extent'],np.float64)
+  scale=float(formation['stage_scale']);center=float(formation['source_center_z']);wall=float(formation['wall_height'])
+  nx,ny=184,84
+  xs=np.linspace(-.74,.74,nx);ys=np.linspace(-.36,.36,ny);xx,yy=np.meshgrid(xs,ys,indexing='xy')
+  sx=xx/scale;sz=yy/scale+center
+  u=(sx-lo[0])/extent[0]*(sdf.shape[1]-1);v=(sz-lo[2])/extent[2]*(sdf.shape[0]-1)
+  d=bilinear(sdf,v,u)*scale
+  t=np.clip((.006-d)/.012,0,1);t=t*t*(3-2*t)
+  zz=floor_height+wall*t
+  verts=np.column_stack([xx.ravel(),yy.ravel(),zz.ravel()])
+  faces=[]
+  for j in range(ny-1):
+   for i in range(nx-1):
+    a=j*nx+i;b=a+1;c=a+nx;d0=c+1
+    faces.extend([(a,b,d0),(a,d0,c)])
+  faces=np.asarray(faces,np.int32)
+ me=bpy.data.meshes.new('Basalt glyph mold');me.from_pydata(verts.tolist(),[],faces.tolist());me.update()
  obj=bpy.data.objects.new('Basalt glyph mold',me);bpy.context.collection.objects.link(obj)
- material,p=principled('Basalt mold / real cavity geometry')
- p.inputs['Base Color'].default_value=(.008,.009,.011,1);p.inputs['Roughness'].default_value=.70;p.inputs['IOR'].default_value=1.52
+ material,p=principled('Basalt mold / closed cavity geometry')
+ p.inputs['Base Color'].default_value=(.010,.011,.013,1);p.inputs['Roughness'].default_value=.66;p.inputs['IOR'].default_value=1.52
+ if 'Coat Weight' in p.inputs:p.inputs['Coat Weight'].default_value=.025
  nodes=material.node_tree.nodes;links=material.node_tree.links
- tc=nodes.new('ShaderNodeTexCoord');noise=nodes.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=70;noise.inputs['Detail'].default_value=4.2;noise.inputs['Roughness'].default_value=.74
+ tc=nodes.new('ShaderNodeTexCoord');noise=nodes.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=82;noise.inputs['Detail'].default_value=3.6;noise.inputs['Roughness'].default_value=.68
  links.new(tc.outputs['Generated'],noise.inputs['Vector'])
- bump=nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.18;bump.inputs['Distance'].default_value=.0013
+ bump=nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.10;bump.inputs['Distance'].default_value=.0008
  links.new(noise.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
  me.materials.append(material)
- for poly in me.polygons:poly.use_smooth=True
+ for poly in me.polygons:poly.use_smooth=False
+ bevel=obj.modifiers.new('Subtle manufactured stone edge','BEVEL');bevel.width=.0024;bevel.segments=2
  return obj
 
 
@@ -211,23 +218,28 @@ def main():
  s.render.fps=a.fps;s.render.film_transparent=False
  s.view_settings.view_transform='AgX';s.view_settings.look='AgX - Medium High Contrast';s.view_settings.exposure=a.exposure
  s.world=bpy.data.worlds.new('Dim neutral studio');s.world.use_nodes=True
- bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.055,.065,.082,1);bg.inputs['Strength'].default_value=.035
+ bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.045,.050,.060,1);bg.inputs['Strength'].default_value=.012 if formation_mode=='pour' else .035
  bpy.ops.object.camera_add();camera=bpy.context.object;s.camera=camera
  view=('formation' if formation_mode=='pour' else 'oblique') if a.view=='auto' else a.view
- target=(0.,0.,.18 if view=='formation' else .335)
- positions={'formation':(.82,-1.62,1.48),'oblique':(.82,-2.65,1.03),'front':(0.,-3.,.5),'overhead':(.62,-1.75,1.8)}
+ target=(0.,0.,.10 if view=='formation' else .335)
+ positions={'formation':(.55,-1.15,1.75),'oblique':(.82,-2.65,1.03),'front':(0.,-3.,.5),'overhead':(.62,-1.75,1.8)}
  camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
- camera.data.type='ORTHO';camera.data.ortho_scale=1.58 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
- area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
- area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
- area('Soft front fill',(-.3,-1.,.55),9,(1.,.90,.78),1.35,target)
+ camera.data.type='ORTHO';camera.data.ortho_scale=1.52 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
+ if view=='formation':
+  area('Large neutral key',(-.55,-.55,1.35),12,(.88,.91,1.),1.25,target)
+  area('Grazing rim',(.65,.45,.95),18,(.80,.86,.98),.90,target)
+  area('Soft front fill',(-.25,-.8,.45),3,(1.,.84,.70),1.45,target)
+ else:
+  area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
+  area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
+  area('Soft front fill',(-.3,-1.,.55),9,(1.,.90,.78),1.35,target)
  floor,fp=principled('Fine basalt stage');fp.inputs['Base Color'].default_value=(.012,.014,.017,1);fp.inputs['Roughness'].default_value=.82
  n=floor.node_tree.nodes;l=floor.node_tree.links
  tc=n.new('ShaderNodeTexCoord');noise=n.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=95;noise.inputs['Detail'].default_value=4
  l.new(tc.outputs['Object'],noise.inputs['Vector']);bump=n.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.21;bump.inputs['Distance'].default_value=.0014
  l.new(noise.outputs['Fac'],bump.inputs['Height']);l.new(bump.outputs['Normal'],fp.inputs['Normal'])
  bpy.ops.mesh.primitive_plane_add(size=8,location=(0,0,floor_height-.0015));bpy.context.object.data.materials.append(floor)
- mold=build_mold(a.source,formation,floor_height) if formation_mode=='pour' else None
+ mold=build_mold(a.source,formation,floor_height,a.surface/'mold.npz') if formation_mode=='pour' else None
  lava=build_lava_material()
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
@@ -235,7 +247,9 @@ def main():
   'material':'resolved temperature/damage phase controls + normalized Planck-band chroma + explicit visible-radiance-to-scene strength + transported-coordinate multiscale crust relief',
   'subgridDisclosure':'noise/voronoi are BSDF microstructure anchored to material coordinates; damage gates crease relief; no resolved crack geometry is claimed'}
  render_inputs={'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'}
- if formation_mode=='pour':render_inputs['moldSource']=a.source
+ if formation_mode=='pour':
+  render_inputs['moldSource']=a.source
+  if (a.surface/'mold.npz').is_file():render_inputs['moldMesh']=a.surface/'mold.npz'
  run=RunIdentity(a.out,settings,render_inputs)
  (a.out/'frames').mkdir(exist_ok=True);atomic_json(a.out/'render-settings.json',settings)
  o=None;start=time.perf_counter();rows=[]
