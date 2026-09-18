@@ -64,13 +64,23 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     crust_linear = np.clip((liquidus - t) / (liquidus - solidus), 0.0, 1.0)
     crust = smoothstep01(crust_linear)
     melt = 1.0 - crust
+    # Once the skin is well below the solidus it trends toward quenched
+    # obsidian: dark and comparatively glassy, not ever-more matte basalt.
+    obsidian = smoothstep01(np.clip((solidus - t) / 220.0, 0.0, 1.0))
+    transitional = crust * (1.0 - obsidian)
     fracture = crust * smoothstep01(np.clip((d - .08) / .82, 0.0, 1.0))
-    roughness = np.clip(.20 + .68 * crust + .08 * fracture, .18, .96)
-    coat = np.clip(.17 * melt + .055 * crust * (1.0 - .70 * fracture), .02, .18)
-    hot = np.array([.018, .0060, .0020])
-    cool = np.array([.018, .020, .023])
-    base = hot[None, :] * melt.reshape(-1, 1) + cool[None, :] * crust.reshape(-1, 1)
-    base *= (1.0 - .22 * fracture.reshape(-1, 1))
+    relief = np.clip(transitional + .24 * obsidian + .34 * fracture, 0.0, 1.0)
+    roughness = .18 * melt + .78 * transitional + .30 * obsidian + .10 * fracture
+    roughness = np.clip(roughness, .16, .94)
+    coat = .14 * melt + .045 * transitional + .28 * obsidian * (1.0 - .58 * fracture)
+    coat = np.clip(coat, .025, .30)
+    hot = np.array([.012, .0032, .0012])
+    crust_color = np.array([.010, .0080, .0065])
+    glass = np.array([.0048, .0062, .0085])
+    base = (hot[None, :] * melt.reshape(-1, 1)
+            + crust_color[None, :] * transitional.reshape(-1, 1)
+            + glass[None, :] * obsidian.reshape(-1, 1))
+    base *= (1.0 - .28 * fracture.reshape(-1, 1))
     base = base.reshape(t.shape + (3,))
     radiance = planck_rgb(t, emissivity=.90)
     peak = np.maximum(np.max(radiance, axis=-1, keepdims=True), 1e-30)
@@ -79,6 +89,9 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     return {
         'crust': crust,
         'melt': melt,
+        'obsidian': obsidian,
+        'transitionalCrust': transitional,
+        'relief': relief,
         'fracture': fracture,
         'roughness': roughness,
         'coat': coat,
