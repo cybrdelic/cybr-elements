@@ -20,11 +20,12 @@ from elements_core.lava_material import material_controls
 def parser():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--surface',required=True,type=Path);p.add_argument('--out',required=True,type=Path)
+ p.add_argument('--source',type=Path,default=Path(__file__).parent/'sigil-02-v2/source.npz')
  p.add_argument('--frames',type=int,default=60);p.add_argument('--fps',type=int,default=24)
  p.add_argument('--resolution',type=int,nargs=2,default=[960,540]);p.add_argument('--samples',type=int,default=96)
  p.add_argument('--threads',type=int,default=2);p.add_argument('--frame',type=int)
  p.add_argument('--exposure',type=float,default=.1)
- p.add_argument('--view',choices=['oblique','front','overhead'],default='oblique')
+ p.add_argument('--view',choices=['auto','formation','oblique','front','overhead'],default='auto')
  p.add_argument('--save-blend',action='store_true');p.add_argument('--wait-timeout',type=float,default=7200)
  return p.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
 
@@ -156,8 +157,50 @@ def add_color_attribute(mesh,name,values):
  return attr
 
 
+def bilinear(field,y,x):
+ h,w=field.shape
+ x=np.clip(x,0,w-1.000001);y=np.clip(y,0,h-1.000001)
+ x0=np.floor(x).astype(np.int64);y0=np.floor(y).astype(np.int64)
+ x1=np.minimum(x0+1,w-1);y1=np.minimum(y0+1,h-1)
+ fx=x-x0;fy=y-y0
+ return ((1-fx)*(1-fy)*field[y0,x0]+fx*(1-fy)*field[y0,x1]+
+         (1-fx)*fy*field[y1,x0]+fx*fy*field[y1,x1])
+
+
+def build_mold(source,formation,floor_height):
+ if not formation:return None
+ with np.load(source,allow_pickle=False) as data:
+  sdf=np.asarray(data['sdf'],np.float64);lo=np.asarray(data['lo'],np.float64);extent=np.asarray(data['extent'],np.float64)
+ scale=float(formation['stage_scale']);center=float(formation['source_center_z']);wall=float(formation['wall_height'])
+ nx,ny=184,84
+ xs=np.linspace(-.74,.74,nx);ys=np.linspace(-.36,.36,ny);xx,yy=np.meshgrid(xs,ys,indexing='xy')
+ sx=xx/scale;sz=yy/scale+center
+ u=(sx-lo[0])/extent[0]*(sdf.shape[1]-1);v=(sz-lo[2])/extent[2]*(sdf.shape[0]-1)
+ d=bilinear(sdf,v,u)*scale
+ t=np.clip((.008-d)/.018,0,1);t=t*t*(3-2*t)
+ zz=floor_height+wall*t
+ verts=np.column_stack([xx.ravel(),yy.ravel(),zz.ravel()])
+ faces=[]
+ for j in range(ny-1):
+  for i in range(nx-1):
+   a=j*nx+i;b=a+1;c=a+nx;d0=c+1
+   faces.extend([(a,b,d0),(a,d0,c)])
+ me=bpy.data.meshes.new('Basalt glyph mold');me.from_pydata(verts.tolist(),[],faces);me.update()
+ obj=bpy.data.objects.new('Basalt glyph mold',me);bpy.context.collection.objects.link(obj)
+ material,p=principled('Basalt mold / real cavity geometry')
+ p.inputs['Base Color'].default_value=(.008,.009,.011,1);p.inputs['Roughness'].default_value=.70;p.inputs['IOR'].default_value=1.52
+ nodes=material.node_tree.nodes;links=material.node_tree.links
+ tc=nodes.new('ShaderNodeTexCoord');noise=nodes.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=70;noise.inputs['Detail'].default_value=4.2;noise.inputs['Roughness'].default_value=.74
+ links.new(tc.outputs['Generated'],noise.inputs['Vector'])
+ bump=nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.18;bump.inputs['Distance'].default_value=.0013
+ links.new(noise.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
+ me.materials.append(material)
+ for poly in me.polygons:poly.use_smooth=True
+ return obj
+
+
 def main():
- a=parser();wait_for(a.surface/'run.json',timeout=a.wait_timeout);surface_settings=json.loads((a.surface/'run.json').read_text())['settings'];floor_height=float(surface_settings['floor']);bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
+ a=parser();wait_for(a.surface/'run.json',timeout=a.wait_timeout);surface_settings=json.loads((a.surface/'run.json').read_text())['settings'];floor_height=float(surface_settings['floor']);formation=surface_settings.get('formation');formation_mode=surface_settings.get('formationMode','formed');bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
  s=bpy.context.scene;s.render.engine='CYCLES';s.cycles.device='CPU';s.render.threads_mode='FIXED';s.render.threads=a.threads
  s.cycles.samples=a.samples;s.cycles.use_adaptive_sampling=True;s.cycles.adaptive_threshold=.018
  s.cycles.use_denoising=True;s.cycles.denoiser='OPENIMAGEDENOISE'
@@ -170,10 +213,11 @@ def main():
  s.world=bpy.data.worlds.new('Dim neutral studio');s.world.use_nodes=True
  bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.055,.065,.082,1);bg.inputs['Strength'].default_value=.035
  bpy.ops.object.camera_add();camera=bpy.context.object;s.camera=camera
- target=(0.,0.,.335)
- positions={'oblique':(.82,-2.65,1.03),'front':(0.,-3.,.5),'overhead':(.62,-1.75,1.8)}
- camera.location=positions[a.view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
- camera.data.type='ORTHO';camera.data.ortho_scale=1.65;camera.data.clip_start=.01;camera.data.clip_end=30
+ view=('formation' if formation_mode=='pour' else 'oblique') if a.view=='auto' else a.view
+ target=(0.,0.,.18 if view=='formation' else .335)
+ positions={'formation':(.82,-1.62,1.48),'oblique':(.82,-2.65,1.03),'front':(0.,-3.,.5),'overhead':(.62,-1.75,1.8)}
+ camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
+ camera.data.type='ORTHO';camera.data.ortho_scale=1.58 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
  area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
  area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
  area('Soft front fill',(-.3,-1.,.55),9,(1.,.90,.78),1.35,target)
@@ -182,14 +226,17 @@ def main():
  tc=n.new('ShaderNodeTexCoord');noise=n.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=95;noise.inputs['Detail'].default_value=4
  l.new(tc.outputs['Object'],noise.inputs['Vector']);bump=n.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.21;bump.inputs['Distance'].default_value=.0014
  l.new(noise.outputs['Fac'],bump.inputs['Height']);l.new(bump.outputs['Normal'],fp.inputs['Normal'])
- bpy.ops.mesh.primitive_plane_add(size=8,location=(0,0,floor_height));bpy.context.object.data.materials.append(floor)
+ bpy.ops.mesh.primitive_plane_add(size=8,location=(0,0,floor_height-.0015));bpy.context.object.data.materials.append(floor)
+ mold=build_mold(a.source,formation,floor_height) if formation_mode=='pour' else None
  lava=build_lava_material()
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
-  'floor':floor_height,'exposure':a.exposure,'view':a.view,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
+  'floor':floor_height,'exposure':a.exposure,'view':view,'formationMode':formation_mode,'formation':formation,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
   'material':'resolved temperature/damage phase controls + normalized Planck-band chroma + explicit visible-radiance-to-scene strength + transported-coordinate multiscale crust relief',
   'subgridDisclosure':'noise/voronoi are BSDF microstructure anchored to material coordinates; damage gates crease relief; no resolved crack geometry is claimed'}
- run=RunIdentity(a.out,settings,{'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'})
+ render_inputs={'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'}
+ if formation_mode=='pour':render_inputs['moldSource']=a.source
+ run=RunIdentity(a.out,settings,render_inputs)
  (a.out/'frames').mkdir(exist_ok=True);atomic_json(a.out/'render-settings.json',settings)
  o=None;start=time.perf_counter();rows=[]
  for f in ([a.frame] if a.frame is not None else range(a.frames)):
