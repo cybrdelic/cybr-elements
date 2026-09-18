@@ -7,7 +7,7 @@ import numpy as np
 from numba import set_num_threads
 from elements_core.lava_mpm import LavaConfig,LavaMPM,sample_glyph
 from elements_core.lava_formation import (PourFormationConfig,build_pour_initial_state,
-                                          advance_with_mold)
+                                          build_mold_mesh,advance_with_mold)
 from elements_core.runtime import RunIdentity,atomic_json,atomic_npz,stage_status
 
 R=Path(__file__).resolve().parent
@@ -48,7 +48,11 @@ def main():
  if formation:
   pos,H,V,velocity,mold,formation_report=build_pour_initial_state(a.source,c,samples_per_axis=a.samples_per_axis,formation=formation)
   sim=LavaMPM(c,pos,H,V);sim.v[:]=velocity
+  mold_mesh,mold_report=build_mold_mesh(a.source,c,formation)
+  atomic_npz(a.out/'mold.npz',**mold_mesh)
+  formation_report['moldMesh']=mold_report
   atomic_json(a.out/'formation.json',formation_report)
+  run.receipt('mold',[a.out/'mold.npz'],kind='rigid basalt cavity')
  else:
   pos,H,V=sample_glyph(a.source,c,samples_per_axis=a.samples_per_axis);sim=LavaMPM(c,pos,H,V);mold=None;formation_report=None
  rows=[];start=time.perf_counter();stage_status(a.out,'simulation','running')
