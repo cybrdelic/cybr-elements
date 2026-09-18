@@ -91,6 +91,8 @@ def test_damage_changes_crust_relief_not_thermal_radiance():
     temperature = np.full(5, 1325.)
     low = material_controls(temperature, np.zeros(5)); high = material_controls(temperature, np.ones(5))
     np.testing.assert_array_equal(low['thermalRadiance'], high['thermalRadiance'])
+    np.testing.assert_array_equal(low['thermalColor'], high['thermalColor'])
+    np.testing.assert_array_equal(low['thermalStrength'], high['thermalStrength'])
     assert np.all(high['fracture'] > low['fracture'])
     assert np.all(high['roughness'] >= low['roughness'])
     assert np.all(high['baseColor'] <= low['baseColor'] + 1e-15)
@@ -101,6 +103,10 @@ def test_planck_rgb_positive_monotone_and_red_dominant_at_lava_temperature():
     assert np.isfinite(rgb).all() and np.all(rgb > 0)
     assert np.all(np.diff(rgb, axis=0) > 0)
     assert np.all(rgb[:, 0] > rgb[:, 1]) and np.all(rgb[:, 1] > rgb[:, 2])
+    c = material_controls(np.array([900., 1100., 1300., 1500., 1800.]), np.zeros(5))
+    assert np.allclose(np.max(c['thermalColor'], axis=1), 1.)
+    assert np.all(np.diff(c['thermalStrength']) > 0)
+    assert np.all(c['thermalColor'][:, 0] > c['thermalColor'][:, 1])
 
 
 def test_material_controls_reject_invalid_state():
