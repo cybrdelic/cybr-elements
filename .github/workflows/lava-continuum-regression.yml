@@ -43,3 +43,27 @@ jobs:
         env:
           PYTHONPATH: work/element-motion
         run: python -m pytest tests/elements/test_lava_continuum.py -q
+      - name: Build Cycles material fixture
+        env:
+          PYTHONPATH: work/element-motion
+        run: python tests/elements/lava_render_fixture.py --out /tmp/lava-material-smoke
+      - name: Install Blender 4.5.3 LTS
+        run: |
+          curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
+          tar -xf /tmp/blender.tar.xz -C /tmp
+          test -x /tmp/blender-4.5.3-linux-x64/blender
+      - name: Render actual Cycles CPU material smoke
+        run: |
+          /tmp/blender-4.5.3-linux-x64/blender --background             --python work/element-motion/sigil_02_lava_continuum_render.py --             --surface /tmp/lava-material-smoke             --out /tmp/lava-material-render             --frames 1 --frame 0 --fps 24             --resolution 480 270 --samples 8 --threads 2
+          test -s /tmp/lava-material-render/frames/0000.png
+          test -s /tmp/lava-material-render/frames/0000.exr
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lava-cycles-smoke
+          path: |
+            /tmp/lava-material-render/frames/0000.png
+            /tmp/lava-material-render/frames/0000.json
+            /tmp/lava-material-render/render-settings.json
+          if-no-files-found: error
+          retention-days: 7
