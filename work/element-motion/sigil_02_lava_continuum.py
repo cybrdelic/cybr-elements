@@ -29,7 +29,7 @@ def main():
  p.add_argument('--formation',choices=['pour','formed'],default='pour')
  p.add_argument('--seconds',type=float,default=2.5);p.add_argument('--fps',type=int,default=24)
  p.add_argument('--samples-per-axis',type=int,default=2);p.add_argument('--threads',type=int,default=2)
- p.add_argument('--viscosity',type=float,default=92.);p.add_argument('--support-end',type=float,default=.62)
+ p.add_argument('--viscosity',type=float,default=38.);p.add_argument('--support-end',type=float,default=.62)
  a=p.parse_args();set_num_threads(a.threads);a.source=ensure_source(a.source)
  if a.formation=='pour':
   c=LavaConfig(spacing=.018,shape=(96,68,58),origin=(-.864,-.612,0.),melt_viscosity=a.viscosity,
