@@ -1,11 +1,13 @@
 name: Lava formation fast review
-# revision: channel-flow-crust-occlusion
+# revision: thin-feed-resolved
 
 on:
   push:
     branches:
       - fix/lava-material-texture-20260918
     paths:
+      - 'work/element-motion/elements_core/lava_*.py'
+      - 'work/element-motion/sigil_02_lava_*.py'
       - '.github/workflows/lava-formation-fast-review.yml'
   workflow_dispatch:
 
