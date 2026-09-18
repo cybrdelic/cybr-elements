@@ -52,6 +52,8 @@ jobs:
             --resolution 640 360 --samples 12 --threads 2 --exposure 0
       - name: Encode
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
           ffmpeg -hide_banner -loglevel error -y -framerate 16 \
             -i /tmp/lava-fast/render/frames/%04d.png \
             -c:v libx264 -preset medium -crf 17 -pix_fmt yuv420p -movflags +faststart \
