@@ -32,7 +32,7 @@ def main():
  p.add_argument('--viscosity',type=float,default=38.);p.add_argument('--support-end',type=float,default=.62)
  a=p.parse_args();set_num_threads(a.threads);a.source=ensure_source(a.source)
  if a.formation=='pour':
-  c=LavaConfig(spacing=.018,shape=(96,68,58),origin=(-.864,-.612,0.),melt_viscosity=a.viscosity,
+  c=LavaConfig(spacing=.018,shape=(96,68,82),origin=(-.864,-.612,0.),melt_viscosity=a.viscosity,
                max_dt=.0007,support_start=-1.,support_end=-.5)
   formation=PourFormationConfig()
  else:
