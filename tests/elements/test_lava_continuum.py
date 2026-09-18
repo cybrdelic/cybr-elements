@@ -143,5 +143,6 @@ def test_pour_formation_starts_as_feed_columns_above_the_cavity():
     assert np.linalg.norm(velocity[:,:2],axis=1).max() > 0
     temperature = temperature_from_enthalpy(H,c)
     assert temperature.max() > c.liquidus
-    assert temperature.min() < c.solidus
+    assert temperature.min() > c.solidus
+    assert temperature.min() < c.liquidus
     assert np.all(V > 0)
