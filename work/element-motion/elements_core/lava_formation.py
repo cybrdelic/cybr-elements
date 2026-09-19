@@ -30,12 +30,16 @@ class PourFormationConfig:
     nozzle_radius_small: float = .020
     main_nozzles: int = 6
     wall_margin_fraction: float = .22
-    inlet_speed: float = .55
-    tangent_speed: float = .08
-    initial_down_speed: float = .45
+    inlet_speed: float = .34
+    inlet_stagger_scale: float = .55
+    tangent_speed: float = .055
+    initial_down_speed: float = .38
     source_longitudinal_subdivisions: int = 3
     skin_temperature: float = 1425.
     core_temperature: float = 1750.
+    mold_contact_conductance: float = 2600.
+    mold_temperature: float = 450.
+    thermal_contact_band_fraction: float = .85
     significant_component_pixels: int = 100
 
     def __post_init__(self):
@@ -43,10 +47,12 @@ class PourFormationConfig:
             raise ValueError('invalid formation scale')
         if self.main_nozzles < 1 or self.nozzle_radius_main <= 0 or self.nozzle_radius_small <= 0:
             raise ValueError('invalid nozzle configuration')
-        if self.inlet_speed <= 0 or self.initial_down_speed <= 0 or self.tangent_speed < 0:
-            raise ValueError('invalid inlet velocity configuration')
+        if self.inlet_speed <= 0 or self.initial_down_speed <= 0 or self.tangent_speed < 0 or self.inlet_stagger_scale < 0:
+            raise ValueError('invalid inlet velocity/timing configuration')
         if self.source_longitudinal_subdivisions < 1:
             raise ValueError('source longitudinal subdivisions must be positive')
+        if self.mold_contact_conductance <= 0 or self.mold_temperature <= 0 or self.thermal_contact_band_fraction <= 0:
+            raise ValueError('invalid mold thermal coupling')
         if self.core_temperature <= self.skin_temperature:
             raise ValueError('core must be hotter than nozzle skin')
 
@@ -160,38 +166,57 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
         total=int(np.count_nonzero(assignment==inlet_index))
         if not total:
             continue
-        radius=formation.nozzle_radius_main if component==components[0][0] else formation.nozzle_radius_small
+        requested_radius=formation.nozzle_radius_main if component==components[0][0] else formation.nozzle_radius_small
+        center_clearance=max(0.,float(sdf[iy0,ix0])*formation.stage_scale)
+        radius=max(step*.18,min(requested_radius,max(step*.18,center_clearance-step*(formation.wall_margin_fraction+.30))))
         tangent=np.array([dirx[iy0,ix0],dirz[iy0,ix0]],np.float64)
         tangent/=max(float(np.linalg.norm(tangent)),1e-12)
         built=0;layer=0;start=len(positions)
         phase=1.7*inlet_index
+        minimum_source_clearance=step*(formation.wall_margin_fraction+.20)
         while built<total:
             growth=min(1.,layer/18.)
-            effective_radius=radius*(.58+.42*growth)
-            lattice=np.arange(-effective_radius,effective_radius+step*.5,step)
-            disk=np.array([(a,b) for a in lattice for b in lattice if a*a+b*b<=effective_radius*effective_radius],np.float64)
-            if len(disk)<4:
-                # Preserve a narrow feed at coarse review spacing with a
-                # deterministic center + four-point ring instead of silently
-                # inflating the physical nozzle radius.
-                rr=min(effective_radius*.62,step*.72)
-                disk=np.array([[0.,0.],[rr,0.],[-rr,0.],[0.,rr],[0.,-rr]],np.float64)
+            effective_radius=radius*(.62+.38*growth)
+            # Candidate source samples are explicitly rejected if their x/y
+            # footprint crosses the cavity SDF.  This prevents molten source
+            # mass from being emitted onto solid mold top faces.
+            rr=min(effective_radius,step*.72)
+            disk=np.array([[0.,0.],[rr,0.],[-rr,0.],[0.,rr],[0.,-rr]],np.float64)
+            wobble_scale=min(step*.07,max(0.,center_clearance-effective_radius-minimum_source_clearance)*.20)
+            wobble=np.array([wobble_scale*math.sin(phase+layer*.61),
+                             wobble_scale*math.cos(phase*.7+layer*.47)])
+            candidate_xy=disk+center[None,:]+wobble[None,:]
+            sv,su=_source_coords(candidate_xy,lo,extent,sdf.shape,formation)
+            clearance=_bilinear(sdf,sv,su)*formation.stage_scale
+            disk=disk[clearance>=minimum_source_clearance]
+            if not len(disk):
+                # The inlet center itself was selected from the deep interior;
+                # retain a single narrow source sample rather than fabricating
+                # a ring that extends through a wall.
+                disk=np.array([[0.,0.]],np.float64)
+                wobble=np.zeros(2,np.float64)
             take=min(len(disk),total-built)
-            wobble=np.array([.006*math.sin(phase+layer*.61),.0045*math.cos(phase*.7+layer*.47)])
             for a,b in disk[:take]:
-                jitter=(rng.random(3)-.5)*step*.15
+                jitter=(rng.random(3)-.5)*step*.08
+                xy=np.array([center[0]+wobble[0]+a+jitter[0],
+                             center[1]+wobble[1]+b+jitter[1]])
+                sv,su=_source_coords(xy[None,:],lo,extent,sdf.shape,formation)
+                dxy=float(_bilinear(sdf,sv,su)[0])*formation.stage_scale
+                if dxy<minimum_source_clearance:
+                    xy=center.copy()
                 z=formation.nozzle_bottom+layer*step
-                positions.append([center[0]+wobble[0]+a+jitter[0],center[1]+wobble[1]+b+jitter[1],z+jitter[2]])
-                radial=min(1.,math.hypot(a,b)/effective_radius)
+                positions.append([xy[0],xy[1],z+jitter[2]])
+                radial=min(1.,math.hypot(a,b)/max(effective_radius,step*.18))
                 core=(1.-radial)**.55
                 temperatures.append(formation.skin_temperature+
                                     (formation.core_temperature-formation.skin_temperature)*core)
-                velocities.append([tangent[0]*formation.tangent_speed+.018*math.sin(layer*.43+phase),
-                                   tangent[1]*formation.tangent_speed+.014*math.cos(layer*.37+phase),
-                                   -(formation.initial_down_speed+.18*growth)])
+                velocities.append([tangent[0]*formation.tangent_speed+.010*math.sin(layer*.43+phase),
+                                   tangent[1]*formation.tangent_speed+.008*math.cos(layer*.37+phase),
+                                   -(formation.initial_down_speed+.12*growth)])
             built+=take;layer+=1
         nozzle_rows.append({'component':int(component),'particles':total,'radius':radius,
-                            'center':center.tolist(),'layers':layer,
+                            'requestedRadius':requested_radius,'centerClearance':center_clearance,
+                            'arrival':float(arrival[iy0,ix0]),'center':center.tolist(),'layers':layer,
                             'zMin':formation.nozzle_bottom,
                             'zMax':formation.nozzle_bottom+(layer-1)*step})
 
@@ -199,8 +224,10 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
     velocities=np.asarray(velocities,np.float64)
     temperatures=np.asarray(temperatures,np.float64)
     volumes=np.full(len(positions),step**3,np.float64)
-    if positions[:,2].max()>lava.origin[2]+lava.spacing*(lava.shape[2]-6):
-        raise RuntimeError('pour reservoir exceeds vertical transfer guard')
+    # The vertical columns above are a deterministic source-time parameterization,
+    # not simultaneous particles in the transfer grid.  build_pour_source_schedule
+    # respawns each layer at nozzle_bottom, so their virtual z extent may exceed
+    # the active MPM domain without violating the transfer guard.
 
     cell_x=extent[0]/(sdf.shape[1]-1)
     cell_z=extent[2]/(sdf.shape[0]-1)
@@ -217,6 +244,9 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
         'wallTop':lava.floor+formation.wall_height,
         'margin':step*formation.wall_margin_fraction,
         'friction':lava.friction,
+        'thermalConductance':formation.mold_contact_conductance,
+        'moldTemperature':formation.mold_temperature,
+        'thermalBand':lava.spacing*formation.thermal_contact_band_fraction,
     }
     report={
         'mode':'gravity-fed shallow cavity',
@@ -256,13 +286,17 @@ def build_pour_source_schedule(source: Path, lava: LavaConfig, *,
     spawn=positions.copy()
     material_coordinates=positions.copy()
     release=np.empty(len(positions),np.float64)
+    inlet_arrival=np.array([float(row.get('arrival',0.)) for row in report['inlets']],np.float64)
+    arrival0=float(inlet_arrival.min()) if len(inlet_arrival) else 0.
     cursor=0
-    for row in report['inlets']:
+    for inlet_index,row in enumerate(report['inlets']):
         count=int(row['particles'])
         sl=slice(cursor,cursor+count)
         raw_layer=(positions[sl,2]-formation.nozzle_bottom)/step
         layer=np.maximum(0,np.rint(raw_layer).astype(np.int64))
-        release[sl]=layer*step/formation.inlet_speed
+        delay=max(0.,float(inlet_arrival[inlet_index]-arrival0))*formation.inlet_stagger_scale
+        row['startDelaySeconds']=delay
+        release[sl]=delay+layer*step/formation.inlet_speed
         residual=positions[sl,2]-(formation.nozzle_bottom+layer*step)
         spawn[sl,2]=formation.nozzle_bottom+np.clip(residual,-step*.09,step*.09)
         cursor+=count
@@ -299,6 +333,10 @@ def build_pour_source_schedule(source: Path, lava: LavaConfig, *,
     report['simultaneousReservoirRelease']=False
     report['sourceMassFluxIsParticleResolved']=True
     report['sourceVolumePreservedAfterSubdivision']=float(V.sum())
+    report['inletStaggerScale']=formation.inlet_stagger_scale
+    report['moldThermalCoupling']={'conductanceWm2K':formation.mold_contact_conductance,
+                                   'moldTemperatureK':formation.mold_temperature,
+                                   'contactBandMeters':mold['thermalBand']}
     return schedule,mold,report
 
 
@@ -419,6 +457,55 @@ def _mold_contact(x,v,sdf,gx,gz,lo,extent,scale,center_z,wall_top,margin,frictio
     return count,maximum
 
 
+@njit(cache=True,inline='always')
+def _enthalpy_temperature(H,p):
+    cp,L,Ts,Tl,amb=p[6],p[7],p[8],p[9],p[10]
+    h0=cp*(Ts-amb);h1=cp*(Tl-amb)+L
+    if H<h0:return amb+H/cp
+    if H>h1:return amb+(H-L)/cp
+    return Ts+(H-h0)/(cp+L/(Tl-Ts))
+
+
+@njit(cache=True)
+def _mold_heat_transfer(x,J,H,mass,sdf,lo,extent,scale,center_z,wall_top,margin,
+                        floor,band,conductance,mold_temperature,p,dt):
+    """Resolution-stable effective thermal contact with the basalt mold.
+
+    The sink is expressed per unit material mass using the MPM cell spacing as
+    the characteristic contact thickness.  This avoids numerical-particle area
+    inflation when source particles are subdivided for smoother inlet flux.
+    """
+    loss=0.;contacts=0
+    h,w=sdf.shape
+    rho=p[1];dx=p[0];cp=p[6];ambient=p[10]
+    mold_H=cp*(mold_temperature-ambient)
+    for q in range(len(x)):
+        faces=0.
+        if x[q,2]<=floor+band:
+            faces+=1.
+        if x[q,2]<=wall_top+margin+band:
+            sx=x[q,0]/scale
+            sz=x[q,1]/scale+center_z
+            u=(sx-lo[0])/extent[0]*(w-1)
+            vv=(sz-lo[2])/extent[2]*(h-1)
+            distance=_sample_bilinear(sdf,vv,u)*scale
+            if distance>=0.:
+                if distance<=margin+band:faces+=1.
+            elif x[q,2]<=wall_top+margin+band:
+                faces+=1.
+        if faces==0:continue
+        T=_enthalpy_temperature(H[q],p)
+        if T<=mold_temperature:continue
+        specific_rate=conductance*faces*(T-mold_temperature)/(rho*dx)
+        dH=specific_rate*dt
+        available=max(0.,H[q]-mold_H)
+        if dH>available:dH=available
+        H[q]-=dH
+        loss+=dH*mass[q]
+        contacts+=1
+    return loss,contacts
+
+
 def apply_mold_contact(sim: LavaMPM,mold):
     return _mold_contact(sim.x,sim.v,mold['sdf'],mold['gx'],mold['gz'],
                          mold['lo'],mold['extent'],float(mold['stageScale']),
@@ -430,7 +517,7 @@ def advance_with_mold(sim: LavaMPM,duration: float,mold,source=None):
     if duration<0 or not math.isfinite(duration):
         raise ValueError('invalid duration')
     target=sim.time+duration;c=sim.config
-    corrections=0;maximum=0.;injected=0
+    corrections=0;maximum=0.;injected=0;thermal_contacts=0;mold_loss=0.
     speed=float(np.linalg.norm(sim.v,axis=1).max())
     wave=math.sqrt((c.bulk_modulus+4*c.shear_modulus/3)/c.density)
     while target-sim.time>1e-12:
@@ -458,12 +545,19 @@ def advance_with_mold(sim: LavaMPM,duration: float,mold,source=None):
         sim.step(dt)
         n,d=apply_mold_contact(sim,mold)
         corrections+=int(n);maximum=max(maximum,float(d))
+        q,tc=_mold_heat_transfer(sim.x,sim.J,sim.H,sim.mass,mold['sdf'],mold['lo'],mold['extent'],
+          float(mold['stageScale']),float(mold['sourceCenterZ']),float(mold['wallTop']),
+          float(mold['margin']),float(c.floor),float(mold['thermalBand']),
+          float(mold['thermalConductance']),float(mold['moldTemperature']),sim.params,dt)
+        sim.mold_conduction_loss+=float(q);mold_loss+=float(q);thermal_contacts+=int(tc)
     if source is not None:
         injected+=_inject_due_source(sim,source,sim.time)
     sim.validate()
     row=sim.metrics()
     row['moldContactCorrections']=corrections
     row['maxMoldCorrectionMeters']=maximum
+    row['moldThermalContacts']=int(thermal_contacts)
+    row['moldConductionLossThisAdvanceJ']=float(mold_loss)
     row['sourceParticlesInjectedThisAdvance']=int(injected)
     row['sourceParticlesRemaining']=int(len(source['releaseTime'])-source.get('cursor',0)) if source is not None else 0
     return row
