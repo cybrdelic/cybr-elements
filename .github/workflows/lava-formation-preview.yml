@@ -37,8 +37,8 @@ jobs:
           python work/element-motion/sigil_02_lava_continuum.py \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-formation/physics \
-            --formation pour --seconds 1.4 --fps 20 \
-            --samples-per-axis 2 --threads 2 --viscosity 38
+            --formation pour --seconds 2.4 --fps 20 \
+            --samples-per-axis 2 --threads 2 --viscosity 30
       - name: Reconstruct particle surfaces
         env:
           PYTHONPATH: work/element-motion
@@ -46,7 +46,7 @@ jobs:
           python work/element-motion/sigil_02_lava_surface.py \
             --run /tmp/lava-formation/physics \
             --out /tmp/lava-formation/surface \
-            --frames 28 --spacing .0075
+            --frames 48 --spacing .0075
       - name: Install Blender 4.5.3 LTS
         run: |
           curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
@@ -59,7 +59,7 @@ jobs:
             --surface /tmp/lava-formation/surface \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-formation/render \
-            --frames 28 --fps 20 --view formation \
+            --frames 48 --fps 20 --view formation \
             --resolution 768 432 --samples 20 --threads 2 --exposure 0
       - name: Encode video without interpolated frames
         run: |
@@ -76,9 +76,9 @@ jobs:
         run: |
           mkdir -p /tmp/lava-formation/review
           cp /tmp/lava-formation/render/frames/0000.png /tmp/lava-formation/review/
-          cp /tmp/lava-formation/render/frames/0010.png /tmp/lava-formation/review/
-          cp /tmp/lava-formation/render/frames/0018.png /tmp/lava-formation/review/
-          cp /tmp/lava-formation/render/frames/0027.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0012.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0028.png /tmp/lava-formation/review/
+          cp /tmp/lava-formation/render/frames/0047.png /tmp/lava-formation/review/
       - uses: actions/upload-artifact@v4
         with:
           name: lava-formation-preview
