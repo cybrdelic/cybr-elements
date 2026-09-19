@@ -36,7 +36,7 @@ class ShallowLavaConfig:
     pour_duration: float = 2.8
     inlet_stagger_seconds: float = 1.15
     feed_temperature: float = 1575.
-    feed_skin_temperature: float = 1390.
+    feed_skin_temperature: float = 1490.
     mold_temperature: float = 430.
     density: float = 2600.
     gravity: float = 9.81
@@ -45,12 +45,12 @@ class ShallowLavaConfig:
     solidus: float = 1250.
     liquidus: float = 1450.
     heat_capacity: float = 1200.
-    skin_thickness: float = .0018
-    skin_exchange_rate: float = .72
-    skin_reheat_rate: float = 2.2
-    bulk_cooling_rate: float = .055
+    skin_thickness: float = .0025
+    skin_exchange_rate: float = .20
+    skin_reheat_rate: float = 3.2
+    bulk_cooling_rate: float = .025
     surface_emissivity: float = .90
-    surface_tension_smoothing: float = .00055
+    surface_tension_smoothing: float = 0.
     max_mobility: float = .0045
     cfl: float = .18
     wet_epsilon: float = .00045
@@ -145,7 +145,7 @@ def _inlet_sources(mask, labels, inlets, xx, yy, dx, dy, target_volume, cfg):
         assigned_volume=target_volume*component_fraction/len(groups[comp])
         start=cfg.inlet_stagger_seconds*(row["arrival"]-amin)/span
         end=start+cfg.pour_duration
-        sigma=min(.012,max(.0045,row["clearance"]*.34))
+        sigma=min(.016,max(.0080,row["clearance"]*.48))
         r2=(xx-row["x"])**2+(yy-row["y"])**2
         weight=np.exp(-.5*r2/(sigma*sigma))*mask*(labels==comp)
         norm=float(weight.sum()*dx*dy)
@@ -251,19 +251,17 @@ def _step(h,bulk,skin,damage,mask,sources,t,dt,cfg):
     denergy=_divergence(ex,ey,cfg.dx,cfg.dy,h.shape)+src_e
 
     h_new=h+dt*dh
-    h_new=np.where(mask,np.clip(h_new,0.,cfg.max_depth),0.)
+    h_new=np.where(mask,np.maximum(h_new,0.),0.)
     energy_new=energy+dt*denergy
     bulk_new=np.where(h_new>cfg.wet_epsilon,
                       energy_new/np.maximum(h_new,1e-8),
                       cfg.mold_temperature)
     bulk_new=np.clip(bulk_new,cfg.mold_temperature,cfg.feed_temperature+60.)
 
-    if cfg.surface_tension_smoothing>0:
-        smooth=gaussian_filter(h_new,.55,mode="nearest")
-        h_new=np.where(mask,
-            h_new+cfg.surface_tension_smoothing*dt*(smooth-h_new)/(max(cfg.dx,cfg.dy)**2),
-            0.)
-        h_new=np.clip(h_new,0.,cfg.max_depth)
+    # No non-conservative post-blur is permitted here.  Earlier review builds
+    # blurred height across the signed-distance boundary, silently deleting
+    # most of the injected volume and diluting its heat.  The finite-volume
+    # flux above is the sole transport operator.
 
     flow=np.zeros_like(h_new)
     flow[:,:-1]+=np.abs(qx)
@@ -272,8 +270,13 @@ def _step(h,bulk,skin,damage,mask,sources,t,dt,cfg):
     flow[1:,:]+=np.abs(qy)
     flow/=np.maximum(h_new,1e-5)
 
+    added_depth=dt*src_h
+    fresh=(h<=cfg.wet_epsilon)&(h_new>cfg.wet_epsilon)
+    skin_seed=np.where(fresh,bulk_new,skin)
+    source_fraction=np.clip(added_depth/np.maximum(h_new,1e-8),0.,1.)
+    skin_seed=(1.-source_fraction)*skin_seed+source_fraction*cfg.feed_skin_temperature
     bulk_new,skin_new=_thermal_update(
-        h_new,bulk_new,skin,src_h,src_e,dt,mask,cfg,flow)
+        h_new,bulk_new,skin_seed,src_h,src_e,dt,mask,cfg,flow)
     damage_new=_thermal_shock_damage(damage,skin_new,flow,dt,cfg)
     return h_new,bulk_new,skin_new,damage_new,active,kmax
 
@@ -448,6 +451,8 @@ def metrics(state,t,cfg):
         "volumeM3":volume,
         "targetVolumeM3":target,
         "volumeRelativeToTarget":volume/max(target,1e-12),
+        "maximumDepthM":float(h.max()),
+        "meanWetDepthM":float(h[wet].mean()) if np.any(wet) else 0.,
         "scheduledInjectedVolumeM3":float(injected),
         "massBalanceRelative":float((volume-injected)/max(target,1e-12)),
         "wetCells":int(wet.sum()),
