@@ -35,8 +35,8 @@ class PourFormationConfig:
     tangent_speed: float = .055
     initial_down_speed: float = .38
     source_longitudinal_subdivisions: int = 3
-    skin_temperature: float = 1425.
-    core_temperature: float = 1750.
+    skin_temperature: float = 1320.
+    core_temperature: float = 1580.
     mold_contact_conductance: float = 2600.
     mold_temperature: float = 450.
     thermal_contact_band_fraction: float = .85
