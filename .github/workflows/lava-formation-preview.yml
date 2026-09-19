@@ -19,6 +19,10 @@ concurrency:
 
 jobs:
   formation-video:
+    # Disabled on the active lava-iteration branch so the expensive 100-frame
+    # preview cannot starve the fast verification render. Re-enable only after
+    # the fast material/formation review is accepted.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
