@@ -69,7 +69,64 @@ def wall_contact_heights(height,wall_cell):
     return np.where(h>=b,h,mapped)
 
 
-def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=.032,volume_tolerance=3e-4,contact_band=0.):
+def _sample_mold_xy(mold,xy):
+    xy=np.asarray(xy,np.float64)
+    scale=float(mold['stageScale']);center=float(mold['sourceCenterZ'])
+    lo=np.asarray(mold['lo'],np.float64);extent=np.asarray(mold['extent'],np.float64)
+    sdf=np.asarray(mold['sdf'],np.float64)
+    sx=xy[...,0]/scale
+    sy=xy[...,1]/scale+center
+    u=(sx-lo[0])/extent[0]*(sdf.shape[1]-1)
+    v=(sy-lo[2])/extent[2]*(sdf.shape[0]-1)
+    coords=np.vstack([v.ravel(),u.ravel()])
+    d=map_coordinates(sdf,coords,order=1,mode='nearest').reshape(u.shape)*scale
+    if 'gx' in mold and 'gz' in mold:
+        gx=map_coordinates(np.asarray(mold['gx'],np.float64),coords,order=1,mode='nearest').reshape(u.shape)
+        gy=map_coordinates(np.asarray(mold['gz'],np.float64),coords,order=1,mode='nearest').reshape(u.shape)
+    else:
+        gx=np.zeros_like(d);gy=np.zeros_like(d)
+    return d,gx,gy
+
+
+def _mask_density_against_mold(density,origin,spacing,mold):
+    """Prevent particle-kernel smoothing from leaking through solid glyph walls."""
+    if mold is None:return density
+    nx,ny,nz=density.shape
+    xs=origin[0]+np.arange(nx)*spacing
+    ys=origin[1]+np.arange(ny)*spacing
+    xx,yy=np.meshgrid(xs,ys,indexing='ij')
+    d,_,_=_sample_mold_xy(mold,np.stack([xx,yy],axis=-1))
+    margin=float(mold.get('margin',0.))
+    wall_top=float(mold['wallTop'])
+    # Keep a sub-cell transition so marching cubes terminates on the cavity
+    # boundary instead of producing a gap, but never allow density deep inside
+    # the solid mold.
+    width=max(spacing*.32,margin*.55,1e-6)
+    gate=np.clip((d+spacing*.08)/width,0.,1.)
+    gate=gate*gate*(3.-2.*gate)
+    zs=origin[2]+np.arange(nz)*spacing
+    below=zs<=wall_top+max(margin,spacing*.10)
+    result=density.copy()
+    result[:,:,below]*=gate[:,:,None]
+    return result
+
+
+def _constrain_vertices_to_mold(v,mold,spacing):
+    if mold is None:return v
+    v=np.asarray(v,np.float64).copy()
+    margin=float(mold.get('margin',0.));wall_top=float(mold['wallTop'])
+    d,gx,gy=_sample_mold_xy(mold,v[:,:2])
+    active=v[:,2]<=wall_top+max(margin,spacing*.18)
+    bad=active&(d<0.)
+    if np.any(bad):
+        length=np.maximum(np.hypot(gx[bad],gy[bad]),1e-12)
+        correction=(-d[bad]+spacing*.025)
+        v[bad,0]+=gx[bad]/length*correction
+        v[bad,1]+=gy[bad]/length*correction
+    return v
+
+
+def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=.032,volume_tolerance=3e-4,contact_band=0.,mold=None):
     x=np.asarray(snapshot['positions'],np.float64)
     volumes=np.asarray(snapshot['particleVolume']*snapshot['volumeRatio'],np.float64)
     if len(x)==0 or np.any(volumes<=0) or not np.isfinite(x).all():raise ValueError('Invalid particles')
@@ -79,7 +136,8 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
     origin=reference+low*spacing;shape=tuple((high-low+1).tolist())
     values=np.column_stack([snapshot['temperature'],snapshot['damage'],snapshot['rest']]).astype(np.float32)
     density,attrs=_splat(x,volumes,values,origin,spacing,shape)
-    density=gaussian_filter(density,.85,mode='constant')
+    density=gaussian_filter(density,.72 if mold is not None else .85,mode='constant')
+    density=_mask_density_against_mold(density,origin,spacing,mold)
     for c in range(values.shape[1]):
         attrs[...,c]=gaussian_filter(attrs[...,c],.85,mode='constant')/np.maximum(density,1e-14)
     target=float(volumes.sum())
@@ -98,7 +156,8 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
     v,f,level,raw=chosen
     coords=((v-origin)/spacing).T
     optical=np.column_stack([map_coordinates(attrs[...,c],coords,order=1,mode='nearest') for c in range(values.shape[1])])
-    v=smooth_mesh(v,f)
+    v=smooth_mesh(v,f,passes=1 if mold is not None else 2)
+    v=_constrain_vertices_to_mold(v,mold,spacing)
     height=np.maximum(v[:,2]-floor-.00005,0.)
     active=contact_band>0 and float(x[:,2].min())<=floor+2.5*contact_band
     if active:
@@ -114,6 +173,7 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
         candidate=v+normals*delta
         candidate[:,2]=np.maximum(candidate[:,2],floor+.00005)
         candidate[contact,2]=floor+.00005
+        candidate=_constrain_vertices_to_mold(candidate,mold,spacing)
         return candidate,mesh_volume(candidate,f)
     a=-spacing*.4;b=spacing*.4
     va,vola=offset_volume(a);vb,volb=offset_volume(b)
@@ -140,4 +200,5 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
         'contactVertices':int(contact.sum()),'physicsWallBandMeters':contact_band,'conformanceSupportMeters':2*contact_band,
         'maximumWallConformanceMeters':contact_displacement,'attributeTransport':'sample on particle-supported isosurface; carry through geometric corrections',
         'temperatureMinK':float(optical[:,0].min()),'temperatureMaxK':float(optical[:,0].max()),
+        'moldConstrained':bool(mold is not None),
         'frameTime':float(snapshot['time'])}
