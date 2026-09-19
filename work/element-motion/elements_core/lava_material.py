@@ -20,7 +20,7 @@ _VISIBLE_BAND_WIDTH = 60e-9
 # physical three-band radiance for audit, then map it into scene-linear shader
 # strength with one explicit conversion constant rather than letting AgX clip
 # raw W m^-2 sr^-1 values toward white.
-_SCENE_VISIBLE_RADIANCE_UNIT = 62.0
+_SCENE_VISIBLE_RADIANCE_UNIT = 18.0
 
 
 def smoothstep01(x):
@@ -78,12 +78,12 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     # Hot melt is viscous and optically rougher than polished glass. Raising
     # its roughness removes the plastic/white specular dots seen in the first
     # seconds while preserving the sharp cooled-obsidian response.
-    roughness = .31 * melt + .60 * transitional + .16 * obsidian + .12 * fracture
+    roughness = .40 * melt + .63 * transitional + .16 * obsidian + .12 * fracture
     roughness = np.clip(roughness, .12, .88)
-    coat = .018 * melt + .060 * transitional + .42 * obsidian * (1.0 - .55 * fracture)
+    coat = .004 * melt + .050 * transitional + .42 * obsidian * (1.0 - .55 * fracture)
     coat = np.clip(coat, .025, .46)
-    hot = np.array([.0060, .00135, .00030])
-    crust_color = np.array([.0046, .0031, .0020])
+    hot = np.array([.0017, .00042, .00012])
+    crust_color = np.array([.0028, .0019, .00125])
     # Keep the quenched phase black but not mirror-silver under the key lights.
     glass = np.array([.0016, .0023, .0038])
     base = (hot[None, :] * melt.reshape(-1, 1)
