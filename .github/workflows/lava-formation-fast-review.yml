@@ -33,14 +33,14 @@ jobs:
           python work/element-motion/sigil_02_lava_continuum.py \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-fast/physics --formation pour \
-            --seconds 1.0 --fps 16 --samples-per-axis 1 --threads 2 --viscosity 38
+            --seconds 1.75 --fps 16 --samples-per-axis 1 --threads 2 --viscosity 30
       - name: Reconstruct
         env:
           PYTHONPATH: work/element-motion
         run: |
           python work/element-motion/sigil_02_lava_surface.py \
             --run /tmp/lava-fast/physics --out /tmp/lava-fast/surface \
-            --frames 16 --spacing .011
+            --frames 28 --spacing .011
       - name: Install Blender
         run: |
           curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
@@ -51,7 +51,7 @@ jobs:
             --python work/element-motion/sigil_02_lava_continuum_render.py -- \
             --surface /tmp/lava-fast/surface \
             --source work/element-motion/sigil-02-v2/source.npz \
-            --out /tmp/lava-fast/render --frames 16 --fps 16 --view formation \
+            --out /tmp/lava-fast/render --frames 28 --fps 16 --view formation \
             --resolution 640 360 --samples 12 --threads 2 --exposure 0
       - name: Encode
         run: |
@@ -67,9 +67,9 @@ jobs:
           path: |
             /tmp/lava-fast/lava-formation-fast.mp4
             /tmp/lava-fast/render/frames/0000.png
-            /tmp/lava-fast/render/frames/0004.png
+            /tmp/lava-fast/render/frames/0016.png
             /tmp/lava-fast/render/frames/0008.png
-            /tmp/lava-fast/render/frames/0015.png
+            /tmp/lava-fast/render/frames/0027.png
             /tmp/lava-fast/physics/formation.json
             /tmp/lava-fast/physics/metrics.json
           if-no-files-found: error
