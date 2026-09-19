@@ -45,9 +45,12 @@ class ShallowLavaConfig:
 
     pour_duration: float = 4.15
     inlet_stagger_seconds: float = .78
-    source_sigma_min: float = .014
-    source_sigma_max: float = .031
-    source_sigma_clearance_scale: float = .82
+    source_sigma_min: float = .0065
+    source_sigma_max: float = .014
+    source_sigma_clearance_scale: float = .38
+    source_ramp_seconds: float = .26
+    impact_head: float = .012
+    impact_sigma_scale: float = 2.1
 
     feed_temperature: float = 1580.
     feed_skin_temperature: float = 1500.
@@ -80,8 +83,8 @@ class ShallowLavaConfig:
     max_dt: float = .006
     wet_epsilon: float = .00022
 
-    jet_radius: float = .0044
-    jet_visible_height: float = .026
+    jet_radius: float = .0032
+    jet_visible_height: float = .075
     jet_rings: int = 8
     jet_segments: int = 14
     impact_flare: float = 1.75
@@ -101,6 +104,8 @@ class ShallowLavaConfig:
             raise ValueError("invalid phase interval")
         if self.basal_slip_length < 0 or self.contact_line_mobility < 0 or self.max_mobility <= 0:
             raise ValueError("invalid shallow mobility")
+        if self.source_ramp_seconds < 0 or self.impact_head < 0 or self.impact_sigma_scale <= 0:
+            raise ValueError("invalid inlet impact controls")
         if not 0 < self.cfl <= .25 or self.max_dt <= 0:
             raise ValueError("invalid explicit stability controls")
         if self.jet_rings < 3 or self.jet_segments < 8:
@@ -209,15 +214,22 @@ def _inlet_sources(mask,labels,inlets,xx,yy,dx,dy,target_depth,cfg):
         if norm<=0:
             raise RuntimeError("empty inlet support")
         shape=weight/norm
+        impact_sigma=sigma*cfg.impact_sigma_scale
+        impact=np.exp(-.5*r2/(impact_sigma*impact_sigma))*(labels==comp)
+        ramp=min(cfg.source_ramp_seconds,cfg.pour_duration*.45)
+        envelope_integral=max(cfg.pour_duration-ramp,1e-8)
         sources.append({
             **row,
             "territoryCells":cells,
             "territoryTargetVolumeM3":float(assigned_volume),
             "start":float(start),"end":float(end),
             "assignedVolumeM3":float(assigned_volume),
-            "flowRateM3s":float(assigned_volume/cfg.pour_duration),
+            "flowRateM3s":float(assigned_volume/envelope_integral),
             "sigma":float(sigma),
+            "impactSigma":float(impact_sigma),
+            "rampSeconds":float(ramp),
             "shape":shape.astype(np.float64),
+            "impact":impact.astype(np.float64),
         })
     return sources
 
@@ -239,7 +251,7 @@ def _effective_viscosity(bulk,skin,cfg):
     return mu*(1.+2.5*skin_crust**3),flow_temperature
 
 
-def _axis_flux(h0,h1,bulk0,bulk1,skin0,skin1,valid,delta,cfg):
+def _axis_flux(h0,h1,bulk0,bulk1,skin0,skin1,head0,head1,valid,delta,cfg):
     hface=.5*(h0+h1)
     bulk=.5*(bulk0+bulk1)
     skin=.5*(skin0+skin1)
@@ -259,7 +271,7 @@ def _axis_flux(h0,h1,bulk0,bulk1,skin0,skin1,valid,delta,cfg):
     front_weight=np.exp(-hface/max(cfg.target_depth*.42,1e-6))
     mobility+=cfg.contact_line_mobility*front_weight*melt*melt
 
-    grad=(h1-h0)/delta
+    grad=(head1-head0)/delta
     tau=cfg.density*cfg.gravity*hm*np.abs(grad)
     yield_stress=cfg.yield_stress_hot+(
         cfg.yield_stress_cold-cfg.yield_stress_hot)*crust*crust
@@ -272,13 +284,16 @@ def _axis_flux(h0,h1,bulk0,bulk1,skin0,skin1,valid,delta,cfg):
     return q,mobility
 
 
-def _face_fluxes(h,bulk,skin,mask,dx,dy,cfg):
+def _face_fluxes(h,bulk,skin,mask,dx,dy,cfg,impact=None):
+    head=h if impact is None else h+impact
     qx,kx=_axis_flux(
         h[:,:-1],h[:,1:],bulk[:,:-1],bulk[:,1:],
-        skin[:,:-1],skin[:,1:],mask[:,:-1]&mask[:,1:],dx,cfg)
+        skin[:,:-1],skin[:,1:],head[:,:-1],head[:,1:],
+        mask[:,:-1]&mask[:,1:],dx,cfg)
     qy,ky=_axis_flux(
         h[:-1,:],h[1:,:],bulk[:-1,:],bulk[1:,:],
-        skin[:-1,:],skin[1:,:],mask[:-1,:]&mask[1:,:],dy,cfg)
+        skin[:-1,:],skin[1:,:],head[:-1,:],head[1:,:],
+        mask[:-1,:]&mask[1:,:],dy,cfg)
     return qx,qy,float(max(kx.max(initial=0.),ky.max(initial=0.)))
 
 
@@ -297,17 +312,50 @@ def _advected_scalar_flux(qx,qy,value):
     return qx*tx,qy*ty
 
 
+def _source_envelope(src,t):
+    if not src["start"]<=t<src["end"]:
+        return 0.
+    u=t-src["start"]
+    remaining=src["end"]-t
+    ramp=float(src.get("rampSeconds",0.))
+    if ramp<=1e-12:
+        return 1.
+    a=_smoothstep(min(1.,u/ramp))
+    b=_smoothstep(min(1.,remaining/ramp))
+    return float(min(a,b))
+
+
+def _source_envelope_integral(src,t):
+    start,end=float(src["start"]),float(src["end"])
+    if t<=start:return 0.
+    D=end-start
+    u=min(max(t-start,0.),D)
+    r=min(float(src.get("rampSeconds",0.)),D*.45)
+    if r<=1e-12:return u
+    primitive=lambda x:x**3-.5*x**4
+    total=D-r
+    if u<=r:
+        return r*primitive(u/r)
+    if u<=D-r:
+        return .5*r+(u-r)
+    v=(D-u)/r
+    return total-r*primitive(v)
+
+
 def _active_source_fields(t,sources,shape,cfg):
     depth_rate=np.zeros(shape,np.float64)
     heat_rate=np.zeros(shape,np.float64)
+    impact=np.zeros(shape,np.float64)
     active=[]
     for i,src in enumerate(sources):
-        if src["start"]<=t<src["end"]:
-            local=src["flowRateM3s"]*src["shape"]
+        envelope=_source_envelope(src,t)
+        if envelope>0.:
+            local=src["flowRateM3s"]*envelope*src["shape"]
             depth_rate+=local
             heat_rate+=local*cfg.feed_temperature
+            impact+=cfg.impact_head*envelope*src["impact"]
             active.append(i)
-    return depth_rate,heat_rate,active
+    return depth_rate,heat_rate,impact,active
 
 
 def _redistribute_overflow(h,labels,limit,energy=None,sweeps=4):
@@ -462,8 +510,8 @@ def _thermal_shock_damage(damage,old_skin,new_skin,flow_activity,wall_factor,dt,
 
 
 def _step(h,bulk,skin,damage,mask,labels,wall_factor,sources,t,dt,cfg):
-    qx,qy,kmax=_face_fluxes(h,bulk,skin,mask,cfg.dx,cfg.dy,cfg)
-    src_h,src_e,active=_active_source_fields(t,sources,h.shape,cfg)
+    src_h,src_e,impact,active=_active_source_fields(t,sources,h.shape,cfg)
+    qx,qy,kmax=_face_fluxes(h,bulk,skin,mask,cfg.dx,cfg.dy,cfg,impact=impact)
 
     dh=_divergence(qx,qy,cfg.dx,cfg.dy,h.shape)+src_h
     energy=h*bulk
@@ -696,7 +744,7 @@ def advance_state(state,t0,t1,cfg):
             state["mask"],state["labels"],state["wallFactor"],
             state["sources"],t,dt,cfg)
         t+=dt
-    _,_,active=_active_source_fields(
+    _,_,_,active=_active_source_fields(
         t1,state["sources"],state["h"].shape,cfg)
     return active
 
@@ -713,7 +761,7 @@ def metrics(state,t,cfg):
     obsidian=_smoothstep(np.clip((cfg.solidus-skin)/220.,0.,1.))
 
     injected=sum(
-        src["flowRateM3s"]*max(0.,min(t,src["end"])-src["start"])
+        src["flowRateM3s"]*_source_envelope_integral(src,t)
         for src in state["sources"])
 
     cavity_cells=int(np.count_nonzero(state["mask"]))
