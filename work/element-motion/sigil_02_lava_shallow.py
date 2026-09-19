@@ -37,12 +37,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source',type=Path,default=DEFAULT_SOURCE)
     p.add_argument('--out',type=Path,required=True)
-    p.add_argument('--seconds',type=float,default=6.0)
+    p.add_argument('--seconds',type=float,default=7.5)
     p.add_argument('--fps',type=int,default=12)
-    p.add_argument('--nx',type=int,default=224)
-    p.add_argument('--ny',type=int,default=112)
-    p.add_argument('--pour-duration',type=float,default=2.8)
-    p.add_argument('--target-depth',type=float,default=.043)
+    p.add_argument('--nx',type=int,default=256)
+    p.add_argument('--ny',type=int,default=128)
+    p.add_argument('--pour-duration',type=float,default=4.15)
+    p.add_argument('--target-depth',type=float,default=.041)
     a=p.parse_args()
     a.source=ensure_source(a.source)
     frames=round(a.seconds*a.fps)
@@ -50,26 +50,26 @@ def main():
         raise ValueError('seconds*fps must be an integer >=2')
 
     formation=PourFormationConfig(
-        main_nozzles=5,
-        nozzle_bottom=.165,
+        main_nozzles=7,
+        nozzle_bottom=.105,
         inlet_speed=.34,
         inlet_stagger_scale=.55,
         tangent_speed=.055,
         initial_down_speed=.38,
-        skin_temperature=1320.,
+        skin_temperature=1450.,
         core_temperature=1580.,
     )
     cfg=ShallowLavaConfig(nx=a.nx,ny=a.ny,pour_duration=a.pour_duration,target_depth=a.target_depth)
     state=initialize(a.source,formation,cfg)
 
     settings={
-        'solver':'CPU conservative depth-averaged viscous lubrication flow',
+        'solver':'CPU conservative thermal shallow lava with yield + basal-slip closure',
         'config':cfg.manifest(),
         'fps':a.fps,'frames':frames,
         'floor':cfg.floor,
         'formationMode':'pour',
         'formation':formation.manifest(),
-        'model':'signed-distance no-flux cavity + localized volumetric inlets + conservative heat transport + cooling skin',
+        'model':'capacity-balanced localized inlets + conservative pressure-driven channel flow + hot-bulk/cooling-skin rheology + wall-biased quench',
         'noTargetPositionForces':True,
         'noImageGeneration':True,
         'noFrameInterpolation':True,
@@ -151,7 +151,7 @@ def main():
         'elapsedSeconds':time.perf_counter()-wall,
         'noImageGeneration':True,'noFrameInterpolation':True,
         'limits':[
-            'depth-averaged shallow-flow approximation',
+            'depth-averaged non-Newtonian shallow-flow approximation',
             'surface-skin thermal model rather than resolved 3D crust thickness',
             'rigid mold; no two-way thermoelastic mold deformation',
         ],
