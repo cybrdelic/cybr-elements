@@ -78,14 +78,14 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     # Hot melt is viscous and optically rougher than polished glass. Raising
     # its roughness removes the plastic/white specular dots seen in the first
     # seconds while preserving the sharp cooled-obsidian response.
-    roughness = .40 * melt + .63 * transitional + .16 * obsidian + .12 * fracture
+    roughness = .38 * melt + .66 * transitional + .22 * obsidian + .10 * fracture
     roughness = np.clip(roughness, .12, .88)
-    coat = .004 * melt + .050 * transitional + .42 * obsidian * (1.0 - .55 * fracture)
-    coat = np.clip(coat, .025, .46)
+    coat = .002 * melt + .035 * transitional + .22 * obsidian * (1.0 - .60 * fracture)
+    coat = np.clip(coat, .0, .26)
     hot = np.array([.0017, .00042, .00012])
     crust_color = np.array([.0028, .0019, .00125])
     # Keep the quenched phase black but not mirror-silver under the key lights.
-    glass = np.array([.0016, .0023, .0038])
+    glass = np.array([.0011, .00125, .00145])
     base = (hot[None, :] * melt.reshape(-1, 1)
             + crust_color[None, :] * transitional.reshape(-1, 1)
             + glass[None, :] * obsidian.reshape(-1, 1))
