@@ -66,6 +66,7 @@ def build_lava_material():
  coat=attribute(nodes,'coatWeight')
  thermal=attribute(nodes,'thermalColor')
  thermal_strength=attribute(nodes,'thermalStrength')
+ temperature=attribute(nodes,'temperature')
  rest=attribute(nodes,'materialCoordinates')
  fracture=attribute(nodes,'fracturePotential')
  crust=attribute(nodes,'crustAmount')
@@ -73,7 +74,9 @@ def build_lava_material():
  obsidian=attribute(nodes,'obsidianAmount')
  melt=attribute(nodes,'meltAmount')
  links.new(base.outputs['Color'],p.inputs['Base Color'])
- links.new(thermal.outputs['Color'],p.inputs['Emission Color'])
+ blackbody=nodes.new('ShaderNodeBlackbody');blackbody.label='temperature-derived blackbody chroma'
+ links.new(temperature.outputs['Fac'],blackbody.inputs['Temperature'])
+ links.new(blackbody.outputs['Color'],p.inputs['Emission Color'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
  macro.inputs['Scale'].default_value=23.;macro.inputs['Detail'].default_value=5.2
@@ -85,10 +88,10 @@ def build_lava_material():
  links.new(rest.outputs['Vector'],micro.inputs['Vector'])
 
  cells=nodes.new('ShaderNodeTexVoronoi');cells.voronoi_dimensions='3D';cells.feature='DISTANCE_TO_EDGE';cells.distance='EUCLIDEAN'
- cells.label='damage-gated sub-grid crust edges';cells.inputs['Scale'].default_value=39.
+ cells.label='damage-gated sub-grid crust edges';cells.inputs['Scale'].default_value=18.
  links.new(rest.outputs['Vector'],cells.inputs['Vector'])
  edge=nodes.new('ShaderNodeMapRange');edge.clamp=True;edge.interpolation_type='SMOOTHERSTEP';edge.label='thin cellular edges'
- edge.inputs['From Min'].default_value=.012;edge.inputs['From Max'].default_value=.095
+ edge.inputs['From Min'].default_value=.010;edge.inputs['From Max'].default_value=.052
  edge.inputs['To Min'].default_value=1.;edge.inputs['To Max'].default_value=0.
  links.new(cells.outputs['Distance'],edge.inputs['Value'])
  fracture_edge=math_node(nodes,'MULTIPLY',label='resolved damage × sub-grid edge')
@@ -96,7 +99,7 @@ def build_lava_material():
 
  # Cooling crust is optically opaque: thermal radiance is visible through
  # resolved melt and re-opens locally along damage-gated fissures.
- fissure_glow=math_node(nodes,'MULTIPLY',b=.34,label='fissure thermal reveal')
+ fissure_glow=math_node(nodes,'MULTIPLY',b=.82,label='fissure thermal reveal')
  links.new(fracture_edge.outputs[0],fissure_glow.inputs[0])
  glow_floor=math_node(nodes,'ADD',a=.004,label='minimum subsurface leak')
  links.new(fissure_glow.outputs[0],glow_floor.inputs[1])
@@ -106,20 +109,20 @@ def build_lava_material():
  # much skin is present; transported noise only distributes that resolved amount
  # into irregular islands. It never creates a hidden hot region or motion field.
  skin_noise=nodes.new('ShaderNodeTexNoise');skin_noise.noise_dimensions='3D';skin_noise.label='resolved-crust island distribution'
- skin_noise.inputs['Scale'].default_value=17.;skin_noise.inputs['Detail'].default_value=3.2
+ skin_noise.inputs['Scale'].default_value=8.5;skin_noise.inputs['Detail'].default_value=2.6
  skin_noise.inputs['Roughness'].default_value=.63;skin_noise.inputs['Distortion'].default_value=.11
  links.new(rest.outputs['Vector'],skin_noise.inputs['Vector'])
  skin_shape=nodes.new('ShaderNodeMapRange');skin_shape.clamp=True;skin_shape.interpolation_type='SMOOTHERSTEP'
- skin_shape.inputs['From Min'].default_value=.38;skin_shape.inputs['From Max'].default_value=.66
+ skin_shape.inputs['From Min'].default_value=.42;skin_shape.inputs['From Max'].default_value=.58
  skin_shape.inputs['To Min'].default_value=0.;skin_shape.inputs['To Max'].default_value=1.
  links.new(skin_noise.outputs['Fac'],skin_shape.inputs['Value'])
- crust_gain=math_node(nodes,'MULTIPLY',b=2.4,label='resolved crust coverage gain')
+ crust_gain=math_node(nodes,'MULTIPLY',b=3.7,label='resolved crust coverage gain')
  links.new(crust.outputs['Fac'],crust_gain.inputs[0])
  skin_raw=math_node(nodes,'MULTIPLY',label='resolved crust × island distribution')
  links.new(crust_gain.outputs[0],skin_raw.inputs[0]);links.new(skin_shape.outputs['Result'],skin_raw.inputs[1])
  skin_clamp=nodes.new('ShaderNodeClamp');skin_clamp.inputs['Min'].default_value=0.;skin_clamp.inputs['Max'].default_value=1.
  links.new(skin_raw.outputs[0],skin_clamp.inputs['Value'])
- skin_cut=math_node(nodes,'MULTIPLY',b=-.82,label='opaque cooling skin')
+ skin_cut=math_node(nodes,'MULTIPLY',b=-.94,label='opaque cooling skin')
  links.new(skin_clamp.outputs['Result'],skin_cut.inputs[0])
  skin_keep=math_node(nodes,'ADD',a=1.,label='thermal visibility through broken skin')
  links.new(skin_cut.outputs[0],skin_keep.inputs[1])
@@ -140,9 +143,12 @@ def build_lava_material():
  links.new(crust.outputs['Fac'],macro_gate.inputs['Fac']);links.new(macro_gain.outputs['Result'],macro_gate.inputs[2])
  base_mod=nodes.new('ShaderNodeMixRGB');base_mod.blend_type='MULTIPLY';base_mod.inputs['Fac'].default_value=1.
  links.new(base.outputs['Color'],base_mod.inputs[1]);links.new(macro_gate.outputs['Color'],base_mod.inputs[2])
+ skin_albedo=nodes.new('ShaderNodeMixRGB');skin_albedo.blend_type='MULTIPLY';skin_albedo.label='dark crust plate albedo'
+ links.new(skin_clamp.outputs['Result'],skin_albedo.inputs['Fac']);links.new(base_mod.outputs['Color'],skin_albedo.inputs[1])
+ skin_albedo.inputs[2].default_value=(.12,.13,.14,1.)
  fracture_dark=nodes.new('ShaderNodeMixRGB');fracture_dark.blend_type='MULTIPLY'
- links.new(fracture_edge.outputs[0],fracture_dark.inputs['Fac']);links.new(base_mod.outputs['Color'],fracture_dark.inputs[1])
- fracture_dark.inputs[2].default_value=(.022,.015,.010,1.)
+ links.new(fracture_edge.outputs[0],fracture_dark.inputs['Fac']);links.new(skin_albedo.outputs['Color'],fracture_dark.inputs[1])
+ fracture_dark.inputs[2].default_value=(.020,.012,.006,1.)
  links.new(fracture_dark.outputs['Color'],p.inputs['Base Color'])
 
  micro_center=math_node(nodes,'SUBTRACT',b=.5,label='micro centered');links.new(micro.outputs['Fac'],micro_center.inputs[0])
@@ -155,11 +161,11 @@ def build_lava_material():
  links.new(rough_total.outputs[0],rough_clamp.inputs['Value']);links.new(rough_clamp.outputs['Result'],p.inputs['Roughness'])
 
  ripple=nodes.new('ShaderNodeTexNoise');ripple.noise_dimensions='3D';ripple.label='viscous molten surface ripple'
- ripple.inputs['Scale'].default_value=68.;ripple.inputs['Detail'].default_value=2.1
+ ripple.inputs['Scale'].default_value=46.;ripple.inputs['Detail'].default_value=2.0
  ripple.inputs['Roughness'].default_value=.52;ripple.inputs['Distortion'].default_value=.10
  links.new(rest.outputs['Vector'],ripple.inputs['Vector'])
  ripple_bump=nodes.new('ShaderNodeBump');ripple_bump.label='melt-only ripple normal';ripple_bump.inputs['Distance'].default_value=.00080
- ripple_strength=math_node(nodes,'MULTIPLY',a=.14,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
+ ripple_strength=math_node(nodes,'MULTIPLY',a=.10,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
  links.new(ripple.outputs['Fac'],ripple_bump.inputs['Height'])
 
  macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.24;macro_bump.inputs['Distance'].default_value=.0022
