@@ -33,14 +33,14 @@ jobs:
           python work/element-motion/sigil_02_lava_continuum.py \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-fast/physics --formation pour \
-            --seconds 1.75 --fps 16 --samples-per-axis 1 --threads 2 --viscosity 30
+            --seconds 1.85 --fps 12 --samples-per-axis 1 --threads 2 --viscosity 30
       - name: Reconstruct
         env:
           PYTHONPATH: work/element-motion
         run: |
           python work/element-motion/sigil_02_lava_surface.py \
             --run /tmp/lava-fast/physics --out /tmp/lava-fast/surface \
-            --frames 28 --spacing .011
+            --frames 22 --spacing .011
       - name: Install Blender
         run: |
           curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
@@ -51,13 +51,13 @@ jobs:
             --python work/element-motion/sigil_02_lava_continuum_render.py -- \
             --surface /tmp/lava-fast/surface \
             --source work/element-motion/sigil-02-v2/source.npz \
-            --out /tmp/lava-fast/render --frames 28 --fps 16 --view formation \
-            --resolution 640 360 --samples 12 --threads 2 --exposure 0
+            --out /tmp/lava-fast/render --frames 22 --fps 12 --view formation \
+            --resolution 512 288 --samples 6 --threads 2 --exposure 0
       - name: Encode
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-          ffmpeg -hide_banner -loglevel error -y -framerate 16 \
+          ffmpeg -hide_banner -loglevel error -y -framerate 12 \
             -i /tmp/lava-fast/render/frames/%04d.png \
             -c:v libx264 -preset medium -crf 17 -pix_fmt yuv420p -movflags +faststart \
             /tmp/lava-fast/lava-formation-fast.mp4
@@ -67,9 +67,9 @@ jobs:
           path: |
             /tmp/lava-fast/lava-formation-fast.mp4
             /tmp/lava-fast/render/frames/0000.png
-            /tmp/lava-fast/render/frames/0016.png
-            /tmp/lava-fast/render/frames/0008.png
-            /tmp/lava-fast/render/frames/0027.png
+            /tmp/lava-fast/render/frames/0013.png
+            /tmp/lava-fast/render/frames/0006.png
+            /tmp/lava-fast/render/frames/0021.png
             /tmp/lava-fast/physics/formation.json
             /tmp/lava-fast/physics/metrics.json
           if-no-files-found: error
