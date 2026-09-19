@@ -129,7 +129,7 @@ def main():
         ]
         t=target
         mesh=build_surface_mesh(
-            state['h'],state['skin'],state['damage'],state['mask'],
+            state['h'],state['skin'],state['bulk'],state['damage'],state['mask'],
             state['xs'],state['ys'],active,state['sources'],t,cfg,formation,
             tangent_x=state['tangentX'],tangent_y=state['tangentY'],
         )
