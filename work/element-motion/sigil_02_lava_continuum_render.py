@@ -57,7 +57,8 @@ def math_node(nodes,operation,a=None,b=None,label=None):
 def build_lava_material():
  lava,p=principled('Thermal continuum / resolved state + material-coordinate crust')
  p.inputs['Metallic'].default_value=0.
- p.inputs['IOR'].default_value=1.48
+ p.inputs['IOR'].default_value=1.52
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.56
  p.inputs['Coat Roughness'].default_value=.18
  nodes=lava.node_tree.nodes;links=lava.node_tree.links
  base=attribute(nodes,'baseColor')
@@ -95,7 +96,7 @@ def build_lava_material():
 
  # Cooling crust is optically opaque: thermal radiance is visible through
  # resolved melt and re-opens locally along damage-gated fissures.
- fissure_glow=math_node(nodes,'MULTIPLY',b=.46,label='fissure thermal reveal')
+ fissure_glow=math_node(nodes,'MULTIPLY',b=.34,label='fissure thermal reveal')
  links.new(fracture_edge.outputs[0],fissure_glow.inputs[0])
  glow_floor=math_node(nodes,'ADD',a=.004,label='minimum subsurface leak')
  links.new(fissure_glow.outputs[0],glow_floor.inputs[1])
@@ -129,9 +130,9 @@ def build_lava_material():
  rough_clamp=nodes.new('ShaderNodeClamp');rough_clamp.inputs['Min'].default_value=.16;rough_clamp.inputs['Max'].default_value=.98
  links.new(rough_total.outputs[0],rough_clamp.inputs['Value']);links.new(rough_clamp.outputs['Result'],p.inputs['Roughness'])
 
- macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.28;macro_bump.inputs['Distance'].default_value=.0032
+ macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.24;macro_bump.inputs['Distance'].default_value=.0022
  links.new(macro.outputs['Fac'],macro_bump.inputs['Height'])
- macro_strength=math_node(nodes,'MULTIPLY',a=.44,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
+ macro_strength=math_node(nodes,'MULTIPLY',a=.38,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
  micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Distance'].default_value=.00048
  micro_bump_strength=math_node(nodes,'MULTIPLY',a=.16,label='crust-gated grain relief');links.new(relief.outputs['Fac'],micro_bump_strength.inputs[1]);links.new(micro_bump_strength.outputs[0],micro_bump.inputs['Strength'])
  links.new(micro.outputs['Fac'],micro_bump.inputs['Height']);links.new(macro_bump.outputs['Normal'],micro_bump.inputs['Normal'])
@@ -145,7 +146,7 @@ def build_lava_material():
  pit_gate=math_node(nodes,'MULTIPLY',label='phase-gated vesicles');links.new(relief.outputs['Fac'],pit_gate.inputs[0]);links.new(pit.outputs['Result'],pit_gate.inputs[1])
  pit_bump=nodes.new('ShaderNodeBump');pit_bump.label='quenched vesicle depressions';pit_bump.invert=True;pit_bump.inputs['Strength'].default_value=.38;pit_bump.inputs['Distance'].default_value=.00105
  links.new(pit_gate.outputs[0],pit_bump.inputs['Height']);links.new(micro_bump.outputs['Normal'],pit_bump.inputs['Normal'])
- fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.62;fissure_bump.inputs['Distance'].default_value=.0017
+ fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.86;fissure_bump.inputs['Distance'].default_value=.00125
  links.new(fracture_edge.outputs[0],fissure_bump.inputs['Height']);links.new(pit_bump.outputs['Normal'],fissure_bump.inputs['Normal']);links.new(fissure_bump.outputs['Normal'],p.inputs['Normal'])
  crack_coat=math_node(nodes,'MULTIPLY',a=-.82,label='coat loss in fissures');links.new(fracture_edge.outputs[0],crack_coat.inputs[1])
  coat_keep=math_node(nodes,'ADD',a=1.,label='fissure coat mask');links.new(crack_coat.outputs[0],coat_keep.inputs[1])
@@ -211,7 +212,7 @@ def build_mold(source,formation,floor_height,mold_path=None):
  me=bpy.data.meshes.new('Basalt glyph mold');me.from_pydata(verts.tolist(),[],faces.tolist());me.update()
  obj=bpy.data.objects.new('Basalt glyph mold',me);bpy.context.collection.objects.link(obj)
  material,p=principled('Basalt mold / closed cavity geometry')
- p.inputs['Base Color'].default_value=(.024,.028,.034,1);p.inputs['Roughness'].default_value=.72;p.inputs['IOR'].default_value=1.52
+ p.inputs['Base Color'].default_value=(.050,.056,.066,1);p.inputs['Roughness'].default_value=.80;p.inputs['IOR'].default_value=1.52
  if 'Coat Weight' in p.inputs:p.inputs['Coat Weight'].default_value=.025
  nodes=material.node_tree.nodes;links=material.node_tree.links
  tc=nodes.new('ShaderNodeTexCoord');noise=nodes.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=82;noise.inputs['Detail'].default_value=3.6;noise.inputs['Roughness'].default_value=.68
@@ -236,22 +237,23 @@ def main():
  s.render.fps=a.fps;s.render.film_transparent=False
  s.view_settings.view_transform='AgX';s.view_settings.look='AgX - Medium High Contrast';s.view_settings.exposure=a.exposure
  s.world=bpy.data.worlds.new('Dim neutral studio');s.world.use_nodes=True
- bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.045,.050,.060,1);bg.inputs['Strength'].default_value=.026 if formation_mode=='pour' else .035
+ bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.052,.058,.070,1);bg.inputs['Strength'].default_value=.036 if formation_mode=='pour' else .040
  bpy.ops.object.camera_add();camera=bpy.context.object;s.camera=camera
  view=('formation' if formation_mode=='pour' else 'oblique') if a.view=='auto' else a.view
  target=(0.,0.,.10 if view=='formation' else .335)
- positions={'formation':(.55,-1.15,1.75),'oblique':(.82,-2.65,1.03),'front':(0.,-3.,.5),'overhead':(.62,-1.75,1.8)}
+ positions={'formation':(.48,-1.30,1.95),'oblique':(.82,-2.65,1.03),'front':(0.,-3.,.5),'overhead':(.62,-1.75,1.8)}
  camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
  camera.data.type='ORTHO';camera.data.ortho_scale=1.52 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
  if view=='formation':
-  area('Large neutral key',(-.55,-.55,1.35),8.5,(.88,.91,1.),1.55,target)
-  area('Grazing rim',(.65,.45,.95),12.0,(.80,.86,.98),1.15,target)
-  area('Soft front fill',(-.25,-.8,.45),2.2,(1.,.84,.70),1.65,target)
+  area('Large neutral key',(-.62,-.70,1.55),13.0,(.90,.93,1.),1.75,target)
+  area('Long grazing rim',(.72,.62,.72),20.0,(.76,.84,1.),1.05,target)
+  area('Soft warm fill',(-.20,-.92,.55),4.5,(1.,.84,.68),1.80,target)
+  area('Obsidian edge kicker',(.18,.48,.42),7.0,(.72,.82,1.),.65,target)
  else:
   area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
   area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
   area('Soft front fill',(-.3,-1.,.55),9,(1.,.90,.78),1.35,target)
- floor,fp=principled('Fine basalt stage');fp.inputs['Base Color'].default_value=(.012,.014,.017,1);fp.inputs['Roughness'].default_value=.82
+ floor,fp=principled('Fine basalt stage');fp.inputs['Base Color'].default_value=(.018,.021,.027,1);fp.inputs['Roughness'].default_value=.86
  n=floor.node_tree.nodes;l=floor.node_tree.links
  tc=n.new('ShaderNodeTexCoord');noise=n.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=95;noise.inputs['Detail'].default_value=4
  l.new(tc.outputs['Object'],noise.inputs['Vector']);bump=n.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.21;bump.inputs['Distance'].default_value=.0014
