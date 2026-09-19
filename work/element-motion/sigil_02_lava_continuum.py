@@ -57,8 +57,18 @@ def main():
   formation_report['initialInjectedParticles']=initial_end
   formation_report['totalSourceParticles']=int(len(source['releaseTime']))
   mold_mesh,mold_report=build_mold_mesh(a.source,c,formation)
-  atomic_npz(a.out/'mold.npz',**mold_mesh)
+  # Persist the analytic contact field alongside display geometry so the
+  # particle-surface reconstructor can respect solid cavity walls instead of
+  # Gaussian-smoothing fluid density through them.
+  mold_archive=dict(mold_mesh)
+  mold_archive.update(
+    sdf=mold['sdf'],gx=mold['gx'],gz=mold['gz'],lo=mold['lo'],extent=mold['extent'],
+    stageScale=np.float64(mold['stageScale']),sourceCenterZ=np.float64(mold['sourceCenterZ']),
+    wallTop=np.float64(mold['wallTop']),margin=np.float64(mold['margin']),
+    friction=np.float64(mold['friction']))
+  atomic_npz(a.out/'mold.npz',**mold_archive)
   formation_report['moldMesh']=mold_report
+  formation_report['moldArchiveContainsContactField']=True
   atomic_json(a.out/'formation.json',formation_report)
   run.receipt('mold',[a.out/'mold.npz'],kind='rigid basalt cavity')
  else:
