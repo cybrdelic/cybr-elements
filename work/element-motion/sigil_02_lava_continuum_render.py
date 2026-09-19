@@ -67,6 +67,8 @@ def build_lava_material():
  thermal=attribute(nodes,'thermalColor')
  thermal_strength=attribute(nodes,'thermalStrength')
  temperature=attribute(nodes,'temperature')
+ bulk_temperature=attribute(nodes,'bulkTemperature')
+ bulk_thermal_strength=attribute(nodes,'bulkThermalStrength')
  rest=attribute(nodes,'materialCoordinates')
  fracture=attribute(nodes,'fracturePotential')
  crust=attribute(nodes,'crustAmount')
@@ -74,13 +76,37 @@ def build_lava_material():
  obsidian=attribute(nodes,'obsidianAmount')
  melt=attribute(nodes,'meltAmount')
  links.new(base.outputs['Color'],p.inputs['Base Color'])
- blackbody=nodes.new('ShaderNodeBlackbody');blackbody.label='temperature-derived blackbody chroma'
- links.new(temperature.outputs['Fac'],blackbody.inputs['Temperature'])
- blackbody_camera=nodes.new('ShaderNodeMixRGB');blackbody_camera.blend_type='MULTIPLY';blackbody_camera.label='camera-response saturated incandescence'
- blackbody_camera.inputs['Fac'].default_value=1.
- links.new(blackbody.outputs['Color'],blackbody_camera.inputs[1])
- blackbody_camera.inputs[2].default_value=(1.0,.46,.14,1.)
- links.new(blackbody_camera.outputs['Color'],p.inputs['Emission Color'])
+ skin_temp_range=nodes.new('ShaderNodeMapRange');skin_temp_range.clamp=True;skin_temp_range.label='skin temperature camera response'
+ skin_temp_range.inputs['From Min'].default_value=1050.;skin_temp_range.inputs['From Max'].default_value=1600.
+ skin_temp_range.inputs['To Min'].default_value=0.;skin_temp_range.inputs['To Max'].default_value=1.
+ links.new(temperature.outputs['Fac'],skin_temp_range.inputs['Value'])
+ skin_color=nodes.new('ShaderNodeValToRGB');skin_color.label='lava incandescent skin chroma'
+ skin_color.color_ramp.interpolation='EASE'
+ se0=skin_color.color_ramp.elements[0];se0.position=0.;se0.color=(.015,0.,0.,1.)
+ se1=skin_color.color_ramp.elements[1];se1.position=1.;se1.color=(1.,.52,.035,1.)
+ se2=skin_color.color_ramp.elements.new(.38);se2.color=(.19,.004,0.,1.)
+ se3=skin_color.color_ramp.elements.new(.68);se3.color=(.78,.085,.0015,1.)
+ se4=skin_color.color_ramp.elements.new(.84);se4.color=(1.,.29,.007,1.)
+ links.new(skin_temp_range.outputs['Result'],skin_color.inputs['Fac'])
+
+ bulk_temp_range=nodes.new('ShaderNodeMapRange');bulk_temp_range.clamp=True;bulk_temp_range.label='bulk temperature camera response'
+ bulk_temp_range.inputs['From Min'].default_value=1050.;bulk_temp_range.inputs['From Max'].default_value=1625.
+ bulk_temp_range.inputs['To Min'].default_value=0.;bulk_temp_range.inputs['To Max'].default_value=1.
+ links.new(bulk_temperature.outputs['Fac'],bulk_temp_range.inputs['Value'])
+ bulk_color=nodes.new('ShaderNodeValToRGB');bulk_color.label='revealed hot-interior chroma'
+ bulk_color.color_ramp.interpolation='EASE'
+ be0=bulk_color.color_ramp.elements[0];be0.position=0.;be0.color=(.02,0.,0.,1.)
+ be1=bulk_color.color_ramp.elements[1];be1.position=1.;be1.color=(1.,.68,.07,1.)
+ be2=bulk_color.color_ramp.elements.new(.35);be2.color=(.24,.006,0.,1.)
+ be3=bulk_color.color_ramp.elements.new(.65);be3.color=(.88,.12,.002,1.)
+ be4=bulk_color.color_ramp.elements.new(.82);be4.color=(1.,.38,.012,1.)
+ links.new(bulk_temp_range.outputs['Result'],bulk_color.inputs['Fac'])
+
+ emission_chroma=nodes.new('ShaderNodeMixRGB');emission_chroma.blend_type='MIX';emission_chroma.label='surface versus exposed interior chroma'
+ links.new(skin_color.outputs['Color'],emission_chroma.inputs[1])
+ links.new(bulk_color.outputs['Color'],emission_chroma.inputs[2])
+ links.new(fracture.outputs['Fac'],emission_chroma.inputs['Fac'])
+ links.new(emission_chroma.outputs['Color'],p.inputs['Emission Color'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
  macro.inputs['Scale'].default_value=23.;macro.inputs['Detail'].default_value=5.2
@@ -101,17 +127,9 @@ def build_lava_material():
  fracture_edge=math_node(nodes,'MULTIPLY',label='resolved damage × sub-grid edge')
  links.new(fracture.outputs['Fac'],fracture_edge.inputs[0]);links.new(edge.outputs['Result'],fracture_edge.inputs[1])
 
- # Cooling crust is optically opaque: thermal radiance is visible through
- # resolved melt and re-opens locally along damage-gated fissures.
- fissure_glow=math_node(nodes,'MULTIPLY',b=.82,label='fissure thermal reveal')
- links.new(fracture_edge.outputs[0],fissure_glow.inputs[0])
- glow_floor=math_node(nodes,'ADD',a=.004,label='minimum subsurface leak')
- links.new(fissure_glow.outputs[0],glow_floor.inputs[1])
- emission_visibility=math_node(nodes,'MAXIMUM',label='melt or fissure visibility')
- links.new(melt.outputs['Fac'],emission_visibility.inputs[0]);links.new(glow_floor.outputs[0],emission_visibility.inputs[1])
- # Sub-grid cooling-skin heterogeneity: the resolved crust fraction says how
- # much skin is present; transported noise only distributes that resolved amount
- # into irregular islands. It never creates a hidden hot region or motion field.
+ # Real pāhoehoe is mostly an opaque skin over a hotter interior.  Exposed
+ # surface melt uses the skin thermal state; damage-gated tears reveal bulk
+ # temperature beneath the skin and therefore glow brighter/yellower.
  skin_noise=nodes.new('ShaderNodeTexNoise');skin_noise.noise_dimensions='3D';skin_noise.label='resolved-crust island distribution'
  skin_noise.inputs['Scale'].default_value=8.5;skin_noise.inputs['Detail'].default_value=2.6
  skin_noise.inputs['Roughness'].default_value=.63;skin_noise.inputs['Distortion'].default_value=.11
@@ -126,17 +144,25 @@ def build_lava_material():
  links.new(crust_gain.outputs[0],skin_raw.inputs[0]);links.new(skin_shape.outputs['Result'],skin_raw.inputs[1])
  skin_clamp=nodes.new('ShaderNodeClamp');skin_clamp.inputs['Min'].default_value=0.;skin_clamp.inputs['Max'].default_value=1.
  links.new(skin_raw.outputs[0],skin_clamp.inputs['Value'])
- skin_cut=math_node(nodes,'MULTIPLY',b=-.94,label='opaque cooling skin')
+ skin_cut=math_node(nodes,'MULTIPLY',b=-.97,label='opaque cooling skin')
  links.new(skin_clamp.outputs['Result'],skin_cut.inputs[0])
- skin_keep=math_node(nodes,'ADD',a=1.,label='thermal visibility through broken skin')
+ skin_keep=math_node(nodes,'ADD',a=1.,label='remaining exposed-surface fraction')
  links.new(skin_cut.outputs[0],skin_keep.inputs[1])
 
- emission_strength=math_node(nodes,'MULTIPLY',label='blackbody × visible molten fraction')
- links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
- skin_emission=math_node(nodes,'MULTIPLY',label='blackbody through resolved skin islands')
- links.new(emission_strength.outputs[0],skin_emission.inputs[0]);links.new(skin_keep.outputs[0],skin_emission.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=.82,label='camera-scale thermal radiance')
- links.new(skin_emission.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
+ exposed_melt=math_node(nodes,'MULTIPLY',label='resolved melt × broken-skin visibility')
+ links.new(melt.outputs['Fac'],exposed_melt.inputs[0]);links.new(skin_keep.outputs[0],exposed_melt.inputs[1])
+ surface_emit=math_node(nodes,'MULTIPLY',label='surface Planck strength')
+ links.new(thermal_strength.outputs['Fac'],surface_emit.inputs[0]);links.new(exposed_melt.outputs[0],surface_emit.inputs[1])
+
+ fissure_weight=math_node(nodes,'MULTIPLY',b=1.65,label='hot interior visible through tears')
+ links.new(fracture_edge.outputs[0],fissure_weight.inputs[0])
+ fissure_emit=math_node(nodes,'MULTIPLY',label='bulk Planck strength through fissures')
+ links.new(bulk_thermal_strength.outputs['Fac'],fissure_emit.inputs[0]);links.new(fissure_weight.outputs[0],fissure_emit.inputs[1])
+
+ total_emit=math_node(nodes,'ADD',label='surface + revealed interior emission')
+ links.new(surface_emit.outputs[0],total_emit.inputs[0]);links.new(fissure_emit.outputs[0],total_emit.inputs[1])
+ emission_scale=math_node(nodes,'MULTIPLY',b=.88,label='camera-scale thermal radiance')
+ links.new(total_emit.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
  macro_gain.inputs['From Min'].default_value=.12;macro_gain.inputs['From Max'].default_value=.88
