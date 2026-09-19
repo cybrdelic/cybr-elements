@@ -50,7 +50,7 @@ def main():
         raise ValueError('seconds*fps must be an integer >=2')
 
     formation=PourFormationConfig(
-        main_nozzles=7,
+        main_nozzles=4,
         nozzle_bottom=.105,
         inlet_speed=.34,
         inlet_stagger_scale=.55,
