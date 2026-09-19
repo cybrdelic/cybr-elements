@@ -10,7 +10,7 @@ from elements_core.lava_mpm import (
 )
 from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights
 from elements_core.lava_material import material_controls, planck_rgb
-from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule
+from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule, _mold_contact
 
 
 def block(config=None, temperature=1500.0):
@@ -126,6 +126,28 @@ def test_material_controls_reject_invalid_state():
     with pytest.raises(ValueError): material_controls(np.array([np.nan]), np.array([0.]))
     with pytest.raises(ValueError): material_controls(np.array([1200.]), np.array([0.]), solidus=1450, liquidus=1250)
     with pytest.raises(ValueError): planck_rgb(np.array([0.]))
+
+
+def test_mold_sidewall_friction_is_impulse_based_not_per_step_drag():
+    sdf=np.full((2,2),.005,np.float64)
+    gx=np.ones((2,2),np.float64);gz=np.zeros((2,2),np.float64)
+    lo=np.zeros(3,np.float64);extent=np.ones(3,np.float64)
+
+    # Perfectly wall-parallel motion has no normal impulse and must not be
+    # exponentially damped merely because the particle sits in the contact band.
+    x=np.array([[.5,.5,.05]],np.float64)
+    v=np.array([[0.,1.,0.]],np.float64)
+    count,_=_mold_contact(x,v,sdf,gx,gz,lo,extent,1.,0.,.1,.01,.46)
+    assert count==1
+    np.testing.assert_allclose(v[0],[0.,1.,0.],atol=1e-12)
+
+    # Inward motion removes its normal component and applies Coulomb friction
+    # proportional to that removed normal speed.
+    x=np.array([[.5,.5,.05]],np.float64)
+    v=np.array([[-.2,1.,0.]],np.float64)
+    _mold_contact(x,v,sdf,gx,gz,lo,extent,1.,0.,.1,.01,.46)
+    assert v[0,0]==pytest.approx(0.,abs=1e-12)
+    assert v[0,1]==pytest.approx(1.-.46*.2,abs=1e-12)
 
 
 def test_open_boundary_injection_updates_mass_and_energy_reference():
