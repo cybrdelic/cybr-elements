@@ -83,9 +83,9 @@ class ShallowLavaConfig:
     surface_emissivity: float = .90
 
     rope_wavelength: float = .019
-    rope_amplitude: float = .00155
+    rope_amplitude: float = .00185
     billow_wavelength: float = .070
-    billow_amplitude: float = .00070
+    billow_amplitude: float = .00090
 
     cfl: float = .20
     max_dt: float = .006
@@ -618,7 +618,7 @@ def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,pha
             faces.extend([(a,b,c),(a,c,d)])
 
 
-def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
+def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
     wet=(h>cfg.wet_epsilon)&mask
     if not np.any(wet):
         iy,ix=sources[0]["iy"],sources[0]["ix"]
@@ -628,6 +628,7 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     ny,nx=h.shape
     node_h=np.zeros((ny+1,nx+1),np.float64)
     node_t=np.zeros_like(node_h)
+    node_bulk=np.zeros_like(node_h)
     node_d=np.zeros_like(node_h)
     node_tx=np.zeros_like(node_h)
     node_ty=np.zeros_like(node_h)
@@ -640,6 +641,7 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     for oy,ox in ((0,0),(0,1),(1,0),(1,1)):
         node_h[oy:oy+ny,ox:ox+nx]+=h*wet
         node_t[oy:oy+ny,ox:ox+nx]+=skin*wet
+        node_bulk[oy:oy+ny,ox:ox+nx]+=bulk*wet
         node_d[oy:oy+ny,ox:ox+nx]+=damage*wet
         node_tx[oy:oy+ny,ox:ox+nx]+=tangent_x*wet
         node_ty[oy:oy+ny,ox:ox+nx]+=tangent_y*wet
@@ -648,6 +650,7 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     valid=count>0
     node_h[valid]/=count[valid]
     node_t[valid]/=count[valid]
+    node_bulk[valid]/=count[valid]
     node_d[valid]/=count[valid]
     node_tx[valid]/=count[valid]
     node_ty[valid]/=count[valid]
@@ -658,7 +661,7 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     xnodes=np.linspace(xs[0]-cfg.dx*.5,xs[-1]+cfg.dx*.5,nx+1)
     ynodes=np.linspace(ys[0]-cfg.dy*.5,ys[-1]+cfg.dy*.5,ny+1)
     index=-np.ones((ny+1,nx+1),np.int64)
-    vertices=[];temps=[];damages=[];rests=[];faces=[]
+    vertices=[];temps=[];bulktemps=[];damages=[];rests=[];faces=[]
 
     for iy in range(ny+1):
         for ix in range(nx+1):
@@ -683,6 +686,7 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
             z=cfg.floor+max(.00005,node_h[iy,ix]+surface_offset)
             vertices.append([x,y,z])
             temps.append(T)
+            bulktemps.append(float(node_bulk[iy,ix]))
             damages.append(float(node_d[iy,ix]))
             # Fixed horizontal material coordinates keep optical breakup stable
             # while the resolved height evolves.
@@ -704,8 +708,9 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
             [pa[0],pa[1],cfg.floor+.00005],
             [pb[0],pb[1],cfg.floor+.00005]])
         ta=.5*(temps[top_a]+temps[top_b])
+        tb=.5*(bulktemps[top_a]+bulktemps[top_b])
         da=.5*(damages[top_a]+damages[top_b])
-        temps.extend([ta,ta]);damages.extend([da,da])
+        temps.extend([ta,ta]);bulktemps.extend([tb,tb]);damages.extend([da,da])
         rests.extend([
             [pa[0],pa[1],cfg.floor],
             [pb[0],pb[1],cfg.floor]])
@@ -730,16 +735,19 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
         physical_top=formation.nozzle_bottom
         top=min(physical_top,bottom+cfg.jet_visible_height)
         if top>bottom+.003:
+            before=len(vertices)
             _append_jet(
                 vertices,faces,temps,damages,rests,
                 (src["x"],src["y"]),bottom,top,cfg.jet_radius,cfg,
                 phase=1.7*src_index+t*3.1,
                 direction=(float(src.get("tx",0.)),float(src.get("ty",0.))))
+            bulktemps.extend([cfg.feed_temperature]*(len(vertices)-before))
 
     return {
         "vertices":np.asarray(vertices,np.float32),
         "faces":np.asarray(faces,np.int32),
         "temperature":np.asarray(temps,np.float32),
+        "bulkTemperature":np.asarray(bulktemps,np.float32),
         "damage":np.asarray(damages,np.float32),
         "rest":np.asarray(rests,np.float32),
     }
