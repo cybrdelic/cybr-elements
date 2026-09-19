@@ -211,7 +211,7 @@ def build_mold(source,formation,floor_height,mold_path=None):
  me=bpy.data.meshes.new('Basalt glyph mold');me.from_pydata(verts.tolist(),[],faces.tolist());me.update()
  obj=bpy.data.objects.new('Basalt glyph mold',me);bpy.context.collection.objects.link(obj)
  material,p=principled('Basalt mold / closed cavity geometry')
- p.inputs['Base Color'].default_value=(.010,.011,.013,1);p.inputs['Roughness'].default_value=.66;p.inputs['IOR'].default_value=1.52
+ p.inputs['Base Color'].default_value=(.024,.028,.034,1);p.inputs['Roughness'].default_value=.72;p.inputs['IOR'].default_value=1.52
  if 'Coat Weight' in p.inputs:p.inputs['Coat Weight'].default_value=.025
  nodes=material.node_tree.nodes;links=material.node_tree.links
  tc=nodes.new('ShaderNodeTexCoord');noise=nodes.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=82;noise.inputs['Detail'].default_value=3.6;noise.inputs['Roughness'].default_value=.68
@@ -236,7 +236,7 @@ def main():
  s.render.fps=a.fps;s.render.film_transparent=False
  s.view_settings.view_transform='AgX';s.view_settings.look='AgX - Medium High Contrast';s.view_settings.exposure=a.exposure
  s.world=bpy.data.worlds.new('Dim neutral studio');s.world.use_nodes=True
- bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.045,.050,.060,1);bg.inputs['Strength'].default_value=.018 if formation_mode=='pour' else .035
+ bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.045,.050,.060,1);bg.inputs['Strength'].default_value=.026 if formation_mode=='pour' else .035
  bpy.ops.object.camera_add();camera=bpy.context.object;s.camera=camera
  view=('formation' if formation_mode=='pour' else 'oblique') if a.view=='auto' else a.view
  target=(0.,0.,.10 if view=='formation' else .335)
@@ -244,9 +244,9 @@ def main():
  camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
  camera.data.type='ORTHO';camera.data.ortho_scale=1.52 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
  if view=='formation':
-  area('Large neutral key',(-.55,-.55,1.35),4.4,(.88,.91,1.),1.55,target)
-  area('Grazing rim',(.65,.45,.95),4.8,(.80,.86,.98),1.15,target)
-  area('Soft front fill',(-.25,-.8,.45),.9,(1.,.84,.70),1.65,target)
+  area('Large neutral key',(-.55,-.55,1.35),8.5,(.88,.91,1.),1.55,target)
+  area('Grazing rim',(.65,.45,.95),12.0,(.80,.86,.98),1.15,target)
+  area('Soft front fill',(-.25,-.8,.45),2.2,(1.,.84,.70),1.65,target)
  else:
   area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
   area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
