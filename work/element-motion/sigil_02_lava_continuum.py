@@ -65,7 +65,8 @@ def main():
     sdf=mold['sdf'],gx=mold['gx'],gz=mold['gz'],lo=mold['lo'],extent=mold['extent'],
     stageScale=np.float64(mold['stageScale']),sourceCenterZ=np.float64(mold['sourceCenterZ']),
     wallTop=np.float64(mold['wallTop']),margin=np.float64(mold['margin']),
-    friction=np.float64(mold['friction']))
+    friction=np.float64(mold['friction']),thermalConductance=np.float64(mold['thermalConductance']),
+    moldTemperature=np.float64(mold['moldTemperature']),thermalBand=np.float64(mold['thermalBand']))
   atomic_npz(a.out/'mold.npz',**mold_archive)
   formation_report['moldMesh']=mold_report
   formation_report['moldArchiveContainsContactField']=True
@@ -93,6 +94,7 @@ def main():
     'formationMode':a.formation,'formation':formation_report,
     'modelLimits':['weakly compressible','uncalibrated material constants','J2 damage, not resolved fracture',
       'subgrid convection/radiation','rigid one-way signed-distance mold contact',
+      'effective basalt contact-conduction sink; mold temperature not solved as a deformable body',
       'open-boundary particle inlet with prescribed source velocity/enthalpy','no two-way surrounding gas']})
   stage_status(a.out,'simulation','complete')
  except BaseException as e:stage_status(a.out,'simulation','failed',error=str(e));raise
