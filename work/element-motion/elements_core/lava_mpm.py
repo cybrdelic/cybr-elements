@@ -294,7 +294,7 @@ class LavaMPM:
         self.S=np.zeros((n,3,3));self.damage=np.zeros(n)
         self.gm=np.zeros(config.shape);self.gv=np.zeros((*config.shape,3))
         self.gH=np.zeros(config.shape);self.gT=np.zeros(config.shape);self.dE=np.zeros(config.shape)
-        self.time=0.;self.steps=0;self.radiative_loss=0.;self.convective_loss=0.;self.viscous_heat=0.
+        self.time=0.;self.steps=0;self.radiative_loss=0.;self.convective_loss=0.;self.viscous_heat=0.;self.mold_conduction_loss=0.
         self.initial_energy=float(self.mass@self.H);self.contact_corrections=0
         self.initial_count=n
         self.injected_particles=0;self.injected_mass=0.;self.injected_energy=0.
@@ -392,7 +392,7 @@ class LavaMPM:
 
     def metrics(self):
         c=self.config;T=temperature_from_enthalpy(self.H,c)
-        expected=self.initial_energy+self.viscous_heat-self.radiative_loss-self.convective_loss
+        expected=self.initial_energy+self.viscous_heat-self.radiative_loss-self.convective_loss-self.mold_conduction_loss
         thermal_energy=float(self.mass@self.H)
         return {'time':self.time,'steps':self.steps,'particles':len(self.x),'massKg':float(self.mass.sum()),
             'sourceInjectedParticles':int(self.injected_particles),'sourceInjectedMassKg':float(self.injected_mass),
@@ -404,7 +404,7 @@ class LavaMPM:
             'temperatureMinK':float(T.min()),'temperatureMaxK':float(T.max()),
             'solidFractionMean':float(np.clip((c.liquidus-T)/(c.liquidus-c.solidus),0,1).mean()),
             'thermalEnergyJ':thermal_energy,'radiationLossJ':self.radiative_loss,
-            'convectionLossJ':self.convective_loss,'viscoplasticHeatJ':self.viscous_heat,
+            'convectionLossJ':self.convective_loss,'moldConductionLossJ':self.mold_conduction_loss,'viscoplasticHeatJ':self.viscous_heat,
             'thermalBalanceRelative':float((thermal_energy-expected)/max(self.initial_energy,1e-12)),
             'maxSpeed':float(np.linalg.norm(self.v,axis=1).max()),'maxDamage':float(self.damage.max()),
             'deviatoricStressRMSPa':float(np.sqrt(np.mean(self.S**2))),
