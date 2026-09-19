@@ -11,6 +11,7 @@ from elements_core.lava_mpm import (
 from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights, _constrain_vertices_to_mold
 from elements_core.lava_material import material_controls, planck_rgb
 from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule, _mold_contact, _mold_heat_transfer
+from elements_core.lava_shallow import ShallowLavaConfig, initialize as initialize_shallow, advance_state as advance_shallow, metrics as shallow_metrics, _redistribute_overflow
 
 
 def block(config=None, temperature=1500.0):
@@ -249,3 +250,49 @@ def test_pour_formation_starts_as_feed_columns_above_the_cavity():
     assert temperature.min() > c.solidus
     assert temperature.min() < c.liquidus
     assert np.all(V > 0)
+
+
+def test_shallow_overflow_redistribution_is_conservative_and_component_local():
+    labels=np.array([
+        [1,1,0,2,2],
+        [1,1,0,2,2],
+    ],dtype=np.int32)
+    h=np.array([
+        [.09,.01,0.,.06,.01],
+        [.01,.01,0.,.01,.01],
+    ],dtype=np.float64)
+    before=h.sum()
+    out=_redistribute_overflow(h,labels,.05)
+    assert out.sum()==pytest.approx(before,rel=0,abs=1e-12)
+    assert out[labels==1].max()<=.05+1e-12
+    assert out[labels==2].max()<=.05+1e-12
+    assert np.all(out[labels==0]==0.)
+    assert out[0,3] > h[0,3] - .011  # component 2 is not fed by component 1 excess
+
+
+def test_shallow_inlet_capacity_partition_matches_cavity_target():
+    source=Path('work/element-motion/sigil-02-v2/source.npz')
+    assert source.is_file()
+    formation=PourFormationConfig(main_nozzles=7,nozzle_bottom=.105)
+    cfg=ShallowLavaConfig(nx=112,ny=56,pour_duration=1.4,target_depth=.038)
+    state=initialize_shallow(source,formation,cfg)
+    assigned=sum(src['assignedVolumeM3'] for src in state['sources'])
+    assert assigned==pytest.approx(state['targetVolumeM3'],rel=5e-3)
+    assert sum(src['territoryCells'] for src in state['sources'])==np.count_nonzero(state['mask'])
+    assert all(src['sigma']>=cfg.source_sigma_min for src in state['sources'])
+    assert all(src['sigma']<=cfg.source_sigma_max for src in state['sources'])
+
+
+def test_shallow_short_run_conserves_injected_volume_and_caps_source_mounds():
+    source=Path('work/element-motion/sigil-02-v2/source.npz')
+    formation=PourFormationConfig(main_nozzles=7,nozzle_bottom=.105)
+    cfg=ShallowLavaConfig(
+        nx=96,ny=48,pour_duration=1.0,inlet_stagger_seconds=.25,
+        target_depth=.032,max_depth=.048,max_dt=.008)
+    state=initialize_shallow(source,formation,cfg)
+    advance_shallow(state,0.,.45,cfg)
+    m=shallow_metrics(state,.45,cfg)
+    assert abs(m['massBalanceRelative'])<5e-4
+    assert m['maximumDepthM']<=cfg.max_depth+1e-8
+    assert m['wetCoverageFraction']>0.
+    assert m['skinTemperatureMaxK']>cfg.liquidus
