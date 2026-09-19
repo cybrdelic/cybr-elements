@@ -274,7 +274,7 @@ def test_shallow_inlet_capacity_partition_matches_cavity_target():
     source=Path('work/element-motion/sigil-02-v2/source.npz')
     assert source.is_file()
     formation=PourFormationConfig(main_nozzles=7,nozzle_bottom=.105)
-    cfg=ShallowLavaConfig(nx=112,ny=56,pour_duration=1.4,target_depth=.038)
+    cfg=ShallowLavaConfig(nx=224,ny=112,pour_duration=1.4,target_depth=.038)
     state=initialize_shallow(source,formation,cfg)
     assigned=sum(src['assignedVolumeM3'] for src in state['sources'])
     assert assigned==pytest.approx(state['targetVolumeM3'],rel=5e-3)
@@ -287,7 +287,7 @@ def test_shallow_short_run_conserves_injected_volume_and_caps_source_mounds():
     source=Path('work/element-motion/sigil-02-v2/source.npz')
     formation=PourFormationConfig(main_nozzles=7,nozzle_bottom=.105)
     cfg=ShallowLavaConfig(
-        nx=96,ny=48,pour_duration=1.0,inlet_stagger_seconds=.25,
+        nx=192,ny=96,pour_duration=1.0,inlet_stagger_seconds=.25,
         target_depth=.032,max_depth=.048,max_dt=.008)
     state=initialize_shallow(source,formation,cfg)
     advance_shallow(state,0.,.45,cfg)
