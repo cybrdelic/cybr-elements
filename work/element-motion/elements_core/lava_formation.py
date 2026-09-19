@@ -31,9 +31,10 @@ class PourFormationConfig:
     main_nozzles: int = 3
     wall_margin_fraction: float = .22
     inlet_speed: float = .55
-    initial_down_speed: float = .55
-    skin_temperature: float = 1310.
-    core_temperature: float = 1690.
+    tangent_speed: float = .14
+    initial_down_speed: float = .68
+    skin_temperature: float = 1425.
+    core_temperature: float = 1750.
     significant_component_pixels: int = 100
 
     def __post_init__(self):
@@ -41,6 +42,8 @@ class PourFormationConfig:
             raise ValueError('invalid formation scale')
         if self.main_nozzles < 1 or self.nozzle_radius_main <= 0 or self.nozzle_radius_small <= 0:
             raise ValueError('invalid nozzle configuration')
+        if self.inlet_speed <= 0 or self.initial_down_speed <= 0 or self.tangent_speed < 0:
+            raise ValueError('invalid inlet velocity configuration')
         if self.core_temperature <= self.skin_temperature:
             raise ValueError('core must be hotter than nozzle skin')
 
@@ -180,9 +183,9 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
                 core=(1.-radial)**.55
                 temperatures.append(formation.skin_temperature+
                                     (formation.core_temperature-formation.skin_temperature)*core)
-                velocities.append([tangent[0]*formation.inlet_speed+.025*math.sin(layer*.43+phase),
-                                   tangent[1]*formation.inlet_speed+.018*math.cos(layer*.37+phase),
-                                   -(formation.initial_down_speed+.35*growth)])
+                velocities.append([tangent[0]*formation.tangent_speed+.018*math.sin(layer*.43+phase),
+                                   tangent[1]*formation.tangent_speed+.014*math.cos(layer*.37+phase),
+                                   -(formation.initial_down_speed+.18*growth)])
             built+=take;layer+=1
         nozzle_rows.append({'component':int(component),'particles':total,'radius':radius,
                             'center':center.tolist(),'layers':layer,
@@ -226,6 +229,69 @@ def build_pour_initial_state(source: Path, lava: LavaConfig, *,
     }
     return positions,enthalpy_from_temperature(temperatures,lava),volumes,velocities,mold,report
 
+
+
+def build_pour_source_schedule(source: Path, lava: LavaConfig, *,
+                               samples_per_axis=2,
+                               formation: PourFormationConfig | None=None):
+    """Turn resolved feed layers into a timed open-boundary inlet.
+
+    The initial-state builder lays out one material layer per physical particle
+    spacing. Here that vertical coordinate becomes source time: layer spacing
+    divided by inlet speed. Each layer is spawned at the nozzle plane with its
+    actual inlet velocity, so the cavity is filled by sustained mass flux
+    instead of dropping the entire reservoir as one preloaded slug.
+
+    The original feed coordinate is retained only as a Lagrangian material
+    coordinate for advected BSDF detail. It never exerts a force or specifies
+    a target position.
+    """
+    formation=formation or PourFormationConfig()
+    positions,H,V,velocities,mold,report=build_pour_initial_state(
+        source,lava,samples_per_axis=samples_per_axis,formation=formation)
+    step=lava.spacing/samples_per_axis
+    spawn=positions.copy()
+    material_coordinates=positions.copy()
+    release=np.empty(len(positions),np.float64)
+    cursor=0
+    for row in report['inlets']:
+        count=int(row['particles'])
+        sl=slice(cursor,cursor+count)
+        raw_layer=(positions[sl,2]-formation.nozzle_bottom)/step
+        layer=np.maximum(0,np.rint(raw_layer).astype(np.int64))
+        release[sl]=layer*step/formation.inlet_speed
+        residual=positions[sl,2]-(formation.nozzle_bottom+layer*step)
+        spawn[sl,2]=formation.nozzle_bottom+np.clip(residual,-step*.09,step*.09)
+        cursor+=count
+    if cursor!=len(positions):
+        raise RuntimeError('source schedule does not cover all feed particles')
+    order=np.argsort(release,kind='stable')
+    schedule={
+        'releaseTime':release[order],
+        'positions':spawn[order],
+        'enthalpy':H[order],
+        'volumes':V[order],
+        'velocities':velocities[order],
+        'materialCoordinates':material_coordinates[order],
+        'cursor':0,
+    }
+    report['sourceBoundaryModel']='timed open-boundary particle injection at resolved nozzle plane'
+    report['sourceDurationSeconds']=float(release.max()) if len(release) else 0.
+    report['sourceLayerPeriodSeconds']=float(step/formation.inlet_speed)
+    report['simultaneousReservoirRelease']=False
+    report['sourceMassFluxIsParticleResolved']=True
+    return schedule,mold,report
+
+
+def _inject_due_source(sim: LavaMPM,source,through_time: float):
+    cursor=int(source.get('cursor',0));times=source['releaseTime']
+    end=int(np.searchsorted(times,through_time+1e-12,side='right'))
+    if end<=cursor:return 0
+    sl=slice(cursor,end)
+    added=sim.inject(source['positions'][sl],source['enthalpy'][sl],source['volumes'][sl],
+                     source['velocities'][sl],source['materialCoordinates'][sl])
+    source['cursor']=end
+    return int(added)
 
 
 def build_mold_mesh(source: Path,lava: LavaConfig,formation: PourFormationConfig|None=None):
@@ -311,24 +377,45 @@ def apply_mold_contact(sim: LavaMPM,mold):
                          float(mold['margin']),float(mold['friction']))
 
 
-def advance_with_mold(sim: LavaMPM,duration: float,mold):
+def advance_with_mold(sim: LavaMPM,duration: float,mold,source=None):
     if duration<0 or not math.isfinite(duration):
         raise ValueError('invalid duration')
     target=sim.time+duration;c=sim.config
-    corrections=0;maximum=0.
+    corrections=0;maximum=0.;injected=0
     speed=float(np.linalg.norm(sim.v,axis=1).max())
     wave=math.sqrt((c.bulk_modulus+4*c.shear_modulus/3)/c.density)
     while target-sim.time>1e-12:
+        if source is not None:
+            added=_inject_due_source(sim,source,sim.time)
+            injected+=added
+            if added:speed=float(np.linalg.norm(sim.v,axis=1).max())
+            cursor=int(source.get('cursor',0))
+            next_release=float(source['releaseTime'][cursor]) if cursor<len(source['releaseTime']) else math.inf
+        else:
+            next_release=math.inf
+        step_target=min(target,next_release)
+        if step_target-sim.time<=1e-12:
+            if source is not None:
+                added=_inject_due_source(sim,source,next_release)
+                injected+=added
+                if added:speed=float(np.linalg.norm(sim.v,axis=1).max())
+                continue
+            break
         if sim.steps%12==0:
             speed=float(np.linalg.norm(sim.v,axis=1).max())
             compression=max(1.,float(sim.J.min())**-1.5)
             wave=math.sqrt((c.bulk_modulus+4*c.shear_modulus/3)/c.density)*compression
-        dt=min(target-sim.time,c.max_dt,c.cfl*c.spacing/(wave+speed))
+        dt=min(step_target-sim.time,c.max_dt,c.cfl*c.spacing/(wave+speed))
         sim.step(dt)
         n,d=apply_mold_contact(sim,mold)
         corrections+=int(n);maximum=max(maximum,float(d))
+    if source is not None:
+        injected+=_inject_due_source(sim,source,sim.time)
     sim.validate()
     row=sim.metrics()
     row['moldContactCorrections']=corrections
     row['maxMoldCorrectionMeters']=maximum
+    row['sourceParticlesInjectedThisAdvance']=int(injected)
+    row['sourceParticlesRemaining']=int(len(source['releaseTime'])-source.get('cursor',0)) if source is not None else 0
     return row
+
