@@ -44,13 +44,16 @@ class ShallowLavaConfig:
     max_depth: float = .0495
 
     pour_duration: float = 4.15
-    inlet_stagger_seconds: float = .78
-    source_sigma_min: float = .0065
-    source_sigma_max: float = .014
-    source_sigma_clearance_scale: float = .38
-    source_ramp_seconds: float = .26
-    impact_head: float = .012
-    impact_sigma_scale: float = 2.1
+    inlet_stagger_seconds: float = 1.35
+    source_sigma_min: float = .0040
+    source_sigma_max: float = .0080
+    source_sigma_clearance_scale: float = .24
+    source_longitudinal_stretch: float = 1.7
+    source_ramp_seconds: float = .32
+    impact_head: float = .020
+    impact_sigma_scale: float = 2.2
+    impact_longitudinal_stretch: float = 2.8
+    impact_forward_shift: float = .012
 
     feed_temperature: float = 1580.
     feed_skin_temperature: float = 1500.
@@ -83,11 +86,12 @@ class ShallowLavaConfig:
     max_dt: float = .006
     wet_epsilon: float = .00022
 
-    jet_radius: float = .0032
+    jet_radius: float = .0027
     jet_visible_height: float = .075
+    jet_lean: float = .009
     jet_rings: int = 8
     jet_segments: int = 14
-    impact_flare: float = 1.75
+    impact_flare: float = 1.45
 
     def __post_init__(self):
         if min(self.nx, self.ny) < 32:
@@ -106,6 +110,10 @@ class ShallowLavaConfig:
             raise ValueError("invalid shallow mobility")
         if self.source_ramp_seconds < 0 or self.impact_head < 0 or self.impact_sigma_scale <= 0:
             raise ValueError("invalid inlet impact controls")
+        if self.source_longitudinal_stretch < 1 or self.impact_longitudinal_stretch < 1 or self.impact_forward_shift < 0:
+            raise ValueError("invalid directional inlet controls")
+        if self.jet_lean < 0:
+            raise ValueError("invalid jet lean")
         if not 0 < self.cfl <= .25 or self.max_dt <= 0:
             raise ValueError("invalid explicit stability controls")
         if self.jet_rings < 3 or self.jet_segments < 8:
@@ -134,7 +142,7 @@ def _sample_source_field(field,xx,yy,lo,extent,formation):
     return _bilinear(field,v,u)
 
 
-def _component_inlets(mask,distance,arrival,xx,yy,formation):
+def _component_inlets(mask,distance,arrival,xx,yy,formation,tangent_x=None,tangent_y=None):
     labels,count=label(mask)
     components=[]
     for component in range(1,count+1):
@@ -158,11 +166,19 @@ def _component_inlets(mask,distance,arrival,xx,yy,formation):
             score=np.abs(px0-target_x)+.16*np.abs(py0-np.median(py0))
             idx=int(np.argmin(score))
             iy,ix=int(py0[idx]),int(px0[idx])
+            if tangent_x is None or tangent_y is None:
+                tx,ty=1.,0.
+            else:
+                tx=float(tangent_x[iy,ix]);ty=float(tangent_y[iy,ix])
+                length=math.hypot(tx,ty)
+                if length<1e-8:tx,ty=1.,0.
+                else:tx/=length;ty/=length
             rows.append({
                 "component":int(component),
                 "areaCells":int(area),
                 "ix":ix,"iy":iy,
                 "x":float(xx[iy,ix]),"y":float(yy[iy,ix]),
+                "tx":float(tx),"ty":float(ty),
                 "arrival":float(arrival[iy,ix]),
                 "clearance":float(distance[iy,ix]),
             })
@@ -208,14 +224,20 @@ def _inlet_sources(mask,labels,inlets,xx,yy,dx,dy,target_depth,cfg):
         sigma=np.clip(
             row["clearance"]*cfg.source_sigma_clearance_scale,
             cfg.source_sigma_min,cfg.source_sigma_max)
-        r2=(xx-row["x"])**2+(yy-row["y"])**2
-        weight=np.exp(-.5*r2/(sigma*sigma))*(labels==comp)
+        rx=xx-row["x"];ry=yy-row["y"]
+        tx=float(row.get("tx",1.));ty=float(row.get("ty",0.))
+        along=rx*tx+ry*ty
+        cross=-rx*ty+ry*tx
+        source_long=sigma*cfg.source_longitudinal_stretch
+        weight=np.exp(-.5*((along/source_long)**2+(cross/sigma)**2))*(labels==comp)
         norm=float(weight.sum()*dx*dy)
         if norm<=0:
             raise RuntimeError("empty inlet support")
         shape=weight/norm
         impact_sigma=sigma*cfg.impact_sigma_scale
-        impact=np.exp(-.5*r2/(impact_sigma*impact_sigma))*(labels==comp)
+        impact_along=impact_sigma*cfg.impact_longitudinal_stretch
+        shifted=along-cfg.impact_forward_shift
+        impact=np.exp(-.5*((shifted/impact_along)**2+(cross/impact_sigma)**2))*(labels==comp)
         ramp=min(cfg.source_ramp_seconds,cfg.pour_duration*.45)
         envelope_integral=max(cfg.pour_duration-ramp,1e-8)
         sources.append({
@@ -559,7 +581,7 @@ def _adaptive_dt(h,bulk,skin,mask,remaining,cfg):
     return min(remaining,cfg.max_dt,max(1e-4,stable))
 
 
-def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,phase):
+def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,phase,direction=(0.,0.)):
     """Short tapered inlet neck with a broad impact foot, not a tall cylinder."""
     base=len(vertices)
     for ring in range(cfg.jet_rings):
@@ -569,8 +591,11 @@ def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,pha
         flare=1.+(cfg.impact_flare-1.)*math.exp(-u*7.0)
         taper=.58+.42*(1.-u)
         rr=radius*flare*taper*(1.+.035*math.sin(phase+u*9.))
-        cx=center[0]+radius*.055*math.sin(phase+u*4.7)
-        cy=center[1]+radius*.045*math.cos(phase*.8+u*5.2)
+        tx,ty=direction
+        # Bottom ring is the impact point. The nozzle end leans upstream so the
+        # falling filament has a visible trajectory into the stroke.
+        cx=center[0]-tx*cfg.jet_lean*u+radius*.040*math.sin(phase+u*4.7)
+        cy=center[1]-ty*cfg.jet_lean*u+radius*.035*math.cos(phase*.8+u*5.2)
         for j in range(cfg.jet_segments):
             a=2.*math.pi*j/cfg.jet_segments
             vertices.append([cx+rr*math.cos(a),cy+rr*math.sin(a),z])
@@ -673,7 +698,8 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
             _append_jet(
                 vertices,faces,temps,damages,rests,
                 (src["x"],src["y"]),bottom,top,cfg.jet_radius,cfg,
-                phase=1.7*src_index+t*3.1)
+                phase=1.7*src_index+t*3.1,
+                direction=(float(src.get("tx",0.)),float(src.get("ty",0.))))
 
     return {
         "vertices":np.asarray(vertices,np.float32),
@@ -688,6 +714,8 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
     with np.load(source_path,allow_pickle=False) as data:
         sdf=np.asarray(data["sdf"],np.float64)
         arrival=np.asarray(data["arrival"],np.float64)
+        dirx=np.asarray(data["dirx"],np.float64)
+        diry=np.asarray(data["dirz"],np.float64)
         lo=np.asarray(data["lo"],np.float64)
         extent=np.asarray(data["extent"],np.float64)
 
@@ -699,10 +727,16 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
         sdf,xx,yy,lo,extent,formation)*formation.stage_scale
     arrival_stage=_sample_source_field(
         arrival,xx,yy,lo,extent,formation)
+    tangent_x=_sample_source_field(
+        dirx,xx,yy,lo,extent,formation)
+    tangent_y=_sample_source_field(
+        diry,xx,yy,lo,extent,formation)
+    tangent_norm=np.maximum(np.hypot(tangent_x,tangent_y),1e-8)
+    tangent_x/=tangent_norm;tangent_y/=tangent_norm
 
     mask=distance>max(.0012,min(cfg.dx,cfg.dy)*.22)
     labels,components,inlets=_component_inlets(
-        mask,distance,arrival_stage,xx,yy,formation)
+        mask,distance,arrival_stage,xx,yy,formation,tangent_x,tangent_y)
 
     area=float(mask.sum()*cfg.dx*cfg.dy)
     target_volume=area*cfg.target_depth
