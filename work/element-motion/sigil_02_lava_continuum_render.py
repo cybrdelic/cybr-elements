@@ -130,8 +130,16 @@ def build_lava_material():
  rough_clamp=nodes.new('ShaderNodeClamp');rough_clamp.inputs['Min'].default_value=.16;rough_clamp.inputs['Max'].default_value=.98
  links.new(rough_total.outputs[0],rough_clamp.inputs['Value']);links.new(rough_clamp.outputs['Result'],p.inputs['Roughness'])
 
+ ripple=nodes.new('ShaderNodeTexNoise');ripple.noise_dimensions='3D';ripple.label='viscous molten surface ripple'
+ ripple.inputs['Scale'].default_value=68.;ripple.inputs['Detail'].default_value=2.1
+ ripple.inputs['Roughness'].default_value=.52;ripple.inputs['Distortion'].default_value=.10
+ links.new(rest.outputs['Vector'],ripple.inputs['Vector'])
+ ripple_bump=nodes.new('ShaderNodeBump');ripple_bump.label='melt-only ripple normal';ripple_bump.inputs['Distance'].default_value=.00055
+ ripple_strength=math_node(nodes,'MULTIPLY',a=.085,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
+ links.new(ripple.outputs['Fac'],ripple_bump.inputs['Height'])
+
  macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.24;macro_bump.inputs['Distance'].default_value=.0022
- links.new(macro.outputs['Fac'],macro_bump.inputs['Height'])
+ links.new(macro.outputs['Fac'],macro_bump.inputs['Height']);links.new(ripple_bump.outputs['Normal'],macro_bump.inputs['Normal'])
  macro_strength=math_node(nodes,'MULTIPLY',a=.38,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
  micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Distance'].default_value=.00048
  micro_bump_strength=math_node(nodes,'MULTIPLY',a=.16,label='crust-gated grain relief');links.new(relief.outputs['Fac'],micro_bump_strength.inputs[1]);links.new(micro_bump_strength.outputs[0],micro_bump.inputs['Strength'])
