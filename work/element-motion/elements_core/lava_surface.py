@@ -101,8 +101,11 @@ def _mask_density_against_mold(density,origin,spacing,mold):
     # Keep a sub-cell transition so marching cubes terminates on the cavity
     # boundary instead of producing a gap, but never allow density deep inside
     # the solid mold.
-    width=max(spacing*.32,margin*.55,1e-6)
-    gate=np.clip((d+spacing*.08)/width,0.,1.)
+    # d==0 is the physical cavity wall and must remain a valid fluid
+    # boundary. Fade only a small distance *inside the solid* so we do not
+    # carve artificial clearance out of narrow letter strokes.
+    width=max(spacing*.14,margin*.20,1e-6)
+    gate=np.clip((d+width)/width,0.,1.)
     gate=gate*gate*(3.-2.*gate)
     zs=origin[2]+np.arange(nz)*spacing
     below=zs<=wall_top+max(margin,spacing*.10)
@@ -159,6 +162,11 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
     v,f,level,raw=chosen
     coords=((v-origin)/spacing).T
     optical=np.column_stack([map_coordinates(attrs[...,c],coords,order=1,mode='nearest') for c in range(values.shape[1])])
+    # A normalized positive particle kernel cannot create state outside the
+    # particle extrema. Bound rare near-zero-support interpolation excursions
+    # to that physically admissible convex range.
+    state_min=values.min(axis=0);state_max=values.max(axis=0)
+    optical=np.minimum(np.maximum(optical,state_min[None,:]),state_max[None,:])
     v=smooth_mesh(v,f,passes=1 if mold is not None else 2)
     v=_constrain_vertices_to_mold(v,mold,spacing)
     height=np.maximum(v[:,2]-floor-.00005,0.)
