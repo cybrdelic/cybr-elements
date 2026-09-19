@@ -10,7 +10,7 @@ def main():
  p.add_argument('--run',required=True,type=Path);p.add_argument('--out',required=True,type=Path)
  p.add_argument('--frames',default=60,type=int);p.add_argument('--spacing',default=.006,type=float)
  p.add_argument('--frame',type=int);p.add_argument('--wait-timeout',default=7200,type=float)
- a=p.parse_args();settings=json.loads((a.run/'run.json').read_text());physics=settings['settings']['config'];floor=float(physics['floor']);contact_band=float(physics['spacing']);formation=settings['settings'].get('formation');formation_mode=settings['settings'].get('formationMode','formed')
+ a=p.parse_args();settings=json.loads((a.run/'run.json').read_text());physics=settings['settings']['config'];floor=float(physics['floor']);contact_band=min(float(physics['spacing']),max(a.spacing*.35,.0015));formation=settings['settings'].get('formation');formation_mode=settings['settings'].get('formationMode','formed')
  inputs={'physics':a.run/'run.json','entry':Path(__file__),'surface':Path(__file__).parent/'elements_core/lava_surface.py'}
  if (a.run/'mold.npz').is_file():inputs['mold']=a.run/'mold.npz'
  mold=None
