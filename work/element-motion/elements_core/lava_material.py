@@ -63,33 +63,43 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     d = np.clip(d, 0.0, 1.0)
     crust_linear = np.clip((liquidus - t) / (liquidus - solidus), 0.0, 1.0)
     crust = smoothstep01(crust_linear)
-    melt = 1.0 - crust
-    # Once the skin is well below the solidus it trends toward quenched
-    # obsidian: dark and comparatively glassy, not ever-more matte basalt.
-    obsidian = smoothstep01(np.clip((solidus - t) / 220.0, 0.0, 1.0))
+    # Plastic damage is persistent history: once a cooling skin has carried
+    # load and yielded, reheating the unresolved interior should not magically
+    # erase the quenched glass surface.  Gate that history by temperature so
+    # genuinely hot fresh melt remains molten-looking.
+    quench_history = smoothstep01(np.clip((d - .05) / .65, 0.0, 1.0))
+    quench_cooling = smoothstep01(np.clip((liquidus + 75.0 - t) / 250.0, 0.0, 1.0))
+    history_glass = quench_history * quench_cooling
+    thermal_glass = smoothstep01(np.clip((solidus - t) / 220.0, 0.0, 1.0))
+    obsidian = np.maximum(thermal_glass, history_glass)
+    melt = (1.0 - crust) * (1.0 - .88 * obsidian)
     transitional = crust * (1.0 - obsidian)
     fracture = crust * smoothstep01(np.clip((d - .08) / .82, 0.0, 1.0))
-    relief = np.clip(transitional + .24 * obsidian + .34 * fracture, 0.0, 1.0)
-    roughness = .26 * melt + .78 * transitional + .30 * obsidian + .10 * fracture
-    roughness = np.clip(roughness, .16, .94)
-    coat = .035 * melt + .045 * transitional + .28 * obsidian * (1.0 - .58 * fracture)
-    coat = np.clip(coat, .025, .30)
-    hot = np.array([.012, .0032, .0012])
-    crust_color = np.array([.010, .0080, .0065])
-    glass = np.array([.0048, .0062, .0085])
+    relief = np.clip(transitional + .42 * obsidian + .34 * fracture, 0.0, 1.0)
+    roughness = .24 * melt + .74 * transitional + .22 * obsidian + .08 * fracture
+    roughness = np.clip(roughness, .14, .92)
+    coat = .035 * melt + .040 * transitional + .38 * obsidian * (1.0 - .48 * fracture)
+    coat = np.clip(coat, .025, .40)
+    hot = np.array([.010, .0026, .0008])
+    crust_color = np.array([.0065, .0047, .0034])
+    glass = np.array([.0018, .0024, .0036])
     base = (hot[None, :] * melt.reshape(-1, 1)
             + crust_color[None, :] * transitional.reshape(-1, 1)
             + glass[None, :] * obsidian.reshape(-1, 1))
-    base *= (1.0 - .28 * fracture.reshape(-1, 1))
+    base *= (1.0 - .36 * fracture.reshape(-1, 1))
     base = base.reshape(t.shape + (3,))
     radiance = planck_rgb(t, emissivity=.90)
     peak = np.maximum(np.max(radiance, axis=-1, keepdims=True), 1e-30)
     thermal_color = radiance / peak
     thermal_strength = np.sum(radiance, axis=-1) / _SCENE_VISIBLE_RADIANCE_UNIT
+    # A quenched glass skin is optically opaque to the hot interior except at
+    # the damage-gated fissures re-opened later in the Blender node graph.
+    thermal_strength *= (1.0 - .975 * obsidian)
     return {
         'crust': crust,
         'melt': melt,
         'obsidian': obsidian,
+        'quenchHistory': quench_history,
         'transitionalCrust': transitional,
         'relief': relief,
         'fracture': fracture,
