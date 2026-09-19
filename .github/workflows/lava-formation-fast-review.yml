@@ -37,13 +37,13 @@ jobs:
           python work/element-motion/sigil_02_lava_shallow.py \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-fast/surface \
-            --seconds 6.0 --fps 8 --nx 224 --ny 112 \
-            --pour-duration 2.8 --target-depth .043
+            --seconds 7.0 --fps 8 --nx 240 --ny 120 \
+            --pour-duration 4.15 --target-depth .041
       - name: Validate physical mesh sequence
         run: |
           test -s /tmp/lava-fast/surface/run.json
           test -s /tmp/lava-fast/surface/meshes/0000.npz
-          test -s /tmp/lava-fast/surface/meshes/0047.npz
+          test -s /tmp/lava-fast/surface/meshes/0055.npz
           test -s /tmp/lava-fast/surface/metrics.json
       - name: Install Blender
         run: |
@@ -55,8 +55,8 @@ jobs:
             --python work/element-motion/sigil_02_lava_continuum_render.py -- \
             --surface /tmp/lava-fast/surface \
             --source work/element-motion/sigil-02-v2/source.npz \
-            --out /tmp/lava-fast/render --frames 48 --fps 8 --view formation \
-            --resolution 480 270 --samples 2 --threads 2 --exposure 0
+            --out /tmp/lava-fast/render --frames 56 --fps 8 --view formation \
+            --resolution 640 360 --samples 4 --threads 2 --exposure 0
       - name: Encode
         run: |
           sudo apt-get update -qq
@@ -71,9 +71,9 @@ jobs:
           path: |
             /tmp/lava-fast/lava-formation-fast.mp4
             /tmp/lava-fast/render/frames/0000.png
-            /tmp/lava-fast/render/frames/0028.png
-            /tmp/lava-fast/render/frames/0012.png
-            /tmp/lava-fast/render/frames/0047.png
+            /tmp/lava-fast/render/frames/0036.png
+            /tmp/lava-fast/render/frames/0016.png
+            /tmp/lava-fast/render/frames/0055.png
             /tmp/lava-fast/surface/formation.json
             /tmp/lava-fast/surface/metrics.json
             /tmp/lava-fast/surface/manifest.json
