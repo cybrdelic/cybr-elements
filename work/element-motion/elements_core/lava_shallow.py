@@ -56,7 +56,7 @@ class ShallowLavaConfig:
     impact_forward_shift: float = .012
 
     feed_temperature: float = 1580.
-    feed_skin_temperature: float = 1500.
+    feed_skin_temperature: float = 1405.
     mold_temperature: float = 405.
 
     density: float = 2600.
@@ -74,10 +74,10 @@ class ShallowLavaConfig:
     liquidus: float = 1450.
     heat_capacity: float = 1200.
     skin_thickness: float = .0022
-    skin_exchange_rate: float = .29
+    skin_exchange_rate: float = .34
     wall_skin_exchange_rate: float = .62
     wall_cooling_length: float = .012
-    skin_reheat_rate: float = 4.0
+    skin_reheat_rate: float = 2.8
     bulk_cooling_rate: float = .018
     wall_bulk_cooling_rate: float = .045
     surface_emissivity: float = .90
