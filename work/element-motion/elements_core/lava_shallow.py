@@ -58,7 +58,8 @@ class ShallowLavaConfig:
     viscosity_hot: float = 105.
     viscosity_cold: float = 6.0e5
     basal_slip_length: float = .022
-    max_mobility: float = .0135
+    contact_line_mobility: float = .0085
+    max_mobility: float = .020
     front_regularization_depth: float = .0045
     yield_stress_hot: float = 2.0
     yield_stress_cold: float = 950.
@@ -98,7 +99,7 @@ class ShallowLavaConfig:
             raise ValueError("cold viscosity must exceed hot viscosity")
         if self.liquidus <= self.solidus:
             raise ValueError("invalid phase interval")
-        if self.basal_slip_length < 0 or self.max_mobility <= 0:
+        if self.basal_slip_length < 0 or self.contact_line_mobility < 0 or self.max_mobility <= 0:
             raise ValueError("invalid shallow mobility")
         if not 0 < self.cfl <= .25 or self.max_dt <= 0:
             raise ValueError("invalid explicit stability controls")
@@ -252,6 +253,11 @@ def _axis_flux(h0,h1,bulk0,bulk1,skin0,skin1,valid,delta,cfg):
     poisson=cfg.density*cfg.gravity*hm**3/(3.*np.maximum(mu,1e-9))
     slip=cfg.density*cfg.gravity*cfg.basal_slip_length*hm**2/np.maximum(mu,1e-9)
     mobility=(poisson+slip)*(0.04+.96*melt*melt)
+    # Grid-scale dynamic-contact-line closure. It acts most strongly on a thin
+    # advancing front and vanishes in deep pools, allowing channels to wet
+    # without requiring unrealistically tall source mounds.
+    front_weight=np.exp(-hface/max(cfg.target_depth*.42,1e-6))
+    mobility+=cfg.contact_line_mobility*front_weight*melt*melt
 
     grad=(h1-h0)/delta
     tau=cfg.density*cfg.gravity*hm*np.abs(grad)
@@ -376,6 +382,44 @@ def _redistribute_overflow(h,labels,limit,energy=None,sweeps=4):
 
         h+=np.maximum(excess-moved,0.)
         e+=np.maximum(excess_e-moved_e,0.)
+
+    # A physical mold cannot sustain a free surface above its wall indefinitely.
+    # If the finite number of local sweeps leaves a residual, equalize only that
+    # over-depth residual within the same connected cavity while carrying its
+    # thermal energy.  This is a safety closure, not a target-height morph.
+    for component in np.unique(labels):
+        if component<=0:
+            continue
+        region=labels==component
+        excess=np.maximum(h[region]-limit,0.)
+        amount=float(excess.sum())
+        if amount<=1e-14:
+            continue
+        temp=e[region]/np.maximum(h[region],1e-12)
+        excess_energy=float(np.sum(excess*temp))
+        hr=np.minimum(h[region],limit)
+        er=e[region]-excess*temp
+        capacity=np.maximum(limit-hr,0.)
+        cap=float(capacity.sum())
+        if cap>1e-14:
+            moved=min(amount,cap)
+            addition=capacity*(moved/cap)
+            mix_temperature=excess_energy/max(amount,1e-12)
+            hr+=addition
+            er+=addition*mix_temperature
+            residual=amount-moved
+            residual_energy=excess_energy-moved*mix_temperature
+        else:
+            residual=amount
+            residual_energy=excess_energy
+        if residual>1e-14:
+            # This should only occur if the requested volume exceeds component
+            # capacity. Preserve it for diagnostics rather than deleting mass.
+            k=int(np.argmax(capacity)) if len(capacity) else 0
+            hr[k]+=residual
+            er[k]+=residual_energy
+        h[region]=hr
+        e[region]=er
 
     return h if scalar_only else (h,e)
 
