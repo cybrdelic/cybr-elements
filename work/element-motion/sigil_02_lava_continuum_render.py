@@ -58,7 +58,7 @@ def build_lava_material():
  lava,p=principled('Thermal continuum / resolved state + material-coordinate crust')
  p.inputs['Metallic'].default_value=0.
  p.inputs['IOR'].default_value=1.52
- if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.56
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.38
  p.inputs['Coat Roughness'].default_value=.18
  nodes=lava.node_tree.nodes;links=lava.node_tree.links
  base=attribute(nodes,'baseColor')
@@ -104,7 +104,7 @@ def build_lava_material():
  links.new(melt.outputs['Fac'],emission_visibility.inputs[0]);links.new(glow_floor.outputs[0],emission_visibility.inputs[1])
  emission_strength=math_node(nodes,'MULTIPLY',label='blackbody × visible molten fraction')
  links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=.82,label='camera-scale thermal radiance')
+ emission_scale=math_node(nodes,'MULTIPLY',b=1.75,label='camera-scale thermal radiance')
  links.new(emission_strength.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
@@ -118,7 +118,7 @@ def build_lava_material():
  links.new(base.outputs['Color'],base_mod.inputs[1]);links.new(macro_gate.outputs['Color'],base_mod.inputs[2])
  fracture_dark=nodes.new('ShaderNodeMixRGB');fracture_dark.blend_type='MULTIPLY'
  links.new(fracture_edge.outputs[0],fracture_dark.inputs['Fac']);links.new(base_mod.outputs['Color'],fracture_dark.inputs[1])
- fracture_dark.inputs[2].default_value=(.16,.18,.20,1.)
+ fracture_dark.inputs[2].default_value=(.022,.015,.010,1.)
  links.new(fracture_dark.outputs['Color'],p.inputs['Base Color'])
 
  micro_center=math_node(nodes,'SUBTRACT',b=.5,label='micro centered');links.new(micro.outputs['Fac'],micro_center.inputs[0])
@@ -134,8 +134,8 @@ def build_lava_material():
  ripple.inputs['Scale'].default_value=68.;ripple.inputs['Detail'].default_value=2.1
  ripple.inputs['Roughness'].default_value=.52;ripple.inputs['Distortion'].default_value=.10
  links.new(rest.outputs['Vector'],ripple.inputs['Vector'])
- ripple_bump=nodes.new('ShaderNodeBump');ripple_bump.label='melt-only ripple normal';ripple_bump.inputs['Distance'].default_value=.00055
- ripple_strength=math_node(nodes,'MULTIPLY',a=.085,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
+ ripple_bump=nodes.new('ShaderNodeBump');ripple_bump.label='melt-only ripple normal';ripple_bump.inputs['Distance'].default_value=.00080
+ ripple_strength=math_node(nodes,'MULTIPLY',a=.14,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
  links.new(ripple.outputs['Fac'],ripple_bump.inputs['Height'])
 
  macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.24;macro_bump.inputs['Distance'].default_value=.0022
