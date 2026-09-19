@@ -97,28 +97,33 @@ def build_lava_material():
  # resolved melt and re-opens locally along damage-gated fissures.
  fissure_glow=math_node(nodes,'MULTIPLY',b=.46,label='fissure thermal reveal')
  links.new(fracture_edge.outputs[0],fissure_glow.inputs[0])
- glow_floor=math_node(nodes,'ADD',a=.035,label='minimum subsurface leak')
+ glow_floor=math_node(nodes,'ADD',a=.004,label='minimum subsurface leak')
  links.new(fissure_glow.outputs[0],glow_floor.inputs[1])
  emission_visibility=math_node(nodes,'MAXIMUM',label='melt or fissure visibility')
  links.new(melt.outputs['Fac'],emission_visibility.inputs[0]);links.new(glow_floor.outputs[0],emission_visibility.inputs[1])
  emission_strength=math_node(nodes,'MULTIPLY',label='blackbody × visible molten fraction')
  links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
- links.new(emission_strength.outputs[0],p.inputs['Emission Strength'])
+ emission_scale=math_node(nodes,'MULTIPLY',b=.82,label='camera-scale thermal radiance')
+ links.new(emission_strength.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
  macro_gain.inputs['From Min'].default_value=.12;macro_gain.inputs['From Max'].default_value=.88
  macro_gain.inputs['To Min'].default_value=.72;macro_gain.inputs['To Max'].default_value=1.24
  links.new(macro.outputs['Fac'],macro_gain.inputs['Value'])
+ macro_gate=nodes.new('ShaderNodeMixRGB');macro_gate.blend_type='MIX';macro_gate.label='crust-only albedo breakup'
+ macro_gate.inputs[1].default_value=(1.,1.,1.,1.)
+ links.new(crust.outputs['Fac'],macro_gate.inputs['Fac']);links.new(macro_gain.outputs['Result'],macro_gate.inputs[2])
  base_mod=nodes.new('ShaderNodeMixRGB');base_mod.blend_type='MULTIPLY';base_mod.inputs['Fac'].default_value=1.
- links.new(base.outputs['Color'],base_mod.inputs[1]);links.new(macro_gain.outputs['Result'],base_mod.inputs[2])
+ links.new(base.outputs['Color'],base_mod.inputs[1]);links.new(macro_gate.outputs['Color'],base_mod.inputs[2])
  fracture_dark=nodes.new('ShaderNodeMixRGB');fracture_dark.blend_type='MULTIPLY'
  links.new(fracture_edge.outputs[0],fracture_dark.inputs['Fac']);links.new(base_mod.outputs['Color'],fracture_dark.inputs[1])
  fracture_dark.inputs[2].default_value=(.16,.18,.20,1.)
  links.new(fracture_dark.outputs['Color'],p.inputs['Base Color'])
 
  micro_center=math_node(nodes,'SUBTRACT',b=.5,label='micro centered');links.new(micro.outputs['Fac'],micro_center.inputs[0])
- micro_amp=math_node(nodes,'MULTIPLY',b=.12,label='micro roughness amplitude');links.new(micro_center.outputs[0],micro_amp.inputs[0])
- rough_add=math_node(nodes,'ADD',label='phase roughness + microstructure');links.new(rough_base.outputs['Fac'],rough_add.inputs[0]);links.new(micro_amp.outputs[0],rough_add.inputs[1])
+ micro_amp=math_node(nodes,'MULTIPLY',b=.09,label='micro roughness amplitude');links.new(micro_center.outputs[0],micro_amp.inputs[0])
+ micro_phase=math_node(nodes,'MULTIPLY',label='crust-gated micro roughness');links.new(micro_amp.outputs[0],micro_phase.inputs[0]);links.new(relief.outputs['Fac'],micro_phase.inputs[1])
+ rough_add=math_node(nodes,'ADD',label='phase roughness + cooled microstructure');links.new(rough_base.outputs['Fac'],rough_add.inputs[0]);links.new(micro_phase.outputs[0],rough_add.inputs[1])
  fracture_rough=math_node(nodes,'MULTIPLY',b=.055,label='fracture roughness');links.new(fracture_edge.outputs[0],fracture_rough.inputs[0])
  rough_total=math_node(nodes,'ADD');links.new(rough_add.outputs[0],rough_total.inputs[0]);links.new(fracture_rough.outputs[0],rough_total.inputs[1])
  rough_clamp=nodes.new('ShaderNodeClamp');rough_clamp.inputs['Min'].default_value=.16;rough_clamp.inputs['Max'].default_value=.98
@@ -127,7 +132,8 @@ def build_lava_material():
  macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.28;macro_bump.inputs['Distance'].default_value=.0032
  links.new(macro.outputs['Fac'],macro_bump.inputs['Height'])
  macro_strength=math_node(nodes,'MULTIPLY',a=.44,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
- micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Strength'].default_value=.22;micro_bump.inputs['Distance'].default_value=.00055
+ micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Distance'].default_value=.00048
+ micro_bump_strength=math_node(nodes,'MULTIPLY',a=.16,label='crust-gated grain relief');links.new(relief.outputs['Fac'],micro_bump_strength.inputs[1]);links.new(micro_bump_strength.outputs[0],micro_bump.inputs['Strength'])
  links.new(micro.outputs['Fac'],micro_bump.inputs['Height']);links.new(macro_bump.outputs['Normal'],micro_bump.inputs['Normal'])
  vesicles=nodes.new('ShaderNodeTexVoronoi');vesicles.voronoi_dimensions='3D';vesicles.feature='F1';vesicles.distance='EUCLIDEAN'
  vesicles.label='advected vesicle centers';vesicles.inputs['Scale'].default_value=118.
@@ -230,7 +236,7 @@ def main():
  s.render.fps=a.fps;s.render.film_transparent=False
  s.view_settings.view_transform='AgX';s.view_settings.look='AgX - Medium High Contrast';s.view_settings.exposure=a.exposure
  s.world=bpy.data.worlds.new('Dim neutral studio');s.world.use_nodes=True
- bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.045,.050,.060,1);bg.inputs['Strength'].default_value=.012 if formation_mode=='pour' else .035
+ bg=s.world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.045,.050,.060,1);bg.inputs['Strength'].default_value=.018 if formation_mode=='pour' else .035
  bpy.ops.object.camera_add();camera=bpy.context.object;s.camera=camera
  view=('formation' if formation_mode=='pour' else 'oblique') if a.view=='auto' else a.view
  target=(0.,0.,.10 if view=='formation' else .335)
@@ -238,9 +244,9 @@ def main():
  camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
  camera.data.type='ORTHO';camera.data.ortho_scale=1.52 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
  if view=='formation':
-  area('Large neutral key',(-.55,-.55,1.35),6,(.88,.91,1.),1.25,target)
-  area('Grazing rim',(.65,.45,.95),8,(.80,.86,.98),.90,target)
-  area('Soft front fill',(-.25,-.8,.45),1.2,(1.,.84,.70),1.45,target)
+  area('Large neutral key',(-.55,-.55,1.35),4.4,(.88,.91,1.),1.55,target)
+  area('Grazing rim',(.65,.45,.95),4.8,(.80,.86,.98),1.15,target)
+  area('Soft front fill',(-.25,-.8,.45),.9,(1.,.84,.70),1.65,target)
  else:
   area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
   area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
