@@ -76,7 +76,11 @@ def build_lava_material():
  links.new(base.outputs['Color'],p.inputs['Base Color'])
  blackbody=nodes.new('ShaderNodeBlackbody');blackbody.label='temperature-derived blackbody chroma'
  links.new(temperature.outputs['Fac'],blackbody.inputs['Temperature'])
- links.new(blackbody.outputs['Color'],p.inputs['Emission Color'])
+ blackbody_camera=nodes.new('ShaderNodeMixRGB');blackbody_camera.blend_type='MULTIPLY';blackbody_camera.label='camera-response saturated incandescence'
+ blackbody_camera.inputs['Fac'].default_value=1.
+ links.new(blackbody.outputs['Color'],blackbody_camera.inputs[1])
+ blackbody_camera.inputs[2].default_value=(1.0,.46,.14,1.)
+ links.new(blackbody_camera.outputs['Color'],p.inputs['Emission Color'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
  macro.inputs['Scale'].default_value=23.;macro.inputs['Detail'].default_value=5.2
@@ -131,7 +135,7 @@ def build_lava_material():
  links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
  skin_emission=math_node(nodes,'MULTIPLY',label='blackbody through resolved skin islands')
  links.new(emission_strength.outputs[0],skin_emission.inputs[0]);links.new(skin_keep.outputs[0],skin_emission.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=1.45,label='camera-scale thermal radiance')
+ emission_scale=math_node(nodes,'MULTIPLY',b=.82,label='camera-scale thermal radiance')
  links.new(skin_emission.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
