@@ -131,6 +131,7 @@ def main():
         mesh=build_surface_mesh(
             state['h'],state['skin'],state['damage'],state['mask'],
             state['xs'],state['ys'],active,state['sources'],t,cfg,formation,
+            tangent_x=state['tangentX'],tangent_y=state['tangentY'],
         )
         file=a.out/'meshes'/f'{f:04d}.npz'
         atomic_npz(file,**mesh,time=np.float64(t))
