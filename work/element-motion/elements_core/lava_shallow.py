@@ -1,15 +1,22 @@
-"""Depth-averaged viscous lava formation for the CYBRDELIC glyph mold.
+"""Conservative depth-averaged lava flow for the CYBRDELIC glyph mold.
 
-This solver is intentionally specialized for the shallow engraved mold used by
-the lava formation film. It solves a conservative lubrication-style free-surface
-height field on the horizontal cavity plane, transports bulk heat with the
-volume flux, evolves a rapidly cooling surface skin, and emits explicit vertical
-inlet jets while the source is active.
+The formation shot is a shallow engraved mold, so resolving the full 3-D
+vertical momentum field is wasteful and, at review resolutions, under-resolves
+the thin letter channels.  This module instead solves a conservative
+depth-averaged free-surface flow over the actual signed-distance cavity.
 
-It does not morph a target mesh, keyframe material into the letters, or use a
-render mask. The signed-distance artwork defines rigid no-flux cavity walls; all
-material enters through localized inlet source terms and subsequently spreads by
-pressure-driven depth-averaged flow.
+The state is physical height, bulk temperature, surface-skin temperature, and
+thermal/mechanical damage.  Localized inlets add volume and enthalpy.  All
+subsequent spreading is pressure-driven through conservative face fluxes; there
+is no target morph, no per-cell target force, and no render mask.
+
+The mobility combines a temperature-dependent lubrication term with an
+effective basal-slip term used as a grid-scale closure for unresolved near-wall
+shear.  A Bingham-like yield factor arrests cooled material.  The surface skin
+cools faster near the stone walls and can crack under thermal shock while the
+hot bulk remains mobile underneath it.  A conservative overflow safety pass
+prevents numerical source cells from exceeding the physical mold depth: excess
+volume is redistributed only within the same connected cavity component.
 """
 from __future__ import annotations
 
@@ -17,60 +24,85 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 import math
 import numpy as np
-from scipy.ndimage import gaussian_filter, label
+from scipy.ndimage import label
 
 from .lava_formation import PourFormationConfig, _bilinear, _source_coords
 
 
 @dataclass(frozen=True)
 class ShallowLavaConfig:
-    nx: int = 224
-    ny: int = 112
+    nx: int = 256
+    ny: int = 128
     x_min: float = -.70
     x_max: float = .70
     y_min: float = -.34
     y_max: float = .34
+
     floor: float = .032
     wall_height: float = .052
-    target_depth: float = .043
-    pour_duration: float = 2.8
-    inlet_stagger_seconds: float = 1.15
-    feed_temperature: float = 1575.
-    feed_skin_temperature: float = 1490.
-    mold_temperature: float = 430.
+    target_depth: float = .041
+    max_depth: float = .0495
+
+    pour_duration: float = 4.15
+    inlet_stagger_seconds: float = .78
+    source_sigma_min: float = .014
+    source_sigma_max: float = .031
+    source_sigma_clearance_scale: float = .82
+
+    feed_temperature: float = 1580.
+    feed_skin_temperature: float = 1500.
+    mold_temperature: float = 405.
+
     density: float = 2600.
     gravity: float = 9.81
-    viscosity_hot: float = 180.
-    viscosity_cold: float = 2.5e5
+    viscosity_hot: float = 105.
+    viscosity_cold: float = 6.0e5
+    basal_slip_length: float = .022
+    max_mobility: float = .0135
+    front_regularization_depth: float = .0045
+    yield_stress_hot: float = 2.0
+    yield_stress_cold: float = 950.
+
     solidus: float = 1250.
     liquidus: float = 1450.
     heat_capacity: float = 1200.
-    skin_thickness: float = .0025
-    skin_exchange_rate: float = .20
-    skin_reheat_rate: float = 3.2
-    bulk_cooling_rate: float = .025
+    skin_thickness: float = .0022
+    skin_exchange_rate: float = .29
+    wall_skin_exchange_rate: float = .62
+    wall_cooling_length: float = .012
+    skin_reheat_rate: float = 4.0
+    bulk_cooling_rate: float = .018
+    wall_bulk_cooling_rate: float = .045
     surface_emissivity: float = .90
-    surface_tension_smoothing: float = 0.
-    max_mobility: float = .0045
-    cfl: float = .18
-    wet_epsilon: float = .00045
-    max_depth: float = .050
-    jet_radius: float = .0065
-    jet_rings: int = 7
-    jet_segments: int = 12
+
+    cfl: float = .20
+    max_dt: float = .006
+    wet_epsilon: float = .00022
+
+    jet_radius: float = .0044
+    jet_visible_height: float = .026
+    jet_rings: int = 8
+    jet_segments: int = 14
+    impact_flare: float = 1.75
 
     def __post_init__(self):
         if min(self.nx, self.ny) < 32:
             raise ValueError("shallow grid too small")
         if not self.x_max > self.x_min or not self.y_max > self.y_min:
             raise ValueError("invalid shallow domain")
-        if not 0 < self.target_depth < self.wall_height:
-            raise ValueError("target depth must lie below mold wall")
+        if not 0 < self.target_depth < self.max_depth < self.wall_height:
+            raise ValueError("depths must satisfy target < max < wall")
         if self.pour_duration <= 0 or self.viscosity_hot <= 0:
             raise ValueError("invalid source or viscosity")
+        if self.viscosity_cold <= self.viscosity_hot:
+            raise ValueError("cold viscosity must exceed hot viscosity")
         if self.liquidus <= self.solidus:
             raise ValueError("invalid phase interval")
-        if self.jet_rings < 2 or self.jet_segments < 6:
+        if self.basal_slip_length < 0 or self.max_mobility <= 0:
+            raise ValueError("invalid shallow mobility")
+        if not 0 < self.cfl <= .25 or self.max_dt <= 0:
+            raise ValueError("invalid explicit stability controls")
+        if self.jet_rings < 3 or self.jet_segments < 8:
             raise ValueError("jet tessellation too small")
 
     @property
@@ -86,17 +118,17 @@ class ShallowLavaConfig:
 
 
 def _smoothstep(x):
-    x=np.clip(x,0.,1.)
+    x=np.clip(np.asarray(x,dtype=np.float64),0.,1.)
     return x*x*(3.-2.*x)
 
 
-def _sample_source_field(field, xx, yy, lo, extent, formation):
+def _sample_source_field(field,xx,yy,lo,extent,formation):
     xy=np.stack([xx,yy],axis=-1)
     v,u=_source_coords(xy,lo,extent,field.shape,formation)
     return _bilinear(field,v,u)
 
 
-def _component_inlets(mask, distance, arrival, xx, yy, formation):
+def _component_inlets(mask,distance,arrival,xx,yy,formation):
     labels,count=label(mask)
     components=[]
     for component in range(1,count+1):
@@ -106,6 +138,7 @@ def _component_inlets(mask, distance, arrival, xx, yy, formation):
     components.sort(key=lambda row:-row[1])
     if not components:
         raise RuntimeError("no resolved glyph components in shallow grid")
+
     rows=[]
     for rank,(component,area) in enumerate(components):
         py,px=np.where(labels==component)
@@ -113,9 +146,10 @@ def _component_inlets(mask, distance, arrival, xx, yy, formation):
         deep=clearance>np.percentile(clearance,58)
         py0,px0=py[deep],px[deep]
         count_here=formation.main_nozzles if rank==0 else 1
-        for q in np.linspace(.08,.92,count_here):
+        quantiles=np.linspace(.07,.93,count_here) if count_here>1 else np.array([.5])
+        for q in quantiles:
             target_x=np.quantile(px0,q) if count_here>1 else np.median(px0)
-            score=np.abs(px0-target_x)+.18*np.abs(py0-np.median(py0))
+            score=np.abs(px0-target_x)+.16*np.abs(py0-np.median(py0))
             idx=int(np.argmin(score))
             iy,ix=int(py0[idx]),int(px0[idx])
             rows.append({
@@ -129,31 +163,55 @@ def _component_inlets(mask, distance, arrival, xx, yy, formation):
     return labels,components,rows
 
 
-def _inlet_sources(mask, labels, inlets, xx, yy, dx, dy, target_volume, cfg):
+def _inlet_sources(mask,labels,inlets,xx,yy,dx,dy,target_depth,cfg):
+    """Partition cavity capacity between physical inlets.
+
+    Each cell in a connected component is assigned to its nearest inlet in that
+    component.  The inlet receives exactly that territory's target capacity.
+    This avoids the old equal-per-nozzle allocation that overfilled narrow
+    territories and underfed wide ones.
+    """
     groups={}
     for i,row in enumerate(inlets):
         groups.setdefault(row["component"],[]).append(i)
-    component_cells={k:int(np.count_nonzero(labels==k)) for k in groups}
-    total_cells=max(1,sum(component_cells.values()))
+
+    territory_cells=np.zeros(len(inlets),np.int64)
+    for component,indices in groups.items():
+        yy_idx,xx_idx=np.where(labels==component)
+        if len(yy_idx)==0:
+            continue
+        cx=xx[yy_idx,xx_idx]
+        cy=yy[yy_idx,xx_idx]
+        centers=np.array([[inlets[i]["x"],inlets[i]["y"]] for i in indices],np.float64)
+        d2=(cx[:,None]-centers[None,:,0])**2+(cy[:,None]-centers[None,:,1])**2
+        owner=np.argmin(d2,axis=1)
+        for local,global_index in enumerate(indices):
+            territory_cells[global_index]=int(np.count_nonzero(owner==local))
+
     arrival=np.array([r["arrival"] for r in inlets],np.float64)
     amin=float(arrival.min());amax=float(arrival.max())
     span=max(amax-amin,1e-9)
+
     sources=[]
     for i,row in enumerate(inlets):
         comp=row["component"]
-        component_fraction=component_cells[comp]/total_cells
-        assigned_volume=target_volume*component_fraction/len(groups[comp])
+        cells=max(1,int(territory_cells[i]))
+        assigned_volume=cells*dx*dy*target_depth
         start=cfg.inlet_stagger_seconds*(row["arrival"]-amin)/span
         end=start+cfg.pour_duration
-        sigma=min(.016,max(.0080,row["clearance"]*.48))
+        sigma=np.clip(
+            row["clearance"]*cfg.source_sigma_clearance_scale,
+            cfg.source_sigma_min,cfg.source_sigma_max)
         r2=(xx-row["x"])**2+(yy-row["y"])**2
-        weight=np.exp(-.5*r2/(sigma*sigma))*mask*(labels==comp)
+        weight=np.exp(-.5*r2/(sigma*sigma))*(labels==comp)
         norm=float(weight.sum()*dx*dy)
         if norm<=0:
             raise RuntimeError("empty inlet support")
         shape=weight/norm
         sources.append({
             **row,
+            "territoryCells":cells,
+            "territoryTargetVolumeM3":float(assigned_volume),
             "start":float(start),"end":float(end),
             "assignedVolumeM3":float(assigned_volume),
             "flowRateM3s":float(assigned_volume/cfg.pour_duration),
@@ -163,28 +221,58 @@ def _inlet_sources(mask, labels, inlets, xx, yy, dx, dy, target_volume, cfg):
     return sources
 
 
-def _viscosity(skin_temperature,cfg):
-    phase=np.clip((cfg.liquidus-skin_temperature)/(cfg.liquidus-cfg.solidus),0.,1.)
-    phase=_smoothstep(phase)
-    log_mu=np.log(cfg.viscosity_hot)+(np.log(cfg.viscosity_cold)-np.log(cfg.viscosity_hot))*phase
-    return np.exp(log_mu)
+def _phase_fraction(temperature,cfg):
+    return _smoothstep(np.clip(
+        (temperature-cfg.solidus)/(cfg.liquidus-cfg.solidus),0.,1.))
 
 
-def _face_fluxes(h,skin,mask,dx,dy,cfg):
-    mu=_viscosity(skin,cfg)
-    hx=.5*(h[:,:-1]+h[:,1:])
-    mux=np.sqrt(mu[:,:-1]*mu[:,1:])
-    kx=cfg.density*cfg.gravity*hx**3/(3.*np.maximum(mux,1e-9))
-    kx=np.minimum(kx,cfg.max_mobility)
-    qx=-kx*(h[:,1:]-h[:,:-1])/dx
-    qx*=mask[:,:-1]&mask[:,1:]
+def _effective_viscosity(bulk,skin,cfg):
+    # The bulk dominates depth-averaged flow.  The surface skin contributes
+    # drag but cannot freeze a hot interior instantly.
+    flow_temperature=.82*bulk+.18*skin
+    solid=1.-_phase_fraction(flow_temperature,cfg)
+    log_mu=np.log(cfg.viscosity_hot)+(
+        np.log(cfg.viscosity_cold)-np.log(cfg.viscosity_hot))*solid
+    mu=np.exp(log_mu)
+    skin_crust=1.-_phase_fraction(skin,cfg)
+    return mu*(1.+2.5*skin_crust**3),flow_temperature
 
-    hy=.5*(h[:-1,:]+h[1:,:])
-    muy=np.sqrt(mu[:-1,:]*mu[1:,:])
-    ky=cfg.density*cfg.gravity*hy**3/(3.*np.maximum(muy,1e-9))
-    ky=np.minimum(ky,cfg.max_mobility)
-    qy=-ky*(h[1:,:]-h[:-1,:])/dy
-    qy*=mask[:-1,:]&mask[1:,:]
+
+def _axis_flux(h0,h1,bulk0,bulk1,skin0,skin1,valid,delta,cfg):
+    hface=.5*(h0+h1)
+    bulk=.5*(bulk0+bulk1)
+    skin=.5*(skin0+skin1)
+    mu,flow_temperature=_effective_viscosity(bulk,skin,cfg)
+    melt=_phase_fraction(flow_temperature,cfg)
+    crust=1.-melt
+
+    # A small mobility depth regularizes the advancing contact line without
+    # adding any precursor-film volume to the conserved height field.
+    hm=np.maximum(hface,cfg.front_regularization_depth)
+    poisson=cfg.density*cfg.gravity*hm**3/(3.*np.maximum(mu,1e-9))
+    slip=cfg.density*cfg.gravity*cfg.basal_slip_length*hm**2/np.maximum(mu,1e-9)
+    mobility=(poisson+slip)*(0.04+.96*melt*melt)
+
+    grad=(h1-h0)/delta
+    tau=cfg.density*cfg.gravity*hm*np.abs(grad)
+    yield_stress=cfg.yield_stress_hot+(
+        cfg.yield_stress_cold-cfg.yield_stress_hot)*crust*crust
+    yielded=np.clip(1.-yield_stress/np.maximum(tau,1e-8),0.,1.)
+    yielded=yielded*yielded
+    mobility=np.minimum(mobility*yielded,cfg.max_mobility)
+
+    q=-mobility*grad
+    q*=valid
+    return q,mobility
+
+
+def _face_fluxes(h,bulk,skin,mask,dx,dy,cfg):
+    qx,kx=_axis_flux(
+        h[:,:-1],h[:,1:],bulk[:,:-1],bulk[:,1:],
+        skin[:,:-1],skin[:,1:],mask[:,:-1]&mask[:,1:],dx,cfg)
+    qy,ky=_axis_flux(
+        h[:-1,:],h[1:,:],bulk[:-1,:],bulk[1:,:],
+        skin[:-1,:],skin[1:,:],mask[:-1,:]&mask[1:,:],dy,cfg)
     return qx,qy,float(max(kx.max(initial=0.),ky.max(initial=0.)))
 
 
@@ -216,33 +304,79 @@ def _active_source_fields(t,sources,shape,cfg):
     return depth_rate,heat_rate,active
 
 
-def _thermal_update(h,bulk,skin,source_depth,source_heat,dt,mask,cfg,flow_activity):
+def _redistribute_overflow(h,labels,limit):
+    """Mass-conserving safety redistribution inside each cavity component."""
+    h=np.asarray(h,np.float64).copy()
+    for component in np.unique(labels):
+        if component<=0:
+            continue
+        region=labels==component
+        excess_field=np.maximum(h[region]-limit,0.)
+        excess=float(excess_field.sum())
+        if excess<=1e-14:
+            continue
+        h[region]=np.minimum(h[region],limit)
+        capacity=np.maximum(limit-h[region],0.)
+        cap=float(capacity.sum())
+        if cap<=1e-14:
+            # The requested total volume should remain below capacity.  Keep
+            # the residual on the deepest cells rather than deleting mass.
+            deepest=np.flatnonzero(region)
+            if len(deepest):
+                flat=h.ravel()
+                flat[deepest[0]]+=excess
+            continue
+        take=min(excess,cap)
+        h[region]+=capacity*(take/cap)
+        residual=excess-take
+        if residual>1e-14:
+            # Only reachable if a caller requests more volume than the mold can
+            # contain.  Preserve mass explicitly for diagnostics.
+            cells=np.flatnonzero(region)
+            if len(cells):
+                h.ravel()[cells[0]]+=residual
+    return h
+
+
+def _thermal_update(h,bulk,skin,source_depth,dt,mask,wall_factor,cfg,flow_activity):
     wet=h>cfg.wet_epsilon
     bulk=np.where(wet,bulk,cfg.mold_temperature)
-    bulk-=cfg.bulk_cooling_rate*(bulk-cfg.mold_temperature)*dt*wet
+
+    bulk_rate=cfg.bulk_cooling_rate+cfg.wall_bulk_cooling_rate*wall_factor
+    bulk-=bulk_rate*(bulk-cfg.mold_temperature)*dt*wet
 
     reheat=np.clip(flow_activity/.018,0.,1.)
-    reheat=np.maximum(reheat,np.clip(source_depth/.025,0.,1.))
+    reheat=np.maximum(reheat,np.clip(source_depth/.020,0.,1.))
     skin+=cfg.skin_reheat_rate*reheat*(bulk-skin)*dt
-    skin-=cfg.skin_exchange_rate*(skin-cfg.mold_temperature)*dt*wet
+
+    skin_rate=cfg.skin_exchange_rate+cfg.wall_skin_exchange_rate*wall_factor
+    skin-=skin_rate*(skin-cfg.mold_temperature)*dt*wet
 
     sigma=5.670374419e-8
     cap=cfg.density*cfg.heat_capacity*cfg.skin_thickness
-    radiative=cfg.surface_emissivity*sigma*np.maximum(skin**4-cfg.mold_temperature**4,0.)/max(cap,1e-12)
+    radiative=cfg.surface_emissivity*sigma*np.maximum(
+        skin**4-cfg.mold_temperature**4,0.)/max(cap,1e-12)
     skin-=radiative*dt*wet
-    skin=np.where(wet,np.minimum(skin,bulk+35.),cfg.mold_temperature)
+
+    skin=np.where(wet,np.minimum(skin,bulk+28.),cfg.mold_temperature)
+    bulk=np.clip(bulk,cfg.mold_temperature,cfg.feed_temperature+40.)
+    skin=np.clip(skin,cfg.mold_temperature,cfg.feed_temperature+20.)
     return bulk,skin
 
 
-def _thermal_shock_damage(damage,skin,flow_activity,dt,cfg):
-    crust=_smoothstep(np.clip((cfg.liquidus-skin)/(cfg.liquidus-cfg.solidus),0.,1.))
-    strain=np.clip(flow_activity/.012,0.,4.)
-    grow=.22*crust*np.clip(strain-.15,0.,1.)+.055*crust*(1.-np.exp(-strain))
+def _thermal_shock_damage(damage,old_skin,new_skin,flow_activity,wall_factor,dt,cfg):
+    crust=1.-_phase_fraction(new_skin,cfg)
+    strain=np.clip(flow_activity/.010,0.,4.)
+    cooling=np.maximum(old_skin-new_skin,0.)/max(dt,1e-12)
+    cooling=np.clip(cooling/320.,0.,3.)
+    grow=(.18*crust*np.clip(strain-.10,0.,1.)
+          +.075*crust*(1.-np.exp(-strain))
+          +.055*crust*cooling*(.35+.65*wall_factor))
     return np.clip(damage+dt*grow,0.,.98)
 
 
-def _step(h,bulk,skin,damage,mask,sources,t,dt,cfg):
-    qx,qy,kmax=_face_fluxes(h,skin,mask,cfg.dx,cfg.dy,cfg)
+def _step(h,bulk,skin,damage,mask,labels,wall_factor,sources,t,dt,cfg):
+    qx,qy,kmax=_face_fluxes(h,bulk,skin,mask,cfg.dx,cfg.dy,cfg)
     src_h,src_e,active=_active_source_fields(t,sources,h.shape,cfg)
 
     dh=_divergence(qx,qy,cfg.dx,cfg.dy,h.shape)+src_h
@@ -250,18 +384,15 @@ def _step(h,bulk,skin,damage,mask,sources,t,dt,cfg):
     ex,ey=_advected_scalar_flux(qx,qy,bulk)
     denergy=_divergence(ex,ey,cfg.dx,cfg.dy,h.shape)+src_e
 
-    h_new=h+dt*dh
-    h_new=np.where(mask,np.maximum(h_new,0.),0.)
-    energy_new=energy+dt*denergy
-    bulk_new=np.where(h_new>cfg.wet_epsilon,
-                      energy_new/np.maximum(h_new,1e-8),
-                      cfg.mold_temperature)
-    bulk_new=np.clip(bulk_new,cfg.mold_temperature,cfg.feed_temperature+60.)
+    h_new=np.where(mask,np.maximum(h+dt*dh,0.),0.)
+    h_new=_redistribute_overflow(h_new,labels,cfg.max_depth)
 
-    # No non-conservative post-blur is permitted here.  Earlier review builds
-    # blurred height across the signed-distance boundary, silently deleting
-    # most of the injected volume and diluting its heat.  The finite-volume
-    # flux above is the sole transport operator.
+    energy_new=energy+dt*denergy
+    bulk_new=np.where(
+        h_new>cfg.wet_epsilon,
+        energy_new/np.maximum(h_new,1e-8),
+        cfg.mold_temperature)
+    bulk_new=np.clip(bulk_new,cfg.mold_temperature,cfg.feed_temperature+40.)
 
     flow=np.zeros_like(h_new)
     flow[:,:-1]+=np.abs(qx)
@@ -275,28 +406,36 @@ def _step(h,bulk,skin,damage,mask,sources,t,dt,cfg):
     skin_seed=np.where(fresh,bulk_new,skin)
     source_fraction=np.clip(added_depth/np.maximum(h_new,1e-8),0.,1.)
     skin_seed=(1.-source_fraction)*skin_seed+source_fraction*cfg.feed_skin_temperature
+
+    old_skin=skin_seed.copy()
     bulk_new,skin_new=_thermal_update(
-        h_new,bulk_new,skin_seed,src_h,src_e,dt,mask,cfg,flow)
-    damage_new=_thermal_shock_damage(damage,skin_new,flow,dt,cfg)
+        h_new,bulk_new,skin_seed,src_h,dt,mask,wall_factor,cfg,flow)
+    damage_new=_thermal_shock_damage(
+        damage,old_skin,skin_new,flow,wall_factor,dt,cfg)
+
     return h_new,bulk_new,skin_new,damage_new,active,kmax
 
 
-def _adaptive_dt(h,skin,remaining,cfg):
-    _,_,kmax=_face_fluxes(h,skin,np.ones_like(h,dtype=bool),cfg.dx,cfg.dy,cfg)
+def _adaptive_dt(h,bulk,skin,mask,remaining,cfg):
+    _,_,kmax=_face_fluxes(h,bulk,skin,mask,cfg.dx,cfg.dy,cfg)
     if kmax<=1e-12:
-        return min(remaining,.008)
+        return min(remaining,cfg.max_dt)
     stable=cfg.cfl*min(cfg.dx,cfg.dy)**2/kmax
-    return min(remaining,.008,max(2e-4,stable))
+    return min(remaining,cfg.max_dt,max(1e-4,stable))
 
 
 def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,phase):
+    """Short tapered inlet neck with a broad impact foot, not a tall cylinder."""
     base=len(vertices)
     for ring in range(cfg.jet_rings):
         u=ring/(cfg.jet_rings-1)
         z=bottom+(top-bottom)*u
-        rr=radius*(.88+.10*math.sin(phase+u*7.1)+.045*math.sin(phase*.7+u*17.))
-        cx=center[0]+radius*.12*math.sin(phase+u*5.3)
-        cy=center[1]+radius*.10*math.cos(phase*.8+u*4.7)
+        # Wide impact skirt at u=0, quickly tapering to a narrow feed.
+        flare=1.+(cfg.impact_flare-1.)*math.exp(-u*7.0)
+        taper=.58+.42*(1.-u)
+        rr=radius*flare*taper*(1.+.035*math.sin(phase+u*9.))
+        cx=center[0]+radius*.055*math.sin(phase+u*4.7)
+        cy=center[1]+radius*.045*math.cos(phase*.8+u*5.2)
         for j in range(cfg.jet_segments):
             a=2.*math.pi*j/cfg.jet_segments
             vertices.append([cx+rr*math.cos(a),cy+rr*math.sin(a),z])
@@ -324,11 +463,13 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     node_t=np.zeros_like(node_h)
     node_d=np.zeros_like(node_h)
     count=np.zeros_like(node_h)
+
     for oy,ox in ((0,0),(0,1),(1,0),(1,1)):
         node_h[oy:oy+ny,ox:ox+nx]+=h*wet
         node_t[oy:oy+ny,ox:ox+nx]+=skin*wet
         node_d[oy:oy+ny,ox:ox+nx]+=damage*wet
         count[oy:oy+ny,ox:ox+nx]+=wet
+
     valid=count>0
     node_h[valid]/=count[valid]
     node_t[valid]/=count[valid]
@@ -338,6 +479,7 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     ynodes=np.linspace(ys[0]-cfg.dy*.5,ys[-1]+cfg.dy*.5,ny+1)
     index=-np.ones((ny+1,nx+1),np.int64)
     vertices=[];temps=[];damages=[];rests=[];faces=[]
+
     for iy in range(ny+1):
         for ix in range(nx+1):
             if not valid[iy,ix]:
@@ -347,40 +489,56 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
             vertices.append([xnodes[ix],ynodes[iy],z])
             temps.append(float(node_t[iy,ix]))
             damages.append(float(node_d[iy,ix]))
-            rests.append([xnodes[ix],ynodes[iy],z])
+            # Fixed horizontal material coordinates keep optical breakup stable
+            # while the resolved height evolves.
+            rests.append([xnodes[ix],ynodes[iy],cfg.floor])
+
     for iy in range(ny):
         for ix in range(nx):
             if not wet[iy,ix]:
                 continue
-            a=index[iy,ix];b=index[iy,ix+1];c=index[iy+1,ix+1];d=index[iy+1,ix]
+            a=index[iy,ix];b=index[iy,ix+1]
+            c=index[iy+1,ix+1];d=index[iy+1,ix]
             if min(a,b,c,d)>=0:
                 faces.extend([(a,b,c),(a,c,d)])
 
     def add_side(top_a,top_b):
         pa=np.asarray(vertices[top_a]);pb=np.asarray(vertices[top_b])
         ia=len(vertices);ib=ia+1
-        vertices.extend([[pa[0],pa[1],cfg.floor+.00005],[pb[0],pb[1],cfg.floor+.00005]])
-        ta=.5*(temps[top_a]+temps[top_b]);da=.5*(damages[top_a]+damages[top_b])
+        vertices.extend([
+            [pa[0],pa[1],cfg.floor+.00005],
+            [pb[0],pb[1],cfg.floor+.00005]])
+        ta=.5*(temps[top_a]+temps[top_b])
+        da=.5*(damages[top_a]+damages[top_b])
         temps.extend([ta,ta]);damages.extend([da,da])
-        rests.extend([[pa[0],pa[1],cfg.floor],[pb[0],pb[1],cfg.floor]])
+        rests.extend([
+            [pa[0],pa[1],cfg.floor],
+            [pb[0],pb[1],cfg.floor]])
         faces.extend([(top_a,top_b,ib),(top_a,ib,ia)])
 
     for iy in range(ny):
         for ix in range(nx):
-            if not wet[iy,ix]: continue
-            if iy==0 or not wet[iy-1,ix]: add_side(index[iy,ix+1],index[iy,ix])
-            if iy==ny-1 or not wet[iy+1,ix]: add_side(index[iy+1,ix],index[iy+1,ix+1])
-            if ix==0 or not wet[iy,ix-1]: add_side(index[iy,ix],index[iy+1,ix])
-            if ix==nx-1 or not wet[iy,ix+1]: add_side(index[iy+1,ix+1],index[iy,ix+1])
+            if not wet[iy,ix]:
+                continue
+            if iy==0 or not wet[iy-1,ix]:
+                add_side(index[iy,ix+1],index[iy,ix])
+            if iy==ny-1 or not wet[iy+1,ix]:
+                add_side(index[iy+1,ix],index[iy+1,ix+1])
+            if ix==0 or not wet[iy,ix-1]:
+                add_side(index[iy,ix],index[iy+1,ix])
+            if ix==nx-1 or not wet[iy,ix+1]:
+                add_side(index[iy+1,ix+1],index[iy,ix+1])
 
     for src_index in active_sources:
         src=sources[src_index]
         bottom=cfg.floor+float(h[src["iy"],src["ix"]])
-        top=formation.nozzle_bottom
-        if top>bottom+.004:
-            _append_jet(vertices,faces,temps,damages,rests,
-                        (src["x"],src["y"]),bottom,top,cfg.jet_radius,cfg,
-                        phase=1.7*src_index+t*3.1)
+        physical_top=formation.nozzle_bottom
+        top=min(physical_top,bottom+cfg.jet_visible_height)
+        if top>bottom+.003:
+            _append_jet(
+                vertices,faces,temps,damages,rests,
+                (src["x"],src["y"]),bottom,top,cfg.jet_radius,cfg,
+                phase=1.7*src_index+t*3.1)
 
     return {
         "vertices":np.asarray(vertices,np.float32),
@@ -401,23 +559,42 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
     xs=np.linspace(cfg.x_min,cfg.x_max,cfg.nx)
     ys=np.linspace(cfg.y_min,cfg.y_max,cfg.ny)
     xx,yy=np.meshgrid(xs,ys,indexing="xy")
-    distance=_sample_source_field(sdf,xx,yy,lo,extent,formation)*formation.stage_scale
-    arrival_stage=_sample_source_field(arrival,xx,yy,lo,extent,formation)
-    mask=distance>max(.0015,min(cfg.dx,cfg.dy)*.30)
-    labels,components,inlets=_component_inlets(mask,distance,arrival_stage,xx,yy,formation)
+
+    distance=_sample_source_field(
+        sdf,xx,yy,lo,extent,formation)*formation.stage_scale
+    arrival_stage=_sample_source_field(
+        arrival,xx,yy,lo,extent,formation)
+
+    mask=distance>max(.0012,min(cfg.dx,cfg.dy)*.22)
+    labels,components,inlets=_component_inlets(
+        mask,distance,arrival_stage,xx,yy,formation)
+
     area=float(mask.sum()*cfg.dx*cfg.dy)
     target_volume=area*cfg.target_depth
-    sources=_inlet_sources(mask,labels,inlets,xx,yy,cfg.dx,cfg.dy,target_volume,cfg)
+    sources=_inlet_sources(
+        mask,labels,inlets,xx,yy,cfg.dx,cfg.dy,cfg.target_depth,cfg)
+
+    source_volume=sum(src["assignedVolumeM3"] for src in sources)
+    if abs(source_volume-target_volume)/max(target_volume,1e-12)>5e-3:
+        raise RuntimeError(
+            f"inlet capacity partition mismatch: {source_volume} vs {target_volume}")
+
+    wall_factor=np.exp(-np.maximum(distance,0.)/cfg.wall_cooling_length)
+    wall_factor=np.clip(wall_factor,0.,1.)*mask
 
     h=np.zeros(mask.shape,np.float64)
     bulk=np.full(mask.shape,cfg.mold_temperature,np.float64)
     skin=np.full(mask.shape,cfg.mold_temperature,np.float64)
     damage=np.zeros(mask.shape,np.float64)
+
     return {
-        "xs":xs,"ys":ys,"xx":xx,"yy":yy,"distance":distance,
-        "mask":mask,"labels":labels,"components":components,"sources":sources,
+        "xs":xs,"ys":ys,"xx":xx,"yy":yy,
+        "distance":distance,"wallFactor":wall_factor,
+        "mask":mask,"labels":labels,
+        "components":components,"sources":sources,
         "h":h,"bulk":bulk,"skin":skin,"damage":damage,
-        "targetVolumeM3":target_volume,"cavityAreaM2":area,
+        "targetVolumeM3":target_volume,
+        "cavityAreaM2":area,
         "lo":lo,"extent":extent,
     }
 
@@ -425,27 +602,36 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
 def advance_state(state,t0,t1,cfg):
     t=float(t0)
     while t<t1-1e-12:
-        dt=_adaptive_dt(state["h"],state["skin"],t1-t,cfg)
+        dt=_adaptive_dt(
+            state["h"],state["bulk"],state["skin"],state["mask"],t1-t,cfg)
         state["h"],state["bulk"],state["skin"],state["damage"],active,kmax=_step(
             state["h"],state["bulk"],state["skin"],state["damage"],
-            state["mask"],state["sources"],t,dt,cfg)
+            state["mask"],state["labels"],state["wallFactor"],
+            state["sources"],t,dt,cfg)
         t+=dt
-    _,_,active=_active_source_fields(t1,state["sources"],state["h"].shape,cfg)
+    _,_,active=_active_source_fields(
+        t1,state["sources"],state["h"].shape,cfg)
     return active
 
 
 def metrics(state,t,cfg):
-    h=state["h"];wet=h>cfg.wet_epsilon
+    h=state["h"]
+    wet=h>cfg.wet_epsilon
     volume=float(h.sum()*cfg.dx*cfg.dy)
     target=float(state["targetVolumeM3"])
+
     skin=state["skin"][wet] if np.any(wet) else np.array([cfg.mold_temperature])
     bulk=state["bulk"][wet] if np.any(wet) else np.array([cfg.mold_temperature])
-    crust=_smoothstep(np.clip((cfg.liquidus-skin)/(cfg.liquidus-cfg.solidus),0.,1.))
-    obsidian=_smoothstep(np.clip((cfg.solidus-skin)/260.,0.,1.))
+    crust=1.-_phase_fraction(skin,cfg)
+    obsidian=_smoothstep(np.clip((cfg.solidus-skin)/220.,0.,1.))
+
     injected=sum(
         src["flowRateM3s"]*max(0.,min(t,src["end"])-src["start"])
-        for src in state["sources"]
-    )
+        for src in state["sources"])
+
+    cavity_cells=int(np.count_nonzero(state["mask"]))
+    wet_cells=int(wet.sum())
+
     return {
         "time":float(t),
         "volumeM3":volume,
@@ -455,7 +641,9 @@ def metrics(state,t,cfg):
         "meanWetDepthM":float(h[wet].mean()) if np.any(wet) else 0.,
         "scheduledInjectedVolumeM3":float(injected),
         "massBalanceRelative":float((volume-injected)/max(target,1e-12)),
-        "wetCells":int(wet.sum()),
+        "cavityCells":cavity_cells,
+        "wetCells":wet_cells,
+        "wetCoverageFraction":float(wet_cells/max(cavity_cells,1)),
         "skinTemperatureMinK":float(skin.min()),
         "skinTemperatureMeanK":float(skin.mean()),
         "skinTemperatureMaxK":float(skin.max()),
