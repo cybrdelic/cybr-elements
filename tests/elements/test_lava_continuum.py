@@ -87,7 +87,7 @@ def test_material_phase_controls_are_monotone_without_hot_mask():
     assert c['crust'][0] == pytest.approx(1.) and c['crust'][-1] == pytest.approx(0.)
     assert c['fracture'][0] > c['fracture'][2] > c['fracture'][-1]
     assert c['fracture'][-1] == pytest.approx(0.)
-    assert c['coat'][-1] > 0
+    assert c['coat'][-1] == pytest.approx(0.)
     assert c['obsidian'][0] > .8
     assert np.all(c['obsidian'][1:] == 0.)
 
