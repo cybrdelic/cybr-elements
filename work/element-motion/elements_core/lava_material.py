@@ -69,15 +69,21 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     # auditable from the simulated surface temperature.
     obsidian = smoothstep01(np.clip((solidus - t) / 220.0, 0.0, 1.0))
     transitional = crust * (1.0 - obsidian)
-    fracture = crust * smoothstep01(np.clip((d - .08) / .82, 0.0, 1.0))
-    relief = np.clip(.70 * transitional + .32 * obsidian + .38 * fracture, 0.0, 1.0)
-    roughness = .20 * melt + .68 * transitional + .18 * obsidian + .10 * fracture
-    roughness = np.clip(roughness, .12, .90)
-    coat = .035 * melt + .050 * transitional + .44 * obsidian * (1.0 - .50 * fracture)
-    coat = np.clip(coat, .025, .46)
-    hot = np.array([.0075, .0017, .00042])
-    crust_color = np.array([.0040, .0027, .0018])
-    glass = np.array([.00065, .0010, .0018])
+    # Thermal-shock damage should become visible well before catastrophic
+    # failure.  Keep it strictly subordinate to the thermal phase state.
+    fracture = crust * smoothstep01(np.clip((d - .03) / .42, 0.0, 1.0))
+    relief = np.clip(.55 * transitional + .28 * obsidian + .55 * fracture, 0.0, 1.0)
+    # Fresh melt is smooth, transitional crust is matte, and fully quenched
+    # obsidian returns to a sharp glassy grazing response.
+    roughness = .18 * melt + .60 * transitional + .10 * obsidian + .12 * fracture
+    roughness = np.clip(roughness, .08, .88)
+    coat = .040 * melt + .060 * transitional + .58 * obsidian * (1.0 - .55 * fracture)
+    coat = np.clip(coat, .025, .62)
+    hot = np.array([.0060, .00135, .00030])
+    crust_color = np.array([.0046, .0031, .0020])
+    # Slight blue-grey floor keeps black glass distinct from neutral basalt
+    # under grazing light without making it visibly blue.
+    glass = np.array([.0022, .0032, .0055])
     base = (hot[None, :] * melt.reshape(-1, 1)
             + crust_color[None, :] * transitional.reshape(-1, 1)
             + glass[None, :] * obsidian.reshape(-1, 1))
