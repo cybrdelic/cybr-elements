@@ -161,7 +161,7 @@ def build_lava_material():
 
  total_emit=math_node(nodes,'ADD',label='surface + revealed interior emission')
  links.new(surface_emit.outputs[0],total_emit.inputs[0]);links.new(fissure_emit.outputs[0],total_emit.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=.88,label='camera-scale thermal radiance')
+ emission_scale=math_node(nodes,'MULTIPLY',b=2.20,label='camera-scale thermal radiance')
  links.new(total_emit.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
