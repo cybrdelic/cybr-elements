@@ -21,7 +21,7 @@ concurrency:
 jobs:
   fast-video:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -37,14 +37,14 @@ jobs:
           python work/element-motion/sigil_02_lava_continuum.py \
             --source work/element-motion/sigil-02-v2/source.npz \
             --out /tmp/lava-fast/physics --formation pour \
-            --seconds 3.6 --fps 8 --samples-per-axis 1 --threads 2 --viscosity 30
+            --seconds 6.0 --fps 8 --samples-per-axis 1 --threads 2 --viscosity 30
       - name: Reconstruct
         env:
           PYTHONPATH: work/element-motion
         run: |
           python work/element-motion/sigil_02_lava_surface.py \
             --run /tmp/lava-fast/physics --out /tmp/lava-fast/surface \
-            --frames 29 --spacing .011
+            --frames 48 --spacing .011
       - name: Install Blender
         run: |
           curl -fL --retry 3 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz
@@ -55,7 +55,7 @@ jobs:
             --python work/element-motion/sigil_02_lava_continuum_render.py -- \
             --surface /tmp/lava-fast/surface \
             --source work/element-motion/sigil-02-v2/source.npz \
-            --out /tmp/lava-fast/render --frames 29 --fps 8 --view formation \
+            --out /tmp/lava-fast/render --frames 48 --fps 8 --view formation \
             --resolution 512 288 --samples 4 --threads 2 --exposure 0
       - name: Encode
         run: |
@@ -71,9 +71,9 @@ jobs:
           path: |
             /tmp/lava-fast/lava-formation-fast.mp4
             /tmp/lava-fast/render/frames/0000.png
-            /tmp/lava-fast/render/frames/0016.png
+            /tmp/lava-fast/render/frames/0024.png
             /tmp/lava-fast/render/frames/0008.png
-            /tmp/lava-fast/render/frames/0028.png
+            /tmp/lava-fast/render/frames/0047.png
             /tmp/lava-fast/physics/formation.json
             /tmp/lava-fast/physics/metrics.json
           if-no-files-found: error
