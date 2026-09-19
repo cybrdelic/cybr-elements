@@ -6,7 +6,7 @@ from dataclasses import asdict
 import numpy as np
 from numba import set_num_threads
 from elements_core.lava_mpm import LavaConfig,LavaMPM,sample_glyph
-from elements_core.lava_formation import (PourFormationConfig,build_pour_initial_state,
+from elements_core.lava_formation import (PourFormationConfig,build_pour_source_schedule,
                                           build_mold_mesh,advance_with_mold)
 from elements_core.runtime import RunIdentity,atomic_json,atomic_npz,stage_status
 
@@ -46,8 +46,16 @@ def main():
  if formation:inputs['formation']=R/'elements_core/lava_formation.py'
  run=RunIdentity(a.out,settings,inputs);(a.out/'particles').mkdir(exist_ok=True)
  if formation:
-  pos,H,V,velocity,mold,formation_report=build_pour_initial_state(a.source,c,samples_per_axis=a.samples_per_axis,formation=formation)
-  sim=LavaMPM(c,pos,H,V);sim.v[:]=velocity
+  source,mold,formation_report=build_pour_source_schedule(
+    a.source,c,samples_per_axis=a.samples_per_axis,formation=formation)
+  initial_end=int(np.searchsorted(source['releaseTime'],1e-12,side='right'))
+  if initial_end<1:raise RuntimeError('timed inlet has no t=0 source particles')
+  pos=source['positions'][:initial_end];H=source['enthalpy'][:initial_end];V=source['volumes'][:initial_end]
+  sim=LavaMPM(c,pos,H,V);sim.v[:]=source['velocities'][:initial_end];sim.rest[:]=source['materialCoordinates'][:initial_end]
+  sim.injected_particles=initial_end;sim.injected_mass=float(sim.mass.sum());sim.injected_energy=float(sim.initial_energy)
+  source['cursor']=initial_end
+  formation_report['initialInjectedParticles']=initial_end
+  formation_report['totalSourceParticles']=int(len(source['releaseTime']))
   mold_mesh,mold_report=build_mold_mesh(a.source,c,formation)
   atomic_npz(a.out/'mold.npz',**mold_mesh)
   formation_report['moldMesh']=mold_report
@@ -56,13 +64,16 @@ def main():
  else:
   pos,H,V=sample_glyph(a.source,c,samples_per_axis=a.samples_per_axis);sim=LavaMPM(c,pos,H,V);mold=None;formation_report=None
  rows=[];start=time.perf_counter();stage_status(a.out,'simulation','running')
- print('PARTICLES',len(pos),'mass',sim.mass.sum(),'formation',a.formation,flush=True)
+ print('PARTICLES_ACTIVE',len(sim.x),'SOURCE_TOTAL',len(source['releaseTime']) if formation else len(sim.x),
+       'mass',sim.mass.sum(),'formation',a.formation,flush=True)
  try:
   for f in range(n):
    if f:
-    row=advance_with_mold(sim,1/a.fps,mold) if mold is not None else sim.advance(1/a.fps)
+    row=advance_with_mold(sim,1/a.fps,mold,source) if mold is not None else sim.advance(1/a.fps)
    else:
-    row=sim.metrics();row.update(moldContactCorrections=0,maxMoldCorrectionMeters=0.)
+    row=sim.metrics();row.update(moldContactCorrections=0,maxMoldCorrectionMeters=0.,
+      sourceParticlesInjectedThisAdvance=0,
+      sourceParticlesRemaining=int(len(source['releaseTime'])-source.get('cursor',0)) if formation else 0)
    row.update(frame=f,wallSeconds=time.perf_counter()-start)
    file=a.out/'particles'/f'{f:04d}.npz';atomic_npz(file,**sim.snapshot())
    run.receipt(f'particles-{f:04d}',[file],frame=f,time=sim.time)
@@ -71,7 +82,8 @@ def main():
     'identity':run.identity,'elapsedSeconds':time.perf_counter()-start,'solver':'thermal viscoelastic MPM',
     'formationMode':a.formation,'formation':formation_report,
     'modelLimits':['weakly compressible','uncalibrated material constants','J2 damage, not resolved fracture',
-      'subgrid convection/radiation','rigid one-way signed-distance mold contact','no two-way surrounding gas']})
+      'subgrid convection/radiation','rigid one-way signed-distance mold contact',
+      'open-boundary particle inlet with prescribed source velocity/enthalpy','no two-way surrounding gas']})
   stage_status(a.out,'simulation','complete')
  except BaseException as e:stage_status(a.out,'simulation','failed',error=str(e));raise
 if __name__=='__main__':main()
