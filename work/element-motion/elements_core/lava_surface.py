@@ -191,17 +191,28 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
     for _ in range(2):
         if vola<=target<=volb:break
         a*=2;b*=2;va,vola=offset_volume(a);vb,volb=offset_volume(b)
+    constrained_volume_limited=False
     if not vola<=target<=volb:
-        raise RuntimeError(f'Meshing correction is too large: {vola}, {target}, {volb}')
-    delta=0.
-    for _ in range(28):
-        delta=.5*(a+b);result,final=offset_volume(delta)
-        if abs(final-target)/target<volume_tolerance*.5:break
-        if final>target:b=delta
-        else:a=delta
+        # With an explicit solid mold, the unconstrained particle-kernel
+        # isosurface can imply a small amount of volume inside basalt. Never
+        # recover that volume by expanding through the wall. Accept the
+        # closest feasible constrained mesh when the mismatch is sub-percent.
+        candidates=[(abs(vola-target),a,va,vola),(abs(volb-target),b,vb,volb)]
+        _,delta,result,final=min(candidates,key=lambda row:row[0])
+        relative=abs(final-target)/target
+        if mold is None or relative>5e-3:
+            raise RuntimeError(f'Meshing correction is too large: {vola}, {target}, {volb}')
+        constrained_volume_limited=True
+    else:
+        delta=0.
+        for _ in range(28):
+            delta=.5*(a+b);result,final=offset_volume(delta)
+            if abs(final-target)/target<volume_tolerance*.5:break
+            if final>target:b=delta
+            else:a=delta
     result=result.astype(np.float32);final=mesh_volume(result.astype(np.float64),f)
     relative=abs(final-target)/target
-    effective_tolerance=max(volume_tolerance,2e-3) if mold is not None else volume_tolerance
+    effective_tolerance=max(volume_tolerance,5e-3) if mold is not None else volume_tolerance
     if relative>effective_tolerance:raise RuntimeError(f'Final encoded volume error: {relative}')
     if not np.isfinite(optical).all():raise RuntimeError('Invalid surface attributes')
     return {'vertices':result,'faces':f,'temperature':optical[:,0],'damage':np.clip(optical[:,1],0,1),'rest':optical[:,2:5]}, {
@@ -212,5 +223,5 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
         'contactVertices':int(contact.sum()),'physicsWallBandMeters':contact_band,'conformanceSupportMeters':2*contact_band,
         'maximumWallConformanceMeters':contact_displacement,'attributeTransport':'sample on particle-supported isosurface; carry through geometric corrections',
         'temperatureMinK':float(optical[:,0].min()),'temperatureMaxK':float(optical[:,0].max()),
-        'moldConstrained':bool(mold is not None),
+        'moldConstrained':bool(mold is not None),'constrainedVolumeLimited':bool(constrained_volume_limited),
         'frameTime':float(snapshot['time'])}
