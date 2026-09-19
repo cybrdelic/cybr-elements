@@ -75,15 +75,14 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     relief = np.clip(.55 * transitional + .28 * obsidian + .55 * fracture, 0.0, 1.0)
     # Fresh melt is smooth, transitional crust is matte, and fully quenched
     # obsidian returns to a sharp glassy grazing response.
-    roughness = .18 * melt + .60 * transitional + .10 * obsidian + .12 * fracture
-    roughness = np.clip(roughness, .08, .88)
-    coat = .040 * melt + .060 * transitional + .58 * obsidian * (1.0 - .55 * fracture)
-    coat = np.clip(coat, .025, .62)
+    roughness = .18 * melt + .60 * transitional + .16 * obsidian + .12 * fracture
+    roughness = np.clip(roughness, .10, .88)
+    coat = .040 * melt + .060 * transitional + .42 * obsidian * (1.0 - .55 * fracture)
+    coat = np.clip(coat, .025, .46)
     hot = np.array([.0060, .00135, .00030])
     crust_color = np.array([.0046, .0031, .0020])
-    # Slight blue-grey floor keeps black glass distinct from neutral basalt
-    # under grazing light without making it visibly blue.
-    glass = np.array([.0022, .0032, .0055])
+    # Keep the quenched phase black but not mirror-silver under the key lights.
+    glass = np.array([.0016, .0023, .0038])
     base = (hot[None, :] * melt.reshape(-1, 1)
             + crust_color[None, :] * transitional.reshape(-1, 1)
             + glass[None, :] * obsidian.reshape(-1, 1))
