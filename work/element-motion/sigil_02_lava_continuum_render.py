@@ -58,7 +58,7 @@ def build_lava_material():
  lava,p=principled('Thermal continuum / resolved state + material-coordinate crust')
  p.inputs['Metallic'].default_value=0.
  p.inputs['IOR'].default_value=1.52
- if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.38
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.26
  p.inputs['Coat Roughness'].default_value=.18
  nodes=lava.node_tree.nodes;links=lava.node_tree.links
  base=attribute(nodes,'baseColor')
@@ -102,10 +102,34 @@ def build_lava_material():
  links.new(fissure_glow.outputs[0],glow_floor.inputs[1])
  emission_visibility=math_node(nodes,'MAXIMUM',label='melt or fissure visibility')
  links.new(melt.outputs['Fac'],emission_visibility.inputs[0]);links.new(glow_floor.outputs[0],emission_visibility.inputs[1])
+ # Sub-grid cooling-skin heterogeneity: the resolved crust fraction says how
+ # much skin is present; transported noise only distributes that resolved amount
+ # into irregular islands. It never creates a hidden hot region or motion field.
+ skin_noise=nodes.new('ShaderNodeTexNoise');skin_noise.noise_dimensions='3D';skin_noise.label='resolved-crust island distribution'
+ skin_noise.inputs['Scale'].default_value=17.;skin_noise.inputs['Detail'].default_value=3.2
+ skin_noise.inputs['Roughness'].default_value=.63;skin_noise.inputs['Distortion'].default_value=.11
+ links.new(rest.outputs['Vector'],skin_noise.inputs['Vector'])
+ skin_shape=nodes.new('ShaderNodeMapRange');skin_shape.clamp=True;skin_shape.interpolation_type='SMOOTHERSTEP'
+ skin_shape.inputs['From Min'].default_value=.38;skin_shape.inputs['From Max'].default_value=.66
+ skin_shape.inputs['To Min'].default_value=0.;skin_shape.inputs['To Max'].default_value=1.
+ links.new(skin_noise.outputs['Fac'],skin_shape.inputs['Value'])
+ crust_gain=math_node(nodes,'MULTIPLY',b=2.4,label='resolved crust coverage gain')
+ links.new(crust.outputs['Fac'],crust_gain.inputs[0])
+ skin_raw=math_node(nodes,'MULTIPLY',label='resolved crust × island distribution')
+ links.new(crust_gain.outputs[0],skin_raw.inputs[0]);links.new(skin_shape.outputs['Result'],skin_raw.inputs[1])
+ skin_clamp=nodes.new('ShaderNodeClamp');skin_clamp.inputs['Min'].default_value=0.;skin_clamp.inputs['Max'].default_value=1.
+ links.new(skin_raw.outputs[0],skin_clamp.inputs['Value'])
+ skin_cut=math_node(nodes,'MULTIPLY',b=-.82,label='opaque cooling skin')
+ links.new(skin_clamp.outputs['Result'],skin_cut.inputs[0])
+ skin_keep=math_node(nodes,'ADD',a=1.,label='thermal visibility through broken skin')
+ links.new(skin_cut.outputs[0],skin_keep.inputs[1])
+
  emission_strength=math_node(nodes,'MULTIPLY',label='blackbody × visible molten fraction')
  links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=1.75,label='camera-scale thermal radiance')
- links.new(emission_strength.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
+ skin_emission=math_node(nodes,'MULTIPLY',label='blackbody through resolved skin islands')
+ links.new(emission_strength.outputs[0],skin_emission.inputs[0]);links.new(skin_keep.outputs[0],skin_emission.inputs[1])
+ emission_scale=math_node(nodes,'MULTIPLY',b=1.90,label='camera-scale thermal radiance')
+ links.new(skin_emission.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
  macro_gain.inputs['From Min'].default_value=.12;macro_gain.inputs['From Max'].default_value=.88
@@ -154,14 +178,14 @@ def build_lava_material():
  pit_gate=math_node(nodes,'MULTIPLY',label='phase-gated vesicles');links.new(relief.outputs['Fac'],pit_gate.inputs[0]);links.new(pit.outputs['Result'],pit_gate.inputs[1])
  pit_bump=nodes.new('ShaderNodeBump');pit_bump.label='quenched vesicle depressions';pit_bump.invert=True;pit_bump.inputs['Strength'].default_value=.38;pit_bump.inputs['Distance'].default_value=.00105
  links.new(pit_gate.outputs[0],pit_bump.inputs['Height']);links.new(micro_bump.outputs['Normal'],pit_bump.inputs['Normal'])
- fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.86;fissure_bump.inputs['Distance'].default_value=.00125
+ fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.46;fissure_bump.inputs['Distance'].default_value=.00085
  links.new(fracture_edge.outputs[0],fissure_bump.inputs['Height']);links.new(pit_bump.outputs['Normal'],fissure_bump.inputs['Normal']);links.new(fissure_bump.outputs['Normal'],p.inputs['Normal'])
  crack_coat=math_node(nodes,'MULTIPLY',a=-.82,label='coat loss in fissures');links.new(fracture_edge.outputs[0],crack_coat.inputs[1])
  coat_keep=math_node(nodes,'ADD',a=1.,label='fissure coat mask');links.new(crack_coat.outputs[0],coat_keep.inputs[1])
  coat_final=math_node(nodes,'MULTIPLY',label='phase coat × fissure mask');links.new(coat.outputs['Fac'],coat_final.inputs[0]);links.new(coat_keep.outputs[0],coat_final.inputs[1])
  links.new(coat_final.outputs[0],p.inputs['Coat Weight'])
 
- coat_rough=math_node(nodes,'MULTIPLY',b=.34,label='coat roughness from phase');links.new(rough_clamp.outputs['Result'],coat_rough.inputs[0]);links.new(coat_rough.outputs[0],p.inputs['Coat Roughness'])
+ coat_rough=math_node(nodes,'MULTIPLY',b=.58,label='coat roughness from phase');links.new(rough_clamp.outputs['Result'],coat_rough.inputs[0]);links.new(coat_rough.outputs[0],p.inputs['Coat Roughness'])
  return lava
 
 
