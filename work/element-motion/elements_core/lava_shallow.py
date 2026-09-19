@@ -304,38 +304,80 @@ def _active_source_fields(t,sources,shape,cfg):
     return depth_rate,heat_rate,active
 
 
-def _redistribute_overflow(h,labels,limit):
-    """Mass-conserving safety redistribution inside each cavity component."""
+def _redistribute_overflow(h,labels,limit,energy=None,sweeps=4):
+    """Locally spill over-depth fluid while conserving volume and heat.
+
+    The previous pass moved excess across a whole glyph component at once and
+    moved height without thermal energy.  This version performs nearest-neighbor
+    spill sweeps. Excess depth carries its own energy and can only move through
+    cells of the same connected cavity component.
+
+    When energy is omitted, return height only for simple invariant tests.
+    With energy supplied, return the pair (height, energy).
+    """
     h=np.asarray(h,np.float64).copy()
-    for component in np.unique(labels):
-        if component<=0:
-            continue
-        region=labels==component
-        excess_field=np.maximum(h[region]-limit,0.)
-        excess=float(excess_field.sum())
-        if excess<=1e-14:
-            continue
-        h[region]=np.minimum(h[region],limit)
-        capacity=np.maximum(limit-h[region],0.)
-        cap=float(capacity.sum())
-        if cap<=1e-14:
-            # The requested total volume should remain below capacity.  Keep
-            # the residual on the deepest cells rather than deleting mass.
-            deepest=np.flatnonzero(region)
-            if len(deepest):
-                flat=h.ravel()
-                flat[deepest[0]]+=excess
-            continue
-        take=min(excess,cap)
-        h[region]+=capacity*(take/cap)
-        residual=excess-take
-        if residual>1e-14:
-            # Only reachable if a caller requests more volume than the mold can
-            # contain.  Preserve mass explicitly for diagnostics.
-            cells=np.flatnonzero(region)
-            if len(cells):
-                h.ravel()[cells[0]]+=residual
-    return h
+    scalar_only=energy is None
+    e=h.copy() if scalar_only else np.asarray(energy,np.float64).copy()
+
+    directions=((0,1),(0,-1),(1,0),(-1,0))
+
+    for sweep in range(max(1,int(sweeps))):
+        excess=np.maximum(h-limit,0.)
+        if float(excess.sum())<=1e-14:
+            break
+
+        temp=e/np.maximum(h,1e-12)
+        excess_e=excess*temp
+        h-=excess
+        e-=excess_e
+
+        capacities=[]
+        for dy,dx in directions:
+            cap=np.zeros_like(h)
+            if dy==0 and dx==1:
+                valid=(labels[:,:-1]>0)&(labels[:,:-1]==labels[:,1:])
+                cap[:,:-1]=np.where(valid,np.maximum(limit-h[:,1:],0.),0.)
+            elif dy==0 and dx==-1:
+                valid=(labels[:,1:]>0)&(labels[:,1:]==labels[:,:-1])
+                cap[:,1:]=np.where(valid,np.maximum(limit-h[:,:-1],0.),0.)
+            elif dy==1:
+                valid=(labels[:-1,:]>0)&(labels[:-1,:]==labels[1:,:])
+                cap[:-1,:]=np.where(valid,np.maximum(limit-h[1:,:],0.),0.)
+            else:
+                valid=(labels[1:,:]>0)&(labels[1:,:]==labels[:-1,:])
+                cap[1:,:]=np.where(valid,np.maximum(limit-h[:-1,:],0.),0.)
+            capacities.append(cap)
+
+        total_cap=np.maximum(sum(capacities),1e-30)
+        moved=np.zeros_like(h)
+        moved_e=np.zeros_like(h)
+
+        order=range(4) if sweep%2==0 else range(3,-1,-1)
+        for k in order:
+            dy,dx=directions[k]
+            frac=np.where(total_cap>1e-29,capacities[k]/total_cap,0.)
+            send=excess*frac
+            send_e=excess_e*frac
+            moved+=send
+            moved_e+=send_e
+
+            if dy==0 and dx==1:
+                h[:,1:]+=send[:,:-1]
+                e[:,1:]+=send_e[:,:-1]
+            elif dy==0 and dx==-1:
+                h[:,:-1]+=send[:,1:]
+                e[:,:-1]+=send_e[:,1:]
+            elif dy==1:
+                h[1:,:]+=send[:-1,:]
+                e[1:,:]+=send_e[:-1,:]
+            else:
+                h[:-1,:]+=send[1:,:]
+                e[:-1,:]+=send_e[1:,:]
+
+        h+=np.maximum(excess-moved,0.)
+        e+=np.maximum(excess_e-moved_e,0.)
+
+    return h if scalar_only else (h,e)
 
 
 def _thermal_update(h,bulk,skin,source_depth,dt,mask,wall_factor,cfg,flow_activity):
@@ -384,10 +426,11 @@ def _step(h,bulk,skin,damage,mask,labels,wall_factor,sources,t,dt,cfg):
     ex,ey=_advected_scalar_flux(qx,qy,bulk)
     denergy=_divergence(ex,ey,cfg.dx,cfg.dy,h.shape)+src_e
 
-    h_new=np.where(mask,np.maximum(h+dt*dh,0.),0.)
-    h_new=_redistribute_overflow(h_new,labels,cfg.max_depth)
-
+    h_raw=np.where(mask,np.maximum(h+dt*dh,0.),0.)
     energy_new=energy+dt*denergy
+    h_new,energy_new=_redistribute_overflow(
+        h_raw,labels,cfg.max_depth,energy=energy_new,sweeps=4)
+
     bulk_new=np.where(
         h_new>cfg.wet_epsilon,
         energy_new/np.maximum(h_new,1e-8),
