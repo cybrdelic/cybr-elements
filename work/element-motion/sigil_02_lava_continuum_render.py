@@ -245,10 +245,10 @@ def main():
  camera.location=positions[view];camera.rotation_euler=(Vector(target)-camera.location).to_track_quat('-Z','Y').to_euler()
  camera.data.type='ORTHO';camera.data.ortho_scale=1.52 if view=='formation' else 1.65;camera.data.clip_start=.01;camera.data.clip_end=30
  if view=='formation':
-  area('Large neutral key',(-.62,-.70,1.55),13.0,(.90,.93,1.),1.75,target)
-  area('Long grazing rim',(.72,.62,.72),20.0,(.76,.84,1.),1.05,target)
-  area('Soft warm fill',(-.20,-.92,.55),4.5,(1.,.84,.68),1.80,target)
-  area('Obsidian edge kicker',(.18,.48,.42),7.0,(.72,.82,1.),.65,target)
+  area('Large neutral key',(-.62,-.70,1.55),11.0,(.90,.93,1.),1.85,target)
+  area('Long grazing rim',(.72,.62,.72),15.0,(.76,.84,1.),1.18,target)
+  area('Soft warm fill',(-.20,-.92,.55),3.4,(1.,.84,.68),1.90,target)
+  area('Obsidian edge kicker',(.18,.48,.42),4.5,(.72,.82,1.),.78,target)
  else:
   area('Large neutral key',(-.55,-.75,1.45),42,(.90,.93,1.),1.15,target)
   area('Grazing rim',(.65,.6,1.1),62,(.83,.88,.97),.88,target)
