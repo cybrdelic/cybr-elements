@@ -33,6 +33,7 @@ class PourFormationConfig:
     inlet_speed: float = .55
     tangent_speed: float = .14
     initial_down_speed: float = .68
+    source_longitudinal_subdivisions: int = 3
     skin_temperature: float = 1425.
     core_temperature: float = 1750.
     significant_component_pixels: int = 100
@@ -44,6 +45,8 @@ class PourFormationConfig:
             raise ValueError('invalid nozzle configuration')
         if self.inlet_speed <= 0 or self.initial_down_speed <= 0 or self.tangent_speed < 0:
             raise ValueError('invalid inlet velocity configuration')
+        if self.source_longitudinal_subdivisions < 1:
+            raise ValueError('source longitudinal subdivisions must be positive')
         if self.core_temperature <= self.skin_temperature:
             raise ValueError('core must be hotter than nozzle skin')
 
@@ -265,6 +268,18 @@ def build_pour_source_schedule(source: Path, lava: LavaConfig, *,
         cursor+=count
     if cursor!=len(positions):
         raise RuntimeError('source schedule does not cover all feed particles')
+    subdivisions=int(formation.source_longitudinal_subdivisions)
+    layer_period=step/formation.inlet_speed
+    if subdivisions>1:
+        sub=np.arange(subdivisions,dtype=np.float64)
+        release=(release[:,None]+sub[None,:]*(layer_period/subdivisions)).reshape(-1)
+        spawn=np.repeat(spawn,subdivisions,axis=0)
+        H=np.repeat(H,subdivisions,axis=0)
+        V=np.repeat(V/subdivisions,subdivisions,axis=0)
+        velocities=np.repeat(velocities,subdivisions,axis=0)
+        rest=np.repeat(material_coordinates,subdivisions,axis=0)
+        rest[:,2]+=(np.tile(sub,len(material_coordinates))-(subdivisions-1)*.5)*(step/subdivisions)
+        material_coordinates=rest
     order=np.argsort(release,kind='stable')
     schedule={
         'releaseTime':release[order],
@@ -277,9 +292,13 @@ def build_pour_source_schedule(source: Path, lava: LavaConfig, *,
     }
     report['sourceBoundaryModel']='timed open-boundary particle injection at resolved nozzle plane'
     report['sourceDurationSeconds']=float(release.max()) if len(release) else 0.
-    report['sourceLayerPeriodSeconds']=float(step/formation.inlet_speed)
+    report['sourceLayerPeriodSeconds']=float(layer_period)
+    report['sourceSubstepPeriodSeconds']=float(layer_period/subdivisions)
+    report['sourceLongitudinalSubdivisions']=subdivisions
+    report['sourceNumericalParticles']=int(len(release))
     report['simultaneousReservoirRelease']=False
     report['sourceMassFluxIsParticleResolved']=True
+    report['sourceVolumePreservedAfterSubdivision']=float(V.sum())
     return schedule,mold,report
 
 
@@ -352,6 +371,27 @@ def _mold_contact(x,v,sdf,gx,gz,lo,extent,scale,center_z,wall_top,margin,frictio
         distance=_sample_bilinear(sdf,vv,u)*scale
         if distance>=margin:
             continue
+
+        # Outside the cavity, the mold has a horizontal top face.  Do not
+        # teleport a particle sideways through solid stone: resolve the top
+        # impact first.  A stream aimed inside the cavity never takes this
+        # branch because its signed distance is positive.
+        if distance<0.:
+            top=wall_top+margin
+            if x[q,2]<top:
+                correction=top-x[q,2]
+                x[q,2]=top
+                normal_speed=max(0.,-v[q,2])
+                if v[q,2]<0.:v[q,2]=0.
+                tangent=math.sqrt(v[q,0]*v[q,0]+v[q,1]*v[q,1])
+                if tangent>1e-12 and normal_speed>0.:
+                    drop=min(tangent,friction*normal_speed)
+                    factor=(tangent-drop)/tangent
+                    v[q,0]*=factor;v[q,1]*=factor
+                count+=1
+                if correction>maximum:maximum=correction
+            continue
+
         nx=_sample_bilinear(gx,vv,u)
         ny=_sample_bilinear(gz,vv,u)
         length=math.sqrt(nx*nx+ny*ny)
@@ -361,10 +401,19 @@ def _mold_contact(x,v,sdf,gx,gz,lo,extent,scale,center_z,wall_top,margin,frictio
         correction=margin-distance
         x[q,0]+=nx*correction;x[q,1]+=ny*correction
         vn=v[q,0]*nx+v[q,1]*ny
+        normal_speed=0.
         if vn<0:
+            normal_speed=-vn
             v[q,0]-=vn*nx;v[q,1]-=vn*ny
-        tangent_scale=max(0.,1.-friction*.02)
-        v[q,0]*=tangent_scale;v[q,1]*=tangent_scale
+
+        # Coulomb side-wall friction is tied to the removed normal impulse.
+        # The previous fixed per-step multiplier exponentially damped even
+        # perfectly wall-parallel flow and made the result timestep-dependent.
+        tangent=math.sqrt(v[q,0]*v[q,0]+v[q,1]*v[q,1])
+        if tangent>1e-12 and normal_speed>0.:
+            drop=min(tangent,friction*normal_speed)
+            factor=(tangent-drop)/tangent
+            v[q,0]*=factor;v[q,1]*=factor
         count+=1
         if correction>maximum:maximum=correction
     return count,maximum
