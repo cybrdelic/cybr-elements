@@ -75,9 +75,12 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     relief = np.clip(.55 * transitional + .28 * obsidian + .55 * fracture, 0.0, 1.0)
     # Fresh melt is smooth, transitional crust is matte, and fully quenched
     # obsidian returns to a sharp glassy grazing response.
-    roughness = .18 * melt + .60 * transitional + .16 * obsidian + .12 * fracture
-    roughness = np.clip(roughness, .10, .88)
-    coat = .040 * melt + .060 * transitional + .42 * obsidian * (1.0 - .55 * fracture)
+    # Hot melt is viscous and optically rougher than polished glass. Raising
+    # its roughness removes the plastic/white specular dots seen in the first
+    # seconds while preserving the sharp cooled-obsidian response.
+    roughness = .31 * melt + .60 * transitional + .16 * obsidian + .12 * fracture
+    roughness = np.clip(roughness, .12, .88)
+    coat = .018 * melt + .060 * transitional + .42 * obsidian * (1.0 - .55 * fracture)
     coat = np.clip(coat, .025, .46)
     hot = np.array([.0060, .00135, .00030])
     crust_color = np.array([.0046, .0031, .0020])
