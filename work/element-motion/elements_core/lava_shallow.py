@@ -56,7 +56,7 @@ class ShallowLavaConfig:
     impact_forward_shift: float = .012
 
     feed_temperature: float = 1580.
-    feed_skin_temperature: float = 1405.
+    feed_skin_temperature: float = 1435.
     mold_temperature: float = 405.
 
     density: float = 2600.
@@ -73,14 +73,19 @@ class ShallowLavaConfig:
     solidus: float = 1250.
     liquidus: float = 1450.
     heat_capacity: float = 1200.
-    skin_thickness: float = .0022
-    skin_exchange_rate: float = .34
-    wall_skin_exchange_rate: float = .62
+    skin_thickness: float = .0036
+    skin_exchange_rate: float = .16
+    wall_skin_exchange_rate: float = .32
     wall_cooling_length: float = .012
-    skin_reheat_rate: float = 2.8
+    skin_reheat_rate: float = 3.2
     bulk_cooling_rate: float = .018
     wall_bulk_cooling_rate: float = .045
     surface_emissivity: float = .90
+
+    rope_wavelength: float = .019
+    rope_amplitude: float = .00155
+    billow_wavelength: float = .070
+    billow_amplitude: float = .00070
 
     cfl: float = .20
     max_dt: float = .006
@@ -118,6 +123,8 @@ class ShallowLavaConfig:
             raise ValueError("invalid explicit stability controls")
         if self.jet_rings < 3 or self.jet_segments < 8:
             raise ValueError("jet tessellation too small")
+        if self.rope_wavelength <= 0 or self.billow_wavelength <= 0 or self.rope_amplitude < 0 or self.billow_amplitude < 0:
+            raise ValueError("invalid pahoehoe surface scales")
 
     @property
     def dx(self):
@@ -611,7 +618,7 @@ def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,pha
             faces.extend([(a,b,c),(a,c,d)])
 
 
-def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,formation):
+def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
     wet=(h>cfg.wet_epsilon)&mask
     if not np.any(wet):
         iy,ix=sources[0]["iy"],sources[0]["ix"]
@@ -622,18 +629,31 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
     node_h=np.zeros((ny+1,nx+1),np.float64)
     node_t=np.zeros_like(node_h)
     node_d=np.zeros_like(node_h)
+    node_tx=np.zeros_like(node_h)
+    node_ty=np.zeros_like(node_h)
     count=np.zeros_like(node_h)
+    if tangent_x is None:
+        tangent_x=np.ones_like(h)
+    if tangent_y is None:
+        tangent_y=np.zeros_like(h)
 
     for oy,ox in ((0,0),(0,1),(1,0),(1,1)):
         node_h[oy:oy+ny,ox:ox+nx]+=h*wet
         node_t[oy:oy+ny,ox:ox+nx]+=skin*wet
         node_d[oy:oy+ny,ox:ox+nx]+=damage*wet
+        node_tx[oy:oy+ny,ox:ox+nx]+=tangent_x*wet
+        node_ty[oy:oy+ny,ox:ox+nx]+=tangent_y*wet
         count[oy:oy+ny,ox:ox+nx]+=wet
 
     valid=count>0
     node_h[valid]/=count[valid]
     node_t[valid]/=count[valid]
     node_d[valid]/=count[valid]
+    node_tx[valid]/=count[valid]
+    node_ty[valid]/=count[valid]
+    tangent_norm=np.maximum(np.hypot(node_tx,node_ty),1e-9)
+    node_tx/=tangent_norm
+    node_ty/=tangent_norm
 
     xnodes=np.linspace(xs[0]-cfg.dx*.5,xs[-1]+cfg.dx*.5,nx+1)
     ynodes=np.linspace(ys[0]-cfg.dy*.5,ys[-1]+cfg.dy*.5,ny+1)
@@ -645,9 +665,24 @@ def build_surface_mesh(h,skin,damage,mask,xs,ys,active_sources,sources,t,cfg,for
             if not valid[iy,ix]:
                 continue
             index[iy,ix]=len(vertices)
-            z=cfg.floor+max(0.,node_h[iy,ix])
-            vertices.append([xnodes[ix],ynodes[iy],z])
-            temps.append(float(node_t[iy,ix]))
+            x=float(xnodes[ix]);y=float(ynodes[iy])
+            T=float(node_t[iy,ix])
+            crust=float(1.-_phase_fraction(np.array([T]),cfg)[0])
+            depth_gate=min(1.,max(0.,node_h[iy,ix]/max(cfg.target_depth*.55,1e-8)))
+            tx=float(node_tx[iy,ix]);ty=float(node_ty[iy,ix])
+            along=x*tx+y*ty
+            cross=-x*ty+y*tx
+            phase=2.*math.pi*along/cfg.rope_wavelength + .52*math.sin(
+                2.*math.pi*cross/(cfg.rope_wavelength*3.7))
+            ridge=(.5+.5*math.sin(phase))**3-.3125
+            billow=math.sin(
+                2.*math.pi*along/cfg.billow_wavelength+
+                .45*math.sin(2.*math.pi*cross/(cfg.billow_wavelength*1.6)))
+            surface_offset=depth_gate*crust*(
+                cfg.rope_amplitude*ridge+cfg.billow_amplitude*.5*billow)
+            z=cfg.floor+max(.00005,node_h[iy,ix]+surface_offset)
+            vertices.append([x,y,z])
+            temps.append(T)
             damages.append(float(node_d[iy,ix]))
             # Fixed horizontal material coordinates keep optical breakup stable
             # while the resolved height evolves.
@@ -759,6 +794,7 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
     return {
         "xs":xs,"ys":ys,"xx":xx,"yy":yy,
         "distance":distance,"wallFactor":wall_factor,
+        "tangentX":tangent_x,"tangentY":tangent_y,
         "mask":mask,"labels":labels,
         "components":components,"sources":sources,
         "h":h,"bulk":bulk,"skin":skin,"damage":damage,
