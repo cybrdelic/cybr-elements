@@ -71,19 +71,19 @@ def material_controls(temperature, damage, *, solidus=1250.0, liquidus=1450.0):
     transitional = crust * (1.0 - obsidian)
     # Thermal-shock damage should become visible well before catastrophic
     # failure.  Keep it strictly subordinate to the thermal phase state.
-    fracture = crust * smoothstep01(np.clip((d - .03) / .42, 0.0, 1.0))
-    relief = np.clip(.55 * transitional + .28 * obsidian + .55 * fracture, 0.0, 1.0)
+    fracture = crust * smoothstep01(np.clip((d - .12) / .55, 0.0, 1.0))
+    relief = np.clip(.68 * transitional + .24 * obsidian + .44 * fracture, 0.0, 1.0)
     # Fresh melt is smooth, transitional crust is matte, and fully quenched
     # obsidian returns to a sharp glassy grazing response.
     # Hot melt is viscous and optically rougher than polished glass. Raising
     # its roughness removes the plastic/white specular dots seen in the first
     # seconds while preserving the sharp cooled-obsidian response.
-    roughness = .46 * melt + .66 * transitional + .27 * obsidian + .10 * fracture
+    roughness = .44 * melt + .44 * transitional + .30 * obsidian + .10 * fracture
     roughness = np.clip(roughness, .12, .88)
-    coat = .0 * melt + .030 * transitional + .16 * obsidian * (1.0 - .60 * fracture)
+    coat = .0 * melt + .10 * transitional + .12 * obsidian * (1.0 - .60 * fracture)
     coat = np.clip(coat, .0, .20)
     hot = np.array([.0017, .00042, .00012])
-    crust_color = np.array([.0028, .0019, .00125])
+    crust_color = np.array([.012, .0135, .0155])
     # Keep the quenched phase black but not mirror-silver under the key lights.
     glass = np.array([.0011, .00125, .00145])
     base = (hot[None, :] * melt.reshape(-1, 1)
