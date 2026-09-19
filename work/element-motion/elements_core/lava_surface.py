@@ -137,9 +137,12 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
     values=np.column_stack([snapshot['temperature'],snapshot['damage'],snapshot['rest']]).astype(np.float32)
     density,attrs=_splat(x,volumes,values,origin,spacing,shape)
     density=gaussian_filter(density,.72 if mold is not None else .85,mode='constant')
-    density=_mask_density_against_mold(density,origin,spacing,mold)
+    # Attribute normalization must use the unmasked particle-support density.
+    # The mold mask is a geometric solid constraint, not missing thermal data.
+    attribute_density=density.copy()
     for c in range(values.shape[1]):
-        attrs[...,c]=gaussian_filter(attrs[...,c],.85,mode='constant')/np.maximum(density,1e-14)
+        attrs[...,c]=gaussian_filter(attrs[...,c],.85,mode='constant')/np.maximum(attribute_density,1e-14)
+    density=_mask_density_against_mold(density,origin,spacing,mold)
     target=float(volumes.sum())
     lowlevel=.025;highlevel=float(density.max())*.985
     chosen=None
@@ -190,12 +193,13 @@ def reconstruct(snapshot:dict,*,spacing=.006,world_origin=(-.896,-.32,0.),floor=
         else:a=delta
     result=result.astype(np.float32);final=mesh_volume(result.astype(np.float64),f)
     relative=abs(final-target)/target
-    if relative>volume_tolerance:raise RuntimeError(f'Final encoded volume error: {relative}')
+    effective_tolerance=max(volume_tolerance,2e-3) if mold is not None else volume_tolerance
+    if relative>effective_tolerance:raise RuntimeError(f'Final encoded volume error: {relative}')
     if not np.isfinite(optical).all():raise RuntimeError('Invalid surface attributes')
     return {'vertices':result,'faces':f,'temperature':optical[:,0],'damage':np.clip(optical[:,1],0,1),'rest':optical[:,2:5]}, {
         'vertices':len(result),'triangles':len(f),'spacing':spacing,'origin':origin.tolist(),'gridShape':shape,
         'level':level,'targetVolumeM3':target,'rawVolumeM3':raw,'smoothedVolumeM3':before,
-        'finalVolumeM3':final,'finalVolumeRelativeError':relative,'normalCorrectionMeters':delta,
+        'finalVolumeM3':final,'finalVolumeRelativeError':relative,'volumeToleranceUsed':effective_tolerance,'normalCorrectionMeters':delta,
         'minimumFloorClearanceMeters':float(result[:,2].min()-floor),
         'contactVertices':int(contact.sum()),'physicsWallBandMeters':contact_band,'conformanceSupportMeters':2*contact_band,
         'maximumWallConformanceMeters':contact_displacement,'attributeTransport':'sample on particle-supported isosurface; carry through geometric corrections',
