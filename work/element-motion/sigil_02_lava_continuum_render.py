@@ -58,7 +58,7 @@ def build_lava_material():
  lava,p=principled('Thermal continuum / resolved state + material-coordinate crust')
  p.inputs['Metallic'].default_value=0.
  p.inputs['IOR'].default_value=1.52
- if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.26
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.12
  p.inputs['Coat Roughness'].default_value=.18
  nodes=lava.node_tree.nodes;links=lava.node_tree.links
  base=attribute(nodes,'baseColor')
@@ -128,7 +128,7 @@ def build_lava_material():
  links.new(thermal_strength.outputs['Fac'],emission_strength.inputs[0]);links.new(emission_visibility.outputs[0],emission_strength.inputs[1])
  skin_emission=math_node(nodes,'MULTIPLY',label='blackbody through resolved skin islands')
  links.new(emission_strength.outputs[0],skin_emission.inputs[0]);links.new(skin_keep.outputs[0],skin_emission.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=1.90,label='camera-scale thermal radiance')
+ emission_scale=math_node(nodes,'MULTIPLY',b=1.45,label='camera-scale thermal radiance')
  links.new(skin_emission.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
 
  macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
@@ -185,7 +185,7 @@ def build_lava_material():
  coat_final=math_node(nodes,'MULTIPLY',label='phase coat × fissure mask');links.new(coat.outputs['Fac'],coat_final.inputs[0]);links.new(coat_keep.outputs[0],coat_final.inputs[1])
  links.new(coat_final.outputs[0],p.inputs['Coat Weight'])
 
- coat_rough=math_node(nodes,'MULTIPLY',b=.58,label='coat roughness from phase');links.new(rough_clamp.outputs['Result'],coat_rough.inputs[0]);links.new(coat_rough.outputs[0],p.inputs['Coat Roughness'])
+ coat_rough=math_node(nodes,'MULTIPLY',b=.75,label='coat roughness from phase');links.new(rough_clamp.outputs['Result'],coat_rough.inputs[0]);links.new(coat_rough.outputs[0],p.inputs['Coat Roughness'])
  return lava
 
 
