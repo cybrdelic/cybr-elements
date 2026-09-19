@@ -10,7 +10,7 @@ from elements_core.lava_mpm import (
 )
 from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights
 from elements_core.lava_material import material_controls, planck_rgb
-from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state
+from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule
 
 
 def block(config=None, temperature=1500.0):
@@ -126,6 +126,47 @@ def test_material_controls_reject_invalid_state():
     with pytest.raises(ValueError): material_controls(np.array([np.nan]), np.array([0.]))
     with pytest.raises(ValueError): material_controls(np.array([1200.]), np.array([0.]), solidus=1450, liquidus=1250)
     with pytest.raises(ValueError): planck_rgb(np.array([0.]))
+
+
+def test_open_boundary_injection_updates_mass_and_energy_reference():
+    s = block()
+    n0=len(s.x);energy0=s.initial_energy
+    take=np.arange(8)
+    positions=s.x[take]+np.array([.18,0.,.02])
+    velocities=np.tile(np.array([.03,-.01,-.2]),(len(take),1))
+    added=s.inject(positions,s.H[take],s.V0[take],velocities,positions*1.07)
+    assert added==len(take)
+    assert len(s.x)==n0+len(take)
+    assert s.initial_count==len(s.x)
+    assert s.initial_energy>energy0
+    m=s.metrics()
+    assert m['sourceInjectedParticles']==len(take)
+    assert m['sourceInjectedMassKg']>0
+    assert m['sourceInjectedEnergyJ']>0
+    assert m['massDifferenceKg']==pytest.approx(0,abs=1e-12)
+    assert m['thermalBalanceRelative']==pytest.approx(0,abs=1e-12)
+
+
+def test_pour_source_schedule_is_timed_at_the_nozzle_plane():
+    source = Path('work/element-motion/sigil-02-v2/source.npz')
+    assert source.is_file()
+    c = LavaConfig(spacing=.018, shape=(96,68,82), origin=(-.864,-.612,0.),
+                   max_dt=.0007, support_start=-1., support_end=-.5)
+    formation = PourFormationConfig()
+    schedule,mold,report=build_pour_source_schedule(source,c,samples_per_axis=1,formation=formation)
+    t=schedule['releaseTime'];z=schedule['positions'][:,2]
+    assert len(t)==report['targetSamples']
+    assert np.all(np.diff(t)>=0)
+    assert t[0]==pytest.approx(0,abs=1e-12)
+    assert t[-1]>.7
+    assert report['simultaneousReservoirRelease'] is False
+    assert report['sourceMassFluxIsParticleResolved'] is True
+    assert report['sourceDurationSeconds']==pytest.approx(t[-1])
+    assert z.min()>mold['wallTop']
+    assert z.max()<formation.nozzle_bottom+c.spacing*.2
+    assert schedule['materialCoordinates'][:,2].max()>z.max()+.1
+    initial=np.searchsorted(t,1e-12,side='right')
+    assert 0<initial<len(t)//4
 
 
 def test_pour_formation_starts_as_feed_columns_above_the_cavity():
