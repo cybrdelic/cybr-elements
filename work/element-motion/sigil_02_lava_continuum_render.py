@@ -332,7 +332,7 @@ def main():
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
   'floor':floor_height,'exposure':a.exposure,'view':view,'formationMode':formation_mode,'formation':formation,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
-  'material':'resolved temperature/damage phase controls + normalized Planck-band chroma + explicit visible-radiance-to-scene strength + transported-coordinate multiscale crust relief',
+  'material':'separate resolved skin/bulk thermal states + camera-calibrated incandescent chroma + Planck-derived strength + transported-coordinate pahoehoe crust relief',
   'subgridDisclosure':'noise/voronoi are BSDF microstructure anchored to material coordinates; damage gates crease relief; no resolved crack geometry is claimed'}
  render_inputs={'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'}
  if formation_mode=='pour':
@@ -356,8 +356,12 @@ def main():
    me.materials.append(lava)
    for poly in me.polygons:poly.use_smooth=True
    temp=np.asarray(data['temperature'],np.float64);damage=np.asarray(data['damage'],np.float64)
+   bulk_temp=np.asarray(data['bulkTemperature'],np.float64) if 'bulkTemperature' in data else temp.copy()
    controls=material_controls(temp,damage)
+   bulk_controls=material_controls(bulk_temp,np.zeros_like(damage))
    add_float_attribute(me,'temperature',temp)
+   add_float_attribute(me,'bulkTemperature',bulk_temp)
+   add_float_attribute(me,'bulkThermalStrength',bulk_controls['thermalStrength'])
    add_float_attribute(me,'damage',damage)
    add_float_attribute(me,'crustAmount',controls['crust'])
    add_float_attribute(me,'fracturePotential',controls['fracture'])
@@ -379,7 +383,9 @@ def main():
   bpy.data.images['Render Result'].save_render(str(png),scene=s)
   run.receipt(f'render-{f:04d}',[exr,png],frame=f,sourceSHA256=digest(src))
   row={'frame':f,'time':f/a.fps,'sourceSHA256':digest(src),'vertices':len(me.vertices),'triangles':len(me.polygons),
-       'temperatureMinK':float(temp.min()),'temperatureMaxK':float(temp.max()),'crustMean':float(controls['crust'].mean()),
+       'temperatureMinK':float(temp.min()),'temperatureMaxK':float(temp.max()),
+       'bulkTemperatureMinK':float(bulk_temp.min()),'bulkTemperatureMaxK':float(bulk_temp.max()),
+       'crustMean':float(controls['crust'].mean()),
        'fracturePotentialMean':float(controls['fracture'].mean()),
        'obsidianMean':float(controls['obsidian'].mean()),
        'reliefMean':float(controls['relief'].mean()),
