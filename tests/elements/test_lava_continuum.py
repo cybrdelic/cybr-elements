@@ -296,4 +296,5 @@ def test_shallow_short_run_conserves_injected_volume_and_caps_source_mounds():
     assert abs(m['massBalanceRelative'])<2e-3
     assert m['maximumDepthM']<=cfg.max_depth+1e-8
     assert m['wetCoverageFraction']>0.
-    assert m['skinTemperatureMaxK']>cfg.liquidus
+    assert m['skinTemperatureMaxK']>cfg.solidus
+    assert m['bulkTemperatureMeanK']>cfg.liquidus
