@@ -8,9 +8,9 @@ from elements_core.lava_mpm import (
     LavaConfig, LavaMPM, enthalpy_from_temperature, temperature_from_enthalpy,
     particle_to_grid,
 )
-from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights
+from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights, _constrain_vertices_to_mold
 from elements_core.lava_material import material_controls, planck_rgb
-from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule, _mold_contact
+from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule, _mold_contact, _mold_heat_transfer
 
 
 def block(config=None, temperature=1500.0):
@@ -150,6 +150,36 @@ def test_mold_sidewall_friction_is_impulse_based_not_per_step_drag():
     assert v[0,1]==pytest.approx(1.-.46*.2,abs=1e-12)
 
 
+def test_mold_conduction_removes_energy_and_preserves_accounting():
+    c=LavaConfig(spacing=.025,shape=(40,40,40),origin=(-.5,-.5,0.),
+                 floor=.05,gravity=0,emissivity=0,convection=0,conductivity=0,max_dt=.0003)
+    s=block(c,temperature=1550.)
+    s.x[:,2]=c.floor+.002
+    H0=s.H.copy()
+    sdf=np.full((4,4),1.,np.float64)
+    lo=np.array([-1.,0.,-1.],np.float64);extent=np.array([2.,1.,2.],np.float64)
+    q,contacts=_mold_heat_transfer(
+        s.x,s.J,s.H,s.mass,sdf,lo,extent,1.,0.,.2,.002,c.floor,.01,2600.,450.,s.params,.01)
+    assert contacts==len(s.x)
+    assert q>0
+    assert np.all(s.H<H0)
+    assert q==pytest.approx(float(s.mass@(H0-s.H)),rel=1e-12)
+    s.mold_conduction_loss+=q
+    assert s.metrics()['thermalBalanceRelative']==pytest.approx(0,abs=1e-12)
+
+
+def test_surface_mold_constraint_pushes_subwall_vertices_into_cavity():
+    sdf=np.tile(np.linspace(-.05,.05,9),(9,1))
+    gx=np.ones_like(sdf);gy=np.zeros_like(sdf)
+    mold={'sdf':sdf,'gx':gx,'gz':gy,'lo':np.array([-1.,0.,-1.]),
+          'extent':np.array([2.,1.,2.]),'stageScale':1.,'sourceCenterZ':0.,
+          'wallTop':.12,'margin':.002}
+    v=np.array([[-.04,0.,.08],[.04,0.,.08],[.04,0.,.2]],np.float64)
+    out=_constrain_vertices_to_mold(v,mold,.01)
+    assert out[0,0]>v[0,0]
+    np.testing.assert_allclose(out[1:],v[1:],atol=1e-12)
+
+
 def test_open_boundary_injection_updates_mass_and_energy_reference():
     s = block()
     n0=len(s.x);energy0=s.initial_energy
@@ -207,7 +237,12 @@ def test_pour_formation_starts_as_feed_columns_above_the_cavity():
     assert report['noTargetPositionForces'] is True
     assert len(report['inlets']) >= 3
     assert np.min(pos[:,2]) > mold['wallTop']
-    assert np.max(pos[:,2]) < c.origin[2] + c.spacing*(c.shape[2]-6)
+    # Feed-column z is a source-time parameterization; the scheduled particles
+    # are respawned at nozzle_bottom and are the state constrained by the MPM domain.
+    schedule,_,_=build_pour_source_schedule(source,c,samples_per_axis=1,formation=formation)
+    assert schedule['positions'][:,2].max() < c.origin[2] + c.spacing*(c.shape[2]-6)
+    assert all(row['radius'] <= row['requestedRadius']+1e-12 for row in report['inlets'])
+    assert all(row['centerClearance'] >= row['radius'] for row in report['inlets'])
     assert np.linalg.norm(velocity[:,:2],axis=1).max() > 0
     temperature = temperature_from_enthalpy(H,c)
     assert temperature.max() > c.liquidus
