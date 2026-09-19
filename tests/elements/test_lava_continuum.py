@@ -155,13 +155,18 @@ def test_pour_source_schedule_is_timed_at_the_nozzle_plane():
     formation = PourFormationConfig()
     schedule,mold,report=build_pour_source_schedule(source,c,samples_per_axis=1,formation=formation)
     t=schedule['releaseTime'];z=schedule['positions'][:,2]
-    assert len(t)==report['targetSamples']
+    assert len(t)==report['sourceNumericalParticles']
+    assert len(t)==report['targetSamples']*formation.source_longitudinal_subdivisions
     assert np.all(np.diff(t)>=0)
     assert t[0]==pytest.approx(0,abs=1e-12)
     assert t[-1]>.7
     assert report['simultaneousReservoirRelease'] is False
     assert report['sourceMassFluxIsParticleResolved'] is True
     assert report['sourceDurationSeconds']==pytest.approx(t[-1])
+    assert report['sourceSubstepPeriodSeconds']==pytest.approx(
+        report['sourceLayerPeriodSeconds']/formation.source_longitudinal_subdivisions)
+    assert schedule['volumes'].sum()==pytest.approx(report['targetFillVolumeM3'],rel=1e-12)
+    assert report['sourceVolumePreservedAfterSubdivision']==pytest.approx(report['targetFillVolumeM3'],rel=1e-12)
     assert z.min()>mold['wallTop']
     assert z.max()<formation.nozzle_bottom+c.spacing*.2
     assert schedule['materialCoordinates'][:,2].max()>z.max()+.1
