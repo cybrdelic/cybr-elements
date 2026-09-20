@@ -969,6 +969,9 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
     bulk=np.full(mask.shape,cfg.mold_temperature,np.float64)
     skin=np.full(mask.shape,cfg.mold_temperature,np.float64)
     damage=np.zeros(mask.shape,np.float64)
+    age=np.zeros(mask.shape,np.float64)
+    strain_history=np.zeros(mask.shape,np.float64)
+    tear=np.zeros(mask.shape,np.float64)
 
     return {
         "xs":xs,"ys":ys,"xx":xx,"yy":yy,
@@ -977,6 +980,7 @@ def initialize(source_path:Path,formation:PourFormationConfig,cfg:ShallowLavaCon
         "mask":mask,"labels":labels,
         "components":components,"sources":sources,
         "h":h,"bulk":bulk,"skin":skin,"damage":damage,
+        "age":age,"strainHistory":strain_history,"tear":tear,
         "targetVolumeM3":target_volume,
         "cavityAreaM2":area,
         "lo":lo,"extent":extent,
@@ -988,8 +992,8 @@ def advance_state(state,t0,t1,cfg):
     while t<t1-1e-12:
         dt=_adaptive_dt(
             state["h"],state["bulk"],state["skin"],state["mask"],t1-t,cfg)
-        state["h"],state["bulk"],state["skin"],state["damage"],active,kmax=_step(
-            state["h"],state["bulk"],state["skin"],state["damage"],
+        state["h"],state["bulk"],state["skin"],state["damage"],state["age"],state["strainHistory"],state["tear"],active,kmax=_step(
+            state["h"],state["bulk"],state["skin"],state["damage"],state["age"],state["strainHistory"],state["tear"],
             state["mask"],state["labels"],state["wallFactor"],
             state["sources"],t,dt,cfg)
         t+=dt
@@ -1035,4 +1039,12 @@ def metrics(state,t,cfg):
         "crustFractionMean":float(crust.mean()),
         "obsidianFractionMean":float(obsidian.mean()),
         "damageMean":float(state["damage"][wet].mean()) if np.any(wet) else 0.,
+        "surfaceAgeMeanSeconds":float(state["age"][wet].mean()) if np.any(wet) else 0.,
+        "strainHistoryMean":float(state["strainHistory"][wet].mean()) if np.any(wet) else 0.,
+        "tearOpenMean":float(state["tear"][wet].mean()) if np.any(wet) else 0.,
+        "tearOpenMax":float(state["tear"][wet].max()) if np.any(wet) else 0.,
+        "crustThicknessMeanM":float(np.minimum(
+            cfg.crust_max_thickness,
+            2.*np.sqrt(cfg.crust_thermal_diffusivity*np.maximum(state["age"][wet],0.))*crust
+        ).mean()) if np.any(wet) else 0.,
     }
