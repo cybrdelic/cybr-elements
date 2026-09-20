@@ -12,7 +12,7 @@ From `work/element-motion/`:
 python flamethrower-reference/flamethrower_reference.py
 ```
 
-Default production settings are 224 × 96 × 128 simulation cells, four substeps per 30 fps output frame and 1920 × 1080 H.264 output. The default movie is written to:
+Default production settings are now 384 × 112 × 192 simulation cells, five substeps per 30 fps output frame and 1920 × 1080 H.264 output. The default movie is written to:
 
 ```text
 outputs/cybrdelic-type/elements/motion/subelements/flamethrower-reference.mp4
@@ -28,9 +28,9 @@ The solver requires CUDA and FFmpeg. On an 8 GiB GPU, start with the pilot comma
 
 ## What changed relative to the existing combustion study
 
-The source is now a pressurized cylindrical jet instead of a moving/bending source. The fuel-rich core and oxygen-rich shear layer create a compact luminous reaction region near the nozzle rather than a uniform yellow blob. Downstream vorticity confinement and deterministic shear forcing sustain Kelvin–Helmholtz roll-up. A target-localized body force decelerates the jet and sends hot gas around the plate rather than simply clipping the volume against a screen-space mask.
+The source is now a pressurized cylindrical jet instead of a moving/bending source. The fuel-rich core and annular ignition layer create a compact luminous reaction region near the nozzle. Downstream structure comes primarily from inlet shear plus the same resolved vorticity-confinement family as the accepted sigil fire. A target-localized body force decelerates the jet and sends hot gas around the plate rather than simply clipping the rendered image.
 
-Rendering also changed. Temperature controls a blackbody-like red/orange/yellow/white progression, soot contributes extinction and low-intensity scattering, the simulated volume's transmittance is composited over an analytic dark studio scene, and the target/floor illumination is driven from the rendered flame radiance. A very small deterministic dither is added before 8-bit encoding to reduce dark-gradient banding without visible grain.
+The September 20 revision deliberately removes the separate flamethrower material approximation. Chemistry/cooling, temperature-to-hue, reaction emission, soot extinction/scattering, viscosity, vorticity confinement, optical glow and tone mapping are brought back into parity with `sigil_02_fire_v2.py`. The scene is composited behind that volume response rather than replacing it. The intent is that changing the source geometry from a sigil sheet to a nozzle does **not** downgrade the fire material.
 
 ## Verification
 
