@@ -55,232 +55,110 @@ def math_node(nodes,operation,a=None,b=None,label=None):
 
 
 def build_lava_material():
- lava,p=principled('Thermal continuum / resolved state + material-coordinate crust')
- p.inputs['Metallic'].default_value=0.
- p.inputs['IOR'].default_value=1.52
- if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.12
- p.inputs['Coat Roughness'].default_value=.18
+ """Finite cooled crust shell. Geometric holes, not shader cracks, expose lava."""
+ lava,p=principled('Finite pahoehoe crust shell / resolved geometry')
+ p.inputs['Metallic'].default_value=0.;p.inputs['IOR'].default_value=1.50
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.22
  nodes=lava.node_tree.nodes;links=lava.node_tree.links
  base=attribute(nodes,'baseColor')
- rough_base=attribute(nodes,'roughnessBase')
+ rough=attribute(nodes,'roughnessBase')
  coat=attribute(nodes,'coatWeight')
- thermal=attribute(nodes,'thermalColor')
- thermal_strength=attribute(nodes,'thermalStrength')
- temperature=attribute(nodes,'temperature')
- bulk_temperature=attribute(nodes,'bulkTemperature')
- bulk_thermal_strength=attribute(nodes,'bulkThermalStrength')
+ temp=attribute(nodes,'temperature')
+ thermal=attribute(nodes,'thermalStrength')
+ thickness=attribute(nodes,'crustThickness')
+ age=attribute(nodes,'surfaceAge')
  rest=attribute(nodes,'materialCoordinates')
- fracture=attribute(nodes,'fracturePotential')
- crust=attribute(nodes,'crustAmount')
- surface_age=attribute(nodes,'surfaceAge')
- strain_history=attribute(nodes,'strainHistory')
- tear_open=attribute(nodes,'tearOpen')
- crust_thickness=attribute(nodes,'crustThickness')
- relief=attribute(nodes,'reliefAmount')
- obsidian=attribute(nodes,'obsidianAmount')
- melt=attribute(nodes,'meltAmount')
- links.new(base.outputs['Color'],p.inputs['Base Color'])
- skin_temp_range=nodes.new('ShaderNodeMapRange');skin_temp_range.clamp=True;skin_temp_range.label='skin temperature camera response'
- skin_temp_range.inputs['From Min'].default_value=1050.;skin_temp_range.inputs['From Max'].default_value=1600.
- skin_temp_range.inputs['To Min'].default_value=0.;skin_temp_range.inputs['To Max'].default_value=1.
- links.new(temperature.outputs['Fac'],skin_temp_range.inputs['Value'])
- skin_color=nodes.new('ShaderNodeValToRGB');skin_color.label='lava incandescent skin chroma'
- skin_color.color_ramp.interpolation='EASE'
- se0=skin_color.color_ramp.elements[0];se0.position=0.;se0.color=(.015,0.,0.,1.)
- se1=skin_color.color_ramp.elements[1];se1.position=1.;se1.color=(1.,.52,.035,1.)
- se2=skin_color.color_ramp.elements.new(.38);se2.color=(.19,.004,0.,1.)
- se3=skin_color.color_ramp.elements.new(.68);se3.color=(.78,.085,.0015,1.)
- se4=skin_color.color_ramp.elements.new(.84);se4.color=(1.,.29,.007,1.)
- links.new(skin_temp_range.outputs['Result'],skin_color.inputs['Fac'])
 
- bulk_temp_range=nodes.new('ShaderNodeMapRange');bulk_temp_range.clamp=True;bulk_temp_range.label='bulk temperature camera response'
- bulk_temp_range.inputs['From Min'].default_value=1050.;bulk_temp_range.inputs['From Max'].default_value=1625.
- bulk_temp_range.inputs['To Min'].default_value=0.;bulk_temp_range.inputs['To Max'].default_value=1.
- links.new(bulk_temperature.outputs['Fac'],bulk_temp_range.inputs['Value'])
- bulk_color=nodes.new('ShaderNodeValToRGB');bulk_color.label='revealed hot-interior chroma'
- bulk_color.color_ramp.interpolation='EASE'
- be0=bulk_color.color_ramp.elements[0];be0.position=0.;be0.color=(.02,0.,0.,1.)
- be1=bulk_color.color_ramp.elements[1];be1.position=1.;be1.color=(1.,.68,.07,1.)
- be2=bulk_color.color_ramp.elements.new(.35);be2.color=(.24,.006,0.,1.)
- be3=bulk_color.color_ramp.elements.new(.65);be3.color=(.88,.12,.002,1.)
- be4=bulk_color.color_ramp.elements.new(.82);be4.color=(1.,.38,.012,1.)
- links.new(bulk_temp_range.outputs['Result'],bulk_color.inputs['Fac'])
-
- emission_chroma=nodes.new('ShaderNodeMixRGB');emission_chroma.blend_type='MIX';emission_chroma.label='surface versus exposed interior chroma'
- links.new(skin_color.outputs['Color'],emission_chroma.inputs[1])
- links.new(bulk_color.outputs['Color'],emission_chroma.inputs[2])
- links.new(tear_open.outputs['Fac'],emission_chroma.inputs['Fac'])
- links.new(emission_chroma.outputs['Color'],p.inputs['Emission Color'])
-
- macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
- macro.inputs['Scale'].default_value=23.;macro.inputs['Detail'].default_value=5.2
- macro.inputs['Roughness'].default_value=.72;macro.inputs['Distortion'].default_value=.17
+ macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust albedo breakup'
+ macro.inputs['Scale'].default_value=21.;macro.inputs['Detail'].default_value=3.4
+ macro.inputs['Roughness'].default_value=.66;macro.inputs['Distortion'].default_value=.12
  links.new(rest.outputs['Vector'],macro.inputs['Vector'])
- micro=nodes.new('ShaderNodeTexNoise');micro.noise_dimensions='3D';micro.label='advected vesicle microstructure'
- micro.inputs['Scale'].default_value=185.;micro.inputs['Detail'].default_value=4.5
- micro.inputs['Roughness'].default_value=.78;micro.inputs['Distortion'].default_value=.08
+ gain=nodes.new('ShaderNodeMapRange');gain.clamp=True
+ gain.inputs['From Min'].default_value=.16;gain.inputs['From Max'].default_value=.84
+ gain.inputs['To Min'].default_value=.68;gain.inputs['To Max'].default_value=1.18
+ links.new(macro.outputs['Fac'],gain.inputs['Value'])
+ albedo=nodes.new('ShaderNodeMixRGB');albedo.blend_type='MULTIPLY';albedo.inputs['Fac'].default_value=1.
+ links.new(base.outputs['Color'],albedo.inputs[1]);links.new(gain.outputs['Result'],albedo.inputs[2])
+ links.new(albedo.outputs['Color'],p.inputs['Base Color'])
+
+ micro=nodes.new('ShaderNodeTexNoise');micro.noise_dimensions='3D';micro.label='crust grain and vesicle roughness'
+ micro.inputs['Scale'].default_value=120.;micro.inputs['Detail'].default_value=3.0
+ micro.inputs['Roughness'].default_value=.72
  links.new(rest.outputs['Vector'],micro.inputs['Vector'])
+ mc=math_node(nodes,'SUBTRACT',b=.5);links.new(micro.outputs['Fac'],mc.inputs[0])
+ ma=math_node(nodes,'MULTIPLY',b=.09);links.new(mc.outputs[0],ma.inputs[0])
+ rt=math_node(nodes,'ADD');links.new(rough.outputs['Fac'],rt.inputs[0]);links.new(ma.outputs[0],rt.inputs[1])
+ rc=nodes.new('ShaderNodeClamp');rc.inputs['Min'].default_value=.22;rc.inputs['Max'].default_value=.94
+ links.new(rt.outputs[0],rc.inputs['Value']);links.new(rc.outputs['Result'],p.inputs['Roughness'])
+ links.new(coat.outputs['Fac'],p.inputs['Coat Weight'])
+ cr=math_node(nodes,'MULTIPLY',b=.70);links.new(rc.outputs['Result'],cr.inputs[0]);links.new(cr.outputs[0],p.inputs['Coat Roughness'])
 
- cells=nodes.new('ShaderNodeTexVoronoi');cells.voronoi_dimensions='3D';cells.feature='DISTANCE_TO_EDGE';cells.distance='EUCLIDEAN'
- cells.label='damage-gated sub-grid crust edges';cells.inputs['Scale'].default_value=18.
- links.new(rest.outputs['Vector'],cells.inputs['Vector'])
- edge=nodes.new('ShaderNodeMapRange');edge.clamp=True;edge.interpolation_type='SMOOTHERSTEP';edge.label='thin cellular edges'
- edge.inputs['From Min'].default_value=.010;edge.inputs['From Max'].default_value=.052
- edge.inputs['To Min'].default_value=1.;edge.inputs['To Max'].default_value=0.
- links.new(cells.outputs['Distance'],edge.inputs['Value'])
- tear_edge=math_node(nodes,'MULTIPLY',label='resolved tear openness × sub-grid edge shape')
- links.new(tear_open.outputs['Fac'],tear_edge.inputs[0]);links.new(edge.outputs['Result'],tear_edge.inputs[1])
- fracture_edge=math_node(nodes,'MAXIMUM',label='resolved tear plus residual damage')
- links.new(tear_edge.outputs[0],fracture_edge.inputs[0])
- damage_residual=math_node(nodes,'MULTIPLY',b=.18,label='minor damage-only breakup')
- links.new(fracture.outputs['Fac'],damage_residual.inputs[0]);links.new(damage_residual.outputs[0],fracture_edge.inputs[1])
+ # Young/thin shell is translucent to thermal radiance; thick mature crust is
+ # nearly opaque. The actual bright breakouts come from the separate interior.
+ thin=nodes.new('ShaderNodeMapRange');thin.clamp=True;thin.interpolation_type='SMOOTHERSTEP'
+ thin.inputs['From Min'].default_value=.00020;thin.inputs['From Max'].default_value=.0028
+ thin.inputs['To Min'].default_value=1.;thin.inputs['To Max'].default_value=0.
+ links.new(thickness.outputs['Fac'],thin.inputs['Value'])
+ young=nodes.new('ShaderNodeMapRange');young.clamp=True;young.interpolation_type='SMOOTHERSTEP'
+ young.inputs['From Min'].default_value=.05;young.inputs['From Max'].default_value=.85
+ young.inputs['To Min'].default_value=1.;young.inputs['To Max'].default_value=.08
+ links.new(age.outputs['Fac'],young.inputs['Value'])
+ vis=math_node(nodes,'MULTIPLY');links.new(thin.outputs['Result'],vis.inputs[0]);links.new(young.outputs['Result'],vis.inputs[1])
+ est=math_node(nodes,'MULTIPLY');links.new(thermal.outputs['Fac'],est.inputs[0]);links.new(vis.outputs[0],est.inputs[1])
+ escale=math_node(nodes,'MULTIPLY',b=.42,label='faint heat through young crust');links.new(est.outputs[0],escale.inputs[0])
+ links.new(escale.outputs[0],p.inputs['Emission Strength'])
 
- # Real pāhoehoe is mostly an opaque skin over a hotter interior.  Exposed
- # surface melt uses the skin thermal state; damage-gated tears reveal bulk
- # temperature beneath the skin and therefore glow brighter/yellower.
- skin_noise=nodes.new('ShaderNodeTexNoise');skin_noise.noise_dimensions='3D';skin_noise.label='resolved-crust island distribution'
- skin_noise.inputs['Scale'].default_value=8.5;skin_noise.inputs['Detail'].default_value=2.6
- skin_noise.inputs['Roughness'].default_value=.63;skin_noise.inputs['Distortion'].default_value=.11
- links.new(rest.outputs['Vector'],skin_noise.inputs['Vector'])
- skin_shape=nodes.new('ShaderNodeMapRange');skin_shape.clamp=True;skin_shape.interpolation_type='SMOOTHERSTEP'
- skin_shape.inputs['From Min'].default_value=.42;skin_shape.inputs['From Max'].default_value=.58
- skin_shape.inputs['To Min'].default_value=0.;skin_shape.inputs['To Max'].default_value=1.
- links.new(skin_noise.outputs['Fac'],skin_shape.inputs['Value'])
- thickness_cov=nodes.new('ShaderNodeMapRange');thickness_cov.clamp=True;thickness_cov.interpolation_type='SMOOTHERSTEP';thickness_cov.label='finite crust thickness coverage'
- thickness_cov.inputs['From Min'].default_value=.00015;thickness_cov.inputs['From Max'].default_value=.0045
- thickness_cov.inputs['To Min'].default_value=0.;thickness_cov.inputs['To Max'].default_value=1.
- links.new(crust_thickness.outputs['Fac'],thickness_cov.inputs['Value'])
- age_cov=nodes.new('ShaderNodeMapRange');age_cov.clamp=True;age_cov.interpolation_type='SMOOTHERSTEP';age_cov.label='surface maturity'
- age_cov.inputs['From Min'].default_value=.08;age_cov.inputs['From Max'].default_value=.85
- age_cov.inputs['To Min'].default_value=0.;age_cov.inputs['To Max'].default_value=1.
- links.new(surface_age.outputs['Fac'],age_cov.inputs['Value'])
- physical_skin=math_node(nodes,'MULTIPLY',label='phase × finite thickness')
- links.new(crust.outputs['Fac'],physical_skin.inputs[0]);links.new(thickness_cov.outputs['Result'],physical_skin.inputs[1])
- mature_skin=math_node(nodes,'MULTIPLY',label='finite crust × maturity')
- links.new(physical_skin.outputs[0],mature_skin.inputs[0]);links.new(age_cov.outputs['Result'],mature_skin.inputs[1])
- crust_gain=math_node(nodes,'MULTIPLY',b=4.2,label='resolved crust coverage gain')
- links.new(mature_skin.outputs[0],crust_gain.inputs[0])
- skin_raw=math_node(nodes,'MULTIPLY',label='resolved crust × island distribution')
- links.new(crust_gain.outputs[0],skin_raw.inputs[0]);links.new(skin_shape.outputs['Result'],skin_raw.inputs[1])
- skin_clamp=nodes.new('ShaderNodeClamp');skin_clamp.inputs['Min'].default_value=0.;skin_clamp.inputs['Max'].default_value=1.
- links.new(skin_raw.outputs[0],skin_clamp.inputs['Value'])
- skin_cut=math_node(nodes,'MULTIPLY',b=-.97,label='opaque cooling skin')
- links.new(skin_clamp.outputs['Result'],skin_cut.inputs[0])
- skin_keep=math_node(nodes,'ADD',a=1.,label='remaining exposed-surface fraction')
- links.new(skin_cut.outputs[0],skin_keep.inputs[1])
+ tr=nodes.new('ShaderNodeMapRange');tr.clamp=True
+ tr.inputs['From Min'].default_value=950.;tr.inputs['From Max'].default_value=1550.
+ tr.inputs['To Min'].default_value=0.;tr.inputs['To Max'].default_value=1.
+ links.new(temp.outputs['Fac'],tr.inputs['Value'])
+ ramp=nodes.new('ShaderNodeValToRGB');ramp.color_ramp.interpolation='EASE'
+ e0=ramp.color_ramp.elements[0];e0.position=0.;e0.color=(.06,0.,0.,1.)
+ e1=ramp.color_ramp.elements[1];e1.position=1.;e1.color=(1.,.31,.01,1.)
+ e2=ramp.color_ramp.elements.new(.58);e2.color=(.50,.025,0.,1.)
+ links.new(tr.outputs['Result'],ramp.inputs['Fac']);links.new(ramp.outputs['Color'],p.inputs['Emission Color'])
 
- exposed_melt=math_node(nodes,'MULTIPLY',label='resolved melt × broken-skin visibility')
- links.new(melt.outputs['Fac'],exposed_melt.inputs[0]);links.new(skin_keep.outputs[0],exposed_melt.inputs[1])
- surface_emit=math_node(nodes,'MULTIPLY',label='surface Planck strength')
- links.new(thermal_strength.outputs['Fac'],surface_emit.inputs[0]);links.new(exposed_melt.outputs[0],surface_emit.inputs[1])
-
- fissure_weight=math_node(nodes,'MULTIPLY',b=2.30,label='hot interior visible through resolved tears')
- links.new(fracture_edge.outputs[0],fissure_weight.inputs[0])
- fissure_emit=math_node(nodes,'MULTIPLY',label='bulk Planck strength through fissures')
- links.new(bulk_thermal_strength.outputs['Fac'],fissure_emit.inputs[0]);links.new(fissure_weight.outputs[0],fissure_emit.inputs[1])
-
- total_emit=math_node(nodes,'ADD',label='surface + revealed interior emission')
- links.new(surface_emit.outputs[0],total_emit.inputs[0]);links.new(fissure_emit.outputs[0],total_emit.inputs[1])
- emission_scale=math_node(nodes,'MULTIPLY',b=2.20,label='camera-scale thermal radiance')
- links.new(total_emit.outputs[0],emission_scale.inputs[0]);links.new(emission_scale.outputs[0],p.inputs['Emission Strength'])
-
- macro_gain=nodes.new('ShaderNodeMapRange');macro_gain.clamp=True
- macro_gain.inputs['From Min'].default_value=.12;macro_gain.inputs['From Max'].default_value=.88
- macro_gain.inputs['To Min'].default_value=.72;macro_gain.inputs['To Max'].default_value=1.24
- links.new(macro.outputs['Fac'],macro_gain.inputs['Value'])
- macro_gate=nodes.new('ShaderNodeMixRGB');macro_gate.blend_type='MIX';macro_gate.label='crust-only albedo breakup'
- macro_gate.inputs[1].default_value=(1.,1.,1.,1.)
- links.new(crust.outputs['Fac'],macro_gate.inputs['Fac']);links.new(macro_gain.outputs['Result'],macro_gate.inputs[2])
- base_mod=nodes.new('ShaderNodeMixRGB');base_mod.blend_type='MULTIPLY';base_mod.inputs['Fac'].default_value=1.
- links.new(base.outputs['Color'],base_mod.inputs[1]);links.new(macro_gate.outputs['Color'],base_mod.inputs[2])
- skin_albedo=nodes.new('ShaderNodeMixRGB');skin_albedo.blend_type='MULTIPLY';skin_albedo.label='dark crust plate albedo'
- links.new(skin_clamp.outputs['Result'],skin_albedo.inputs['Fac']);links.new(base_mod.outputs['Color'],skin_albedo.inputs[1])
- skin_albedo.inputs[2].default_value=(.12,.13,.14,1.)
- fracture_dark=nodes.new('ShaderNodeMixRGB');fracture_dark.blend_type='MULTIPLY'
- links.new(fracture_edge.outputs[0],fracture_dark.inputs['Fac']);links.new(skin_albedo.outputs['Color'],fracture_dark.inputs[1])
- fracture_dark.inputs[2].default_value=(.020,.012,.006,1.)
- links.new(fracture_dark.outputs['Color'],p.inputs['Base Color'])
-
- micro_center=math_node(nodes,'SUBTRACT',b=.5,label='micro centered');links.new(micro.outputs['Fac'],micro_center.inputs[0])
- micro_amp=math_node(nodes,'MULTIPLY',b=.09,label='micro roughness amplitude');links.new(micro_center.outputs[0],micro_amp.inputs[0])
- micro_phase=math_node(nodes,'MULTIPLY',label='crust-gated micro roughness');links.new(micro_amp.outputs[0],micro_phase.inputs[0]);links.new(relief.outputs['Fac'],micro_phase.inputs[1])
- rough_add=math_node(nodes,'ADD',label='phase roughness + cooled microstructure');links.new(rough_base.outputs['Fac'],rough_add.inputs[0]);links.new(micro_phase.outputs[0],rough_add.inputs[1])
- fracture_rough=math_node(nodes,'MULTIPLY',b=.055,label='fracture roughness');links.new(fracture_edge.outputs[0],fracture_rough.inputs[0])
- rough_total=math_node(nodes,'ADD');links.new(rough_add.outputs[0],rough_total.inputs[0]);links.new(fracture_rough.outputs[0],rough_total.inputs[1])
- rough_clamp=nodes.new('ShaderNodeClamp');rough_clamp.inputs['Min'].default_value=.16;rough_clamp.inputs['Max'].default_value=.98
- links.new(rough_total.outputs[0],rough_clamp.inputs['Value']);links.new(rough_clamp.outputs['Result'],p.inputs['Roughness'])
-
- ripple=nodes.new('ShaderNodeTexNoise');ripple.noise_dimensions='3D';ripple.label='viscous molten surface ripple'
- ripple.inputs['Scale'].default_value=46.;ripple.inputs['Detail'].default_value=2.0
- ripple.inputs['Roughness'].default_value=.52;ripple.inputs['Distortion'].default_value=.10
- links.new(rest.outputs['Vector'],ripple.inputs['Vector'])
- ripple_bump=nodes.new('ShaderNodeBump');ripple_bump.label='melt-only ripple normal';ripple_bump.inputs['Distance'].default_value=.00080
- ripple_strength=math_node(nodes,'MULTIPLY',a=.10,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
- links.new(ripple.outputs['Fac'],ripple_bump.inputs['Height'])
-
- macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin residual relief';macro_bump.inputs['Strength'].default_value=.13;macro_bump.inputs['Distance'].default_value=.0012
- links.new(macro.outputs['Fac'],macro_bump.inputs['Height']);links.new(ripple_bump.outputs['Normal'],macro_bump.inputs['Normal'])
- macro_strength=math_node(nodes,'MULTIPLY',a=.24,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
- micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Distance'].default_value=.00048
- micro_bump_strength=math_node(nodes,'MULTIPLY',a=.16,label='crust-gated grain relief');links.new(relief.outputs['Fac'],micro_bump_strength.inputs[1]);links.new(micro_bump_strength.outputs[0],micro_bump.inputs['Strength'])
- links.new(micro.outputs['Fac'],micro_bump.inputs['Height']);links.new(macro_bump.outputs['Normal'],micro_bump.inputs['Normal'])
- vesicles=nodes.new('ShaderNodeTexVoronoi');vesicles.voronoi_dimensions='3D';vesicles.feature='F1';vesicles.distance='EUCLIDEAN'
- vesicles.label='advected vesicle centers';vesicles.inputs['Scale'].default_value=118.
- links.new(rest.outputs['Vector'],vesicles.inputs['Vector'])
- pit=nodes.new('ShaderNodeMapRange');pit.clamp=True;pit.interpolation_type='SMOOTHERSTEP';pit.label='vesicle pits'
- pit.inputs['From Min'].default_value=.035;pit.inputs['From Max'].default_value=.145
- pit.inputs['To Min'].default_value=1.;pit.inputs['To Max'].default_value=0.
- links.new(vesicles.outputs['Distance'],pit.inputs['Value'])
- pit_gate=math_node(nodes,'MULTIPLY',label='phase-gated vesicles');links.new(relief.outputs['Fac'],pit_gate.inputs[0]);links.new(pit.outputs['Result'],pit_gate.inputs[1])
- pit_bump=nodes.new('ShaderNodeBump');pit_bump.label='quenched vesicle depressions';pit_bump.invert=True;pit_bump.inputs['Strength'].default_value=.38;pit_bump.inputs['Distance'].default_value=.00105
- links.new(pit_gate.outputs[0],pit_bump.inputs['Height']);links.new(micro_bump.outputs['Normal'],pit_bump.inputs['Normal'])
- fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='resolved tear crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.72;fissure_bump.inputs['Distance'].default_value=.00115
- links.new(fracture_edge.outputs[0],fissure_bump.inputs['Height']);links.new(pit_bump.outputs['Normal'],fissure_bump.inputs['Normal']);links.new(fissure_bump.outputs['Normal'],p.inputs['Normal'])
- crack_coat=math_node(nodes,'MULTIPLY',a=-.82,label='coat loss in fissures');links.new(fracture_edge.outputs[0],crack_coat.inputs[1])
- coat_keep=math_node(nodes,'ADD',a=1.,label='fissure coat mask');links.new(crack_coat.outputs[0],coat_keep.inputs[1])
- coat_final=math_node(nodes,'MULTIPLY',label='phase coat × fissure mask');links.new(coat.outputs['Fac'],coat_final.inputs[0]);links.new(coat_keep.outputs[0],coat_final.inputs[1])
- links.new(coat_final.outputs[0],p.inputs['Coat Weight'])
-
- coat_rough=math_node(nodes,'MULTIPLY',b=.75,label='coat roughness from phase');links.new(rough_clamp.outputs['Result'],coat_rough.inputs[0]);links.new(coat_rough.outputs[0],p.inputs['Coat Roughness'])
+ bump=nodes.new('ShaderNodeBump');bump.label='sub-grid crust grain';bump.inputs['Strength'].default_value=.18;bump.inputs['Distance'].default_value=.00055
+ links.new(micro.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
  return lava
 
 
 def build_molten_material():
- m,p=principled('Molten basalt interior / exposed through geometric crust breaks')
- p.inputs['Base Color'].default_value=(.010,.0018,.00035,1)
- p.inputs['Metallic'].default_value=0.;p.inputs['Roughness'].default_value=.43;p.inputs['IOR'].default_value=1.54
- if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.15
+ m,p=principled('Molten basalt interior / breakout surface')
+ p.inputs['Metallic'].default_value=0.;p.inputs['Roughness'].default_value=.48;p.inputs['IOR'].default_value=1.54
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.12
  if 'Coat Weight' in p.inputs:p.inputs['Coat Weight'].default_value=0.
  nodes=m.node_tree.nodes;links=m.node_tree.links
  bulk_temperature=attribute(nodes,'bulkTemperature')
  bulk_strength=attribute(nodes,'bulkThermalStrength')
  rest=attribute(nodes,'materialCoordinates')
 
- tr=nodes.new('ShaderNodeMapRange');tr.clamp=True;tr.label='molten interior temperature response'
+ tr=nodes.new('ShaderNodeMapRange');tr.clamp=True
  tr.inputs['From Min'].default_value=1000.;tr.inputs['From Max'].default_value=1650.
  tr.inputs['To Min'].default_value=0.;tr.inputs['To Max'].default_value=1.
  links.new(bulk_temperature.outputs['Fac'],tr.inputs['Value'])
- ramp=nodes.new('ShaderNodeValToRGB');ramp.label='basalt incandescent interior chroma';ramp.color_ramp.interpolation='EASE'
- e0=ramp.color_ramp.elements[0];e0.position=0.;e0.color=(.018,0.,0.,1.)
- e1=ramp.color_ramp.elements[1];e1.position=1.;e1.color=(1.,.56,.035,1.)
- e2=ramp.color_ramp.elements.new(.35);e2.color=(.20,.003,0.,1.)
- e3=ramp.color_ramp.elements.new(.64);e3.color=(.78,.055,.001,1.)
- e4=ramp.color_ramp.elements.new(.83);e4.color=(1.,.27,.006,1.)
- links.new(tr.outputs['Result'],ramp.inputs['Fac'])
- links.new(ramp.outputs['Color'],p.inputs['Emission Color'])
+ ramp=nodes.new('ShaderNodeValToRGB');ramp.color_ramp.interpolation='EASE'
+ e0=ramp.color_ramp.elements[0];e0.position=0.;e0.color=(.015,0.,0.,1.)
+ e1=ramp.color_ramp.elements[1];e1.position=1.;e1.color=(1.,.34,.012,1.)
+ e2=ramp.color_ramp.elements.new(.34);e2.color=(.17,.002,0.,1.)
+ e3=ramp.color_ramp.elements.new(.66);e3.color=(.72,.045,.001,1.)
+ e4=ramp.color_ramp.elements.new(.84);e4.color=(1.,.19,.004,1.)
+ links.new(tr.outputs['Result'],ramp.inputs['Fac']);links.new(ramp.outputs['Color'],p.inputs['Emission Color'])
 
- strength=math_node(nodes,'MULTIPLY',b=1.55,label='exposed hot-interior radiance')
- links.new(bulk_strength.outputs['Fac'],strength.inputs[0]);links.new(strength.outputs[0],p.inputs['Emission Strength'])
+ macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='sub-grid emissivity variation'
+ macro.inputs['Scale'].default_value=18.;macro.inputs['Detail'].default_value=2.5;macro.inputs['Roughness'].default_value=.60
+ links.new(rest.outputs['Vector'],macro.inputs['Vector'])
+ mod=nodes.new('ShaderNodeMapRange');mod.clamp=True
+ mod.inputs['From Min'].default_value=.16;mod.inputs['From Max'].default_value=.84
+ mod.inputs['To Min'].default_value=.58;mod.inputs['To Max'].default_value=1.12
+ links.new(macro.outputs['Fac'],mod.inputs['Value'])
+ sm=math_node(nodes,'MULTIPLY');links.new(bulk_strength.outputs['Fac'],sm.inputs[0]);links.new(mod.outputs['Result'],sm.inputs[1])
+ scale=math_node(nodes,'MULTIPLY',b=.92,label='exposed interior radiance');links.new(sm.outputs[0],scale.inputs[0]);links.new(scale.outputs[0],p.inputs['Emission Strength'])
 
- base_mix=nodes.new('ShaderNodeMixRGB');base_mix.blend_type='MIX';base_mix.inputs['Fac'].default_value=.32
- base_mix.inputs[1].default_value=(.007,.0012,.0002,1.)
- links.new(ramp.outputs['Color'],base_mix.inputs[2]);links.new(base_mix.outputs['Color'],p.inputs['Base Color'])
-
- n=nodes.new('ShaderNodeTexNoise');n.noise_dimensions='3D';n.label='viscous interior corrugation'
- n.inputs['Scale'].default_value=54.;n.inputs['Detail'].default_value=2.2;n.inputs['Roughness'].default_value=.56;n.inputs['Distortion'].default_value=.08
- links.new(rest.outputs['Vector'],n.inputs['Vector'])
- bump=nodes.new('ShaderNodeBump');bump.label='viscous interior relief';bump.inputs['Strength'].default_value=.12;bump.inputs['Distance'].default_value=.00075
- links.new(n.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
+ base_mix=nodes.new('ShaderNodeMixRGB');base_mix.blend_type='MIX';base_mix.inputs['Fac'].default_value=.22
+ base_mix.inputs[1].default_value=(.006,.001,.00018,1.);links.new(ramp.outputs['Color'],base_mix.inputs[2]);links.new(base_mix.outputs['Color'],p.inputs['Base Color'])
+ bump=nodes.new('ShaderNodeBump');bump.label='viscous breakout relief';bump.inputs['Strength'].default_value=.10;bump.inputs['Distance'].default_value=.00065
+ links.new(macro.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
  return m
 
 
