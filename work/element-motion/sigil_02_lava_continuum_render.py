@@ -70,7 +70,7 @@ def build_lava_material():
  rest=attribute(nodes,'materialCoordinates')
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust albedo breakup'
- macro.inputs['Scale'].default_value=21.;macro.inputs['Detail'].default_value=3.4
+ macro.inputs['Scale'].default_value=9.;macro.inputs['Detail'].default_value=2.8
  macro.inputs['Roughness'].default_value=.66;macro.inputs['Distortion'].default_value=.12
  links.new(rest.outputs['Vector'],macro.inputs['Vector'])
  gain=nodes.new('ShaderNodeMapRange');gain.clamp=True
@@ -105,7 +105,7 @@ def build_lava_material():
  links.new(age.outputs['Fac'],young.inputs['Value'])
  vis=math_node(nodes,'MULTIPLY');links.new(thin.outputs['Result'],vis.inputs[0]);links.new(young.outputs['Result'],vis.inputs[1])
  est=math_node(nodes,'MULTIPLY');links.new(thermal.outputs['Fac'],est.inputs[0]);links.new(vis.outputs[0],est.inputs[1])
- escale=math_node(nodes,'MULTIPLY',b=.42,label='faint heat through young crust');links.new(est.outputs[0],escale.inputs[0])
+ escale=math_node(nodes,'MULTIPLY',b=.22,label='faint heat through young crust');links.new(est.outputs[0],escale.inputs[0])
  links.new(escale.outputs[0],p.inputs['Emission Strength'])
 
  tr=nodes.new('ShaderNodeMapRange');tr.clamp=True
@@ -146,16 +146,16 @@ def build_molten_material():
  links.new(tr.outputs['Result'],ramp.inputs['Fac']);links.new(ramp.outputs['Color'],p.inputs['Emission Color'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='sub-grid emissivity variation'
- macro.inputs['Scale'].default_value=12.;macro.inputs['Detail'].default_value=2.7;macro.inputs['Roughness'].default_value=.63
+ macro.inputs['Scale'].default_value=6.5;macro.inputs['Detail'].default_value=2.1;macro.inputs['Roughness'].default_value=.58
  links.new(rest.outputs['Vector'],macro.inputs['Vector'])
  mod=nodes.new('ShaderNodeMapRange');mod.clamp=True
- mod.inputs['From Min'].default_value=.16;mod.inputs['From Max'].default_value=.84
- mod.inputs['To Min'].default_value=.28;mod.inputs['To Max'].default_value=1.02
+ mod.inputs['From Min'].default_value=.22;mod.inputs['From Max'].default_value=.82
+ mod.inputs['To Min'].default_value=.18;mod.inputs['To Max'].default_value=1.05
  links.new(macro.outputs['Fac'],mod.inputs['Value'])
  sm=math_node(nodes,'MULTIPLY');links.new(bulk_strength.outputs['Fac'],sm.inputs[0]);links.new(mod.outputs['Result'],sm.inputs[1])
- scale=math_node(nodes,'MULTIPLY',b=.82,label='exposed interior radiance');links.new(sm.outputs[0],scale.inputs[0]);links.new(scale.outputs[0],p.inputs['Emission Strength'])
+ scale=math_node(nodes,'MULTIPLY',b=.68,label='exposed interior radiance');links.new(sm.outputs[0],scale.inputs[0]);links.new(scale.outputs[0],p.inputs['Emission Strength'])
 
- base_mix=nodes.new('ShaderNodeMixRGB');base_mix.blend_type='MIX';base_mix.inputs['Fac'].default_value=.22
+ base_mix=nodes.new('ShaderNodeMixRGB');base_mix.blend_type='MIX';base_mix.inputs['Fac'].default_value=.14
  base_mix.inputs[1].default_value=(.006,.001,.00018,1.);links.new(ramp.outputs['Color'],base_mix.inputs[2]);links.new(base_mix.outputs['Color'],p.inputs['Base Color'])
  bump=nodes.new('ShaderNodeBump');bump.label='viscous breakout relief';bump.inputs['Strength'].default_value=.15;bump.inputs['Distance'].default_value=.00080
  links.new(macro.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
