@@ -11,7 +11,7 @@ from elements_core.lava_mpm import (
 from elements_core.lava_surface import reconstruct, mesh_volume, wall_contact_heights, _constrain_vertices_to_mold
 from elements_core.lava_material import material_controls, planck_rgb
 from elements_core.lava_formation import PourFormationConfig, build_pour_initial_state, build_pour_source_schedule, _mold_contact, _mold_heat_transfer
-from elements_core.lava_shallow import ShallowLavaConfig, initialize as initialize_shallow, advance_state as advance_shallow, metrics as shallow_metrics, _redistribute_overflow
+from elements_core.lava_shallow import ShallowLavaConfig, initialize as initialize_shallow, advance_state as advance_shallow, metrics as shallow_metrics, build_surface_mesh as build_shallow_surface, _redistribute_overflow
 
 
 def block(config=None, temperature=1500.0):
@@ -298,3 +298,31 @@ def test_shallow_short_run_conserves_injected_volume_and_caps_source_mounds():
     assert m['wetCoverageFraction']>0.
     assert m['skinTemperatureMaxK']>cfg.solidus
     assert m['bulkTemperatureMeanK']>cfg.liquidus
+
+
+def test_shallow_crust_mechanics_are_bounded_and_renderable():
+    source=Path('work/element-motion/sigil-02-v2/source.npz')
+    formation=PourFormationConfig(main_nozzles=4,nozzle_bottom=.105)
+    cfg=ShallowLavaConfig(
+        nx=160,ny=80,pour_duration=1.1,inlet_stagger_seconds=.35,
+        target_depth=.030,max_depth=.048,max_dt=.008)
+    state=initialize_shallow(source,formation,cfg)
+    active=advance_shallow(state,0.,.8,cfg)
+    wet=state['h']>cfg.wet_epsilon
+    assert np.any(wet)
+    assert np.all(state['age'][wet]>=0)
+    assert np.all(state['strainHistory'][wet]>=0)
+    assert np.all((state['tear'][wet]>=0)&(state['tear'][wet]<=1))
+    assert state['age'][wet].max()>0
+    mesh=build_shallow_surface(
+        state['h'],state['skin'],state['bulk'],state['damage'],
+        state['age'],state['strainHistory'],state['tear'],state['mask'],
+        state['xs'],state['ys'],active,state['sources'],.8,cfg,formation,
+        tangent_x=state['tangentX'],tangent_y=state['tangentY'])
+    n=len(mesh['vertices'])
+    for key in ('temperature','bulkTemperature','damage','surfaceAge',
+                'strainHistory','tearOpen','crustThickness','rest'):
+        assert len(mesh[key])==n
+    assert np.all(mesh['crustThickness']>=0)
+    assert mesh['crustThickness'].max()<=cfg.crust_max_thickness+1e-9
+    assert np.all((mesh['tearOpen']>=0)&(mesh['tearOpen']<=1))
