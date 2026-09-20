@@ -653,7 +653,7 @@ def _thermal_shock_damage(damage,old_skin,new_skin,flow_activity,wall_factor,dt,
     return np.clip(damage+dt*grow,0.,.98)
 
 
-def _step(h,bulk,skin,damage,mask,labels,wall_factor,sources,t,dt,cfg):
+def _step(h,bulk,skin,damage,age,strain_history,tear,mask,labels,wall_factor,sources,t,dt,cfg):
     src_h,src_e,impact,active=_active_source_fields(t,sources,h.shape,cfg)
     qx,qy,kmax=_face_fluxes(h,bulk,skin,mask,cfg.dx,cfg.dy,cfg,impact=impact)
 
@@ -662,37 +662,65 @@ def _step(h,bulk,skin,damage,mask,labels,wall_factor,sources,t,dt,cfg):
     ex,ey=_advected_scalar_flux(qx,qy,bulk)
     denergy=_divergence(ex,ey,cfg.dx,cfg.dy,h.shape)+src_e
 
+    age_mass=_advect_scalar_mass(h,age,qx,qy,cfg.dx,cfg.dy,dt)
+    strain_mass=_advect_scalar_mass(h,strain_history,qx,qy,cfg.dx,cfg.dy,dt)
+    tear_mass=_advect_scalar_mass(h,tear,qx,qy,cfg.dx,cfg.dy,dt)
+
     h_raw=np.where(mask,np.maximum(h+dt*dh,0.),0.)
     energy_new=energy+dt*denergy
-    h_new,energy_new=_redistribute_overflow(
-        h_raw,labels,cfg.max_depth,energy=energy_new,sweeps=4)
+    payloads=np.stack([energy_new,age_mass,strain_mass,tear_mass],axis=0)
+    h_new,payloads=_redistribute_overflow_payloads(
+        h_raw,labels,cfg.max_depth,payloads,sweeps=4)
+    energy_new,age_mass,strain_mass,tear_mass=payloads
 
+    wet_new=h_new>cfg.wet_epsilon
     bulk_new=np.where(
-        h_new>cfg.wet_epsilon,
-        energy_new/np.maximum(h_new,1e-8),
-        cfg.mold_temperature)
+        wet_new,energy_new/np.maximum(h_new,1e-8),cfg.mold_temperature)
     bulk_new=np.clip(bulk_new,cfg.mold_temperature,cfg.feed_temperature+40.)
 
+    _,_,strain_rate=_cell_velocity_and_strain(qx,qy,h_new,cfg.dx,cfg.dy)
     flow=np.zeros_like(h_new)
-    flow[:,:-1]+=np.abs(qx)
-    flow[:,1:]+=np.abs(qx)
-    flow[:-1,:]+=np.abs(qy)
-    flow[1:,:]+=np.abs(qy)
+    flow[:,:-1]+=np.abs(qx);flow[:,1:]+=np.abs(qx)
+    flow[:-1,:]+=np.abs(qy);flow[1:,:]+=np.abs(qy)
     flow/=np.maximum(h_new,1e-5)
 
     added_depth=dt*src_h
-    fresh=(h<=cfg.wet_epsilon)&(h_new>cfg.wet_epsilon)
-    skin_seed=np.where(fresh,bulk_new,skin)
+    fresh=(h<=cfg.wet_epsilon)&wet_new
     source_fraction=np.clip(added_depth/np.maximum(h_new,1e-8),0.,1.)
-    skin_seed=(1.-source_fraction)*skin_seed+source_fraction*cfg.feed_skin_temperature
 
+    skin_seed=np.where(fresh,bulk_new,skin)
+    skin_seed=(1.-source_fraction)*skin_seed+source_fraction*cfg.feed_skin_temperature
     old_skin=skin_seed.copy()
     bulk_new,skin_new=_thermal_update(
         h_new,bulk_new,skin_seed,src_h,dt,mask,wall_factor,cfg,flow)
+
+    age_adv=np.where(wet_new,age_mass/np.maximum(h_new,1e-8),0.)
+    age_new=np.where(wet_new,(age_adv+dt)*(1.-.92*source_fraction),0.)
+    crust=1.-_phase_fraction(skin_new,cfg)
+    maturity=1.-np.exp(-age_new/cfg.crust_maturity_time)
+
+    strain_adv=np.where(wet_new,strain_mass/np.maximum(h_new,1e-8),0.)
+    memory=math.exp(-dt/cfg.strain_memory_time)
+    strain_new=np.where(
+        wet_new,strain_adv*memory+dt*strain_rate*crust*maturity,0.)
+    strain_new=np.clip(strain_new,0.,8.)
+
+    tear_adv=np.where(wet_new,tear_mass/np.maximum(h_new,1e-8),0.)
+    cooling=np.maximum(old_skin-skin_new,0.)/max(dt,1e-12)
+    cooling_drive=np.clip(cooling/420.,0.,2.)
+    mechanical=np.maximum(strain_rate-cfg.tear_strain_threshold,0.)
+    drive=maturity*crust*(
+        cfg.tear_growth_rate*np.minimum(mechanical,3.)+
+        cfg.tear_cooling_gain*cooling_drive)
+    heal=cfg.tear_heal_rate*_phase_fraction(skin_new,cfg)*tear_adv
+    tear_new=np.clip(tear_adv+dt*(drive-heal),0.,1.)
+    tear_new*=np.where(wet_new,1.-.65*source_fraction,0.)
+
     damage_new=_thermal_shock_damage(
         damage,old_skin,skin_new,flow,wall_factor,dt,cfg)
+    damage_new=np.maximum(damage_new,.72*tear_new)
 
-    return h_new,bulk_new,skin_new,damage_new,active,kmax
+    return h_new,bulk_new,skin_new,damage_new,age_new,strain_new,tear_new,active,kmax
 
 
 def _adaptive_dt(h,bulk,skin,mask,remaining,cfg):
