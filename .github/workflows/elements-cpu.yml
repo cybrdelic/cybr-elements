@@ -1,0 +1,84 @@
+name: Elements CPU validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/elements-cpu-parallel]
+    paths: ['cpu/**', '.github/workflows/elements-cpu.yml']
+  pull_request:
+    paths: ['cpu/**', '.github/workflows/elements-cpu.yml', 'work/element-motion/**']
+permissions:
+  contents: read
+concurrency:
+  group: elements-cpu-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts-and-gas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CUDA_VISIBLE_DEVICES: ''
+      HIP_VISIBLE_DEVICES: ''
+      OMP_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: CPU dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          python -m pip install -r cpu/requirements.txt
+          python -m pip install 'torch>=2.5,<3' --index-url https://download.pytorch.org/whl/cpu
+      - name: Contract tests
+        run: python -m unittest discover -s cpu/tests -v
+      - name: CPU-only simulation, rendering, encoding and decode
+        run: |
+          python -c 'import torch; assert not torch.cuda.is_available()'
+          python cpu/run.py smoke --elements fire air --frames 144 --threads 2 \
+            --output "$RUNNER_TEMP/elements-cpu-smoke" --restore-inputs --timeout 900
+      - name: Source checkout stayed unchanged
+        run: git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: elements-cpu-gas-diagnostics
+          path: |
+            ${{ runner.temp }}/elements-cpu-smoke/receipt.json
+            ${{ runner.temp }}/elements-cpu-smoke/films/
+            ${{ runner.temp }}/elements-cpu-smoke/logs/
+          if-no-files-found: warn
+  blender-software-backends:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Software rasterizer and CPU dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg xvfb xauth libgl1-mesa-dri libegl1 \
+            libxi6 libxrender1 libxxf86vm1 libxkbcommon0 libsm6
+          python -m pip install numpy scipy Pillow
+      - name: Install adopted Blender 4.5.3 LTS
+        run: |
+          curl --fail --location --retry 3 \
+            https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz \
+            -o "$RUNNER_TEMP/blender.tar.xz"
+          tar -xJf "$RUNNER_TEMP/blender.tar.xz" -C "$RUNNER_TEMP"
+      - name: Render with CPU Cycles and verified CPU Eevee
+        run: |
+          python cpu/run.py probe --elements ice lightning \
+            --output "$RUNNER_TEMP/elements-cpu-backends" --threads 2 --timeout 300 \
+            --blender "$RUNNER_TEMP/blender-4.5.3-linux-x64/blender"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: elements-cpu-backend-probes
+          path: |
+            ${{ runner.temp }}/elements-cpu-backends/receipt.json
+            ${{ runner.temp }}/elements-cpu-backends/*-probe.json
+            ${{ runner.temp }}/elements-cpu-backends/logs/
+          if-no-files-found: warn
