@@ -97,11 +97,11 @@ class Buffers:
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--name", default="flamethrower-reference")
-    p.add_argument("--size", type=int, nargs=3, default=[224, 96, 128], metavar=("X", "Y", "Z"))
+    p.add_argument("--size", type=int, nargs=3, default=[384, 112, 192], metavar=("X", "Y", "Z"))
     p.add_argument("--seconds", type=float, default=4.0)
     p.add_argument("--fps", type=int, default=30)
-    p.add_argument("--substeps", type=int, default=4)
-    p.add_argument("--jet-speed", type=float, default=17.5)
+    p.add_argument("--substeps", type=int, default=5)
+    p.add_argument("--jet-speed", type=float, default=14.5)
     p.add_argument("--fuel", type=float, default=0.96)
     p.add_argument("--target", action=argparse.BooleanOptionalAction, default=True)
     p.add_argument("--pilot", action="store_true", help="Render 1280x720 instead of 1920x1080")
@@ -354,6 +354,14 @@ def inject_and_react(
     t: float,
     dt: float,
 ) -> None:
+    """Inject a fuel-rich cylindrical jet using the accepted sigil-fire chemistry.
+
+    The previous branch diverged too far from the approved CYBR / ELEMENTS fire:
+    it burned too aggressively, retained too much hot soot and then tried to
+    recover shape with screen-space bloom.  This version deliberately returns
+    to the fire-02 reaction/cooling/material constants.  Only the SOURCE geometry
+    and momentum differ: a circular pressurized nozzle replaces the sigil sheet.
+    """
     state = b.state
     fuel, oxygen, temp, soot = [state[0, c] for c in [3, 4, 5, 6]]
     v = state[0, :3]
@@ -364,43 +372,51 @@ def inject_and_react(
     rz = b.z - layout.nozzle_z
     r = torch.sqrt(ry * ry + rz * rz).clamp_min(1e-6)
 
-    # A short rounded source volume just outside the nozzle.  The eighth-power
-    # radial profile gives a pressurized core without a visibly hard cylinder.
-    axial = torch.exp(-((px - 0.035) / 0.070).pow(4))
-    radial = torch.exp(-(r / layout.nozzle_radius).pow(8) * 1.7)
-    source = axial * radial * gate
-    edge_ring = torch.exp(-((r - layout.nozzle_radius * 0.77) / (layout.nozzle_radius * 0.20)).pow(2)) * axial * gate
+    # Short super-Gaussian source volume at the nozzle mouth.  A broad annular
+    # pilot heats the mixing layer while the center stays fuel-rich, giving the
+    # long near-white/yellow core visible in real pressurized flame jets.
+    axial = torch.exp(-((px - 0.035) / 0.075).pow(4))
+    core = torch.exp(-(r / layout.nozzle_radius).pow(8) * 1.50)
+    ring = torch.exp(-((r - layout.nozzle_radius * 0.78) / (layout.nozzle_radius * 0.19)).pow(2))
+    source = axial * core * gate
+    pilot = axial * ring * gate
 
-    inject = (source * dt * (38.0 + a.jet_speed * 1.55)).clamp(0.0, 1.0)
+    inject = (source * dt * (34.0 + a.jet_speed * 1.40)).clamp(0.0, 1.0)
+    pilot_inject = (pilot * dt * 22.0).clamp(0.0, 1.0)
+
     fuel.lerp_(torch.full_like(fuel, a.fuel), inject)
-    # Fuel-rich center, oxygen-rich shear layer.  This naturally moves the
-    # strongest reaction away from a featureless opaque core.
-    oxygen.lerp_(torch.full_like(oxygen, 0.08), inject)
-    temp.lerp_(torch.full_like(temp, 0.62), inject)
-    temp.lerp_(torch.full_like(temp, 1.10), (edge_ring * dt * 20.0).clamp(0, 1))
+    oxygen.mul_(1.0 - inject * 0.92)
+    temp.lerp_(torch.full_like(temp, 0.50), inject)
+    temp.lerp_(torch.full_like(temp, 1.25), pilot_inject)
 
+    # Velocity profile: fast center, slower shear layer, with small resolved
+    # azimuthal perturbations.  The perturbations enter the actual velocity
+    # field; they are not image distortion.
     theta = torch.atan2(rz, ry)
+    radial01 = (r / layout.nozzle_radius).clamp(0, 1.5)
+    profile = (1.0 - 0.26 * radial01.pow(2)).clamp(0.52, 1.0)
+    pump = 1.0 + 0.035 * math.sin(t * 23.0) + 0.018 * math.sin(t * 61.0 + 0.4)
     fine = (
-        0.75 * torch.sin(theta * 5.0 + t * 31.0)
-        + 0.45 * torch.sin(theta * 9.0 - t * 47.0)
-        + 0.30 * torch.cos((ry + rz) * 53.0 + t * 37.0)
+        0.42 * torch.sin(theta * 5.0 + t * 31.0)
+        + 0.28 * torch.sin(theta * 9.0 - t * 47.0)
+        + 0.20 * torch.cos((ry + rz) * 53.0 + t * 37.0)
     )
-    core_speed = a.jet_speed * (0.97 + 0.045 * math.sin(t * 23.0) + 0.020 * math.sin(t * 61.0 + 0.4))
-    v[0].lerp_(torch.full_like(v[0], core_speed) + fine * 0.65, inject)
-    swirl = edge_ring * gate
-    v[1].add_(swirl * (-rz / r) * (2.8 + 0.9 * math.sin(t * 17.0)) * dt * 18.0)
-    v[2].add_(swirl * (ry / r) * (2.8 + 0.9 * math.cos(t * 19.0)) * dt * 18.0)
+    vx = a.jet_speed * pump * profile + fine
+    v[0].lerp_(vx, inject)
 
-    activation = ((temp - 0.18) / 0.24).clamp(0, 1)
-    mixing = (oxygen * (1.0 - oxygen)).sqrt().clamp(0, 0.5) * 2.0
-    rate = 16.0 + 9.0 * mixing
-    burn = torch.minimum(fuel, oxygen * 0.72) * (1.0 - torch.exp(-rate * dt)) * activation
+    shear = pilot
+    swirl_strength = 2.15 + 0.55 * math.sin(t * 17.0)
+    v[1].add_(shear * (-rz / r) * swirl_strength * dt * 15.0)
+    v[2].add_(shear * (ry / r) * swirl_strength * dt * 15.0)
+
+    # Exact chemistry/cooling family from sigil_02_fire_v2.py.
+    activation = ((temp - 0.15) / 0.22).clamp(0, 1)
+    burn = torch.minimum(fuel, oxygen * 0.7) * (1.0 - math.exp(-8.0 * dt)) * activation
     fuel.sub_(burn).clamp_(0, 1.25)
-    oxygen.sub_(burn / 0.72).clamp_(0, 1.0)
-    temp.add_(burn * 6.25).mul_(math.exp(-0.58 * dt)).clamp_(0, 3.3)
-    soot.add_(burn * (0.72 + 0.45 * (1.0 - oxygen))).mul_(math.exp(-0.34 * dt)).clamp_(0, 2.5)
+    oxygen.sub_(burn / 0.7).clamp_(0, 1.0)
+    temp.add_(burn * 5.5).mul_(math.exp(-1.15 * dt)).clamp_(0, 3.0)
+    soot.add_(burn * 0.8).mul_(math.exp(-1.15 * dt)).clamp_(0, 2.5)
     state[0, 7] = burn / dt
-
 
 def apply_forces_and_project(
     b: Buffers,
@@ -416,15 +432,15 @@ def apply_forces_and_project(
 
     # Buoyancy remains subordinate to the source momentum near the nozzle and
     # increasingly bends the downstream envelope upward.
-    v[2].add_((temp * 2.35 - soot * 0.17) * dt)
+    v[2].add_((temp * 3.4 - soot * 0.32) * dt)
 
     # Broadband deterministic forcing in the shear layer.  It is a body force
     # in the simulation; there is no screen-space displacement of the flame.
     downstream = ((b.x - layout.nozzle_x) / 4.8).clamp(0, 1)
-    reactive = (reaction * 0.030 + soot * 0.18).clamp(0, 1)
+    reactive = (reaction * 0.012 + soot * 0.055).clamp(0, 1)
     turbulence = reactive * downstream
-    v[1].add_(turbulence * torch.sin(b.x * 8.7 + b.z * 12.1 + b.y * 19.0) * (0.95 * dt))
-    v[2].add_(turbulence * torch.cos(b.x * 10.9 - b.z * 9.3 + b.y * 17.0) * (0.80 * dt))
+    v[1].add_(turbulence * torch.sin(b.x * 8.7 + b.z * 12.1 + b.y * 19.0) * (0.35 * dt))
+    v[2].add_(turbulence * torch.cos(b.x * 10.9 - b.z * 9.3 + b.y * 17.0) * (0.30 * dt))
 
     if a.target:
         q = b.impact_zone
@@ -452,7 +468,7 @@ def apply_forces_and_project(
         derivative(mag, 0, b.h[2]),
     ])
     grad /= torch.linalg.vector_norm(grad, dim=0).clamp_min(1e-6)
-    v.add_(torch.linalg.cross(grad, omega, dim=0) * (0.17 * dt))
+    v.add_(torch.linalg.cross(grad, omega, dim=0) * (0.12 * dt))
 
     # Absorbing outer shell.  The inlet itself is kept away from the left-edge
     # sponge so its momentum is not artificially attenuated.
@@ -470,7 +486,7 @@ def apply_forces_and_project(
 
     # Tiny physical/numerical viscosity damps grid-scale ringing without
     # erasing the resolved turbulent structures.
-    spectral *= torch.exp(-b.k2 * (0.000030 * dt))
+    spectral *= torch.exp(-b.k2 * (0.000025 * dt))
     v.copy_(torch.fft.irfftn(spectral, s=state.shape[-3:], dim=(-3, -2, -1)))
 
     if a.target:
@@ -520,33 +536,38 @@ def simulation_step(
 
 
 def flame_radiance(b: Buffers) -> Tuple[torch.Tensor, torch.Tensor]:
+    """Fire-02 material response, intentionally kept in parity with the sigil.
+
+    This is the accepted CYBR / ELEMENTS temperature -> hue, reaction -> emission
+    and soot -> extinction/scattering mapping.  Keeping this exact is important:
+    the earlier flamethrower preview looked waxy/yellow because it introduced a
+    separate blackbody approximation and excessive hot-soot emission.
+    """
     temp = b.state[0, 5]
     soot = b.state[0, 6]
-    reaction = b.state[0, 7].clamp_min(0)
+    reaction = b.state[0, 7]
 
-    hot = ((temp - 0.20) / 2.55).clamp(0, 1)
-    # Approximate blackbody progression: red -> orange -> yellow -> near-white.
-    red = torch.ones_like(hot)
-    green = (0.07 + 0.93 * hot.pow(0.72)).clamp(0, 1)
-    blue = (0.015 + 0.72 * ((hot - 0.42) / 0.58).clamp(0, 1).pow(1.55)).clamp(0, 1)
-    color = torch.stack([red, green, blue], dim=-1)
+    hot = ((temp - 0.28) / 1.8).clamp(0, 1)
+    sigma = (soot * 4.4 + reaction * 0.025).clamp(0, 16)
+    tau = torch.flip(torch.cumsum(torch.flip(soot, dims=[0]), dim=0), dims=[0]) * b.h[2] * 4.4
+    key = torch.exp(-tau)
 
-    # Reaction fronts are luminous; cool soot is primarily absorptive/scattering.
-    front = reaction.pow(0.82)
-    hot_soot = soot * hot.pow(3.2)
-    emission = color * (front * 1.55 + hot_soot * 1.30)[..., None]
-
-    sigma = (soot * 5.8 + reaction * 0.020).clamp(0, 20)
-
-    # Soft key light through the volume.  This affects smoke visibility rather
-    # than substituting a fake glow texture for the flame.
-    tau_top = torch.flip(torch.cumsum(torch.flip(soot, dims=[0]), dim=0), dims=[0]) * b.h[2] * 3.6
-    key = torch.exp(-tau_top)
-    ambient = torch.tensor([0.018, 0.020, 0.024], device=temp.device)
-    warm = torch.tensor([0.70, 0.20, 0.035], device=temp.device)
-    scattering = soot[..., None] * (ambient + key[..., None] * warm * hot[..., None].pow(1.4)) * 0.18
-    return emission + scattering, sigma
-
+    colors = torch.stack(
+        [
+            torch.ones_like(hot),
+            0.035 + 0.93 * hot.pow(1.3),
+            0.002 + 0.72 * hot.pow(3.0),
+        ],
+        dim=-1,
+    )
+    front = reaction.clamp_min(0).pow(0.95)
+    emission = colors * (front * 6.5)[..., None]
+    light = (
+        torch.tensor([0.020, 0.019, 0.025], device=temp.device)
+        + key[..., None] * torch.tensor([1.4, 1.10, 0.85], device=temp.device)
+    )
+    rgb = emission + soot[..., None] * 4.4 * 0.42 * light / (4.0 * math.pi)
+    return rgb, sigma
 
 def integrate_volume(b: Buffers) -> Tuple[torch.Tensor, torch.Tensor]:
     rgb, sigma = flame_radiance(b)
@@ -605,25 +626,18 @@ def resize_volume_to_viewport(
 
 
 def tone_map_and_encode(linear: torch.Tensor, frame: int) -> np.ndarray:
-    # Multi-scale optical bloom kept restrained to preserve flame detail.
-    lum = (linear[:, 0:1] * 0.2126 + linear[:, 1:2] * 0.7152 + linear[:, 2:3] * 0.0722)
-    bright = (linear - 0.35).clamp_min(0.0)
-    bloom = separable_box_blur(bright, 5) * 0.055 + separable_box_blur(bright, 18) * 0.028
-    linear = linear + bloom
-
-    # Deterministic sub-LSB dither prevents dark-gradient banding without adding
-    # visible film grain.  It changes only quantization, not flame structure.
-    _, _, h, w = linear.shape
-    yy = torch.arange(h, device=linear.device, dtype=linear.dtype)[:, None]
-    xx = torch.arange(w, device=linear.device, dtype=linear.dtype)[None, :]
-    noise = torch.frac(torch.sin(xx * 12.9898 + yy * 78.233 + frame * 0.9187) * 43758.5453) - 0.5
-    linear = (linear + noise[None, None] / 4096.0).clamp_min(0)
-
-    # ACES-like fit and sRGB transfer.
+    """Use the same restrained optical glow and transfer as the accepted fire-02."""
+    # Match sigil_02_fire_v2.py: a single 21 px separable optical glow in linear
+    # light, then the same exposure scale and ACES-like transfer.  No synthetic
+    # multi-scale halo and no screen-space flame shaping.
+    blur = F.avg_pool2d(
+        F.avg_pool2d(linear, (1, 21), stride=1, padding=(0, 10)),
+        (21, 1), stride=1, padding=(10, 0)
+    )
+    linear = (linear + blur * 0.018) * 0.72
     mapped = ((linear * (2.51 * linear + 0.03)) / (linear * (2.43 * linear + 0.59) + 0.14)).clamp(0, 1)
     srgb = torch.where(mapped <= 0.0031308, mapped * 12.92, 1.055 * mapped.pow(1.0 / 2.4) - 0.055)
-    return (srgb[0].permute(1, 2, 0) * 255.0).round().byte().cpu().numpy()
-
+    return (srgb[0].permute(1, 2, 0) * 255.0).byte().cpu().numpy()
 
 def render_frame(
     b: Buffers,
