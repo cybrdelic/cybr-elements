@@ -418,7 +418,7 @@ def main():
     old=o_interior.data;o_interior.data=ime;bpy.data.meshes.remove(old)
    ime.materials.append(molten_material)
    for poly in ime.polygons:poly.use_smooth=True
-   bulk_temp=np.asarray(data['bulkTemperature'],np.float64)
+   bulk_temp=np.asarray(data['bulkTemperature'],np.float64) if 'bulkTemperature' in data else np.asarray(data['temperature'],np.float64)
    interior_tear=np.asarray(data['tearOpen'],np.float64) if 'tearOpen' in data else np.zeros(len(bulk_temp))
    bulk_controls=material_controls(bulk_temp,np.zeros_like(bulk_temp))
    add_float_attribute(ime,'bulkTemperature',bulk_temp)
@@ -427,8 +427,10 @@ def main():
    add_vector_attribute(ime,'materialCoordinates',data['rest'])
 
    # Finite crust raft shell. Empty at the earliest fully molten frames.
-   cverts=np.asarray(data['crustVertices'],np.float64)
-   cfaces=np.asarray(data['crustFaces'],np.int32)
+   if 'crustVertices' in data:
+    cverts=np.asarray(data['crustVertices'],np.float64);cfaces=np.asarray(data['crustFaces'],np.int32)
+   else:
+    cverts=np.asarray(data['vertices'],np.float64);cfaces=np.asarray(data['faces'],np.int32)
    cme=bpy.data.meshes.new(f'crust shell {f:04d}')
    cme.from_pydata(cverts.tolist(),[],cfaces.tolist());cme.update()
    if o_crust is None:
@@ -439,13 +441,13 @@ def main():
    for poly in cme.polygons:poly.use_smooth=True
 
    if len(cverts):
-    temp=np.asarray(data['crustTemperature'],np.float64)
-    damage=np.asarray(data['crustDamage'],np.float64)
-    crust_bulk=np.asarray(data['crustBulkTemperature'],np.float64)
-    surface_age=np.asarray(data['crustSurfaceAge'],np.float64)
-    strain_history=np.asarray(data['crustStrainHistory'],np.float64)
-    tear_open=np.asarray(data['crustTearOpen'],np.float64)
-    crust_thickness=np.asarray(data['crustThickness'],np.float64)
+    temp=np.asarray(data['crustTemperature'],np.float64) if 'crustTemperature' in data else np.asarray(data['temperature'],np.float64)
+    damage=np.asarray(data['crustDamage'],np.float64) if 'crustDamage' in data else np.asarray(data['damage'],np.float64)
+    crust_bulk=np.asarray(data['crustBulkTemperature'],np.float64) if 'crustBulkTemperature' in data else bulk_temp.copy()
+    surface_age=np.asarray(data['crustSurfaceAge'],np.float64) if 'crustSurfaceAge' in data else np.zeros_like(temp)
+    strain_history=np.asarray(data['crustStrainHistory'],np.float64) if 'crustStrainHistory' in data else np.zeros_like(temp)
+    tear_open=np.asarray(data['crustTearOpen'],np.float64) if 'crustTearOpen' in data else np.zeros_like(temp)
+    crust_thickness=np.asarray(data['crustThickness'],np.float64) if 'crustThickness' in data else np.zeros_like(temp)
     controls=material_controls(temp,damage)
     crust_bulk_controls=material_controls(crust_bulk,np.zeros_like(damage))
     add_float_attribute(cme,'temperature',temp)
@@ -463,7 +465,7 @@ def main():
     add_float_attribute(cme,'meltAmount',controls['melt'])
     add_float_attribute(cme,'roughnessBase',controls['roughness'])
     add_float_attribute(cme,'coatWeight',controls['coat'])
-    add_vector_attribute(cme,'materialCoordinates',data['crustRest'])
+    add_vector_attribute(cme,'materialCoordinates',data['crustRest'] if 'crustRest' in data else data['rest'])
     add_color_attribute(cme,'baseColor',controls['baseColor'])
     add_color_attribute(cme,'thermalRadiance',controls['thermalRadiance'])
     add_color_attribute(cme,'thermalColor',controls['thermalColor'])
