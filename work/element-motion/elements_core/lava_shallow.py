@@ -82,6 +82,19 @@ class ShallowLavaConfig:
     wall_bulk_cooling_rate: float = .045
     surface_emissivity: float = .90
 
+    # Explicit crust mechanics: surface age is advected with the flow, cooling
+    # grows finite crust thickness, and strain can tear that crust open over
+    # the still-hot interior.
+    crust_thermal_diffusivity: float = 8.0e-7
+    crust_max_thickness: float = .0055
+    crust_maturity_time: float = .75
+    strain_memory_time: float = 2.8
+    tear_strain_threshold: float = .55
+    tear_growth_rate: float = 1.35
+    tear_heal_rate: float = .70
+    tear_cooling_gain: float = .28
+    tear_sag: float = .00125
+
     rope_wavelength: float = .019
     rope_amplitude: float = .00185
     billow_wavelength: float = .070
@@ -125,6 +138,10 @@ class ShallowLavaConfig:
             raise ValueError("jet tessellation too small")
         if self.rope_wavelength <= 0 or self.billow_wavelength <= 0 or self.rope_amplitude < 0 or self.billow_amplitude < 0:
             raise ValueError("invalid pahoehoe surface scales")
+        if self.crust_thermal_diffusivity <= 0 or self.crust_max_thickness <= 0 or self.crust_maturity_time <= 0:
+            raise ValueError("invalid crust growth controls")
+        if self.strain_memory_time <= 0 or self.tear_strain_threshold < 0 or self.tear_growth_rate < 0 or self.tear_heal_rate < 0:
+            raise ValueError("invalid crust tear controls")
 
     @property
     def dx(self):
