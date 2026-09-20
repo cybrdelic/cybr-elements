@@ -377,7 +377,7 @@ def _redistribute_overflow_payloads(h,labels,limit,payloads,sweeps=4):
     for sweep in range(max(1,int(sweeps))):
         excess=np.maximum(h-limit,0.)
         if float(excess.sum())<=1e-14:break
-        frac_excess=np.where(h>1e-12,excess/h,0.)
+        frac_excess=np.divide(excess,h,out=np.zeros_like(h),where=h>1e-12)
         excess_p=p*frac_excess[None,:,:]
         h-=excess;p-=excess_p
 
@@ -414,7 +414,7 @@ def _redistribute_overflow_payloads(h,labels,limit,payloads,sweeps=4):
             else:
                 h[:-1,:]+=send[1:,:];p[:,:-1,:]+=send_p[:,1:,:]
         residual=np.maximum(excess-moved,0.)
-        ratio=np.where(excess>1e-14,residual/excess,0.)
+        ratio=np.divide(residual,excess,out=np.zeros_like(h),where=excess>1e-14)
         h+=residual;p+=excess_p*ratio[None,:,:]
 
     for component in np.unique(labels):
@@ -423,7 +423,7 @@ def _redistribute_overflow_payloads(h,labels,limit,payloads,sweeps=4):
         hr=h[region];excess=np.maximum(hr-limit,0.);amount=float(excess.sum())
         if amount<=1e-14:continue
         pr=p[:,region]
-        fraction=np.where(hr>1e-12,excess/hr,0.)
+        fraction=np.divide(excess,hr,out=np.zeros_like(hr),where=hr>1e-12)
         excess_p=np.sum(pr*fraction[None,:],axis=1)
         hr=np.minimum(hr,limit);pr-=pr*fraction[None,:]
         capacity=np.maximum(limit-hr,0.);cap=float(capacity.sum())
