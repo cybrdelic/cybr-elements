@@ -343,6 +343,104 @@ def _face_fluxes(h,bulk,skin,mask,dx,dy,cfg,impact=None):
     return qx,qy,float(max(kx.max(initial=0.),ky.max(initial=0.)))
 
 
+def _cell_velocity_and_strain(qx,qy,h,dx,dy):
+    """Recover cell velocity and an invariant depth-averaged strain-rate proxy."""
+    u=np.zeros_like(h,np.float64);v=np.zeros_like(h,np.float64)
+    if qx.shape[1]:
+        u[:,0]=qx[:,0];u[:,-1]=qx[:,-1]
+        if h.shape[1]>2:u[:,1:-1]=.5*(qx[:,:-1]+qx[:,1:])
+    if qy.shape[0]:
+        v[0,:]=qy[0,:];v[-1,:]=qy[-1,:]
+        if h.shape[0]>2:v[1:-1,:]=.5*(qy[:-1,:]+qy[1:,:])
+    depth=np.maximum(h,1e-5)
+    u/=depth;v/=depth
+    du_dx=np.gradient(u,dx,axis=1);du_dy=np.gradient(u,dy,axis=0)
+    dv_dx=np.gradient(v,dx,axis=1);dv_dy=np.gradient(v,dy,axis=0)
+    shear=.5*(du_dy+dv_dx)
+    strain=np.sqrt(du_dx*du_dx+dv_dy*dv_dy+2.*shear*shear)
+    return u,v,np.nan_to_num(strain,nan=0.,posinf=0.,neginf=0.)
+
+
+def _advect_scalar_mass(h,scalar,qx,qy,dx,dy,dt):
+    fx,fy=_advected_scalar_flux(qx,qy,scalar)
+    return h*scalar+dt*_divergence(fx,fy,dx,dy,h.shape)
+
+
+def _redistribute_overflow_payloads(h,labels,limit,payloads,sweeps=4):
+    """Move overflow and all conserved payloads through the same spill path."""
+    h=np.asarray(h,np.float64).copy()
+    p=np.asarray(payloads,np.float64).copy()
+    if p.ndim!=3 or p.shape[1:]!=h.shape:
+        raise ValueError("payload stack must have shape (channels, ny, nx)")
+    directions=((0,1),(0,-1),(1,0),(-1,0))
+
+    for sweep in range(max(1,int(sweeps))):
+        excess=np.maximum(h-limit,0.)
+        if float(excess.sum())<=1e-14:break
+        frac_excess=np.where(h>1e-12,excess/h,0.)
+        excess_p=p*frac_excess[None,:,:]
+        h-=excess;p-=excess_p
+
+        capacities=[]
+        for dy,dx in directions:
+            cap=np.zeros_like(h)
+            if dy==0 and dx==1:
+                valid=(labels[:,:-1]>0)&(labels[:,:-1]==labels[:,1:])
+                cap[:,:-1]=np.where(valid,np.maximum(limit-h[:,1:],0.),0.)
+            elif dy==0 and dx==-1:
+                valid=(labels[:,1:]>0)&(labels[:,1:]==labels[:,:-1])
+                cap[:,1:]=np.where(valid,np.maximum(limit-h[:,:-1],0.),0.)
+            elif dy==1:
+                valid=(labels[:-1,:]>0)&(labels[:-1,:]==labels[1:,:])
+                cap[:-1,:]=np.where(valid,np.maximum(limit-h[1:,:],0.),0.)
+            else:
+                valid=(labels[1:,:]>0)&(labels[1:,:]==labels[:-1,:])
+                cap[1:,:]=np.where(valid,np.maximum(limit-h[:-1,:],0.),0.)
+            capacities.append(cap)
+        total_cap=np.maximum(sum(capacities),1e-30)
+        moved=np.zeros_like(h);moved_p=np.zeros_like(p)
+        order=range(4) if sweep%2==0 else range(3,-1,-1)
+        for k in order:
+            dy,dx=directions[k]
+            frac=np.where(total_cap>1e-29,capacities[k]/total_cap,0.)
+            send=excess*frac;send_p=excess_p*frac[None,:,:]
+            moved+=send;moved_p+=send_p
+            if dy==0 and dx==1:
+                h[:,1:]+=send[:,:-1];p[:,:,1:]+=send_p[:,:,:-1]
+            elif dy==0 and dx==-1:
+                h[:,:-1]+=send[:,1:];p[:,:,:-1]+=send_p[:,:,1:]
+            elif dy==1:
+                h[1:,:]+=send[:-1,:];p[:,1:,:]+=send_p[:,:-1,:]
+            else:
+                h[:-1,:]+=send[1:,:];p[:,:-1,:]+=send_p[:,1:,:]
+        residual=np.maximum(excess-moved,0.)
+        ratio=np.where(excess>1e-14,residual/excess,0.)
+        h+=residual;p+=excess_p*ratio[None,:,:]
+
+    for component in np.unique(labels):
+        if component<=0:continue
+        region=labels==component
+        hr=h[region];excess=np.maximum(hr-limit,0.);amount=float(excess.sum())
+        if amount<=1e-14:continue
+        pr=p[:,region]
+        fraction=np.where(hr>1e-12,excess/hr,0.)
+        excess_p=np.sum(pr*fraction[None,:],axis=1)
+        hr=np.minimum(hr,limit);pr-=pr*fraction[None,:]
+        capacity=np.maximum(limit-hr,0.);cap=float(capacity.sum())
+        moved=min(amount,cap)
+        if moved>0:
+            add=capacity*(moved/max(cap,1e-30))
+            hr+=add
+            pr+=add[None,:]*(excess_p/max(amount,1e-30))[:,None]
+        residual=amount-moved
+        if residual>1e-14:
+            k=int(np.argmax(capacity)) if len(capacity) else 0
+            hr[k]+=residual
+            pr[:,k]+=excess_p*(residual/max(amount,1e-30))
+        h[region]=hr;p[:,region]=pr
+    return h,p
+
+
 def _divergence(qx,qy,dx,dy,shape):
     out=np.zeros(shape,np.float64)
     out[:,:-1]-=qx/dx
