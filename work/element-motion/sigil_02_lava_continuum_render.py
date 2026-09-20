@@ -72,6 +72,10 @@ def build_lava_material():
  rest=attribute(nodes,'materialCoordinates')
  fracture=attribute(nodes,'fracturePotential')
  crust=attribute(nodes,'crustAmount')
+ surface_age=attribute(nodes,'surfaceAge')
+ strain_history=attribute(nodes,'strainHistory')
+ tear_open=attribute(nodes,'tearOpen')
+ crust_thickness=attribute(nodes,'crustThickness')
  relief=attribute(nodes,'reliefAmount')
  obsidian=attribute(nodes,'obsidianAmount')
  melt=attribute(nodes,'meltAmount')
@@ -105,7 +109,7 @@ def build_lava_material():
  emission_chroma=nodes.new('ShaderNodeMixRGB');emission_chroma.blend_type='MIX';emission_chroma.label='surface versus exposed interior chroma'
  links.new(skin_color.outputs['Color'],emission_chroma.inputs[1])
  links.new(bulk_color.outputs['Color'],emission_chroma.inputs[2])
- links.new(fracture.outputs['Fac'],emission_chroma.inputs['Fac'])
+ links.new(tear_open.outputs['Fac'],emission_chroma.inputs['Fac'])
  links.new(emission_chroma.outputs['Color'],p.inputs['Emission Color'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='advected crust macrostructure'
@@ -124,8 +128,12 @@ def build_lava_material():
  edge.inputs['From Min'].default_value=.010;edge.inputs['From Max'].default_value=.052
  edge.inputs['To Min'].default_value=1.;edge.inputs['To Max'].default_value=0.
  links.new(cells.outputs['Distance'],edge.inputs['Value'])
- fracture_edge=math_node(nodes,'MULTIPLY',label='resolved damage × sub-grid edge')
- links.new(fracture.outputs['Fac'],fracture_edge.inputs[0]);links.new(edge.outputs['Result'],fracture_edge.inputs[1])
+ tear_edge=math_node(nodes,'MULTIPLY',label='resolved tear openness × sub-grid edge shape')
+ links.new(tear_open.outputs['Fac'],tear_edge.inputs[0]);links.new(edge.outputs['Result'],tear_edge.inputs[1])
+ fracture_edge=math_node(nodes,'MAXIMUM',label='resolved tear plus residual damage')
+ links.new(tear_edge.outputs[0],fracture_edge.inputs[0])
+ damage_residual=math_node(nodes,'MULTIPLY',b=.18,label='minor damage-only breakup')
+ links.new(fracture.outputs['Fac'],damage_residual.inputs[0]);links.new(damage_residual.outputs[0],fracture_edge.inputs[1])
 
  # Real pāhoehoe is mostly an opaque skin over a hotter interior.  Exposed
  # surface melt uses the skin thermal state; damage-gated tears reveal bulk
@@ -138,8 +146,20 @@ def build_lava_material():
  skin_shape.inputs['From Min'].default_value=.42;skin_shape.inputs['From Max'].default_value=.58
  skin_shape.inputs['To Min'].default_value=0.;skin_shape.inputs['To Max'].default_value=1.
  links.new(skin_noise.outputs['Fac'],skin_shape.inputs['Value'])
- crust_gain=math_node(nodes,'MULTIPLY',b=3.7,label='resolved crust coverage gain')
- links.new(crust.outputs['Fac'],crust_gain.inputs[0])
+ thickness_cov=nodes.new('ShaderNodeMapRange');thickness_cov.clamp=True;thickness_cov.interpolation_type='SMOOTHERSTEP';thickness_cov.label='finite crust thickness coverage'
+ thickness_cov.inputs['From Min'].default_value=.00015;thickness_cov.inputs['From Max'].default_value=.0045
+ thickness_cov.inputs['To Min'].default_value=0.;thickness_cov.inputs['To Max'].default_value=1.
+ links.new(crust_thickness.outputs['Fac'],thickness_cov.inputs['Value'])
+ age_cov=nodes.new('ShaderNodeMapRange');age_cov.clamp=True;age_cov.interpolation_type='SMOOTHERSTEP';age_cov.label='surface maturity'
+ age_cov.inputs['From Min'].default_value=.08;age_cov.inputs['From Max'].default_value=.85
+ age_cov.inputs['To Min'].default_value=0.;age_cov.inputs['To Max'].default_value=1.
+ links.new(surface_age.outputs['Fac'],age_cov.inputs['Value'])
+ physical_skin=math_node(nodes,'MULTIPLY',label='phase × finite thickness')
+ links.new(crust.outputs['Fac'],physical_skin.inputs[0]);links.new(thickness_cov.outputs['Result'],physical_skin.inputs[1])
+ mature_skin=math_node(nodes,'MULTIPLY',label='finite crust × maturity')
+ links.new(physical_skin.outputs[0],mature_skin.inputs[0]);links.new(age_cov.outputs['Result'],mature_skin.inputs[1])
+ crust_gain=math_node(nodes,'MULTIPLY',b=4.2,label='resolved crust coverage gain')
+ links.new(mature_skin.outputs[0],crust_gain.inputs[0])
  skin_raw=math_node(nodes,'MULTIPLY',label='resolved crust × island distribution')
  links.new(crust_gain.outputs[0],skin_raw.inputs[0]);links.new(skin_shape.outputs['Result'],skin_raw.inputs[1])
  skin_clamp=nodes.new('ShaderNodeClamp');skin_clamp.inputs['Min'].default_value=0.;skin_clamp.inputs['Max'].default_value=1.
@@ -154,7 +174,7 @@ def build_lava_material():
  surface_emit=math_node(nodes,'MULTIPLY',label='surface Planck strength')
  links.new(thermal_strength.outputs['Fac'],surface_emit.inputs[0]);links.new(exposed_melt.outputs[0],surface_emit.inputs[1])
 
- fissure_weight=math_node(nodes,'MULTIPLY',b=1.65,label='hot interior visible through tears')
+ fissure_weight=math_node(nodes,'MULTIPLY',b=2.30,label='hot interior visible through resolved tears')
  links.new(fracture_edge.outputs[0],fissure_weight.inputs[0])
  fissure_emit=math_node(nodes,'MULTIPLY',label='bulk Planck strength through fissures')
  links.new(bulk_thermal_strength.outputs['Fac'],fissure_emit.inputs[0]);links.new(fissure_weight.outputs[0],fissure_emit.inputs[1])
@@ -198,9 +218,9 @@ def build_lava_material():
  ripple_strength=math_node(nodes,'MULTIPLY',a=.10,label='melt ripple strength');links.new(melt.outputs['Fac'],ripple_strength.inputs[1]);links.new(ripple_strength.outputs[0],ripple_bump.inputs['Strength'])
  links.new(ripple.outputs['Fac'],ripple_bump.inputs['Height'])
 
- macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin relief';macro_bump.inputs['Strength'].default_value=.24;macro_bump.inputs['Distance'].default_value=.0022
+ macro_bump=nodes.new('ShaderNodeBump');macro_bump.label='cooled skin residual relief';macro_bump.inputs['Strength'].default_value=.13;macro_bump.inputs['Distance'].default_value=.0012
  links.new(macro.outputs['Fac'],macro_bump.inputs['Height']);links.new(ripple_bump.outputs['Normal'],macro_bump.inputs['Normal'])
- macro_strength=math_node(nodes,'MULTIPLY',a=.38,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
+ macro_strength=math_node(nodes,'MULTIPLY',a=.24,label='phase relief weight');links.new(relief.outputs['Fac'],macro_strength.inputs[1]);links.new(macro_strength.outputs[0],macro_bump.inputs['Strength'])
  micro_bump=nodes.new('ShaderNodeBump');micro_bump.label='grain-scale relief';micro_bump.inputs['Distance'].default_value=.00048
  micro_bump_strength=math_node(nodes,'MULTIPLY',a=.16,label='crust-gated grain relief');links.new(relief.outputs['Fac'],micro_bump_strength.inputs[1]);links.new(micro_bump_strength.outputs[0],micro_bump.inputs['Strength'])
  links.new(micro.outputs['Fac'],micro_bump.inputs['Height']);links.new(macro_bump.outputs['Normal'],micro_bump.inputs['Normal'])
@@ -214,7 +234,7 @@ def build_lava_material():
  pit_gate=math_node(nodes,'MULTIPLY',label='phase-gated vesicles');links.new(relief.outputs['Fac'],pit_gate.inputs[0]);links.new(pit.outputs['Result'],pit_gate.inputs[1])
  pit_bump=nodes.new('ShaderNodeBump');pit_bump.label='quenched vesicle depressions';pit_bump.invert=True;pit_bump.inputs['Strength'].default_value=.38;pit_bump.inputs['Distance'].default_value=.00105
  links.new(pit_gate.outputs[0],pit_bump.inputs['Height']);links.new(micro_bump.outputs['Normal'],pit_bump.inputs['Normal'])
- fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='damage-gated crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.46;fissure_bump.inputs['Distance'].default_value=.00085
+ fissure_bump=nodes.new('ShaderNodeBump');fissure_bump.label='resolved tear crease';fissure_bump.invert=True;fissure_bump.inputs['Strength'].default_value=.72;fissure_bump.inputs['Distance'].default_value=.00115
  links.new(fracture_edge.outputs[0],fissure_bump.inputs['Height']);links.new(pit_bump.outputs['Normal'],fissure_bump.inputs['Normal']);links.new(fissure_bump.outputs['Normal'],p.inputs['Normal'])
  crack_coat=math_node(nodes,'MULTIPLY',a=-.82,label='coat loss in fissures');links.new(fracture_edge.outputs[0],crack_coat.inputs[1])
  coat_keep=math_node(nodes,'ADD',a=1.,label='fissure coat mask');links.new(crack_coat.outputs[0],coat_keep.inputs[1])
@@ -332,8 +352,8 @@ def main():
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
   'floor':floor_height,'exposure':a.exposure,'view':view,'formationMode':formation_mode,'formation':formation,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
-  'material':'separate resolved skin/bulk thermal states + camera-calibrated incandescent chroma + Planck-derived strength + transported-coordinate pahoehoe crust relief',
-  'subgridDisclosure':'noise/voronoi are BSDF microstructure anchored to material coordinates; damage gates crease relief; no resolved crack geometry is claimed'}
+  'material':'resolved skin/bulk temperatures + advected crust age/thickness + strain-driven tear openness + flow-aligned pahoehoe geometry + calibrated incandescent interior',
+  'subgridDisclosure':'large-scale ropes are mesh geometry; scalar tear openness is resolved by the shallow solver; Voronoi only shapes sub-grid tear edges and vesicle detail'}
  render_inputs={'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'}
  if formation_mode=='pour':
   render_inputs['moldSource']=a.source
@@ -357,12 +377,20 @@ def main():
    for poly in me.polygons:poly.use_smooth=True
    temp=np.asarray(data['temperature'],np.float64);damage=np.asarray(data['damage'],np.float64)
    bulk_temp=np.asarray(data['bulkTemperature'],np.float64) if 'bulkTemperature' in data else temp.copy()
+   surface_age=np.asarray(data['surfaceAge'],np.float64) if 'surfaceAge' in data else np.zeros_like(temp)
+   strain_history=np.asarray(data['strainHistory'],np.float64) if 'strainHistory' in data else np.zeros_like(temp)
+   tear_open=np.asarray(data['tearOpen'],np.float64) if 'tearOpen' in data else np.zeros_like(temp)
+   crust_thickness=np.asarray(data['crustThickness'],np.float64) if 'crustThickness' in data else np.zeros_like(temp)
    controls=material_controls(temp,damage)
    bulk_controls=material_controls(bulk_temp,np.zeros_like(damage))
    add_float_attribute(me,'temperature',temp)
    add_float_attribute(me,'bulkTemperature',bulk_temp)
    add_float_attribute(me,'bulkThermalStrength',bulk_controls['thermalStrength'])
    add_float_attribute(me,'damage',damage)
+   add_float_attribute(me,'surfaceAge',surface_age)
+   add_float_attribute(me,'strainHistory',strain_history)
+   add_float_attribute(me,'tearOpen',tear_open)
+   add_float_attribute(me,'crustThickness',crust_thickness)
    add_float_attribute(me,'crustAmount',controls['crust'])
    add_float_attribute(me,'fracturePotential',controls['fracture'])
    add_float_attribute(me,'reliefAmount',controls['relief'])
@@ -386,6 +414,10 @@ def main():
        'temperatureMinK':float(temp.min()),'temperatureMaxK':float(temp.max()),
        'bulkTemperatureMinK':float(bulk_temp.min()),'bulkTemperatureMaxK':float(bulk_temp.max()),
        'crustMean':float(controls['crust'].mean()),
+       'surfaceAgeMeanSeconds':float(surface_age.mean()),
+       'strainHistoryMean':float(strain_history.mean()),
+       'tearOpenMean':float(tear_open.mean()),'tearOpenMax':float(tear_open.max()),
+       'crustThicknessMeanM':float(crust_thickness.mean()),
        'fracturePotentialMean':float(controls['fracture'].mean()),
        'obsidianMean':float(controls['obsidian'].mean()),
        'reliefMean':float(controls['relief'].mean()),
