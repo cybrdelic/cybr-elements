@@ -24,7 +24,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 import math
 import numpy as np
-from scipy.ndimage import label
+from scipy.ndimage import gaussian_filter, label
 
 from .lava_formation import PourFormationConfig, _bilinear, _source_coords
 
@@ -93,13 +93,17 @@ class ShallowLavaConfig:
     tear_growth_rate: float = 1.35
     tear_heal_rate: float = .70
     tear_cooling_gain: float = .28
-    tear_sag: float = .00125
+    tear_sag: float = .00065
 
     # Sub-grid free-surface closure for the exposed molten layer.
-    melt_wave_wavelength: float = .024
-    melt_wave_amplitude: float = .00105
-    melt_wave_speed: float = .035
-    breakout_dome_amplitude: float = .00155
+    melt_wave_wavelength: float = .060
+    melt_wave_amplitude: float = .00032
+    melt_wave_speed: float = .014
+    breakout_dome_amplitude: float = .00110
+    breakout_threshold: float = .38
+    plate_smoothing_sigma_cells: float = 2.4
+    plate_coverage_threshold: float = .28
+    plate_tear_threshold: float = .62
 
     rope_wavelength: float = .019
     rope_amplitude: float = .00185
@@ -148,6 +152,10 @@ class ShallowLavaConfig:
             raise ValueError("invalid crust growth controls")
         if self.strain_memory_time <= 0 or self.tear_strain_threshold < 0 or self.tear_growth_rate < 0 or self.tear_heal_rate < 0:
             raise ValueError("invalid crust tear controls")
+        if not 0 <= self.breakout_threshold < 1 or self.plate_smoothing_sigma_cells <= 0:
+            raise ValueError("invalid breakout/plate controls")
+        if not 0 < self.plate_coverage_threshold < 1 or not 0 < self.plate_tear_threshold <= 1:
+            raise ValueError("invalid plate thresholds")
         if self.melt_wave_wavelength <= 0 or self.melt_wave_amplitude < 0 or self.melt_wave_speed < 0 or self.breakout_dome_amplitude < 0:
             raise ValueError("invalid molten free-surface closure")
 
@@ -815,7 +823,13 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
     thickness=np.minimum(
         cfg.crust_max_thickness,
         2.*np.sqrt(cfg.crust_thermal_diffusivity*np.maximum(node_age,0.))*crust_phase)
-    shell_coverage=np.clip(maturity*crust_phase*(1.-.24*np.clip(node_tear,0.,1.)),0.,1.)
+    # Broad plate field: mature crust is spatially coherent, while resolved
+    # tears remove coverage.  Smoothing happens on the solver grid, not in the
+    # shader, so the shell topology becomes large plates instead of zebra bands.
+    plate_field=maturity*crust_phase*(1.-.85*np.clip(node_tear,0.,1.))
+    plate_field=gaussian_filter(
+        plate_field,sigma=cfg.plate_smoothing_sigma_cells,mode="nearest")
+    plate_field=np.clip(plate_field,0.,1.)*valid
 
     interior_pos=np.zeros((ny+1,nx+1,3),np.float64)
     shell_pos=np.zeros_like(interior_pos)
@@ -837,13 +851,17 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
             along=x*tx+y*ty
             cross=-x*ty+y*tx
 
-            breakout=tear_v*mature+.18*(1.-mature)*(1.-crust_v)
+            breakout_raw=np.clip(
+                .95*tear_v*mature+.20*(1.-mature)*(1.-crust_v),0.,1.)
+            breakout=float(_smoothstep(np.array([
+                np.clip((breakout_raw-cfg.breakout_threshold)/
+                        max(1.-cfg.breakout_threshold,1e-8),0.,1.)]))[0])
             melt_v=float(_phase_fraction(np.array([node_bulk[iy,ix]]),cfg)[0])
             wave_phase=2.*math.pi*(along/cfg.melt_wave_wavelength-cfg.melt_wave_speed*t/cfg.melt_wave_wavelength)
-            wave_phase+=.45*math.sin(2.*math.pi*cross/(cfg.melt_wave_wavelength*2.6))
-            wave=cfg.melt_wave_amplitude*melt_v*(.35+.65*min(1.,breakout+.25))*(
+            wave_phase+=.35*math.sin(2.*math.pi*cross/(cfg.melt_wave_wavelength*2.8))
+            wave=cfg.melt_wave_amplitude*melt_v*(.10+.90*breakout)*(
                 .72*math.sin(wave_phase)+.28*math.sin(1.73*wave_phase+.8))
-            dome=cfg.breakout_dome_amplitude*breakout*(.55+.45*math.cos(2.*math.pi*cross/.045))
+            dome=cfg.breakout_dome_amplitude*breakout*(.72+.28*math.cos(2.*math.pi*cross/.070))
             interior_z=cfg.floor+max(.00005,node_h[iy,ix]+wave+dome)
             interior_pos[iy,ix]=[x,y,interior_z]
 
@@ -858,11 +876,12 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
             surface_offset=structure*(
                 cfg.rope_amplitude*ridge+cfg.billow_amplitude*.58*billow)
 
-            drift=min(.0032,.00065*age_v*math.tanh(strain_v))
-            split=.00135*tear_v*mature*math.tanh(strain_v+.25)
-            sign=1. if math.sin(2.*math.pi*along/.085+.7*cross/.035)>=0 else -1.
-            sx=x+tx*drift+nxr*split*sign
-            sy=y+ty*drift+nyr*split*sign
+            drift=min(.0024,.00050*age_v*math.tanh(strain_v))
+            # No alternating lateral sign field: that produced the zebra-like
+            # shell.  Plates now drift coherently with the flow and separate
+            # only by actual holes in the smoothed tear/coverage topology.
+            sx=x+tx*drift
+            sy=y+ty*drift
             sz=cfg.floor+max(.00005,node_h[iy,ix]+surface_offset+.18*thick-cfg.tear_sag*tear_v*mature)
             shell_pos[iy,ix]=[sx,sy,sz]
 
@@ -919,9 +938,9 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
     for iy in range(ny):
         for ix in range(nx):
             if not wet[iy,ix]:continue
-            cov=.25*(shell_coverage[iy,ix]+shell_coverage[iy,ix+1]+shell_coverage[iy+1,ix]+shell_coverage[iy+1,ix+1])
+            cov=.25*(plate_field[iy,ix]+plate_field[iy,ix+1]+plate_field[iy+1,ix]+plate_field[iy+1,ix+1])
             tr=.25*(node_tear[iy,ix]+node_tear[iy,ix+1]+node_tear[iy+1,ix]+node_tear[iy+1,ix+1])
-            crust_cell[iy,ix]=(cov>.075 and tr<.975)
+            crust_cell[iy,ix]=(cov>cfg.plate_coverage_threshold and tr<cfg.plate_tear_threshold)
 
     c_index=-np.ones((ny+1,nx+1),np.int64)
     cv=[];cf=[];ctemp=[];cbulk=[];cdmg=[];cage=[];cstrain=[];ctear=[];cthick=[];crest=[]
