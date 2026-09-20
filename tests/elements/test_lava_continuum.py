@@ -304,7 +304,7 @@ def test_shallow_crust_mechanics_are_bounded_and_renderable():
     source=Path('work/element-motion/sigil-02-v2/source.npz')
     formation=PourFormationConfig(main_nozzles=4,nozzle_bottom=.105)
     cfg=ShallowLavaConfig(
-        nx=160,ny=80,pour_duration=1.1,inlet_stagger_seconds=.35,
+        nx=224,ny=112,pour_duration=1.1,inlet_stagger_seconds=.35,
         target_depth=.030,max_depth=.048,max_dt=.008)
     state=initialize_shallow(source,formation,cfg)
     active=advance_shallow(state,0.,.8,cfg)
