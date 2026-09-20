@@ -95,6 +95,12 @@ class ShallowLavaConfig:
     tear_cooling_gain: float = .28
     tear_sag: float = .00125
 
+    # Sub-grid free-surface closure for the exposed molten layer.
+    melt_wave_wavelength: float = .024
+    melt_wave_amplitude: float = .00105
+    melt_wave_speed: float = .035
+    breakout_dome_amplitude: float = .00155
+
     rope_wavelength: float = .019
     rope_amplitude: float = .00185
     billow_wavelength: float = .070
@@ -142,6 +148,8 @@ class ShallowLavaConfig:
             raise ValueError("invalid crust growth controls")
         if self.strain_memory_time <= 0 or self.tear_strain_threshold < 0 or self.tear_growth_rate < 0 or self.tear_heal_rate < 0:
             raise ValueError("invalid crust tear controls")
+        if self.melt_wave_wavelength <= 0 or self.melt_wave_amplitude < 0 or self.melt_wave_speed < 0 or self.breakout_dome_amplitude < 0:
+            raise ValueError("invalid molten free-surface closure")
 
     @property
     def dx(self):
@@ -807,7 +815,7 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
     thickness=np.minimum(
         cfg.crust_max_thickness,
         2.*np.sqrt(cfg.crust_thermal_diffusivity*np.maximum(node_age,0.))*crust_phase)
-    shell_coverage=np.clip(maturity*crust_phase*(1.-.42*np.clip(node_tear,0.,1.)),0.,1.)
+    shell_coverage=np.clip(maturity*crust_phase*(1.-.24*np.clip(node_tear,0.,1.)),0.,1.)
 
     interior_pos=np.zeros((ny+1,nx+1,3),np.float64)
     shell_pos=np.zeros_like(interior_pos)
@@ -829,8 +837,14 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
             along=x*tx+y*ty
             cross=-x*ty+y*tx
 
-            breakout=tear_v*mature+.25*(1.-mature)*(1.-crust_v)
-            interior_z=cfg.floor+max(.00005,node_h[iy,ix]+.00085*breakout)
+            breakout=tear_v*mature+.18*(1.-mature)*(1.-crust_v)
+            melt_v=float(_phase_fraction(np.array([node_bulk[iy,ix]]),cfg)[0])
+            wave_phase=2.*math.pi*(along/cfg.melt_wave_wavelength-cfg.melt_wave_speed*t/cfg.melt_wave_wavelength)
+            wave_phase+=.45*math.sin(2.*math.pi*cross/(cfg.melt_wave_wavelength*2.6))
+            wave=cfg.melt_wave_amplitude*melt_v*(.35+.65*min(1.,breakout+.25))*(
+                .72*math.sin(wave_phase)+.28*math.sin(1.73*wave_phase+.8))
+            dome=cfg.breakout_dome_amplitude*breakout*(.55+.45*math.cos(2.*math.pi*cross/.045))
+            interior_z=cfg.floor+max(.00005,node_h[iy,ix]+wave+dome)
             interior_pos[iy,ix]=[x,y,interior_z]
 
             compression=1.+.22*math.tanh(strain_v)
@@ -907,7 +921,7 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
             if not wet[iy,ix]:continue
             cov=.25*(shell_coverage[iy,ix]+shell_coverage[iy,ix+1]+shell_coverage[iy+1,ix]+shell_coverage[iy+1,ix+1])
             tr=.25*(node_tear[iy,ix]+node_tear[iy,ix+1]+node_tear[iy+1,ix]+node_tear[iy+1,ix+1])
-            crust_cell[iy,ix]=(cov>.13 and tr<.93)
+            crust_cell[iy,ix]=(cov>.075 and tr<.975)
 
     c_index=-np.ones((ny+1,nx+1),np.int64)
     cv=[];cf=[];ctemp=[];cbulk=[];cdmg=[];cage=[];cstrain=[];ctear=[];cthick=[];crest=[]
