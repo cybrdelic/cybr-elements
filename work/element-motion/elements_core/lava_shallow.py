@@ -761,7 +761,7 @@ def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,pha
             faces.extend([(a,b,c),(a,c,d)])
 
 
-def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
+def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
     wet=(h>cfg.wet_epsilon)&mask
     if not np.any(wet):
         iy,ix=sources[0]["iy"],sources[0]["ix"]
@@ -773,6 +773,9 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
     node_t=np.zeros_like(node_h)
     node_bulk=np.zeros_like(node_h)
     node_d=np.zeros_like(node_h)
+    node_age=np.zeros_like(node_h)
+    node_strain=np.zeros_like(node_h)
+    node_tear=np.zeros_like(node_h)
     node_tx=np.zeros_like(node_h)
     node_ty=np.zeros_like(node_h)
     count=np.zeros_like(node_h)
@@ -786,6 +789,9 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
         node_t[oy:oy+ny,ox:ox+nx]+=skin*wet
         node_bulk[oy:oy+ny,ox:ox+nx]+=bulk*wet
         node_d[oy:oy+ny,ox:ox+nx]+=damage*wet
+        node_age[oy:oy+ny,ox:ox+nx]+=age*wet
+        node_strain[oy:oy+ny,ox:ox+nx]+=strain_history*wet
+        node_tear[oy:oy+ny,ox:ox+nx]+=tear*wet
         node_tx[oy:oy+ny,ox:ox+nx]+=tangent_x*wet
         node_ty[oy:oy+ny,ox:ox+nx]+=tangent_y*wet
         count[oy:oy+ny,ox:ox+nx]+=wet
@@ -795,6 +801,9 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
     node_t[valid]/=count[valid]
     node_bulk[valid]/=count[valid]
     node_d[valid]/=count[valid]
+    node_age[valid]/=count[valid]
+    node_strain[valid]/=count[valid]
+    node_tear[valid]/=count[valid]
     node_tx[valid]/=count[valid]
     node_ty[valid]/=count[valid]
     tangent_norm=np.maximum(np.hypot(node_tx,node_ty),1e-9)
@@ -804,7 +813,7 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
     xnodes=np.linspace(xs[0]-cfg.dx*.5,xs[-1]+cfg.dx*.5,nx+1)
     ynodes=np.linspace(ys[0]-cfg.dy*.5,ys[-1]+cfg.dy*.5,ny+1)
     index=-np.ones((ny+1,nx+1),np.int64)
-    vertices=[];temps=[];bulktemps=[];damages=[];rests=[];faces=[]
+    vertices=[];temps=[];bulktemps=[];damages=[];ages=[];strains=[];tears=[];crust_thickness=[];rests=[];faces=[]
 
     for iy in range(ny+1):
         for ix in range(nx+1):
@@ -814,23 +823,33 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
             x=float(xnodes[ix]);y=float(ynodes[iy])
             T=float(node_t[iy,ix])
             crust=float(1.-_phase_fraction(np.array([T]),cfg)[0])
+            age_v=max(0.,float(node_age[iy,ix]))
+            strain_v=max(0.,float(node_strain[iy,ix]))
+            tear_v=float(np.clip(node_tear[iy,ix],0.,1.))
+            maturity=1.-math.exp(-age_v/cfg.crust_maturity_time)
+            thickness=min(cfg.crust_max_thickness,
+                2.*math.sqrt(cfg.crust_thermal_diffusivity*age_v)*crust)
             depth_gate=min(1.,max(0.,node_h[iy,ix]/max(cfg.target_depth*.55,1e-8)))
             tx=float(node_tx[iy,ix]);ty=float(node_ty[iy,ix])
             along=x*tx+y*ty
             cross=-x*ty+y*tx
-            phase=2.*math.pi*along/cfg.rope_wavelength + .52*math.sin(
+            compression=1.+.16*math.tanh(strain_v)
+            phase=2.*math.pi*along/(cfg.rope_wavelength/compression) + .52*math.sin(
                 2.*math.pi*cross/(cfg.rope_wavelength*3.7))
             ridge=(.5+.5*math.sin(phase))**3-.3125
             billow=math.sin(
                 2.*math.pi*along/cfg.billow_wavelength+
                 .45*math.sin(2.*math.pi*cross/(cfg.billow_wavelength*1.6)))
-            surface_offset=depth_gate*crust*(
+            structure=maturity*depth_gate*crust*(.65+.35*math.tanh(strain_v))
+            surface_offset=structure*(
                 cfg.rope_amplitude*ridge+cfg.billow_amplitude*.5*billow)
+            surface_offset-=cfg.tear_sag*tear_v*maturity
             z=cfg.floor+max(.00005,node_h[iy,ix]+surface_offset)
             vertices.append([x,y,z])
             temps.append(T)
             bulktemps.append(float(node_bulk[iy,ix]))
             damages.append(float(node_d[iy,ix]))
+            ages.append(age_v);strains.append(strain_v);tears.append(tear_v);crust_thickness.append(thickness)
             # Fixed horizontal material coordinates keep optical breakup stable
             # while the resolved height evolves.
             rests.append([xnodes[ix],ynodes[iy],cfg.floor])
@@ -853,7 +872,10 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
         ta=.5*(temps[top_a]+temps[top_b])
         tb=.5*(bulktemps[top_a]+bulktemps[top_b])
         da=.5*(damages[top_a]+damages[top_b])
+        ag=.5*(ages[top_a]+ages[top_b]);st=.5*(strains[top_a]+strains[top_b])
+        tr=.5*(tears[top_a]+tears[top_b]);ct=.5*(crust_thickness[top_a]+crust_thickness[top_b])
         temps.extend([ta,ta]);bulktemps.extend([tb,tb]);damages.extend([da,da])
+        ages.extend([ag,ag]);strains.extend([st,st]);tears.extend([tr,tr]);crust_thickness.extend([ct,ct])
         rests.extend([
             [pa[0],pa[1],cfg.floor],
             [pb[0],pb[1],cfg.floor]])
@@ -884,7 +906,9 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
                 (src["x"],src["y"]),bottom,top,cfg.jet_radius,cfg,
                 phase=1.7*src_index+t*3.1,
                 direction=(float(src.get("tx",0.)),float(src.get("ty",0.))))
-            bulktemps.extend([cfg.feed_temperature]*(len(vertices)-before))
+            added=len(vertices)-before
+            bulktemps.extend([cfg.feed_temperature]*added)
+            ages.extend([0.]*added);strains.extend([0.]*added);tears.extend([0.]*added);crust_thickness.extend([0.]*added)
 
     return {
         "vertices":np.asarray(vertices,np.float32),
@@ -892,6 +916,10 @@ def build_surface_mesh(h,skin,bulk,damage,mask,xs,ys,active_sources,sources,t,cf
         "temperature":np.asarray(temps,np.float32),
         "bulkTemperature":np.asarray(bulktemps,np.float32),
         "damage":np.asarray(damages,np.float32),
+        "surfaceAge":np.asarray(ages,np.float32),
+        "strainHistory":np.asarray(strains,np.float32),
+        "tearOpen":np.asarray(tears,np.float32),
+        "crustThickness":np.asarray(crust_thickness,np.float32),
         "rest":np.asarray(rests,np.float32),
     }
 
