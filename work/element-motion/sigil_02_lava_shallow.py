@@ -69,7 +69,7 @@ def main():
         'floor':cfg.floor,
         'formationMode':'pour',
         'formation':formation.manifest(),
-        'model':'capacity-balanced localized inlets + conservative pressure-driven channel flow + hot-bulk/cooling-skin rheology + wall-biased quench',
+        'model':'capacity-balanced localized inlets + conservative pressure-driven channel flow + hot bulk/cooling skin + advected crust age + strain-memory tearing + finite crust thickness',
         'noTargetPositionForces':True,
         'noImageGeneration':True,
         'noFrameInterpolation':True,
@@ -129,7 +129,8 @@ def main():
         ]
         t=target
         mesh=build_surface_mesh(
-            state['h'],state['skin'],state['bulk'],state['damage'],state['mask'],
+            state['h'],state['skin'],state['bulk'],state['damage'],
+            state['age'],state['strainHistory'],state['tear'],state['mask'],
             state['xs'],state['ys'],active,state['sources'],t,cfg,formation,
             tangent_x=state['tangentX'],tangent_y=state['tangentY'],
         )
@@ -153,7 +154,8 @@ def main():
         'noImageGeneration':True,'noFrameInterpolation':True,
         'limits':[
             'depth-averaged non-Newtonian shallow-flow approximation',
-            'surface-skin thermal model rather than resolved 3D crust thickness',
+            'finite crust thickness is a Stefan-style surface model, not a volumetric shell solve',
+            'crust tears are resolved scalar state with sub-grid edge shaping in the BSDF',
             'rigid mold; no two-way thermoelastic mold deformation',
         ],
     })
