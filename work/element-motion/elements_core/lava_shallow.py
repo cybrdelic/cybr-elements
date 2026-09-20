@@ -761,7 +761,15 @@ def _append_jet(vertices,faces,temp,damage,rest,center,bottom,top,radius,cfg,pha
             faces.extend([(a,b,c),(a,c,d)])
 
 
-def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
+def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
+                       active_sources,sources,t,cfg,formation,tangent_x=None,tangent_y=None):
+    """Build a continuous hot interior and a separate finite crust shell.
+
+    The primary vertices/faces are the hot interior surface plus jets and
+    cavity side walls. crustVertices/crustFaces are a mechanically deformed
+    shell that only exists where the resolved crust is mature and not torn
+    open. Holes in that shell reveal the hot geometry below.
+    """
     wet=(h>cfg.wet_epsilon)&mask
     if not np.any(wet):
         iy,ix=sources[0]["iy"],sources[0]["ix"]
@@ -769,158 +777,193 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,act
         h=h.copy();h[iy,ix]=cfg.wet_epsilon*1.2
 
     ny,nx=h.shape
-    node_h=np.zeros((ny+1,nx+1),np.float64)
-    node_t=np.zeros_like(node_h)
-    node_bulk=np.zeros_like(node_h)
-    node_d=np.zeros_like(node_h)
-    node_age=np.zeros_like(node_h)
-    node_strain=np.zeros_like(node_h)
-    node_tear=np.zeros_like(node_h)
-    node_tx=np.zeros_like(node_h)
-    node_ty=np.zeros_like(node_h)
-    count=np.zeros_like(node_h)
-    if tangent_x is None:
-        tangent_x=np.ones_like(h)
-    if tangent_y is None:
-        tangent_y=np.zeros_like(h)
+    fields=[h,skin,bulk,damage,age,strain_history,tear]
+    node=[np.zeros((ny+1,nx+1),np.float64) for _ in fields]
+    node_tx=np.zeros((ny+1,nx+1),np.float64)
+    node_ty=np.zeros((ny+1,nx+1),np.float64)
+    count=np.zeros((ny+1,nx+1),np.float64)
+    if tangent_x is None:tangent_x=np.ones_like(h)
+    if tangent_y is None:tangent_y=np.zeros_like(h)
 
     for oy,ox in ((0,0),(0,1),(1,0),(1,1)):
-        node_h[oy:oy+ny,ox:ox+nx]+=h*wet
-        node_t[oy:oy+ny,ox:ox+nx]+=skin*wet
-        node_bulk[oy:oy+ny,ox:ox+nx]+=bulk*wet
-        node_d[oy:oy+ny,ox:ox+nx]+=damage*wet
-        node_age[oy:oy+ny,ox:ox+nx]+=age*wet
-        node_strain[oy:oy+ny,ox:ox+nx]+=strain_history*wet
-        node_tear[oy:oy+ny,ox:ox+nx]+=tear*wet
+        for target,field in zip(node,fields):
+            target[oy:oy+ny,ox:ox+nx]+=field*wet
         node_tx[oy:oy+ny,ox:ox+nx]+=tangent_x*wet
         node_ty[oy:oy+ny,ox:ox+nx]+=tangent_y*wet
         count[oy:oy+ny,ox:ox+nx]+=wet
 
     valid=count>0
-    node_h[valid]/=count[valid]
-    node_t[valid]/=count[valid]
-    node_bulk[valid]/=count[valid]
-    node_d[valid]/=count[valid]
-    node_age[valid]/=count[valid]
-    node_strain[valid]/=count[valid]
-    node_tear[valid]/=count[valid]
-    node_tx[valid]/=count[valid]
-    node_ty[valid]/=count[valid]
+    for target in node:target[valid]/=count[valid]
+    node_h,node_t,node_bulk,node_d,node_age,node_strain,node_tear=node
+    node_tx[valid]/=count[valid];node_ty[valid]/=count[valid]
     tangent_norm=np.maximum(np.hypot(node_tx,node_ty),1e-9)
-    node_tx/=tangent_norm
-    node_ty/=tangent_norm
+    node_tx/=tangent_norm;node_ty/=tangent_norm
 
     xnodes=np.linspace(xs[0]-cfg.dx*.5,xs[-1]+cfg.dx*.5,nx+1)
     ynodes=np.linspace(ys[0]-cfg.dy*.5,ys[-1]+cfg.dy*.5,ny+1)
-    index=-np.ones((ny+1,nx+1),np.int64)
-    vertices=[];temps=[];bulktemps=[];damages=[];ages=[];strains=[];tears=[];crust_thickness=[];rests=[];faces=[]
 
+    crust_phase=1.-_phase_fraction(node_t,cfg)
+    maturity=1.-np.exp(-np.maximum(node_age,0.)/cfg.crust_maturity_time)
+    thickness=np.minimum(
+        cfg.crust_max_thickness,
+        2.*np.sqrt(cfg.crust_thermal_diffusivity*np.maximum(node_age,0.))*crust_phase)
+    shell_coverage=np.clip(maturity*crust_phase*(1.-.82*np.clip(node_tear,0.,1.)),0.,1.)
+
+    interior_pos=np.zeros((ny+1,nx+1,3),np.float64)
+    shell_pos=np.zeros_like(interior_pos)
     for iy in range(ny+1):
         for ix in range(nx+1):
-            if not valid[iy,ix]:
-                continue
-            index[iy,ix]=len(vertices)
             x=float(xnodes[ix]);y=float(ynodes[iy])
-            T=float(node_t[iy,ix])
-            crust=float(1.-_phase_fraction(np.array([T]),cfg)[0])
+            if not valid[iy,ix]:
+                interior_pos[iy,ix]=[x,y,cfg.floor+.00005]
+                shell_pos[iy,ix]=interior_pos[iy,ix]
+                continue
             age_v=max(0.,float(node_age[iy,ix]))
             strain_v=max(0.,float(node_strain[iy,ix]))
             tear_v=float(np.clip(node_tear[iy,ix],0.,1.))
-            maturity=1.-math.exp(-age_v/cfg.crust_maturity_time)
-            thickness=min(cfg.crust_max_thickness,
-                2.*math.sqrt(cfg.crust_thermal_diffusivity*age_v)*crust)
+            crust_v=float(crust_phase[iy,ix]);mature=float(maturity[iy,ix])
+            thick=float(thickness[iy,ix])
             depth_gate=min(1.,max(0.,node_h[iy,ix]/max(cfg.target_depth*.55,1e-8)))
             tx=float(node_tx[iy,ix]);ty=float(node_ty[iy,ix])
+            nxr,nyr=-ty,tx
             along=x*tx+y*ty
             cross=-x*ty+y*tx
-            compression=1.+.16*math.tanh(strain_v)
-            phase=2.*math.pi*along/(cfg.rope_wavelength/compression) + .52*math.sin(
+
+            breakout=tear_v*mature+.25*(1.-mature)*(1.-crust_v)
+            interior_z=cfg.floor+max(.00005,node_h[iy,ix]+.00135*breakout)
+            interior_pos[iy,ix]=[x,y,interior_z]
+
+            compression=1.+.22*math.tanh(strain_v)
+            phase=2.*math.pi*along/(cfg.rope_wavelength/compression)+.52*math.sin(
                 2.*math.pi*cross/(cfg.rope_wavelength*3.7))
             ridge=(.5+.5*math.sin(phase))**3-.3125
             billow=math.sin(
                 2.*math.pi*along/cfg.billow_wavelength+
                 .45*math.sin(2.*math.pi*cross/(cfg.billow_wavelength*1.6)))
-            structure=maturity*depth_gate*crust*(.65+.35*math.tanh(strain_v))
+            structure=mature*depth_gate*crust_v*(.62+.38*math.tanh(strain_v))
             surface_offset=structure*(
-                cfg.rope_amplitude*ridge+cfg.billow_amplitude*.5*billow)
-            surface_offset-=cfg.tear_sag*tear_v*maturity
-            z=cfg.floor+max(.00005,node_h[iy,ix]+surface_offset)
-            vertices.append([x,y,z])
-            temps.append(T)
-            bulktemps.append(float(node_bulk[iy,ix]))
-            damages.append(float(node_d[iy,ix]))
-            ages.append(age_v);strains.append(strain_v);tears.append(tear_v);crust_thickness.append(thickness)
-            # Fixed horizontal material coordinates keep optical breakup stable
-            # while the resolved height evolves.
-            rests.append([xnodes[ix],ynodes[iy],cfg.floor])
+                cfg.rope_amplitude*ridge+cfg.billow_amplitude*.58*billow)
 
+            drift=min(.0032,.00065*age_v*math.tanh(strain_v))
+            split=.00135*tear_v*mature*math.tanh(strain_v+.25)
+            sign=1. if math.sin(2.*math.pi*along/.085+.7*cross/.035)>=0 else -1.
+            sx=x+tx*drift+nxr*split*sign
+            sy=y+ty*drift+nyr*split*sign
+            sz=cfg.floor+max(.00005,node_h[iy,ix]+surface_offset+.18*thick-cfg.tear_sag*tear_v*mature)
+            shell_pos[iy,ix]=[sx,sy,sz]
+
+    i_index=-np.ones((ny+1,nx+1),np.int64)
+    iv=[];ifaces=[];irest=[];ibulk=[];itear=[]
+    for iy in range(ny+1):
+        for ix in range(nx+1):
+            if not valid[iy,ix]:continue
+            i_index[iy,ix]=len(iv)
+            iv.append(interior_pos[iy,ix].tolist())
+            irest.append([float(xnodes[ix]),float(ynodes[iy]),cfg.floor])
+            ibulk.append(float(node_bulk[iy,ix]))
+            itear.append(float(np.clip(node_tear[iy,ix],0.,1.)))
     for iy in range(ny):
         for ix in range(nx):
-            if not wet[iy,ix]:
-                continue
-            a=index[iy,ix];b=index[iy,ix+1]
-            c=index[iy+1,ix+1];d=index[iy+1,ix]
-            if min(a,b,c,d)>=0:
-                faces.extend([(a,b,c),(a,c,d)])
+            if not wet[iy,ix]:continue
+            a=i_index[iy,ix];b=i_index[iy,ix+1];c=i_index[iy+1,ix+1];d=i_index[iy+1,ix]
+            if min(a,b,c,d)>=0:ifaces.extend([(a,b,c),(a,c,d)])
 
-    def add_side(top_a,top_b):
-        pa=np.asarray(vertices[top_a]);pb=np.asarray(vertices[top_b])
-        ia=len(vertices);ib=ia+1
-        vertices.extend([
-            [pa[0],pa[1],cfg.floor+.00005],
-            [pb[0],pb[1],cfg.floor+.00005]])
-        ta=.5*(temps[top_a]+temps[top_b])
-        tb=.5*(bulktemps[top_a]+bulktemps[top_b])
-        da=.5*(damages[top_a]+damages[top_b])
-        ag=.5*(ages[top_a]+ages[top_b]);st=.5*(strains[top_a]+strains[top_b])
-        tr=.5*(tears[top_a]+tears[top_b]);ct=.5*(crust_thickness[top_a]+crust_thickness[top_b])
-        temps.extend([ta,ta]);bulktemps.extend([tb,tb]);damages.extend([da,da])
-        ages.extend([ag,ag]);strains.extend([st,st]);tears.extend([tr,tr]);crust_thickness.extend([ct,ct])
-        rests.extend([
-            [pa[0],pa[1],cfg.floor],
-            [pb[0],pb[1],cfg.floor]])
-        faces.extend([(top_a,top_b,ib),(top_a,ib,ia)])
-
+    def add_interior_side(a,b):
+        pa=np.asarray(iv[a]);pb=np.asarray(iv[b])
+        ia=len(iv);ib=ia+1
+        iv.extend([[pa[0],pa[1],cfg.floor+.00005],[pb[0],pb[1],cfg.floor+.00005]])
+        irest.extend([[pa[0],pa[1],cfg.floor],[pb[0],pb[1],cfg.floor]])
+        tb=.5*(ibulk[a]+ibulk[b]);tr=.5*(itear[a]+itear[b])
+        ibulk.extend([tb,tb]);itear.extend([tr,tr])
+        ifaces.extend([(a,b,ib),(a,ib,ia)])
     for iy in range(ny):
         for ix in range(nx):
-            if not wet[iy,ix]:
-                continue
-            if iy==0 or not wet[iy-1,ix]:
-                add_side(index[iy,ix+1],index[iy,ix])
-            if iy==ny-1 or not wet[iy+1,ix]:
-                add_side(index[iy+1,ix],index[iy+1,ix+1])
-            if ix==0 or not wet[iy,ix-1]:
-                add_side(index[iy,ix],index[iy+1,ix])
-            if ix==nx-1 or not wet[iy,ix+1]:
-                add_side(index[iy+1,ix+1],index[iy,ix+1])
+            if not wet[iy,ix]:continue
+            if iy==0 or not wet[iy-1,ix]:add_interior_side(i_index[iy,ix+1],i_index[iy,ix])
+            if iy==ny-1 or not wet[iy+1,ix]:add_interior_side(i_index[iy+1,ix],i_index[iy+1,ix+1])
+            if ix==0 or not wet[iy,ix-1]:add_interior_side(i_index[iy,ix],i_index[iy+1,ix])
+            if ix==nx-1 or not wet[iy,ix+1]:add_interior_side(i_index[iy+1,ix+1],i_index[iy,ix+1])
 
+    jet_temp=[];jet_damage=[];jet_rest=[]
     for src_index in active_sources:
         src=sources[src_index]
         bottom=cfg.floor+float(h[src["iy"],src["ix"]])
-        physical_top=formation.nozzle_bottom
-        top=min(physical_top,bottom+cfg.jet_visible_height)
+        top=min(formation.nozzle_bottom,bottom+cfg.jet_visible_height)
         if top>bottom+.003:
-            before=len(vertices)
+            before=len(iv)
             _append_jet(
-                vertices,faces,temps,damages,rests,
+                iv,ifaces,jet_temp,jet_damage,jet_rest,
                 (src["x"],src["y"]),bottom,top,cfg.jet_radius,cfg,
                 phase=1.7*src_index+t*3.1,
                 direction=(float(src.get("tx",0.)),float(src.get("ty",0.))))
-            added=len(vertices)-before
-            bulktemps.extend([cfg.feed_temperature]*added)
-            ages.extend([0.]*added);strains.extend([0.]*added);tears.extend([0.]*added);crust_thickness.extend([0.]*added)
+            added=len(iv)-before
+            irest.extend(jet_rest[-added:])
+            ibulk.extend([cfg.feed_temperature]*added)
+            itear.extend([0.]*added)
+
+    crust_cell=np.zeros((ny,nx),dtype=bool)
+    for iy in range(ny):
+        for ix in range(nx):
+            if not wet[iy,ix]:continue
+            cov=.25*(shell_coverage[iy,ix]+shell_coverage[iy,ix+1]+shell_coverage[iy+1,ix]+shell_coverage[iy+1,ix+1])
+            tr=.25*(node_tear[iy,ix]+node_tear[iy,ix+1]+node_tear[iy+1,ix]+node_tear[iy+1,ix+1])
+            crust_cell[iy,ix]=(cov>.24 and tr<.72)
+
+    c_index=-np.ones((ny+1,nx+1),np.int64)
+    cv=[];cf=[];ctemp=[];cbulk=[];cdmg=[];cage=[];cstrain=[];ctear=[];cthick=[];crest=[]
+    def crust_node(iy,ix):
+        if c_index[iy,ix]>=0:return int(c_index[iy,ix])
+        k=len(cv);c_index[iy,ix]=k
+        cv.append(shell_pos[iy,ix].tolist())
+        ctemp.append(float(node_t[iy,ix]));cbulk.append(float(node_bulk[iy,ix]))
+        cdmg.append(float(node_d[iy,ix]));cage.append(float(node_age[iy,ix]))
+        cstrain.append(float(node_strain[iy,ix]));ctear.append(float(np.clip(node_tear[iy,ix],0.,1.)))
+        cthick.append(float(thickness[iy,ix]))
+        crest.append([float(xnodes[ix]),float(ynodes[iy]),cfg.floor])
+        return k
+
+    for iy in range(ny):
+        for ix in range(nx):
+            if not crust_cell[iy,ix]:continue
+            a=crust_node(iy,ix);b=crust_node(iy,ix+1);c=crust_node(iy+1,ix+1);d=crust_node(iy+1,ix)
+            cf.extend([(a,b,c),(a,c,d)])
+
+    def add_crust_edge(iy0,ix0,iy1,ix1):
+        a=crust_node(iy0,ix0);b=crust_node(iy1,ix1)
+        ia=len(cv);ib=ia+1
+        pia=interior_pos[iy0,ix0];pib=interior_pos[iy1,ix1]
+        cv.extend([pia.tolist(),pib.tolist()])
+        for yy0,xx0 in ((iy0,ix0),(iy1,ix1)):
+            ctemp.append(float(node_t[yy0,xx0]));cbulk.append(float(node_bulk[yy0,xx0]))
+            cdmg.append(float(node_d[yy0,xx0]));cage.append(float(node_age[yy0,xx0]))
+            cstrain.append(float(node_strain[yy0,xx0]));ctear.append(float(np.clip(node_tear[yy0,xx0],0.,1.)))
+            cthick.append(float(thickness[yy0,xx0]));crest.append([float(xnodes[xx0]),float(ynodes[yy0]),cfg.floor])
+        cf.extend([(a,b,ib),(a,ib,ia)])
+
+    for iy in range(ny):
+        for ix in range(nx):
+            if not crust_cell[iy,ix]:continue
+            if iy==0 or not crust_cell[iy-1,ix]:add_crust_edge(iy,ix+1,iy,ix)
+            if iy==ny-1 or not crust_cell[iy+1,ix]:add_crust_edge(iy+1,ix,iy+1,ix+1)
+            if ix==0 or not crust_cell[iy,ix-1]:add_crust_edge(iy,ix,iy+1,ix)
+            if ix==nx-1 or not crust_cell[iy,ix+1]:add_crust_edge(iy+1,ix+1,iy,ix+1)
 
     return {
-        "vertices":np.asarray(vertices,np.float32),
-        "faces":np.asarray(faces,np.int32),
-        "temperature":np.asarray(temps,np.float32),
-        "bulkTemperature":np.asarray(bulktemps,np.float32),
-        "damage":np.asarray(damages,np.float32),
-        "surfaceAge":np.asarray(ages,np.float32),
-        "strainHistory":np.asarray(strains,np.float32),
-        "tearOpen":np.asarray(tears,np.float32),
-        "crustThickness":np.asarray(crust_thickness,np.float32),
-        "rest":np.asarray(rests,np.float32),
+        "vertices":np.asarray(iv,np.float32),
+        "faces":np.asarray(ifaces,np.int32),
+        "bulkTemperature":np.asarray(ibulk,np.float32),
+        "tearOpen":np.asarray(itear,np.float32),
+        "rest":np.asarray(irest,np.float32),
+        "crustVertices":np.asarray(cv,np.float32),
+        "crustFaces":np.asarray(cf,np.int32),
+        "crustTemperature":np.asarray(ctemp,np.float32),
+        "crustBulkTemperature":np.asarray(cbulk,np.float32),
+        "crustDamage":np.asarray(cdmg,np.float32),
+        "crustSurfaceAge":np.asarray(cage,np.float32),
+        "crustStrainHistory":np.asarray(cstrain,np.float32),
+        "crustTearOpen":np.asarray(ctear,np.float32),
+        "crustThickness":np.asarray(cthick,np.float32),
+        "crustRest":np.asarray(crest,np.float32),
     }
 
 
