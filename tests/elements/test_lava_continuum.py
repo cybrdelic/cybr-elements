@@ -319,10 +319,21 @@ def test_shallow_crust_mechanics_are_bounded_and_renderable():
         state['age'],state['strainHistory'],state['tear'],state['mask'],
         state['xs'],state['ys'],active,state['sources'],.8,cfg,formation,
         tangent_x=state['tangentX'],tangent_y=state['tangentY'])
-    n=len(mesh['vertices'])
-    for key in ('temperature','bulkTemperature','damage','surfaceAge',
-                'strainHistory','tearOpen','crustThickness','rest'):
-        assert len(mesh[key])==n
+    ni=len(mesh['vertices'])
+    assert len(mesh['bulkTemperature'])==ni
+    assert len(mesh['tearOpen'])==ni
+    assert len(mesh['rest'])==ni
+    assert len(mesh['faces'])>0
+
+    nc=len(mesh['crustVertices'])
+    for key in ('crustTemperature','crustBulkTemperature','crustDamage',
+                'crustSurfaceAge','crustStrainHistory','crustTearOpen',
+                'crustThickness','crustRest'):
+        assert len(mesh[key])==nc
+    assert len(mesh['crustFaces'])>0
+    assert nc>0
     assert np.all(mesh['crustThickness']>=0)
     assert mesh['crustThickness'].max()<=cfg.crust_max_thickness+1e-9
-    assert np.all((mesh['tearOpen']>=0)&(mesh['tearOpen']<=1))
+    assert np.all((mesh['crustTearOpen']>=0)&(mesh['crustTearOpen']<=1))
+    # The shell must be incomplete so resolved holes can expose the interior.
+    assert len(mesh['crustFaces']) < len(mesh['faces'])*2
