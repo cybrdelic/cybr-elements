@@ -807,7 +807,7 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
     thickness=np.minimum(
         cfg.crust_max_thickness,
         2.*np.sqrt(cfg.crust_thermal_diffusivity*np.maximum(node_age,0.))*crust_phase)
-    shell_coverage=np.clip(maturity*crust_phase*(1.-.82*np.clip(node_tear,0.,1.)),0.,1.)
+    shell_coverage=np.clip(maturity*crust_phase*(1.-.42*np.clip(node_tear,0.,1.)),0.,1.)
 
     interior_pos=np.zeros((ny+1,nx+1,3),np.float64)
     shell_pos=np.zeros_like(interior_pos)
@@ -830,7 +830,7 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
             cross=-x*ty+y*tx
 
             breakout=tear_v*mature+.25*(1.-mature)*(1.-crust_v)
-            interior_z=cfg.floor+max(.00005,node_h[iy,ix]+.00135*breakout)
+            interior_z=cfg.floor+max(.00005,node_h[iy,ix]+.00085*breakout)
             interior_pos[iy,ix]=[x,y,interior_z]
 
             compression=1.+.22*math.tanh(strain_v)
@@ -907,7 +907,7 @@ def build_surface_mesh(h,skin,bulk,damage,age,strain_history,tear,mask,xs,ys,
             if not wet[iy,ix]:continue
             cov=.25*(shell_coverage[iy,ix]+shell_coverage[iy,ix+1]+shell_coverage[iy+1,ix]+shell_coverage[iy+1,ix+1])
             tr=.25*(node_tear[iy,ix]+node_tear[iy,ix+1]+node_tear[iy+1,ix]+node_tear[iy+1,ix+1])
-            crust_cell[iy,ix]=(cov>.24 and tr<.72)
+            crust_cell[iy,ix]=(cov>.13 and tr<.93)
 
     c_index=-np.ones((ny+1,nx+1),np.int64)
     cv=[];cf=[];ctemp=[];cbulk=[];cdmg=[];cage=[];cstrain=[];ctear=[];cthick=[];crest=[]
