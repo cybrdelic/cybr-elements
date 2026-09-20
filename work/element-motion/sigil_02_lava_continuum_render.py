@@ -387,19 +387,20 @@ def main():
  l.new(noise.outputs['Fac'],bump.inputs['Height']);l.new(bump.outputs['Normal'],fp.inputs['Normal'])
  bpy.ops.mesh.primitive_plane_add(size=8,location=(0,0,floor_height-.0015));bpy.context.object.data.materials.append(floor)
  mold=build_mold(a.source,formation,floor_height,a.surface/'mold.npz') if formation_mode=='pour' else None
- lava=build_lava_material()
+ crust_material=build_lava_material()
+ molten_material=build_molten_material()
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
   'floor':floor_height,'exposure':a.exposure,'view':view,'formationMode':formation_mode,'formation':formation,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
-  'material':'two-layer lava: separately rendered incandescent interior + finite crust raft shell with resolved age/thickness/strain/tear openness',
-  'subgridDisclosure':'hot interior and crust are separate geometry; shell holes come from resolved tear/thickness state; noise only adds sub-grid roughness/vesicles'}
+  'material':'separate incandescent interior geometry beneath finite moving crust rafts with resolved age/thickness/strain/tear state',
+  'subgridDisclosure':'shell holes and raft offsets are geometry; scalar tear openness is solver state; procedural textures only add sub-grid roughness and vesicles'}
  render_inputs={'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'}
  if formation_mode=='pour':
   render_inputs['moldSource']=a.source
   if (a.surface/'mold.npz').is_file():render_inputs['moldMesh']=a.surface/'mold.npz'
  run=RunIdentity(a.out,settings,render_inputs)
  (a.out/'frames').mkdir(exist_ok=True);atomic_json(a.out/'render-settings.json',settings)
- o=None;start=time.perf_counter();rows=[]
+ o_interior=None;o_crust=None;start=time.perf_counter();rows=[]
  for f in ([a.frame] if a.frame is not None else range(a.frames)):
   src=a.surface/'meshes'/f'{f:04d}.npz';deadline=time.monotonic()+a.wait_timeout
   while not src.exists():
@@ -407,41 +408,71 @@ def main():
    time.sleep(1)
   with np.load(src,allow_pickle=False) as data:
    if abs(float(data['time'])-f/a.fps)>1e-7:raise RuntimeError('Mesh and camera clock disagree')
-   me=bpy.data.meshes.new(f'thermal continuum {f:04d}')
-   me.from_pydata(data['vertices'].tolist(),[],data['faces'].tolist());me.update()
-   if o is None:o=bpy.data.objects.new('Deforming lava',me);bpy.context.collection.objects.link(o)
+
+   # Continuous incandescent interior.
+   ime=bpy.data.meshes.new(f'molten interior {f:04d}')
+   ime.from_pydata(data['vertices'].tolist(),[],data['faces'].tolist());ime.update()
+   if o_interior is None:
+    o_interior=bpy.data.objects.new('Molten lava interior',ime);bpy.context.collection.objects.link(o_interior)
    else:
-    old=o.data;o.data=me;bpy.data.meshes.remove(old)
-   me.materials.append(lava)
-   for poly in me.polygons:poly.use_smooth=True
-   temp=np.asarray(data['temperature'],np.float64);damage=np.asarray(data['damage'],np.float64)
-   bulk_temp=np.asarray(data['bulkTemperature'],np.float64) if 'bulkTemperature' in data else temp.copy()
-   surface_age=np.asarray(data['surfaceAge'],np.float64) if 'surfaceAge' in data else np.zeros_like(temp)
-   strain_history=np.asarray(data['strainHistory'],np.float64) if 'strainHistory' in data else np.zeros_like(temp)
-   tear_open=np.asarray(data['tearOpen'],np.float64) if 'tearOpen' in data else np.zeros_like(temp)
-   crust_thickness=np.asarray(data['crustThickness'],np.float64) if 'crustThickness' in data else np.zeros_like(temp)
-   controls=material_controls(temp,damage)
-   bulk_controls=material_controls(bulk_temp,np.zeros_like(damage))
-   add_float_attribute(me,'temperature',temp)
-   add_float_attribute(me,'bulkTemperature',bulk_temp)
-   add_float_attribute(me,'bulkThermalStrength',bulk_controls['thermalStrength'])
-   add_float_attribute(me,'damage',damage)
-   add_float_attribute(me,'surfaceAge',surface_age)
-   add_float_attribute(me,'strainHistory',strain_history)
-   add_float_attribute(me,'tearOpen',tear_open)
-   add_float_attribute(me,'crustThickness',crust_thickness)
-   add_float_attribute(me,'crustAmount',controls['crust'])
-   add_float_attribute(me,'fracturePotential',controls['fracture'])
-   add_float_attribute(me,'reliefAmount',controls['relief'])
-   add_float_attribute(me,'obsidianAmount',controls['obsidian'])
-   add_float_attribute(me,'meltAmount',controls['melt'])
-   add_float_attribute(me,'roughnessBase',controls['roughness'])
-   add_float_attribute(me,'coatWeight',controls['coat'])
-   add_vector_attribute(me,'materialCoordinates',data['rest'])
-   add_color_attribute(me,'baseColor',controls['baseColor'])
-   add_color_attribute(me,'thermalRadiance',controls['thermalRadiance'])
-   add_color_attribute(me,'thermalColor',controls['thermalColor'])
-   add_float_attribute(me,'thermalStrength',controls['thermalStrength'])
+    old=o_interior.data;o_interior.data=ime;bpy.data.meshes.remove(old)
+   ime.materials.append(molten_material)
+   for poly in ime.polygons:poly.use_smooth=True
+   bulk_temp=np.asarray(data['bulkTemperature'],np.float64)
+   interior_tear=np.asarray(data['tearOpen'],np.float64) if 'tearOpen' in data else np.zeros(len(bulk_temp))
+   bulk_controls=material_controls(bulk_temp,np.zeros_like(bulk_temp))
+   add_float_attribute(ime,'bulkTemperature',bulk_temp)
+   add_float_attribute(ime,'bulkThermalStrength',bulk_controls['thermalStrength'])
+   add_float_attribute(ime,'tearOpen',interior_tear)
+   add_vector_attribute(ime,'materialCoordinates',data['rest'])
+
+   # Finite crust raft shell. Empty at the earliest fully molten frames.
+   cverts=np.asarray(data['crustVertices'],np.float64)
+   cfaces=np.asarray(data['crustFaces'],np.int32)
+   cme=bpy.data.meshes.new(f'crust shell {f:04d}')
+   cme.from_pydata(cverts.tolist(),[],cfaces.tolist());cme.update()
+   if o_crust is None:
+    o_crust=bpy.data.objects.new('Finite lava crust rafts',cme);bpy.context.collection.objects.link(o_crust)
+   else:
+    old=o_crust.data;o_crust.data=cme;bpy.data.meshes.remove(old)
+   cme.materials.append(crust_material)
+   for poly in cme.polygons:poly.use_smooth=True
+
+   if len(cverts):
+    temp=np.asarray(data['crustTemperature'],np.float64)
+    damage=np.asarray(data['crustDamage'],np.float64)
+    crust_bulk=np.asarray(data['crustBulkTemperature'],np.float64)
+    surface_age=np.asarray(data['crustSurfaceAge'],np.float64)
+    strain_history=np.asarray(data['crustStrainHistory'],np.float64)
+    tear_open=np.asarray(data['crustTearOpen'],np.float64)
+    crust_thickness=np.asarray(data['crustThickness'],np.float64)
+    controls=material_controls(temp,damage)
+    crust_bulk_controls=material_controls(crust_bulk,np.zeros_like(damage))
+    add_float_attribute(cme,'temperature',temp)
+    add_float_attribute(cme,'bulkTemperature',crust_bulk)
+    add_float_attribute(cme,'bulkThermalStrength',crust_bulk_controls['thermalStrength'])
+    add_float_attribute(cme,'damage',damage)
+    add_float_attribute(cme,'surfaceAge',surface_age)
+    add_float_attribute(cme,'strainHistory',strain_history)
+    add_float_attribute(cme,'tearOpen',tear_open)
+    add_float_attribute(cme,'crustThickness',crust_thickness)
+    add_float_attribute(cme,'crustAmount',controls['crust'])
+    add_float_attribute(cme,'fracturePotential',controls['fracture'])
+    add_float_attribute(cme,'reliefAmount',controls['relief'])
+    add_float_attribute(cme,'obsidianAmount',controls['obsidian'])
+    add_float_attribute(cme,'meltAmount',controls['melt'])
+    add_float_attribute(cme,'roughnessBase',controls['roughness'])
+    add_float_attribute(cme,'coatWeight',controls['coat'])
+    add_vector_attribute(cme,'materialCoordinates',data['crustRest'])
+    add_color_attribute(cme,'baseColor',controls['baseColor'])
+    add_color_attribute(cme,'thermalRadiance',controls['thermalRadiance'])
+    add_color_attribute(cme,'thermalColor',controls['thermalColor'])
+    add_float_attribute(cme,'thermalStrength',controls['thermalStrength'])
+   else:
+    temp=np.array([surface_settings.get('config',{}).get('feed_skin_temperature',1435.)])
+    surface_age=strain_history=tear_open=crust_thickness=np.zeros(1)
+    controls=material_controls(temp,np.zeros(1))
+
   s.frame_set(f);s.cycles.seed=1739+f
   exr=a.out/'frames'/f'{f:04d}.exr';png=a.out/'frames'/f'{f:04d}.png'
   s.render.image_settings.file_format='OPEN_EXR';s.render.image_settings.color_mode='RGBA';s.render.image_settings.color_depth='32';s.render.filepath=str(exr)
@@ -449,19 +480,17 @@ def main():
   s.render.image_settings.file_format='PNG';s.render.image_settings.color_mode='RGB';s.render.image_settings.color_depth='8'
   bpy.data.images['Render Result'].save_render(str(png),scene=s)
   run.receipt(f'render-{f:04d}',[exr,png],frame=f,sourceSHA256=digest(src))
-  row={'frame':f,'time':f/a.fps,'sourceSHA256':digest(src),'vertices':len(me.vertices),'triangles':len(me.polygons),
-       'temperatureMinK':float(temp.min()),'temperatureMaxK':float(temp.max()),
+  row={'frame':f,'time':f/a.fps,'sourceSHA256':digest(src),
+       'interiorVertices':len(ime.vertices),'interiorTriangles':len(ime.polygons),
+       'crustVertices':len(cme.vertices),'crustTriangles':len(cme.polygons),
        'bulkTemperatureMinK':float(bulk_temp.min()),'bulkTemperatureMaxK':float(bulk_temp.max()),
        'crustMean':float(controls['crust'].mean()),
        'surfaceAgeMeanSeconds':float(surface_age.mean()),
        'strainHistoryMean':float(strain_history.mean()),
        'tearOpenMean':float(tear_open.mean()),'tearOpenMax':float(tear_open.max()),
        'crustThicknessMeanM':float(crust_thickness.mean()),
-       'fracturePotentialMean':float(controls['fracture'].mean()),
        'obsidianMean':float(controls['obsidian'].mean()),
-       'reliefMean':float(controls['relief'].mean()),
        'thermalStrengthMean':float(controls['thermalStrength'].mean()),
-       'thermalStrengthMax':float(controls['thermalStrength'].max()),
        'wallSeconds':time.perf_counter()-start}
   rows.append(row);atomic_json(a.out/'frames'/f'{f:04d}.json',row);print('LAVA_FRAME',json.dumps(row),flush=True)
   if a.save_blend:bpy.ops.wm.save_as_mainfile(filepath=str(a.out/f'frame-{f:04d}.blend'))
