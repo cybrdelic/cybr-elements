@@ -245,6 +245,45 @@ def build_lava_material():
  return lava
 
 
+def build_molten_material():
+ m,p=principled('Molten basalt interior / exposed through geometric crust breaks')
+ p.inputs['Base Color'].default_value=(.010,.0018,.00035,1)
+ p.inputs['Metallic'].default_value=0.;p.inputs['Roughness'].default_value=.43;p.inputs['IOR'].default_value=1.54
+ if 'Specular IOR Level' in p.inputs:p.inputs['Specular IOR Level'].default_value=.15
+ if 'Coat Weight' in p.inputs:p.inputs['Coat Weight'].default_value=0.
+ nodes=m.node_tree.nodes;links=m.node_tree.links
+ bulk_temperature=attribute(nodes,'bulkTemperature')
+ bulk_strength=attribute(nodes,'bulkThermalStrength')
+ rest=attribute(nodes,'materialCoordinates')
+
+ tr=nodes.new('ShaderNodeMapRange');tr.clamp=True;tr.label='molten interior temperature response'
+ tr.inputs['From Min'].default_value=1000.;tr.inputs['From Max'].default_value=1650.
+ tr.inputs['To Min'].default_value=0.;tr.inputs['To Max'].default_value=1.
+ links.new(bulk_temperature.outputs['Fac'],tr.inputs['Value'])
+ ramp=nodes.new('ShaderNodeValToRGB');ramp.label='basalt incandescent interior chroma';ramp.color_ramp.interpolation='EASE'
+ e0=ramp.color_ramp.elements[0];e0.position=0.;e0.color=(.018,0.,0.,1.)
+ e1=ramp.color_ramp.elements[1];e1.position=1.;e1.color=(1.,.56,.035,1.)
+ e2=ramp.color_ramp.elements.new(.35);e2.color=(.20,.003,0.,1.)
+ e3=ramp.color_ramp.elements.new(.64);e3.color=(.78,.055,.001,1.)
+ e4=ramp.color_ramp.elements.new(.83);e4.color=(1.,.27,.006,1.)
+ links.new(tr.outputs['Result'],ramp.inputs['Fac'])
+ links.new(ramp.outputs['Color'],p.inputs['Emission Color'])
+
+ strength=math_node(nodes,'MULTIPLY',b=1.55,label='exposed hot-interior radiance')
+ links.new(bulk_strength.outputs['Fac'],strength.inputs[0]);links.new(strength.outputs[0],p.inputs['Emission Strength'])
+
+ base_mix=nodes.new('ShaderNodeMixRGB');base_mix.blend_type='MIX';base_mix.inputs['Fac'].default_value=.32
+ base_mix.inputs[1].default_value=(.007,.0012,.0002,1.)
+ links.new(ramp.outputs['Color'],base_mix.inputs[2]);links.new(base_mix.outputs['Color'],p.inputs['Base Color'])
+
+ n=nodes.new('ShaderNodeTexNoise');n.noise_dimensions='3D';n.label='viscous interior corrugation'
+ n.inputs['Scale'].default_value=54.;n.inputs['Detail'].default_value=2.2;n.inputs['Roughness'].default_value=.56;n.inputs['Distortion'].default_value=.08
+ links.new(rest.outputs['Vector'],n.inputs['Vector'])
+ bump=nodes.new('ShaderNodeBump');bump.label='viscous interior relief';bump.inputs['Strength'].default_value=.12;bump.inputs['Distance'].default_value=.00075
+ links.new(n.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
+ return m
+
+
 def add_float_attribute(mesh,name,values):
  values=np.asarray(values,np.float32)
  attr=mesh.attributes.new(name,'FLOAT','POINT');attr.data.foreach_set('value',values.ravel())
@@ -352,8 +391,8 @@ def main():
  settings={'device':'CPU','engine':'Cycles','blender':bpy.app.version_string,'resolution':a.resolution,'samples':a.samples,
   'adaptiveThreshold':.018,'denoiser':'OpenImageDenoise','fps':a.fps,'frames':a.frames,'frame':a.frame,
   'floor':floor_height,'exposure':a.exposure,'view':view,'formationMode':formation_mode,'formation':formation,'viewTransform':'AgX','look':'Medium High Contrast','motionBlur':False,
-  'material':'resolved skin/bulk temperatures + advected crust age/thickness + strain-driven tear openness + flow-aligned pahoehoe geometry + calibrated incandescent interior',
-  'subgridDisclosure':'large-scale ropes are mesh geometry; scalar tear openness is resolved by the shallow solver; Voronoi only shapes sub-grid tear edges and vesicle detail'}
+  'material':'two-layer lava: separately rendered incandescent interior + finite crust raft shell with resolved age/thickness/strain/tear openness',
+  'subgridDisclosure':'hot interior and crust are separate geometry; shell holes come from resolved tear/thickness state; noise only adds sub-grid roughness/vesicles'}
  render_inputs={'surfaceRun':a.surface/'run.json','entry':Path(__file__),'materialControls':Path(__file__).parent/'elements_core/lava_material.py'}
  if formation_mode=='pour':
   render_inputs['moldSource']=a.source
