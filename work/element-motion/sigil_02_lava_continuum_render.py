@@ -146,18 +146,18 @@ def build_molten_material():
  links.new(tr.outputs['Result'],ramp.inputs['Fac']);links.new(ramp.outputs['Color'],p.inputs['Emission Color'])
 
  macro=nodes.new('ShaderNodeTexNoise');macro.noise_dimensions='3D';macro.label='sub-grid emissivity variation'
- macro.inputs['Scale'].default_value=18.;macro.inputs['Detail'].default_value=2.5;macro.inputs['Roughness'].default_value=.60
+ macro.inputs['Scale'].default_value=12.;macro.inputs['Detail'].default_value=2.7;macro.inputs['Roughness'].default_value=.63
  links.new(rest.outputs['Vector'],macro.inputs['Vector'])
  mod=nodes.new('ShaderNodeMapRange');mod.clamp=True
  mod.inputs['From Min'].default_value=.16;mod.inputs['From Max'].default_value=.84
- mod.inputs['To Min'].default_value=.58;mod.inputs['To Max'].default_value=1.12
+ mod.inputs['To Min'].default_value=.28;mod.inputs['To Max'].default_value=1.02
  links.new(macro.outputs['Fac'],mod.inputs['Value'])
  sm=math_node(nodes,'MULTIPLY');links.new(bulk_strength.outputs['Fac'],sm.inputs[0]);links.new(mod.outputs['Result'],sm.inputs[1])
- scale=math_node(nodes,'MULTIPLY',b=.92,label='exposed interior radiance');links.new(sm.outputs[0],scale.inputs[0]);links.new(scale.outputs[0],p.inputs['Emission Strength'])
+ scale=math_node(nodes,'MULTIPLY',b=.82,label='exposed interior radiance');links.new(sm.outputs[0],scale.inputs[0]);links.new(scale.outputs[0],p.inputs['Emission Strength'])
 
  base_mix=nodes.new('ShaderNodeMixRGB');base_mix.blend_type='MIX';base_mix.inputs['Fac'].default_value=.22
  base_mix.inputs[1].default_value=(.006,.001,.00018,1.);links.new(ramp.outputs['Color'],base_mix.inputs[2]);links.new(base_mix.outputs['Color'],p.inputs['Base Color'])
- bump=nodes.new('ShaderNodeBump');bump.label='viscous breakout relief';bump.inputs['Strength'].default_value=.10;bump.inputs['Distance'].default_value=.00065
+ bump=nodes.new('ShaderNodeBump');bump.label='viscous breakout relief';bump.inputs['Strength'].default_value=.15;bump.inputs['Distance'].default_value=.00080
  links.new(macro.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],p.inputs['Normal'])
  return m
 
