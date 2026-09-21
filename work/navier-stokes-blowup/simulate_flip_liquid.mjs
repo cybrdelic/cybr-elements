@@ -1,45 +1,56 @@
 import {FlipSolver,makeProductionPreset} from '../flip-lettering/vendor/src/main.js';
-import {SurfaceBuilder} from '../flip-lettering/vendor/src/surface.js';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 
 const root=new URL('./',import.meta.url);
-const out=new URL('./cache-ns-flip-liquid/',root);
+const out=new URL('./cache-ns-water-prod/',root);
 fs.mkdirSync(out,{recursive:true});
 
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-const tauMax=.28,tauMin=.012,duration=.36,h=.07;
+const tauMax=.28,tauMin=.020,duration=8/24;
+const h=.045;
 const config=makeProductionPreset('vortex');
 Object.assign(config,{
-  nameKey:'ns-blowup-liquid',
+  nameKey:'ns-water-prod',
   h,
-  nx:34,ny:34,nz:34,
-  extent:[34*h,34*h,34*h],
+  nx:64,ny:48,nz:64,
+  extent:[64*h,48*h,64*h],
   obstacles:[],
-  maxParticles:220000,
+  maxParticles:520000,
   seed:260921,
-  gravity:[0,0,0],
+  gravity:[0,-9.81,0],
   surfaceTension:.072,
-  pressureTolerance:2e-5,
-  iterations:240,
-  flip:.91,
+  pressureTolerance:1e-5,
+  iterations:320,
+  flip:.94,
   separation:true,
   advection:'rk2',
-  shapeTransport:true
+  shapeTransport:true,
+  surfaceOptions:{
+    spacingFactor:.43,
+    kernelRadiusFactor:1.48,
+    fieldSigma:.68,
+    meshSmoothingPasses:8,
+    temporalBlend:0,
+    shapeHistoryWeight:0
+  }
 });
 
-const cx=config.extent[0]/2,cy=config.extent[1]/2,cz=config.extent[2]/2;
+const cx=config.extent[0]/2,cz=config.extent[2]/2;
+const coreY=.62;
 
 function tauAt(t){
   const a=clamp(t/duration,0,1);
   return tauMax*Math.pow(tauMin/tauMax,a);
 }
 
-function targetVelocity(x,y,z,tau){
-  // Axisymmetric divergence-free shrinking-core field centered in the liquid.
-  const X=x-cx,Y=y-cy,Z=z-cz;
+function similarityVelocity(x,y,z,tau){
+  // Leading shrinking-core similarity field centered inside a larger ordinary
+  // water body.  The outer liquid is not rescaled or kinematically animated.
+  const X=x-cx,Y=y-coreY,Z=z-cz;
   const r=Math.hypot(X,Z);
-  const Lr=Math.pow(tau,.5),Lz=Math.pow(tau,.491);
+  const Lr=.82*Math.pow(tau,.5);
+  const Lz=.96*Math.pow(tau,.491);
   const R=r/Lr,Q=Y/Lz;
   const env=Math.exp(-.5*(R*R+.72*Q*Q));
   const C=.62,swirl=2.15;
@@ -50,104 +61,117 @@ function targetVelocity(x,y,z,tau){
   return [ur*c-ut*s,uy,ur*s+ut*c];
 }
 
-class BlowupLiquid extends FlipSolver {
+function coreWeight(x,y,z,tau){
+  const X=x-cx,Y=y-coreY,Z=z-cz;
+  const Lr=.82*Math.pow(tau,.5);
+  const Lz=.96*Math.pow(tau,.491);
+  const R=Math.hypot(X,Z)/Math.max(Lr,1e-6);
+  const Q=Y/Math.max(Lz,1e-6);
+  // Quartic falloff makes the singular core local: the surrounding water
+  // remains normal FLIP water and supplies the large-scale visual reference.
+  return Math.exp(-.34*(R**4+.72*Q**4));
+}
+
+class BlowupWater extends FlipSolver {
   initialize(){
-    // This is a real CYBR free-surface liquid parcel. The proof itself does
-    // not require a free surface; the parcel is a visualization window into
-    // the velocity concentration mechanism.
+    // Broad grounded water mound/puddle rather than a floating blob.  This is
+    // deliberately similar to the established CYBR water language: a coherent
+    // body with a real free surface, thin peripheral sheets and room for spray.
     this.seedVolume((x,y,z)=>{
-      const X=(x-cx)/.78,Y=(y-cy)/.67,Z=(z-cz)/.78;
-      return X*X+Y*Y+Z*Z<1;
+      const X=(x-cx)/1.19,Z=(z-cz)/1.13;
+      const r2=X*X+Z*Z;
+      if(r2>=1)return false;
+      const top=.16+.82*Math.pow(1-r2,.58);
+      return y<top;
     });
+
+    // Seed only the localized core with the similarity field.  Everywhere else
+    // starts as ordinary water at rest under gravity.
     const tau=tauAt(0);
     for(let n=0;n<this.count;n++){
-      const q=n*3,v=targetVelocity(this.p[q],this.p[q+1],this.p[q+2],tau);
-      this.v[q]=v[0];this.v[q+1]=v[1];this.v[q+2]=v[2];
+      const q=n*3,x=this.p[q],y=this.p[q+1],z=this.p[q+2];
+      const w=coreWeight(x,y,z,tau);
+      if(w<1e-4)continue;
+      const v=similarityVelocity(x,y,z,tau);
+      this.v[q]=w*v[0];this.v[q+1]=w*v[1];this.v[q+2]=w*v[2];
     }
   }
+
   emit(_dt){}
+
   applyForces(dt){
-    // Force the genuine FLIP/APIC liquid toward the prescribed smooth
-    // divergence-free similarity velocity. The subsequent pressure solve
-    // reprojects it, so every accepted substep remains an incompressible
-    // free-surface liquid solve rather than direct particle animation.
-    const tau=tauAt(this.time+.5*dt),gain=1-Math.exp(-10*dt),H=this.h;
-    const [u,v,w]=this.u,{sx,sy,kind}=this;
+    // Keep normal water gravity first.
+    super.applyForces(dt);
+
+    // Local similarity forcing is applied on the MAC grid, then the normal
+    // FLIP pressure solve reprojects the result.  This is not direct particle
+    // animation and does not collapse the outer body with the core.
+    const tau=tauAt(this.time+.5*dt);
+    const response=1-Math.exp(-15*dt);
+    const [u,v,w]=this.u,{sx,sy,kind}=this,H=this.h;
     for(let i=1;i<this.nx;i++)for(let j=1;j<this.ny;j++)for(let k=1;k<this.nz;k++){
       const q=this.index(i,j,k);
       if(kind[q]!==1&&kind[q-sx]!==1&&kind[q-sy]!==1&&kind[q-1]!==1)continue;
-      const U=targetVelocity(i*H,(j+.5)*H,(k+.5)*H,tau);
-      const V=targetVelocity((i+.5)*H,j*H,(k+.5)*H,tau);
-      const W=targetVelocity((i+.5)*H,(j+.5)*H,k*H,tau);
-      if(this.valid[0][q])u[q]+=gain*(U[0]-u[q]);
-      if(this.valid[1][q])v[q]+=gain*(V[1]-v[q]);
-      if(this.valid[2][q])w[q]+=gain*(W[2]-w[q]);
+
+      const px=i*H,py=(j+.5)*H,pz=(k+.5)*H;
+      const wx=coreWeight(px,py,pz,tau);
+      if(wx>1e-5&&this.valid[0][q]){
+        const target=similarityVelocity(px,py,pz,tau)[0];
+        u[q]+=response*wx*(target-u[q]);
+      }
+
+      const qx=(i+.5)*H,qy=j*H,qz=(k+.5)*H;
+      const wy=coreWeight(qx,qy,qz,tau);
+      if(wy>1e-5&&this.valid[1][q]){
+        const target=similarityVelocity(qx,qy,qz,tau)[1];
+        v[q]+=response*wy*(target-v[q]);
+      }
+
+      const rx=(i+.5)*H,ry=(j+.5)*H,rz=k*H;
+      const wz=coreWeight(rx,ry,rz,tau);
+      if(wz>1e-5&&this.valid[2][q]){
+        const target=similarityVelocity(rx,ry,rz,tau)[2];
+        w[q]+=response*wz*(target-w[q]);
+      }
     }
   }
 }
 
-const sim=new BlowupLiquid(config);
-const surf=new SurfaceBuilder(config);
-
-function writeObj(file,mesh){
-  const p=mesh.positions,n=mesh.normals;
-  let s='# CYBR FLIP III.1 actual free-surface liquid\n';
-  for(let i=0;i<p.length;i+=3)s+=`v ${p[i]} ${p[i+1]} ${p[i+2]}\n`;
-  for(let i=0;i<n.length;i+=3)s+=`vn ${n[i]} ${n[i+1]} ${n[i+2]}\n`;
-  for(let i=0;i<p.length/3;i+=3)s+=`f ${i+1}//${i+1} ${i+2}//${i+2} ${i+3}//${i+3}\n`;
-  fs.writeFileSync(file,s);
-}
-
-function particleEnergy(){
-  const mass=1000*Math.pow(h*.5,3);
-  let E=0,max=0;
-  for(let n=0;n<sim.count;n++){
-    const q=n*3,s2=sim.v[q]**2+sim.v[q+1]**2+sim.v[q+2]**2;
-    E+=.5*mass*s2;max=Math.max(max,Math.sqrt(s2));
-  }
-  return {kineticEnergy:E,maxParticleSpeed:max};
-}
-
+const sim=new BlowupWater(config);
+const frameDt=1/24;
 const manifest={
+  schema:'cybr-flip-cache/3',
   solver:'CYBR FLIP III.1 quadratic APIC/FLIP + Galerkin MG-PCG',
-  representation:'actual free-surface liquid particles with reconstructed surface',
-  forcing:'relaxation toward smooth divergence-free shrinking-core similarity velocity before pressure projection',
-  tauMax,tauMin,duration,frameDt:1/30,frames:[],
+  representation:'large ordinary free-surface water body with localized shrinking-core forcing',
+  forcing:'quartic-localized smooth divergence-free similarity field before pressure projection',
+  config,frameDt,playbackFps:24,
+  tauMax,tauMin,duration,
+  frames:[],
   noImageGeneration:true,
-  disclosure:'The liquid solver is genuine CYBR FLIP. The prescribed forcing field matches the leading shrinking-core exponents but is not the exact full E/U/Pi + annular-pulse + forcing construction from the proof.'
+  disclosure:'Genuine CYBR FLIP liquid. The localized prescribed field matches the leading shrinking-core exponents but is not the exact full E/U/Pi + annular-pulse + forcing construction from the proof.'
 };
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 
-for(let frame=0;frame<12;frame++){
-  const info=sim.advance(1/30);
+for(let frame=0;frame<8;frame++){
+  const info=sim.advance(frameDt);
   if(!info.finite||info.capacityRejected||!info.pressure.converged)throw Error(JSON.stringify(info));
-  surf.density(sim.p,sim.count);
-  const mesh=surf.mesh(sim.p,sim.count,null);
-  const stem=String(frame).padStart(4,'0');
-  const obj=new URL(`${stem}.obj`,out);
-  writeObj(obj,mesh);
-  const drops=new URL(`${stem}.drops`,out);
-  fs.writeFileSync(drops,Buffer.from(mesh.drops.buffer,mesh.drops.byteOffset,mesh.drops.byteLength));
-  const pe=particleEnergy();
+  const n=sim.count;
+  const primary=Buffer.concat([
+    Buffer.from(sim.p.buffer,sim.p.byteOffset,n*12),
+    Buffer.from(sim.v.buffer,sim.v.byteOffset,n*12)
+  ]);
+  const shape=Buffer.from(sim.shape.buffer,sim.shape.byteOffset,n*24);
+  fs.writeFileSync(new URL(`${String(frame).padStart(4,'0')}.particles`,out),primary);
+  fs.writeFileSync(new URL(`${String(frame).padStart(4,'0')}.shape`,out),shape);
   const tau=tauAt(sim.time);
-  const row={
-    frame,time:sim.time,tau,particles:sim.count,
-    surfaceTriangles:mesh.positions.length/9,
-    surfaceVolume:surf.lastMeshStats?.volume??null,
-    surfaceTargetVolume:surf.lastMeshStats?.target??null,
-    surfaceRelativeVolumeError:surf.lastMeshStats?.relativeError??null,
-    ...pe,
-    divergenceRms:info.divergenceAfter,
-    divergenceMax:info.divergenceMax,
-    projectionIterations:info.pressure.iterations,
-    pressureRelativeResidual:info.pressure.relativeResidual,
-    substeps:info.substeps,
-    obj:`${stem}.obj`,
-    drops:`${stem}.drops`,
-    dropletCount:mesh.drops.length/3
-  };
+  const row={frame,tau,...info,primarySha256:sha(primary)};
   manifest.frames.push(row);
   fs.writeFileSync(new URL('manifest.json',out),JSON.stringify(manifest,null,2));
-  console.log(JSON.stringify(row),flush=>{});
+  console.log(JSON.stringify({
+    frame,tau,particles:n,maxSpeed:info.maxSpeed,
+    kineticEnergy:info.kineticEnergy,divergence:info.divergenceAfter,
+    pressureIterations:info.pressure.iterations,substeps:info.substeps
+  }));
 }
 manifest.simulationComplete=true;
 fs.writeFileSync(new URL('manifest.json',out),JSON.stringify(manifest,null,2));
