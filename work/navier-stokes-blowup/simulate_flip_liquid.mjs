@@ -88,8 +88,6 @@ class BlowupLiquid extends FlipSolver {
 
 const sim=new BlowupLiquid(config);
 const surf=new SurfaceBuilder(config);
-surf.spacing=h*.55;
-surf.radius=h*1.02;
 
 function writeObj(file,mesh){
   const p=mesh.positions,n=mesh.normals;
