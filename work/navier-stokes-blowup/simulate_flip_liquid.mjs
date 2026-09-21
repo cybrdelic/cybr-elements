@@ -124,8 +124,11 @@ for(let frame=0;frame<12;frame++){
   if(!info.finite||info.capacityRejected||!info.pressure.converged)throw Error(JSON.stringify(info));
   surf.density(sim.p,sim.count);
   const mesh=surf.mesh(sim.p,sim.count,null);
-  const obj=new URL(`${String(frame).padStart(4,'0')}.obj`,out);
+  const stem=String(frame).padStart(4,'0');
+  const obj=new URL(`${stem}.obj`,out);
   writeObj(obj,mesh);
+  const drops=new URL(`${stem}.drops`,out);
+  fs.writeFileSync(drops,Buffer.from(mesh.drops.buffer,mesh.drops.byteOffset,mesh.drops.byteLength));
   const pe=particleEnergy();
   const tau=tauAt(sim.time);
   const row={
@@ -140,7 +143,9 @@ for(let frame=0;frame<12;frame++){
     projectionIterations:info.pressure.iterations,
     pressureRelativeResidual:info.pressure.relativeResidual,
     substeps:info.substeps,
-    obj:`${String(frame).padStart(4,'0')}.obj`
+    obj:`${stem}.obj`,
+    drops:`${stem}.drops`,
+    dropletCount:mesh.drops.length/3
   };
   manifest.frames.push(row);
   fs.writeFileSync(new URL('manifest.json',out),JSON.stringify(manifest,null,2));
