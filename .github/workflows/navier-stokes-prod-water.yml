@@ -115,7 +115,7 @@ jobs:
         run: |
           ffmpeg -y -framerate 8 \
             -i work/navier-stokes-blowup/prod-water-frames/%04d.png \
-            -c:v libx264 -crf 15 -preset slow -pix_fmt yuv420p -movflags +faststart \
+            -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -crf 15 -preset slow -pix_fmt yuv420p -movflags +faststart \
             work/navier-stokes-blowup/prod-water-frames/navier-stokes-prod-cybr-water.mp4
 
       - name: Verify final render
