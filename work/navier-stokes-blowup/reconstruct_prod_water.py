@@ -17,9 +17,9 @@ for name in ["OPENBLAS_NUM_THREADS","OMP_NUM_THREADS","NUMBA_NUM_THREADS"]:
     os.environ.setdefault(name,"2")
 
 ROOT=Path(__file__).resolve().parents[2]
-TOOLS=ROOT/"flip-lettering/vendor/tools"
+TOOLS=ROOT/"work/flip-lettering/vendor/tools"
 sys.path.insert(0,str(TOOLS))
-sys.path.insert(0,str(ROOT/"element-motion"))
+sys.path.insert(0,str(ROOT/"work/element-motion"))
 
 from scipy.spatial import cKDTree
 from bending_surface import DetailReconstruction
