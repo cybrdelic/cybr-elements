@@ -108,7 +108,7 @@ jobs:
             --input work/navier-stokes-blowup/prod-water-recon \
             --out work/navier-stokes-blowup/prod-water-frames \
             --width 720 \
-            --height 405 \
+            --height 404 \
             --samples 20
 
       - name: Encode video
