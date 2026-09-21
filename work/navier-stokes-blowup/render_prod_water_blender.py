@@ -1,21 +1,19 @@
-"""Render the Navier-Stokes blowup study with the accepted CYBR water look.
+"""Render the Navier-Stokes study with the accepted CYBR water optical look.
 
-This is intentionally patterned after bending-water-render-v5.py and the
-accepted water-optical material pass: clear IOR 1.333 water, very low roughness,
-volume absorption, black camera background with a reflection environment,
-studio strip lights, actual surface-velocity motion blur, and mass-carrying
-detached droplets.
+This mirrors the established bending-water / water-optical language: genuine
+reconstructed FLIP surface, IOR 1.333, very low roughness, volume absorption,
+black camera background with a reflection environment, strip lighting, native
+surface-velocity motion blur, and mass-carrying detached droplets.
 
-Run inside Blender:
-  blender -b --python render_prod_water_blender.py -- --input ... --out ...
+No image generation.  NumPy is deliberately not required inside Blender.
 """
 from __future__ import annotations
 import argparse
+from array import array
 from pathlib import Path
-import json, math, sys, time
+import json, struct, sys, time
 
 import bpy
-import numpy as np
 from mathutils import Vector
 
 
@@ -77,8 +75,8 @@ def stage_material():
     m=bpy.data.materials.new("wet charcoal slate")
     m.use_nodes=True
     p=m.node_tree.nodes.get("Principled BSDF")
-    set_socket(p,["Base Color"],(.012,.017,.022,1))
-    set_socket(p,["Roughness"],.32)
+    set_socket(p,["Base Color"],(.010,.014,.019,1))
+    set_socket(p,["Roughness"],.28)
     return m
 
 
@@ -87,11 +85,12 @@ def configure_world():
     bpy.context.scene.world=w
     w.use_nodes=True
     n=w.node_tree.nodes;l=w.node_tree.links
-    for node in list(n):
-        n.remove(node)
+    for node in list(n):n.remove(node)
+
     out=n.new("ShaderNodeOutputWorld")
     env=n.new("ShaderNodeBackground")
     env.inputs["Strength"].default_value=.46
+
     ramp=n.new("ShaderNodeValToRGB")
     cr=ramp.color_ramp
     cr.elements.remove(cr.elements[1])
@@ -105,6 +104,7 @@ def configure_world():
         (.82,(.16,.20,.23,1)),
     ]:
         e=cr.elements.new(pos);e.color=col
+
     tex=n.new("ShaderNodeTexCoord")
     sep=n.new("ShaderNodeSeparateXYZ")
     l.new(tex.outputs["Normal"],sep.inputs[0])
@@ -114,6 +114,7 @@ def configure_world():
     black=n.new("ShaderNodeBackground")
     black.inputs["Color"].default_value=(0,0,0,1)
     black.inputs["Strength"].default_value=0
+
     path=n.new("ShaderNodeLightPath")
     mix=n.new("ShaderNodeMixShader")
     l.new(path.outputs["Is Camera Ray"],mix.inputs[0])
@@ -122,59 +123,113 @@ def configure_world():
     l.new(mix.outputs[0],out.inputs["Surface"])
 
 
+def read_f32(stream,count):
+    a=array("f")
+    a.fromfile(stream,count)
+    if len(a)!=count:raise EOFError("truncated float block")
+    return a
+
+
+def read_u32(stream,count):
+    a=array("I")
+    a.fromfile(stream,count)
+    if len(a)!=count:raise EOFError("truncated uint block")
+    return a
+
+
+def read_cwb(path):
+    with path.open("rb") as stream:
+        head=stream.read(16)
+        if len(head)!=16:raise EOFError("truncated cwb header")
+        magic,nv,nf,nd=struct.unpack("<4I",head)
+        if magic!=0x43594257:raise ValueError("bad CYBR water handoff magic")
+        pos=read_f32(stream,nv*3)
+        vel=read_f32(stream,nv*3)
+        faces=read_u32(stream,nf*3)
+        drops=read_f32(stream,nd*3)
+        radii=read_f32(stream,nd)
+        drop_v=read_f32(stream,nd*3)
+        if stream.read(1):raise ValueError("unexpected trailing CWB data")
+    return nv,nf,nd,pos,vel,faces,drops,radii,drop_v
+
+
+def convert_points(flat,count,velocity=None,scale=0.0):
+    # CYBR simulation is X,Y,Z with Y up. Blender is X,Y,Z with Z up.
+    out=[]
+    for i in range(count):
+        q=3*i
+        x=flat[q];y=flat[q+1];z=flat[q+2]
+        if velocity is not None and scale:
+            x+=velocity[q]*scale
+            y+=velocity[q+1]*scale
+            z+=velocity[q+2]*scale
+        out.append((x,z,y))
+    return out
+
+
+def convert_faces(flat,count):
+    # Coordinate handedness changes under X,Z,Y, so flip winding.
+    return [(int(flat[3*i]),int(flat[3*i+2]),int(flat[3*i+1])) for i in range(count)]
+
+
 def make_mesh_object(name,verts,faces,mat):
     me=bpy.data.meshes.new(name+"Mesh")
-    me.from_pydata(np.asarray(verts).tolist(),[],np.asarray(faces,dtype=np.int32).tolist())
+    me.from_pydata(verts,[],faces)
     me.update()
     obj=bpy.data.objects.new(name,me)
     bpy.context.collection.objects.link(obj)
     me.materials.append(mat)
-    for poly in me.polygons:
-        poly.use_smooth=True
+    for poly in me.polygons:poly.use_smooth=True
     return obj
 
 
-def add_motion_shape(obj,start,end):
-    if len(start)==0:return
+def add_motion_shape(obj,end):
+    if not end:return
     obj.shape_key_add(name="Shutter start")
     key=obj.shape_key_add(name="Shutter end")
-    key.data.foreach_set("co",np.asarray(end,np.float32).ravel())
+    flat=[]
+    for p in end:flat.extend(p)
+    key.data.foreach_set("co",flat)
     key.value=0;key.keyframe_insert(data_path="value",frame=0)
     key.value=1;key.keyframe_insert(data_path="value",frame=2)
-    if obj.data.shape_keys and obj.data.shape_keys.animation_data and obj.data.shape_keys.animation_data.action:
-        for fc in obj.data.shape_keys.animation_data.action.fcurves:
+    sk=obj.data.shape_keys
+    if sk and sk.animation_data and sk.animation_data.action:
+        for fc in sk.animation_data.action.fcurves:
             for kp in fc.keyframe_points:kp.interpolation="LINEAR"
 
 
 def ico_template():
     bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=1)
     o=bpy.context.object
-    v=np.array([p.co[:] for p in o.data.vertices],np.float32)
-    f=np.array([p.vertices[:] for p in o.data.polygons],np.int32)
+    verts=[tuple(v.co) for v in o.data.vertices]
+    faces=[tuple(p.vertices) for p in o.data.polygons]
     bpy.data.objects.remove(o,do_unlink=True)
-    return v,f
+    return verts,faces
 
 
-def droplet_object(name,pos,radii,vel,dt,mat,iv,iff,max_drops=2600):
-    if len(pos)==0:return None
-    if len(pos)>max_drops:
-        ids=np.linspace(0,len(pos)-1,max_drops,dtype=int)
-        pos=pos[ids];radii=radii[ids];vel=vel[ids]
+def droplet_object(name,drops,radii,drop_v,nd,dt,mat,iv,iff,max_drops=2600):
+    if nd==0:return None
+    ids=list(range(nd))
+    if nd>max_drops:
+        ids=[round(i*(nd-1)/(max_drops-1)) for i in range(max_drops)]
     half=.30*dt
-    start_centers=pos-vel*half
-    end_centers=pos+vel*half
-    sv=(start_centers[:,None,:]+iv[None,:,:]*radii[:,None,None]).reshape(-1,3)
-    ev=(end_centers[:,None,:]+iv[None,:,:]*radii[:,None,None]).reshape(-1,3)
-    faces=(iff[None,:,:]+np.arange(len(pos))[:,None,None]*len(iv)).reshape(-1,3)
-    obj=make_mesh_object(name,sv,faces,mat)
-    add_motion_shape(obj,sv,ev)
+    start=[];end=[];faces=[]
+    base=0
+    for idx in ids:
+        q=3*idx
+        x,y,z=drops[q],drops[q+1],drops[q+2]
+        vx,vy,vz=drop_v[q],drop_v[q+1],drop_v[q+2]
+        r=max(float(radii[idx]),.002)
+        sc=(x-vx*half,z-vz*half,y-vy*half)
+        ec=(x+vx*half,z+vz*half,y+vy*half)
+        for v in iv:
+            start.append((sc[0]+v[0]*r,sc[1]+v[1]*r,sc[2]+v[2]*r))
+            end.append((ec[0]+v[0]*r,ec[1]+v[1]*r,ec[2]+v[2]*r))
+        for f in iff:faces.append((base+f[0],base+f[1],base+f[2]))
+        base+=len(iv)
+    obj=make_mesh_object(name,start,faces,mat)
+    add_motion_shape(obj,end)
     return obj
-
-
-def convert_xyz(a):
-    a=np.asarray(a,np.float32)
-    if len(a)==0:return a.reshape(-1,3)
-    return a[:,[0,2,1]]
 
 
 def main():
@@ -185,29 +240,25 @@ def main():
 
     scene=bpy.context.scene
     bpy.ops.object.select_all(action="SELECT");bpy.ops.object.delete(use_global=False)
-    scene.render.engine="BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in {i.identifier for i in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items} else "CYCLES"
-    # Prefer Cycles when available. CPU is deterministic on the hosted runner.
-    try: scene.render.engine="CYCLES"
-    except Exception: pass
-    if scene.render.engine=="CYCLES":
-        scene.cycles.device="CPU"
-        scene.cycles.samples=a.samples
-        scene.cycles.use_denoising=True
-        scene.cycles.max_bounces=12
-        scene.cycles.transmission_bounces=10
-        scene.cycles.glossy_bounces=6
-        scene.cycles.diffuse_bounces=2
-        scene.cycles.caustics_reflective=False
-        scene.cycles.caustics_refractive=False
+    scene.render.engine="CYCLES"
+    scene.cycles.device="CPU"
+    scene.cycles.samples=a.samples
+    scene.cycles.use_denoising=True
+    scene.cycles.max_bounces=12
+    scene.cycles.transmission_bounces=10
+    scene.cycles.glossy_bounces=6
+    scene.cycles.diffuse_bounces=2
+    scene.cycles.caustics_reflective=False
+    scene.cycles.caustics_refractive=False
+
     scene.render.resolution_x=a.width
     scene.render.resolution_y=a.height
     scene.render.resolution_percentage=100
     scene.render.image_settings.file_format="PNG"
     scene.render.image_settings.color_mode="RGB"
-    try:scene.view_settings.look="AgX - Medium High Contrast"
-    except Exception:
-        try:scene.view_settings.view_transform="AgX"
-        except Exception:pass
+    try:scene.view_settings.view_transform="AgX"
+    except Exception:pass
+
     scene.render.film_transparent=False
     scene.render.use_motion_blur=True
     scene.render.motion_blur_shutter=.60
@@ -216,7 +267,7 @@ def main():
     configure_world()
     water=water_material();stage=stage_material()
 
-    # Wide dark floor, kept low so it does not cut the reconstructed water.
+    # Wide dark stage under the grounded liquid.
     bpy.ops.mesh.primitive_plane_add(size=8,location=(1.44,1.44,.028))
     floor=bpy.context.object
     floor.data.materials.append(stage)
@@ -237,6 +288,7 @@ def main():
     iv,iff=ico_template()
     t0=time.time()
     active=[]
+
     for row in manifest["frames"]:
         f=int(row["frame"])
         for obj in active:
@@ -245,29 +297,23 @@ def main():
             if me and me.users==0:bpy.data.meshes.remove(me)
         active=[]
 
-        d=np.load(inp/f"{f:04d}.npz")
-        verts=convert_xyz(d["positions"])
-        vel=convert_xyz(d["surface_velocity"])
-        faces=np.asarray(d["faces"],np.int32)[:,[0,2,1]]
-
+        nv,nf,nd,pos,vel,facebuf,drops,radii,drop_v=read_cwb(inp/f"{f:04d}.cwb")
         half=.30*frame_dt
-        start=verts-vel*half
-        end=verts+vel*half
+        start=convert_points(pos,nv,vel,-half)
+        end=convert_points(pos,nv,vel,+half)
+        faces=convert_faces(facebuf,nf)
+
         liquid=make_mesh_object("Native CYBR FLIP water",start,faces,water)
-        add_motion_shape(liquid,start,end)
+        add_motion_shape(liquid,end)
         active.append(liquid)
 
-        drops=convert_xyz(d["drops"])
-        drop_v=convert_xyz(d["drop_velocity"])
-        radii=np.asarray(d["radii"],np.float32)
-        droplet=droplet_object("Mass-conserving droplets",drops,radii,drop_v,frame_dt,water,iv,iff)
+        droplet=droplet_object("Mass-conserving droplets",drops,radii,drop_v,nd,frame_dt,water,iv,iff)
         if droplet:active.append(droplet)
 
         scene.frame_set(1)
         scene.render.filepath=str(out/f"{f:04d}.png")
         bpy.ops.render.render(write_still=True)
-        print("RENDER",f,"verts",len(verts),"drops",len(drops),"seconds",round(time.time()-t0,1),flush=True)
-        d.close()
+        print("RENDER",f,"verts",nv,"drops",nd,"seconds",round(time.time()-t0,1),flush=True)
 
     print("COMPLETE",flush=True)
 
