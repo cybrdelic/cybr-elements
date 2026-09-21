@@ -125,10 +125,13 @@ function rk2Advect(p, tau, h, dt) {
 function buildTracerParticles(tau, h, seed) {
   const rng = makeRng(seed);
   const s = scales(tau, h);
-  const surfaceH = s.radial / 24;
-  const spacing = surfaceH * 0.50;
-  const zHalf = 2.35 * s.axial;
-  const rMax = 1.72 * s.radial;
+  // The boundary is a tracer, not a resolved molecular/free-surface layer.
+  // Keep enough samples for a continuous CYBR ELEMENTS isosurface without
+  // turning each similarity snapshot into a multi-million-particle solve.
+  const surfaceH = s.radial / 9;
+  const spacing = surfaceH * 0.58;
+  const zHalf = 3.40 * s.axial;
+  const rMax = 1.25 * s.radial;
   const points = [];
 
   let energy = 0;
