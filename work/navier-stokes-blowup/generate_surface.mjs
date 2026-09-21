@@ -152,7 +152,9 @@ function buildTracerParticles(tau, h, seed) {
 
         // A small helical modulation makes the tracer boundary expose the swirl.
         // It is a visualization device, not a free-surface claim about the theorem.
-        const ridge = 1\n          + 0.10 * Math.sin(5 * theta + 2.9 * z / s.axial + 1.7 * Math.log(1 / tau))\n          + 0.035 * Math.sin(2 * theta - 4.4 * z / s.axial);
+        const ridge = 1
+          + 0.10 * Math.sin(5 * theta + 2.9 * z / s.axial + 1.7 * Math.log(1 / tau))
+          + 0.035 * Math.sin(2 * theta - 4.4 * z / s.axial);
         if (r > localRadius * ridge) continue;
 
         const jitter = 0.10 * spacing;
