@@ -140,7 +140,7 @@ function buildTracerParticles(tau, h, seed) {
   let layer = 0;
   for (let z = -zHalf + spacing; z <= zHalf - spacing; z += spacing, layer++) {
     const Z = z / zHalf;
-    const cap = Math.sqrt(Math.max(0, 1 - Z * Z));
+    const cap = Math.pow(Math.max(0, 1 - Math.abs(Z)), 0.58);
     const localRadius = rMax * cap;
     const stagger = (layer & 1) ? 0.5 * spacing : 0;
 
@@ -152,7 +152,7 @@ function buildTracerParticles(tau, h, seed) {
 
         // A small helical modulation makes the tracer boundary expose the swirl.
         // It is a visualization device, not a free-surface claim about the theorem.
-        const ridge = 1 + 0.075 * Math.sin(3 * theta + 2.6 * z / s.axial + 1.7 * Math.log(1 / tau));
+        const ridge = 1\n          + 0.10 * Math.sin(5 * theta + 2.9 * z / s.axial + 1.7 * Math.log(1 / tau))\n          + 0.035 * Math.sin(2 * theta - 4.4 * z / s.axial);
         if (r > localRadius * ridge) continue;
 
         const jitter = 0.10 * spacing;
@@ -231,7 +231,7 @@ function main() {
   const metrics = [];
   const config = {
     source: 'OpenAI 2026 finite-time Navier-Stokes blowup leading-core visualization',
-    disclaimer: 'Uses theorem scaling exponents and a divergence-free surrogate core; not the complete exact proof field or forcing.',
+    disclaimer: 'Uses the paper\'s leading core exponents (lr~tau^1/2, lz~tau^(1/2-h), |u_theta|,|u_z|~tau^(-1/2-h), |u_r|~tau^-1/2, energy~tau^(1/2-3h)) with a divergence-free surrogate similarity profile and a visible tracer boundary. It is not the paper\'s exact E/U/Pi profile, annular pulses, forcing, or a literal liquid free surface.',
     h: args.h,
     A: 0.5 + args.h,
     D: 0.5 - args.h,
