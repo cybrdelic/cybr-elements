@@ -1,0 +1,156 @@
+name: Navier-Stokes production CYBR water
+
+on:
+  push:
+    branches:
+      - openai-navier-stokes-blowup
+    paths:
+      - 'work/navier-stokes-blowup/simulate_flip_liquid.mjs'
+      - 'work/navier-stokes-blowup/reconstruct_prod_water.py'
+      - 'work/navier-stokes-blowup/render_prod_water_blender.py'
+      - '.github/workflows/navier-stokes-prod-water.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: navier-stokes-prod-water
+  cancel-in-progress: true
+
+jobs:
+  simulate-render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout CYBR ELEMENTS
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install numerical and render dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy scipy scikit-image numba
+          sudo apt-get update
+          sudo apt-get install -y blender ffmpeg
+
+      - name: Run high-resolution localized CYBR FLIP water
+        run: |
+          cd work/navier-stokes-blowup
+          rm -rf cache-ns-water-prod prod-water-recon prod-water-frames
+          node simulate_flip_liquid.mjs
+
+      - name: Verify FLIP solve
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('work/navier-stokes-blowup/cache-ns-water-prod/manifest.json')
+          m=json.loads(p.read_text())
+          rows=m['frames']
+          assert m['simulationComplete'] is True
+          assert len(rows)==8
+          assert min(r['particles'] for r in rows)>70000
+          assert all(r['finite'] for r in rows)
+          assert all(r['capacityRejected']==0 for r in rows)
+          assert all(r['pressure']['converged'] for r in rows)
+          assert max(r['pressure']['relativeResidual'] for r in rows)<1e-4
+          assert rows[-1]['maxSpeed'] > rows[0]['maxSpeed']*1.25
+          print({
+            'particles':[rows[0]['particles'],rows[-1]['particles']],
+            'speed_growth':rows[-1]['maxSpeed']/rows[0]['maxSpeed'],
+            'energy_ratio':rows[-1]['kineticEnergy']/rows[0]['kineticEnergy'],
+            'max_divergence':max(r['divergenceAfter'] for r in rows),
+          })
+          PY
+
+      - name: Reconstruct with accepted CYBR water surface pipeline
+        run: |
+          python work/navier-stokes-blowup/reconstruct_prod_water.py \
+            --input work/navier-stokes-blowup/cache-ns-water-prod \
+            --out work/navier-stokes-blowup/prod-water-recon
+
+      - name: Verify reconstructed liquid
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('work/navier-stokes-blowup/prod-water-recon/manifest.json')
+          m=json.loads(p.read_text())
+          rows=m['frames']
+          assert len(rows)==8
+          assert min(r['vertices'] for r in rows)>10000
+          assert min(r['triangles'] for r in rows)>18000
+          assert max(abs(r['surfaceVolumeRelativeError']) for r in rows)<.03
+          print({
+            'triangles':[rows[0]['triangles'],rows[-1]['triangles']],
+            'drops':[r['drops'] for r in rows],
+            'max_volume_error':max(abs(r['surfaceVolumeRelativeError']) for r in rows),
+            'max_weber':max(r['maximumWeber'] for r in rows),
+          })
+          PY
+
+      - name: Render with accepted water-optical look
+        run: |
+          blender -b \
+            --python work/navier-stokes-blowup/render_prod_water_blender.py \
+            -- \
+            --input work/navier-stokes-blowup/prod-water-recon \
+            --out work/navier-stokes-blowup/prod-water-frames \
+            --width 720 \
+            --height 405 \
+            --samples 20
+
+      - name: Encode video
+        run: |
+          ffmpeg -y -framerate 8 \
+            -i work/navier-stokes-blowup/prod-water-frames/%04d.png \
+            -c:v libx264 -crf 15 -preset slow -pix_fmt yuv420p -movflags +faststart \
+            work/navier-stokes-blowup/prod-water-frames/navier-stokes-prod-cybr-water.mp4
+
+      - name: Verify final render
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess, json
+          d=Path('work/navier-stokes-blowup/prod-water-frames')
+          frames=sorted(d.glob('*.png'))
+          assert len(frames)==8
+          assert min(p.stat().st_size for p in frames)>10000
+          v=d/'navier-stokes-prod-cybr-water.mp4'
+          assert v.exists() and v.stat().st_size>30000
+          subprocess.run(['ffmpeg','-v','error','-i',str(v),'-f','null','-'],check=True)
+          print({'video_bytes':v.stat().st_size,'frame_bytes':[p.stat().st_size for p in frames]})
+          PY
+
+      - name: Persist verified production-water render
+        run: |
+          mkdir -p work/navier-stokes-blowup/output/prod-water
+          cp work/navier-stokes-blowup/prod-water-frames/navier-stokes-prod-cybr-water.mp4 \
+             work/navier-stokes-blowup/output/prod-water/
+          cp work/navier-stokes-blowup/prod-water-frames/0000.png \
+             work/navier-stokes-blowup/output/prod-water/first.png
+          cp work/navier-stokes-blowup/prod-water-frames/0004.png \
+             work/navier-stokes-blowup/output/prod-water/middle.png
+          cp work/navier-stokes-blowup/prod-water-frames/0007.png \
+             work/navier-stokes-blowup/output/prod-water/last.png
+          cp work/navier-stokes-blowup/cache-ns-water-prod/manifest.json \
+             work/navier-stokes-blowup/output/prod-water/simulation-manifest.json
+          cp work/navier-stokes-blowup/prod-water-recon/manifest.json \
+             work/navier-stokes-blowup/output/prod-water/reconstruction-manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work/navier-stokes-blowup/output/prod-water
+          git commit -m "Store production-style CYBR water blowup render [skip ci]" || true
+          git pull --rebase origin openai-navier-stokes-blowup
+          git push origin HEAD:openai-navier-stokes-blowup
