@@ -243,7 +243,7 @@ def main():
     scene.render.engine="CYCLES"
     scene.cycles.device="CPU"
     scene.cycles.samples=a.samples
-    scene.cycles.use_denoising=True
+    scene.cycles.use_denoising=False
     scene.cycles.max_bounces=12
     scene.cycles.transmission_bounces=10
     scene.cycles.glossy_bounces=6
