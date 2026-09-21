@@ -348,9 +348,12 @@ def main():
     air=np.zeros(shape,np.float32);air_heat=np.zeros_like(air)
     manifest={"version":1,"fps":fps,"bounds":{"lower":lo.tolist(),"upper":hi.tolist()},"frames":{}}
     previous=v3(frames[0]["axe_head"])
+    previous_frame=int(frames[0]["frame"])
+    frame_lookup={int(r["frame"]):r for r in frames}
 
     for row in frames:
         frame=int(row["frame"])
+        dt=max(1.0/fps,(frame-previous_frame)/fps)
         head=v3(row["axe_head"]); tail=v3(row["axe_tail"])
         tangent=normalize(head-tail,(1,0,0))
         assets={}
@@ -403,7 +406,10 @@ def main():
 
         earth_cue=choose_cue(cues,"earth",frame)
         if a.only in ("all","earth") and earth_cue:
-            impact=v3(earth_cue.start <= frame and frames[min(len(frames)-1,earth_cue.start)]["axe_head"] or head)
+            source_row=frame_lookup.get(earth_cue.start)
+            if source_row is None:
+                source_row=min(frames,key=lambda r:abs(int(r["frame"])-earth_cue.start))
+            impact=v3(source_row["axe_head"])
             impact[1]=0
             p=out/"earth"/f"frame_{frame:04d}.obj"
             earth_frame(frame,earth_cue,impact,a.seed,p)
@@ -411,6 +417,7 @@ def main():
 
         manifest["frames"][str(frame)]=assets
         previous=head
+        previous_frame=frame
 
     (out/"manifest.json").write_text(json.dumps(manifest,indent=2))
     print(json.dumps({"frames":len(frames),"bounds":manifest["bounds"],"out":str(out.resolve())},indent=2))
