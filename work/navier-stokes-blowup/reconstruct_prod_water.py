@@ -9,7 +9,7 @@ mass-carrying detached droplets, and native surface motion vectors.
 No image generation is involved.
 """
 from __future__ import annotations
-import argparse, json, sys, os
+import argparse, json, sys, os, struct
 from pathlib import Path
 import numpy as np
 
@@ -100,16 +100,32 @@ def main():
         if abs(represented_error)>.03:
             raise RuntimeError(f"surface volume validation failed frame {f}: {represented_error}")
 
+        positions=np.asarray(verts,np.float32)
+        faces_i=np.asarray(faces,np.uint32)
+        drops_f=np.asarray(drops,np.float32)
+        radii_f=np.asarray(radii,np.float32)
+        drop_v_f=np.asarray(drop_v,np.float32)
         np.savez_compressed(
             out/f"{f:04d}.npz",
-            positions=np.asarray(verts,np.float32),
+            positions=positions,
             normals=np.asarray(normals,np.float32),
-            faces=np.asarray(faces,np.int32),
+            faces=faces_i.astype(np.int32),
             surface_velocity=surface_v,
-            drops=np.asarray(drops,np.float32),
-            radii=np.asarray(radii,np.float32),
-            drop_velocity=drop_v,
+            drops=drops_f,
+            radii=radii_f,
+            drop_velocity=drop_v_f,
         )
+        # Blender's distro build on CI does not ship NumPy.  Write a tiny
+        # little-endian binary handoff so the actual renderer needs only the
+        # Python standard library and bpy.
+        with (out/f"{f:04d}.cwb").open("wb") as stream:
+            stream.write(struct.pack("<4I",0x43594257,len(positions),len(faces_i),len(drops_f)))
+            stream.write(positions.astype("<f4",copy=False).tobytes())
+            stream.write(surface_v.astype("<f4",copy=False).tobytes())
+            stream.write(faces_i.astype("<u4",copy=False).tobytes())
+            stream.write(drops_f.astype("<f4",copy=False).tobytes())
+            stream.write(radii_f.astype("<f4",copy=False).tobytes())
+            stream.write(drop_v_f.astype("<f4",copy=False).tobytes())
 
         row={
             "frame":f,
