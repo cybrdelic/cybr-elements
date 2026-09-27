@@ -1,0 +1,132 @@
+{
+  "purpose": "Static 02 fuel emitter field for a live reactive-flow simulation; no temporal frames",
+  "origin": "sigil-02-v2/source.npz",
+  "originSha256": "e0c2e79d15b6d3097e2219c22bae028b82cd9c9f0a7cb55663fb2f7de5127262",
+  "approvedArtworkSha256": "171ab385e515ef2b375b0c2cb291095e55d5cc00489341a3aa431ae62cf5e961",
+  "preferredVariant": "native",
+  "sourceTexture": "source.png",
+  "halfwidthTexture": "halfwidth.png",
+  "rawTextures": {
+    "source": "source.rgba8.bin",
+    "halfwidth": "halfwidth.r8.bin",
+    "layout": "Row-major, RGBA8 interleaved, first byte is R at x=0,z=lo.z (row 0); upload typed arrays to WebGL for exact unpremultiplied bytes"
+  },
+  "size": {
+    "x": 512,
+    "z": 288
+  },
+  "sourceSize": {
+    "x": 896,
+    "z": 504
+  },
+  "native": {
+    "size": {
+      "x": 896,
+      "z": 504
+    },
+    "sourceTexture": "source-native.png",
+    "halfwidthTexture": "halfwidth-native.png",
+    "rawTextures": {
+      "source": "source-native.rgba8.bin",
+      "halfwidth": "halfwidth-native.r8.bin"
+    },
+    "orientation": "Row-major, row 0 world z=lo[2], column 0 world x=lo[0]; RGBA8 interleaved source bytes and R8 halfwidth bytes",
+    "validation": {
+      "topology": {
+        "components": 5,
+        "holes": 1
+      },
+      "pixelMaskExactVsSourceNpzAtHalfInclusive": true,
+      "supportPixels": 35399,
+      "activeArrivalSeconds": [
+        0.30279,
+        3.893506
+      ]
+    }
+  },
+  "world": {
+    "lo": [
+      -7.0,
+      -0.6,
+      -1.05
+    ],
+    "extent": [
+      14.0,
+      1.2,
+      7.875
+    ],
+    "unit": "metres"
+  },
+  "orientation": "PNG row 0 maps to world z=lo[2]; column 0 maps to world x=lo[0]. In the shader, sample at uv=((x-lo.x)/extent.x, (z-lo.z)/extent.z) with UNPACK_FLIP_Y_WEBGL=false; verify texture upload orientation if using an image abstraction.",
+  "channels": {
+    "r": {
+      "name": "support",
+      "decode": "byte/255",
+      "range": [
+        0,
+        1
+      ]
+    },
+    "g": {
+      "name": "ignitionArrival",
+      "decode": "byte/255*10",
+      "rangeSeconds": [
+        0.0,
+        10.0
+      ]
+    },
+    "b": {
+      "name": "launchDirectionX",
+      "decode": "byte/255*2-1",
+      "range": [
+        -1,
+        1
+      ]
+    },
+    "a": {
+      "name": "launchDirectionZ",
+      "decode": "byte/255*2-1",
+      "range": [
+        -1,
+        1
+      ]
+    }
+  },
+  "halfwidthDecode": "red/255*0.27 metres; feed .028 + .026*sqrt(clamp(halfwidth/.27,0,1))",
+  "validation": {
+    "nativeTopology": {
+      "components": 5,
+      "holes": 1
+    },
+    "packedTopology": {
+      "components": 5,
+      "holes": 1
+    },
+    "packedVsNearestNativeIoU": 0.926518,
+    "supportPixels": 11546,
+    "activeArrivalSeconds": [
+      0.305357,
+      3.884207
+    ],
+    "filesSha256": {
+      "source.png": "6368ac357d5a78209a3aa8de79e1e5bededcbfbb5ebc681eafe9a524beba33a8",
+      "halfwidth.png": "1603692b9a1481d5a92995fb639dcd89c36f219339a7409d2082971667dcdd09",
+      "source.rgba8.bin": "96cd9395af862396dc872aa9de61e07d8ad108399c8fc79dec5032b0ad831881",
+      "halfwidth.r8.bin": "303763be7ef1b69732196b893bc750d36187c142cafbfd22917d75d235e07d1c",
+      "source-native.png": "e836a2025aa90b8bbcb4b05e151d304f5889fbeea9e104a4f2582f177f9cfab8",
+      "halfwidth-native.png": "ffaed6c3d4c5d6b6692582e6757c88f77155711612656a5895de12a895f1b1d0",
+      "source-native.rgba8.bin": "7e01baeb06f84f515b8964468c9a08264c8cde1490177342b3ac04aad1463354",
+      "halfwidth-native.r8.bin": "c25900f4bcb50944c2e751aa12580cf72876c702c90abef057be2530fff03a67"
+    },
+    "filesBytes": {
+      "source.png": 59622,
+      "halfwidth.png": 9583,
+      "source.rgba8.bin": 589824,
+      "halfwidth.r8.bin": 147456,
+      "source-native.png": 145748,
+      "halfwidth-native.png": 20400,
+      "source-native.rgba8.bin": 1806336,
+      "halfwidth-native.r8.bin": 451584
+    }
+  }
+}

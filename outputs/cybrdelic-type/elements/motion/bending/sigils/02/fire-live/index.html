@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CYBRDELIC / Fire — live volume</title>
+  <style>
+    :root { color-scheme: dark; font-family: Arial, Helvetica, sans-serif; background: #000; color: #dfdcd5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; }
+    main { max-width: 1500px; margin: 0 auto; padding: 18px clamp(10px,2.5vw,32px) 32px; }
+    header, footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    header { padding: 4px 0 15px; font-size: 11px; letter-spacing: .17em; text-transform: uppercase; }
+    a { color: #aaa; text-decoration: none; }
+    a:hover { color: #fff; }
+    .view { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border: 1px solid #242424; touch-action: none; overflow: hidden; }
+    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+    .stamp { position: absolute; top: 18px; left: 20px; pointer-events: none; font-size: 10px; line-height: 1.6; letter-spacing: .13em; color: #858585; text-transform: uppercase; }
+    .stamp strong { display: block; color: #d5d1ca; font-size: 12px; font-weight: 400; }
+    footer { flex-wrap: wrap; border-top: 1px solid #242424; padding-top: 14px; margin-top: 12px; font-size: 11px; color: #929292; }
+    .buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    button { background: #0d0d0d; color: #d5d5d5; border: 1px solid #454545; padding: 9px 13px; cursor: pointer; font: inherit; }
+    button:hover { border-color: #b89470; }
+    button:focus-visible, a:focus-visible, input:focus-visible, .view:focus-visible { outline: 2px solid #f0a85d; outline-offset: 3px; }
+    button:disabled { opacity:.35; cursor:default; }
+    button[aria-pressed=true] { border-color:#d7a269; color:#f1c394; background:#21170e; }
+    #message { color: #d4a370; }
+    .help { margin: 15px 0 0; color: #747474; font-size: 11px; line-height: 1.5; }
+    .scene-controls { display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; font-size:11px; color:#aaa; margin-top:14px; }
+    .scene-controls label { display:flex; align-items:center; gap:8px; }
+    .control-group { display:flex; align-items:center; gap:7px; }
+    .control-group output { min-width:38px; font-variant-numeric:tabular-nums; text-align:right; }
+    .scene-controls button { padding:7px 10px; }
+    .shortcuts { font-size:11px; color:#767676; margin-top:12px; line-height:1.8; }
+    kbd { font:inherit; color:#b8b1a6; }
+    .view[data-tool=pan] canvas { cursor:grab; }
+    .view.is-panning canvas { cursor:grabbing; }
+    main:fullscreen { max-width:none; width:100%; height:100%; background:#000; overflow:auto; }
+    main:fullscreen .view { width:min(100%,calc((100dvh - 220px)*16/9)); margin-inline:auto; }
+    input { accent-color:#d7a269; }
+    input[type=range] { width:130px; }
+    @media(max-width:600px) { .stamp { top: 9px; left: 10px; font-size: 8px; } .stamp strong { font-size: 10px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header><span>CYBRDELIC / 02 / FIRE</span><a href="../">Original film ↗</a></header>
+    <div class="view" id="view" tabindex="0" aria-label="Fire scene. Scroll to zoom. Shift-drag or right-drag to move the view."><canvas id="fire" aria-label="Live GPU-simulated volumetric fire forming the Cybrdelic 02 mark"></canvas><div class="stamp"><span>LIVE VOLUME / NO VIDEO</span><strong>Fire-lit room · etched stone</strong></div></div>
+    <footer><span id="message" role="status">Initializing GPU…</span><span id="metrics">—</span><div class="buttons"><button id="pause" type="button">Pause</button><button id="extinguish" type="button" hidden>Stop fuel</button><button id="restart" type="button">Restart</button><button id="mode" type="button" hidden>Return to sigil</button></div></footer>
+    <p class="help" id="help">Click the canvas to create your own fire; drag to move its source. The live sigil will give way to your flame.</p>
+    <div class="scene-controls" aria-label="View controls">
+      <div class="control-group"><button id="fire-tool" type="button" aria-pressed="true" title="Create and move fire">Fire</button><button id="pan-tool" type="button" aria-pressed="false" title="Drag to move the view without creating fire">Move view</button></div>
+      <div class="control-group"><button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out (−)">−</button><label for="zoom">Zoom <input id="zoom" type="range" min="70" max="300" step="5" value="100"></label><output id="zoom-value" for="zoom">100%</output><button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in (+)">+</button></div>
+      <button id="focus-fire" type="button" disabled title="Center and zoom in on your fire">Focus fire</button>
+      <button id="reset-view" type="button" title="Reset zoom, position and angle (0)">Reset view</button>
+      <label><input id="room" type="checkbox" checked>Dark room</label>
+      <div class="control-group"><label for="orbit">Angle <input id="orbit" type="range" min="-30" max="30" step="1" value="16"></label><output id="angle-value" for="orbit">16°</output></div>
+      <button id="fullscreen" type="button" title="Toggle fullscreen (F)">Fullscreen</button>
+    </div>
+    <p class="shortcuts"><kbd>Wheel</kbd> zoom at cursor · <kbd>Shift/right-drag</kbd> move view · <kbd>Space</kbd> pause · <kbd>R</kbd> restart/clear · <kbd>0</kbd> reset view · <kbd>F</kbd> fullscreen · <kbd>Esc</kbd> return to Fire tool</p>
+  </main>
+  <script src="coarse-pressure.js?v=soot-packed-1"></script>
+  <script src="corrected-advection.js?v=soot-packed-1"></script>
+  <script src="vorticity.js?v=quality-4"></script>
+  <script src="fire-optics.js?v=quality-3"></script>
+  <script src="smoke-light.js?v=quality-4"></script>
+  <script src="fire-room.js?v=view-1"></script>
+  <script src="fire.js?v=view-4"></script>
+</body>
+</html>
