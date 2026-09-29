@@ -187,6 +187,7 @@
       `;
       const divergence = `#version 300 es
       ${common}${fullSample}
+      uniform float uExpansion;
       layout(location=0) out vec4 outValue;
       void main() {
         ivec3 c=cell();
@@ -196,7 +197,15 @@
         float div=(fullVelocity(p+vec3(stepP.x,0,0)).x-fullVelocity(p-vec3(stepP.x,0,0)).x)/(2.0*HX)
                  +(fullVelocity(p+vec3(0,stepP.y,0)).y-fullVelocity(p-vec3(0,stepP.y,0)).y)/(2.0*HZ)
                  +(fullVelocity(p+vec3(0,0,stepP.z)).z-fullVelocity(p-vec3(0,0,stepP.z)).z)/(2.0*HY);
-        outValue=vec4(div,0,0,1);
+        // Combustion can prescribe positive divergence. Project toward that
+        // expanding flow instead of cancelling a blast back to zero divergence.
+        float expansion=0.;
+        if(uExpansion>0.){
+          float z=p.z*float(FD-1),lo=floor(z),hi=min(lo+1.,float(FD-1));
+          float reaction=mix(texture(uVf,fullAtlasUV(p.xy,lo)).a,texture(uVf,fullAtlasUV(p.xy,hi)).a,fract(z));
+          expansion=min(max(reaction,0.)*uExpansion,64.);
+        }
+        outValue=vec4(div-expansion,0,0,1);
       }`;
       const jacobi = `#version 300 es
       ${common}
@@ -233,6 +242,7 @@
       this.jacobiProgram = this.program(jacobi);
       this.correctionProgram = this.program(correction);
       this.divergenceUniform = gl.getUniformLocation(this.divergenceProgram, 'uVf');
+      this.expansionUniform = gl.getUniformLocation(this.divergenceProgram, 'uExpansion');
       this.jacobiUniforms = {
         pressure: gl.getUniformLocation(this.jacobiProgram, 'uP'),
         divergence: gl.getUniformLocation(this.jacobiProgram, 'uDiv')
@@ -282,7 +292,7 @@
       gl.clearBufferfv(gl.COLOR, 0, this.neutral);
     }
 
-    update(velocityTexture) {
+    update(velocityTexture, expansion=0) {
       const gl = this.gl;
       if (!velocityTexture) throw new Error('Coarse pressure update needs a velocity texture');
       gl.bindVertexArray(this.vao);
@@ -291,6 +301,7 @@
       gl.useProgram(this.divergenceProgram);
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.divergence.fbo);
       this.bind(velocityTexture, 0, this.divergenceUniform);
+      gl.uniform1f(this.expansionUniform,expansion);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.pressures[0].fbo);

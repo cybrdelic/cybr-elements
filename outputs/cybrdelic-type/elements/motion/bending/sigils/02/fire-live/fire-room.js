@@ -1,9 +1,9 @@
-/* Fire-only room lighting. Emission and emission-weighted positions are reduced
+/* Live fire and optional user lighting. Emission and emission-weighted positions are reduced
  * entirely on the GPU into 32 moving area-light clusters. No baked animation,
- * cursor light, ambient fill, or readback is used. Soot attenuates each light
+ * prerecorded illumination or readback is used. Soot attenuates each light
  * segment; receiver irradiance is cached separately from the fine material.
  * This is clustered direct lighting, not path-traced global illumination. */
-(() => {
+window.createFireRoom = () => {
   'use strict';
   const vertex=`#version 300 es
   void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`;
@@ -15,14 +15,23 @@
   ${window.FireOptics}
   uniform sampler2D roomPowerTex;
   uniform sampler2D roomMomentTex;
+  uniform float fireLightGain;
+  uniform vec3 ambientLight;
+  uniform vec3 spotPosition[2],spotDirection[2],spotPower[2];
+  uniform vec2 spotCone[2];
+  void spotSample(int i,vec3 at,out vec3 direction,out vec3 intensity){
+    vec3 d=spotPosition[i]-at;float r2=max(dot(d,d),.001);direction=d*inversesqrt(r2);
+    float cone=smoothstep(spotCone[i].x,spotCone[i].y,dot(-direction,spotDirection[i]));
+    intensity=spotPower[i]*cone/(r2+.2);
+  }
   const vec3 roomExtent=fireExtent;
   const vec3 roomMin=fireMin;
   // Radiance integrated over voxel volume; shared by smoke and receivers.
-  const float roomLightScale=(14.*7.875*1.8)/(128.*64.*16.)*8.;
+  const float roomLightScale=(fireExtent.x*fireExtent.y*fireExtent.z)/(128.*64.*16.)*8.;
   void roomLight(int i,out vec3 position,out vec3 power){
     ivec2 cell=ivec2(i%8,i/8);
     vec4 energy=texelFetch(roomPowerTex,cell,0);
-    power=energy.rgb*roomLightScale;
+    power=energy.rgb*roomLightScale*fireLightGain;
     position=roomMin+roomExtent*texelFetch(roomMomentTex,cell,0).xyz/max(energy.a,.00001);
   }
   `;
@@ -79,8 +88,12 @@
         vec3 p=vec3((vec2(ip.x%128,ip.y%64)+.5)/vec2(128.,64.),float(ip.x/128+4*(ip.y/64))/15.);
         float reaction=sampleVolume(velocity,p).a;
         vec4 chem=sampleVolume(chemistry,p);
-        vec3 e=fireEmission(reaction,chem.b);
-        density=vec4(sootExtinction(chem.a),0.,0.,1.);
+        vec3 e=fireEmission(reaction,chem.b)+sootEmission(chem.a,chem.b);
+        // Four subcell samples retain thin advected soot in the shadow grid.
+        vec3 h=vec3(.25/128.,.25/64.,.25/15.);
+        float soot=.25*(sampleVolume(chemistry,p+h).a+sampleVolume(chemistry,p-h).a
+          +sampleVolume(chemistry,p+h*vec3(1,-1,-1)).a+sampleVolume(chemistry,p+h*vec3(-1,1,1)).a);
+        density=vec4(sootExtinction(soot),0.,0.,1.);
         float weight=dot(e,vec3(.2126,.7152,.0722));
         energy=vec4(e,weight);moment=vec4(p*weight,weight);
       }`);
@@ -120,9 +133,30 @@
         float enter=max(0.,max(near.x,max(near.y,near.z)));
         float leave=min(1.,min(far.x,min(far.y,far.z)));
         if(leave<=enter)return 1.;
-        float stride=(leave-enter)/8.,tau=0.;
-        for(int j=0;j<8;j++)tau+=extinctionAt(receiver+delta*(enter+(float(j)+.5)*stride));
+        float stride=(leave-enter)/12.,tau=0.;
+        for(int j=0;j<12;j++)tau+=extinctionAt(receiver+delta*(enter+(float(j)+.5)*stride));
         return exp(-min(tau*length(delta)*stride,14.));
+      }
+      uniform sampler2D directReceiverTex;
+      uniform float bounceGain,includeBounce;
+      // Two quadrature patches on each of five diffuse room surfaces. This
+      // approximates one reflected bounce; it is not a converged GI solution.
+      vec3 indirectIrradiance(vec3 at,vec3 normal,bool surface){
+        if(bounceGain<=0.||includeBounce<.5)return vec3(0);
+        vec3 total=vec3(0);
+        for(int f=0;f<5;f++)for(int j=0;j<2;j++){
+          vec2 uv=vec2(.3+.4*float(j),.4);vec3 p,n;float area;
+          if(f==0||f==4){p=vec3(mix(-7.4,7.4,uv.x),f==0?.01:7.19,mix(-2.5,10.,uv.y));n=vec3(0,f==0?1.:-1.,0);area=92.5;}
+          else if(f==1){p=vec3(mix(-7.4,7.4,uv.x),uv.y*7.2,-2.49);n=vec3(0,0,1);area=53.28;}
+          else{p=vec3(f==2?-7.39:7.39,uv.y*7.2,mix(-2.5,10.,uv.x));n=vec3(f==2?1.:-1.,0,0);area=45.;}
+          vec3 delta=p-at;float r2=max(dot(delta,delta),.01);vec3 d=delta*inversesqrt(r2);
+          float a=max(dot(n,-d),0.)*(surface?max(dot(normal,d),0.):1.);
+          if(a<=.0001)continue;
+          vec3 incoming=texture(directReceiverTex,vec2((float(f)+uv.x)/5.,uv.y)).rgb;
+          // Finite patch denominator prevents near-field point-light spikes.
+          total+=incoming*vec3(.115,.12,.125)/3.14159*a*area/(r2+area/3.14159)*visibility(at,p);
+        }
+        return total*bounceGain;
       }
       vec3 irradiance(vec3 at,vec3 normal,bool surface){
         vec3 result=vec3(0);
@@ -134,7 +168,15 @@
           if(cosine<.001)continue;
           result+=power*(cosine*visibility(at,center)/(r2+.12));
         }
-        return result;
+        vec3 sky=vec3(at.x,7.19,at.z);
+        if(dot(ambientLight,ambientLight)>.000001)result+=ambientLight*(surface?(.25+.75*max(normal.y,0.)):1.)*visibility(at,sky);
+        for(int i=0;i<2;i++){
+          if(dot(spotPower[i],spotPower[i])<.00001)continue;
+          vec3 direction,power;spotSample(i,at,direction,power);
+          float cosine=surface?max(dot(normal,direction),0.):1.;
+          if(cosine>0.&&dot(power,power)>.00001)result+=power*cosine*visibility(at,spotPosition[i]);
+        }
+        return result+indirectIrradiance(at,normal,surface);
       }`;
       this.illumination=target(64,36,16,1);
       this.illuminate=compile(common+shadowGLSL+`
@@ -154,6 +196,8 @@
       // Camera-independent irradiance atlas: five receivers, 96² samples each.
       // Keep the fine etched material in the full-resolution display pass.
       this.receivers=target(96*5,96,1,1);
+      this.bouncedReceivers=target(96*5,96,1,1);
+      this.receiverTexture=this.receivers.textures[0];
       this.lightReceivers=compile(common+shadowGLSL+`
       out vec4 result;
       void main(){
@@ -219,13 +263,17 @@
       }
       `;
     }
-    update(vf,chem) {
+    update(vf,chem,gasFlame=0,shadeRoom=true,roomVisible=true,tint=[1,1,1],tintStrength=0,fireLightGain=1) {
+      this.fireLightGain=fireLightGain;
       const gl=this.gl;
       const bind=(program,name,tex,unit)=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(program.u(name),unit);};
       const begin=(program,target)=>{gl.useProgram(program.p);gl.bindFramebuffer(gl.FRAMEBUFFER,target.fbo);gl.viewport(0,0,target.width,target.height);};
       // These targets were samplers during the previous display pass.
       for(const unit of [9,10,11,12]) {gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,null);}
       begin(this.gather,this.levels[0]);bind(this.gather,'velocity',vf,0);bind(this.gather,'chemistry',chem,1);
+      gl.uniform1f(this.gather.u('gasFlame'),gasFlame);
+      gl.uniform3fv(this.gather.u('flameTint'),tint);
+      gl.uniform1f(this.gather.u('tintStrength'),tintStrength);
       gl.drawArrays(gl.TRIANGLES,0,3);
       for(let i=1;i<this.levels.length;i++) {
         const from=this.levels[i-1],to=this.levels[i];begin(this.reduce,to);
@@ -234,22 +282,36 @@
         gl.uniform4i(this.reduce.u('outputGrid'),to.x,to.y,to.z,to.tx);
         gl.drawArrays(gl.TRIANGLES,0,3);
       }
-      for(const [program,target] of [[this.illuminate,this.illumination],[this.lightReceivers,this.receivers]]){
+      if(!shadeRoom){gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,null);return;}
+      const lightingPass=(program,target,bounce)=>{
         begin(program,target);
         bind(program,'roomPowerTex',this.levels[4].textures[0],0);
         bind(program,'roomMomentTex',this.levels[4].textures[1],1);
         bind(program,'densityTex',this.levels[0].textures[2],2);
+        // A sampler must never alias the framebuffer being written.
+        bind(program,'directReceiverTex',bounce?this.receivers.textures[0]:this.levels[0].textures[2],3);
+        window.SceneLights.bind(gl,program.u,roomVisible);
+        gl.uniform1f(program.u('fireLightGain'),fireLightGain);
+        gl.uniform1f(program.u('includeBounce'),bounce?1:0);
         gl.drawArrays(gl.TRIANGLES,0,3);
-      }
+      };
+      const bounce=roomVisible&&window.SceneLights.bounce>0;
+      if(roomVisible)lightingPass(this.lightReceivers,this.receivers,false);
+      lightingPass(this.illuminate,this.illumination,bounce);
+      if(bounce)lightingPass(this.lightReceivers,this.bouncedReceivers,true);
+      this.receiverTexture=(bounce?this.bouncedReceivers:this.receivers).textures[0];
+      gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,null);
       gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,null);
     }
     bind(program,uniform) {
       const gl=this.gl;
-      for(const [name,texture,unit] of [['roomPowerTex',this.levels[4].textures[0],9],['roomMomentTex',this.levels[4].textures[1],10],['roomSmokeTex',this.illumination.textures[0],11],['roomReceiverTex',this.receivers.textures[0],12]]) {
+      gl.uniform1f(uniform(program,'fireLightGain'),this.fireLightGain??1);
+      for(const [name,texture,unit] of [['roomPowerTex',this.levels[4].textures[0],9],['roomMomentTex',this.levels[4].textures[1],10],['roomSmokeTex',this.illumination.textures[0],11],['roomReceiverTex',this.receiverTexture,12]]) {
         gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform1i(uniform(program,name),unit);
       }
     }
     static setup(gl,options){return new FireRoom(gl,options);}
   }
   window.FireRoom=FireRoom;
-})();
+};
+window.createFireRoom();

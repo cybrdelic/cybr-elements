@@ -1,47 +1,79 @@
-# Live Fire / CYBRDELIC 02
+# CYBRDELIC Fire Studio
 
-Serve `outputs/cybrdelic-type` and open `/elements/motion/bending/sigils/02/fire-live/` directly. This development preview is separate from the style 02 player until its visual quality matches the approved film.
+Interactive fire and smoke, source geometry, lighting and camera controls in one page. The GPU evolves the gas and renders the current volume. The runtime uses static emitter and geometry assets; it does not play a prerecorded fire animation.
 
-## Fire-lit room
+[Hosted demo](https://cybrdelic.github.io/firesim/)
 
-### Camera and demo controls
+## Run locally
 
-- Wheel/trackpad over the canvas zooms around the cursor, from 70% to 300%. The slider and +/− buttons also work on touch devices. This changes the camera lens, not simulation resolution.
-- **Move view**, Shift-drag or right-drag pans without injecting fuel. **Fire** (or Escape) restores the fire tool. The camera remains adjustable while paused.
-- **Focus fire** frames the current free-fire source at 225%; **Reset view** (0) restores zoom, pan and angle without clearing the simulation.
-- **Fullscreen** (F) keeps the controls with the scene; Escape exits the browser's fullscreen view. Space pauses/resumes and R restarts/clears. Form controls retain their normal keyboard interaction.
-- Camera and input share the same unprojection, including zoom/pan in black-background mode. Frozen-state lighting is cached when inspecting a paused frame.
+From the repository root:
 
-The default view is a dark room with a floor, back wall, side walls, ceiling, and shallow grid grooves. The **View angle** slider orbits the camera between -30° and +30°. Each viewing ray samples all 32 simulated depth layers at their actual world positions, so the fire has volume parallax and is occluded by the room surfaces. Pointer positions are unprojected onto the source plane; clicking near/below the floor places the source just above it. **Dark room** switches back to the original front view for comparison without resetting the fluid state.
+```powershell
+python -m http.server 8767 --directory outputs/cybrdelic-type
+```
 
-`fire-room.js` samples current reaction, temperature and soot into a 128 × 64 × 16 field and reduces emission to 32 moving light clusters. Eight samples integrate soot extinction along each source-to-receiver segment, clipped to the gas bounds. Both smoke and surfaces receive this attenuated illumination. Five 96 × 96 irradiance maps cache the room lighting, while thin 3 mm grid grooves are shaded with analytic pixel coverage in the display pass. The material is matte, with no glossy tile bevels. The room has no ambient fill, overhead light, or cursor-attached lamp: zero emission produces a black room.
+Open [Fire Studio](http://127.0.0.1:8767/elements/motion/bending/sigils/02/fire-live/). A packaged build can be served directly from its release directory. Use localhost or HTTPS; opening `index.html` as a file does not provide a supported graphics session.
 
-This approximates direct area lighting and participating-medium shadows; it is not ray-traced global illumination. Room surfaces clip visible fire. The floor now removes subsurface gas and blocks downward velocity, but the room is not a general fluid obstacle solver. The gas domain is 1.8 world units deep, with broader, corrugated sources and velocity shear through depth. Pressure retains the previous 128 × 72 × 8 grid and 18 Jacobi iterations, with derivatives scaled to the deeper domain. The main simulation remains 640 × 360 × 32 at 30 steps per simulated second. Baseline, revised views, sequences, state checks and GPU timings are in `work/fire-quality-qa/`; the earlier room-only experiment remains in `work/fire-room-qa/`.
+## Use
 
-`fire-optics.js` shares emission and extinction between the volume and its lights. Temperature separates orange edges from hot yellow regions. Lower exposure, a partial luminance-preserving tone map, and a highlight-only bloom threshold retain more hot-region color and structure. Uneven fuel feed breaks up the cursor source through the evolving gas state; no texture is applied over the rendered flame.
+- **Scene:** choose Original or experimental 3D volume, a source, fuel and color. Click to place fire and drag to move its source. Stop fuel lets the existing gas burn out; Restart replenishes the source.
+- **Camera:** scroll to zoom; Shift-drag or right-drag pans. The controls also provide an angle slider and camera reset. Touch interaction and keyboard controls are described beside the scene.
+- **Library:** choose a complete demo scene, an individual source, a lighting rig, an inspection test or a saved look. Tests use temporary lighting and camera settings.
+- **Lighting:** adjust external light sources and approximate room bounce while the fire remains visible. Fire itself illuminates the gas, room and source props.
+- **Present:** hide editing controls for a demo. Escape returns to the workspace.
 
-The browser creates every frame from evolving GPU state. WebGL2 advances velocity, fuel, oxygen, temperature, soot, and reaction in an atlas volume. A MacCormack predictor and local limiter preserve scalar detail during transport. A coarse GPU pressure solve feeds velocity correction back into the next step. The renderer integrates the current volume through depth and maps linear radiance to the display. The pointer applies a force to the velocity field. Clicking the canvas switches to free-fire mode, clears the sigil, and ignites a persistent fuel source at the pointer. Dragging moves the source through the same volume; releasing leaves it burning, and a later click relocates it. Clear fire empties the volume; Return to sigil restores the original emitter. The sigil's 9.8 second ignition and decay cycle restarts with a fresh state, while free fire keeps running until cleared or the mode changes.
+Sources carry stable IDs across both simulations. Each engine implements them using its own flow and source model. Prototype object and burst studies are identified as experiments; the Include experiments control exposes them in the Source picker. Saved looks use local browser storage and version 1 JSON import/export.
 
-The renderer shades the simulated soot and reaction directly. Its earlier screen-space noise modulation was removed because it painted a repeated texture over the flame. The free-fire emitter supplies a thin, corrugated fuel sheet with changing shear and depth velocity. Holding the pointer supplies fuel without applying an outward force; only pointer movement transfers momentum to the nozzle. Releasing at the same position leaves the same source running.
+Repeatable entries include `?scene=demo-sigil&present=1`, `?scene=demo-campfire`, `?scene=demo-torch`, `?scene=demo-ring`, `?scene=demo-bonfire` and `?scene=demo-smoke`. The last two select 3D volume. The older `pyro-gpu/` URL redirects into this same page and preserves its query settings.
 
-`vorticity.js` measures live velocity curl and its magnitude gradient, then applies bounded confinement to retain rotating folds. Its 192 × 144 × 16 grid covers the entire sigil domain or follows a 4 × 5.6 × 1.8 region around the cursor source. Both modes use confinement. Cold empty cells skip derivative work; the scalar update skips empty-region confinement reads, and sigil cells outside the emitter bypass ignition/nozzle calculations while retaining identical air entrainment. These optimizations do not lower the main simulation resolution.
+## Graphics requirements and scope
 
-Soot has an independent lifetime: fuel-rich combustion yields more soot, hot oxygen oxidizes it (consuming oxygen and releasing heat), and cold soot disperses with a 0.055/s decay coefficient instead of the temperature's 1.15/s cooling coefficient. Its density reduces buoyancy through `temperature * 6.5 - soot * 0.32`. Fuel, oxygen, temperature and soot all use the full-resolution MacCormack transport and limiter. These are visual-model coefficients, not calibrated combustion chemistry.
+Original requires WebGL 2, floating point render targets and linear filtering of float textures. 3D volume requires a working WebGPU adapter with sufficient texture and buffer limits. The page provides recovery controls when the selected engine cannot start. A WebGPU API being present does not establish that its adapter can submit frames.
 
-In the optional black-background comparison mode only, `smoke-light.js` integrates soot toward an overhead inspection light using a 128 × 72 × 32 volume. Room mode uses the fire-only, soot-attenuated illumination described above. **Stop fuel** closes the source while remaining gas keeps burning, cooling and moving; click to reignite. Once all emission dies, room-mode smoke becomes invisible in the unlit room even though soot remains in the simulation. **Clear fire** empties the volume.
+Both engines transport heat, fuel and soot in evolving flow. Flame emission and extinction share their state with fire illumination. Original uses an atlas volume with a coarse pressure solve; 3D volume uses a dense MAC velocity field, multilevel pressure projection and a separate chemistry grid. These are visual combustion models with accelerated, uncalibrated coefficients. Creative colors are art direction.
 
-The emitter shader branches uniformly between sigil and free-fire sources, avoiding sigil texture sampling and emitter calculations in drag mode. Current-cell velocity uses an exact texel read, and uniform locations are cached. Transported scalars occupy one RGBA16F texture `(fuel, oxygen, temperature, soot)`; the other stores `(velocity.xyz, reaction)`. This halves the limiter's corner reads and removes redundant predictor samples without changing the transport algorithm, grid, or precision. GPU timing and smoke-shutoff evidence are recorded in `work/fire-smoke-qa/report.json` (local QA artifacts); the QA server and instrumentation are not part of the shipped runtime.
+Object studies use finite fuel, local heating and char. Volume trees use geometry from the CYBR forest scene and add moisture, leaf loss and widening of existing fissures. They do not simulate physical branch fracture or collapse. Volume embers are flow-driven tracers and cannot ignite new fuel; Original does not implement them. Original's object model does not reproduce Volume's per-voxel surface state. External illumination and room bounce are approximations, not converged path tracing or calibrated global illumination.
 
-The Gaussian nozzle skips jet calculations beyond squared normalized radius 12, where injection is below one half-float subnormal quantum. This bounds emitter work without bounding transported fire or smoke. Script version parameters keep the packed field layout consistent across cached modules.
+## Verify and package
 
-`source/` contains one **static emitter**, exported from the approved Fire 02 artwork. It specifies fuel support, ignition arrival, launch direction, and sheet thickness. The runtime loads the native 896 × 504 variant listed in `source/source.json`. These assets contain no rendered frames or animated fields. `source/export_source.py` reproduces the export from the original `work/element-motion/sigil-02-v2/source.npz`.
+Run from the repository root:
 
-This runtime is a visual prototype, with a different fluid solver from the approved offline film. Its 640 × 360 × 32 volume uses 30 steps per second, corrected scalar advection, and a coarse pressure solve; the 896 × 504 projection is displayed at 1920 × 1080. The offline film used 896 × 504 × 56 cells, 90 solver steps per second, resolved vorticity, and full-grid pressure projection. Exact visual parity has not been reached. On this machine, the Codex in-app browser uses Intel UHD graphics for WebGL despite requesting a high-performance adapter, so rendered frame rate varies substantially. Compare the live view with the **Original film** link before using it as final portfolio footage.
+```powershell
+node tools/fire-studio/studio.test.mjs
+node tools/fire-studio/studio-polish.test.mjs
+node tools/fire-studio/normal-regression.test.mjs
+node tools/fire-studio/telemetry.test.mjs
+node tools/fire-studio/check-volume-telemetry.mjs
+node tools/fire-studio/check-volume-queries.mjs
+node tools/fire-studio/check-tree-resize.mjs
+python tools/fire-studio/package.test.py
+python tools/fire-studio/package.py --check
+python tools/fire-studio/package.py
+```
 
-### Quality-pass verification
+The package checks JavaScript syntax, local module/HTML/CSS/asset references, catalog previews and binary asset integrity. It also rejects JavaScript that is included in the release but unreachable from its entry pages. A content fingerprint normalizes module and asset cache keys in the packaged files. The source files remain editable without generated cache changes.
 
-`work/fire-quality-qa/report.json` records 20 captures across the iterations, all with zero WebGL errors and finite reduced state. The final drag sequence contains 20 distinct frames at 0.2 simulated-second intervals. Three seconds after shutting off fuel, heat falls to about 5% of its shutoff value and the soot centroid rises about 1.06 world units; residual fuel continues producing soot. The empty room is exactly RGB zero. Angle views retain the same underlying simulation state.
+The output contains runtime assets, provenance metadata, a `release.json` file with SHA-256 hashes and open acceptance gates, and a ZIP. Historical experiment directories, build tools, raw mesh authoring inputs and QA captures are excluded. Existing builds are preserved; use `--out releases/fire-studio-another-name` for another build.
 
-Performance remains a limitation. Short instrumented single-context sigil runs measured roughly 8 rendered FPS for the revised scene versus 11 for the previous room on this Intel GPU. Query instrumentation and system load affect wall timing; this is not a sustained production benchmark. Added volume activity, confinement and soot visibility cost GPU time. The source-support optimization preserves exact state sums while reducing emitter work. The heavier 12-layer/22-iteration pressure trial and 24-layer confinement trial were reverted; neither the main simulation grid nor the rendered projection was reduced. Sustained 30 FPS and the offline film's smallest filaments are not established.
+Deployment instructions and the demonstration checklist are in `docs/fire-studio/RELEASE.md` in the source repository. Development notes and measurements are retained in `docs/fire-studio/` and `work/` rather than presented as product guarantees.
 
-The isolated `webgpu-experiment/`, `offline-flow-study/`, `procedural-experiment/`, and `sparse-experiment/` folders record alternative renderers and feasibility measurements. None passed both the approved-look comparison and the 30 fps target; their own READMEs describe the observed limits. The approved film remains the portfolio presentation.
+## Current verification limits
+
+Release packaging and automated state/lifecycle checks do not certify visual motion or sustained frame rate. The last recorded in-app browser selected Intel integrated graphics despite the high-performance adapter request. A September 27 short Original run observed about 30 rendered FPS; a 180-frame room-enabled Volume Bonfire run observed 12.3 completed FPS and 0.20 simulated seconds per wall second. These historical results fail the requested Volume performance gate and are not measurements of the latest edits.
+
+Native RTX shader timings and offscreen captures describe a different execution path. Offline film detail parity, sustained 60 FPS, mobile support and the latest live-browser motion comparison remain unverified. See `docs/fire-studio/PERFORMANCE.md` for measurement conditions and `docs/fire-studio/RELEASE.md` for the remaining gates.
+
+## Code map
+
+| Module | Responsibility |
+| --- | --- |
+| `studio.js`, `studio-location.js` | Engine/preset transitions, shared state and URLs |
+| `studio-ui.js`, `studio.css` | Workspace, presentation and recovery controls |
+| `runtime-loader.js`, `runtime-scope.js` | Lazy engine loading and animation/listener cleanup |
+| `demo-presets.js`, `source-picker.js`, `preset-pairs.js` | Demo collection and shared source selection |
+| `look-storage.js`, `inspection-state.js` | Saved looks and temporary inspection settings |
+| `scene-lights.js`, `pyro-gpu/library.js` | Lighting catalog and library actions |
+| `fire.js` and root shader helpers | Original WebGL simulation and rendering |
+| `pyro-gpu/app.js`, `solver.js` | Volume controls, GPU scheduling and diagnostics |
+| `pyro-gpu/shaders.js`, `renderer.js` | Volume transport, combustion and volume/room rendering |
+| `pyro-gpu/objects.js`, `forest-mesh.js` | Surface fuel and imported tree geometry |

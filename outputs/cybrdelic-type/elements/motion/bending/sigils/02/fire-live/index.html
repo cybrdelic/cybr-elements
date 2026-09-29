@@ -1,70 +1,180 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CYBRDELIC / Fire — live volume</title>
-  <style>
-    :root { color-scheme: dark; font-family: Arial, Helvetica, sans-serif; background: #000; color: #dfdcd5; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; }
-    main { max-width: 1500px; margin: 0 auto; padding: 18px clamp(10px,2.5vw,32px) 32px; }
-    header, footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    header { padding: 4px 0 15px; font-size: 11px; letter-spacing: .17em; text-transform: uppercase; }
-    a { color: #aaa; text-decoration: none; }
-    a:hover { color: #fff; }
-    .view { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border: 1px solid #242424; touch-action: none; overflow: hidden; }
-    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
-    .stamp { position: absolute; top: 18px; left: 20px; pointer-events: none; font-size: 10px; line-height: 1.6; letter-spacing: .13em; color: #858585; text-transform: uppercase; }
-    .stamp strong { display: block; color: #d5d1ca; font-size: 12px; font-weight: 400; }
-    footer { flex-wrap: wrap; border-top: 1px solid #242424; padding-top: 14px; margin-top: 12px; font-size: 11px; color: #929292; }
-    .buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    button { background: #0d0d0d; color: #d5d5d5; border: 1px solid #454545; padding: 9px 13px; cursor: pointer; font: inherit; }
-    button:hover { border-color: #b89470; }
-    button:focus-visible, a:focus-visible, input:focus-visible, .view:focus-visible { outline: 2px solid #f0a85d; outline-offset: 3px; }
-    button:disabled { opacity:.35; cursor:default; }
-    button[aria-pressed=true] { border-color:#d7a269; color:#f1c394; background:#21170e; }
-    #message { color: #d4a370; }
-    .help { margin: 15px 0 0; color: #747474; font-size: 11px; line-height: 1.5; }
-    .scene-controls { display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; font-size:11px; color:#aaa; margin-top:14px; }
-    .scene-controls label { display:flex; align-items:center; gap:8px; }
-    .control-group { display:flex; align-items:center; gap:7px; }
-    .control-group output { min-width:38px; font-variant-numeric:tabular-nums; text-align:right; }
-    .scene-controls button { padding:7px 10px; }
-    .shortcuts { font-size:11px; color:#767676; margin-top:12px; line-height:1.8; }
-    kbd { font:inherit; color:#b8b1a6; }
-    .view[data-tool=pan] canvas { cursor:grab; }
-    .view.is-panning canvas { cursor:grabbing; }
-    main:fullscreen { max-width:none; width:100%; height:100%; background:#000; overflow:auto; }
-    main:fullscreen .view { width:min(100%,calc((100dvh - 220px)*16/9)); margin-inline:auto; }
-    input { accent-color:#d7a269; }
-    input[type=range] { width:130px; }
-    @media(max-width:600px) { .stamp { top: 9px; left: 10px; font-size: 8px; } .stamp strong { font-size: 10px; } }
-  </style>
-</head>
-<body>
-  <main>
-    <header><span>CYBRDELIC / 02 / FIRE</span><a href="../">Original film ↗</a></header>
-    <div class="view" id="view" tabindex="0" aria-label="Fire scene. Scroll to zoom. Shift-drag or right-drag to move the view."><canvas id="fire" aria-label="Live GPU-simulated volumetric fire forming the Cybrdelic 02 mark"></canvas><div class="stamp"><span>LIVE VOLUME / NO VIDEO</span><strong>Fire-lit room · etched stone</strong></div></div>
-    <footer><span id="message" role="status">Initializing GPU…</span><span id="metrics">—</span><div class="buttons"><button id="pause" type="button">Pause</button><button id="extinguish" type="button" hidden>Stop fuel</button><button id="restart" type="button">Restart</button><button id="mode" type="button" hidden>Return to sigil</button></div></footer>
-    <p class="help" id="help">Click the canvas to create your own fire; drag to move its source. The live sigil will give way to your flame.</p>
-    <div class="scene-controls" aria-label="View controls">
-      <div class="control-group"><button id="fire-tool" type="button" aria-pressed="true" title="Create and move fire">Fire</button><button id="pan-tool" type="button" aria-pressed="false" title="Drag to move the view without creating fire">Move view</button></div>
-      <div class="control-group"><button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out (−)">−</button><label for="zoom">Zoom <input id="zoom" type="range" min="70" max="300" step="5" value="100"></label><output id="zoom-value" for="zoom">100%</output><button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in (+)">+</button></div>
-      <button id="focus-fire" type="button" disabled title="Center and zoom in on your fire">Focus fire</button>
-      <button id="reset-view" type="button" title="Reset zoom, position and angle (0)">Reset view</button>
-      <label><input id="room" type="checkbox" checked>Dark room</label>
-      <div class="control-group"><label for="orbit">Angle <input id="orbit" type="range" min="-30" max="30" step="1" value="16"></label><output id="angle-value" for="orbit">16°</output></div>
-      <button id="fullscreen" type="button" title="Toggle fullscreen (F)">Fullscreen</button>
-    </div>
-    <p class="shortcuts"><kbd>Wheel</kbd> zoom at cursor · <kbd>Shift/right-drag</kbd> move view · <kbd>Space</kbd> pause · <kbd>R</kbd> restart/clear · <kbd>0</kbd> reset view · <kbd>F</kbd> fullscreen · <kbd>Esc</kbd> return to Fire tool</p>
-  </main>
-  <script src="coarse-pressure.js?v=soot-packed-1"></script>
-  <script src="corrected-advection.js?v=soot-packed-1"></script>
-  <script src="vorticity.js?v=quality-4"></script>
-  <script src="fire-optics.js?v=quality-3"></script>
-  <script src="smoke-light.js?v=quality-4"></script>
-  <script src="fire-room.js?v=view-1"></script>
-  <script src="fire.js?v=view-4"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#10100f" />
+    <title>CYBRDELIC / Fire studio</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="studio.css?v=studio-rc-6" />
+    <link rel="stylesheet" href="pyro-gpu/library.css?v=studio-rc-6" />
+  </head>
+  <body>
+    <main>
+      <header class="studio-header">
+        <a class="brand" href="./" aria-label="Fire studio home"
+          ><span>CYBRDELIC</span><strong>Fire studio</strong></a
+        >
+        <nav aria-label="Workspace views">
+          <button type="button" data-panel="scene" aria-pressed="true" aria-controls="scene-panel">
+            Scene</button
+          ><button
+            type="button"
+            data-panel="library"
+            aria-pressed="false"
+            aria-controls="library-panel"
+          >
+            Library</button
+          ><button
+            type="button"
+            data-panel="lighting"
+            aria-pressed="false"
+            aria-controls="lighting-panel"
+          >
+            Lighting
+          </button>
+        </nav>
+        <div class="header-actions">
+          <span id="session-status" role="status">Preparing</span
+          ><button id="demo-mode" type="button" aria-pressed="false">Present</button>
+        </div>
+      </header>
+      <section id="library-panel" hidden aria-label="Preset library"></section>
+      <div class="workspace">
+        <section id="scene-panel" aria-label="Fire scene">
+          <div class="source-controls" aria-label="Fire sources">
+            <label for="simulation"
+              >Simulation<select id="simulation">
+                <option value="legacy">Original</option>
+                <option value="volume">3D volume · experimental</option>
+              </select></label
+            >
+            <label for="preset" class="source-picker"
+              >Source<select id="preset">
+                <option value="sigil">Cybrdelic sigil</option>
+              </select></label
+            >
+            <label for="fuel"
+              >Fuel<select id="fuel">
+                <option value="wood">Wood</option>
+                <option value="gas">Gas</option>
+                <option value="oil">Oil</option>
+              </select></label
+            >
+            <label class="check-control"
+              ><input id="show-experiments" type="checkbox" />Include experiments</label
+            >
+          </div>
+          <div
+            class="view"
+            id="view"
+            tabindex="0"
+            aria-label="Fire scene. Scroll to zoom. Shift-drag or right-drag to move the view."
+          >
+            <canvas id="fire" aria-label="Interactive fire simulation"></canvas>
+            <div class="stamp"><span>CYBRDELIC</span><strong>Fire-lit room</strong></div>
+            <div id="view-state" class="view-state" role="status">
+              <div>
+                <span class="state-eyebrow">FIRE STUDIO</span>
+                <h1 id="view-state-title">Preparing fire</h1>
+                <p id="view-state-description">Starting the simulation.</p>
+                <div id="recovery-actions" hidden>
+                  <button id="retry-runtime" type="button">Try again</button
+                  ><button id="use-original" type="button">Use Original</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="playback-bar">
+            <span id="message" role="status">Initializing GPU…</span>
+            <div class="buttons">
+              <button id="pause" type="button">Pause</button
+              ><button id="burst" type="button" hidden>Trigger burst</button
+              ><button id="extinguish" type="button" hidden>Stop fuel</button
+              ><button id="restart" type="button">Restart</button>
+            </div>
+          </div>
+          <div class="camera-bar" aria-label="View controls">
+            <div class="control-group tool-switch">
+              <button id="fire-tool" type="button" aria-pressed="true" title="Create and move fire">
+                Fire</button
+              ><button
+                id="pan-tool"
+                type="button"
+                aria-pressed="false"
+                title="Drag to move the view"
+              >
+                Pan
+              </button>
+            </div>
+            <div class="control-group">
+              <button id="zoom-out" type="button" aria-label="Zoom out">−</button
+              ><label for="zoom"
+                >Zoom<input id="zoom" type="range" min="70" max="300" step="5" value="100" /></label
+              ><output id="zoom-value" for="zoom">100%</output
+              ><button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+            </div>
+            <div class="control-group orbit-control">
+              <label for="orbit"
+                >Orbit<input
+                  id="orbit"
+                  type="range"
+                  min="-30"
+                  max="30"
+                  step="1"
+                  value="16" /></label
+              ><output id="angle-value" for="orbit">16°</output>
+            </div>
+            <label class="check-control"><input id="room" type="checkbox" checked />Room</label
+            ><button id="focus-fire" type="button" disabled>Focus</button
+            ><button id="reset-view" type="button">Reset view</button
+            ><button id="fullscreen" type="button">Fullscreen</button>
+          </div>
+          <p class="help" id="help">
+            Drag to place fire. Scroll to zoom. Shift-drag to move the camera.
+          </p>
+          <details id="appearance-controls" class="disclosure" hidden>
+            <summary>Appearance</summary>
+            <div class="appearance-fields" id="volume-source-controls" hidden>
+              <label for="flame-color">Flame color<select id="flame-color"></select></label
+              ><label class="check-control"
+                ><input id="embers" type="checkbox" checked />Embers</label
+              >
+              <p>Natural follows temperature. Other colors are stylized looks.</p>
+            </div>
+          </details>
+          <details id="diagnostics" class="disclosure">
+            <summary>Inspect &amp; measure</summary>
+            <div class="diagnostic-controls">
+              <label id="smoke-control" class="check-control"
+                ><input id="smoke-only" type="checkbox" />Inspect smoke</label
+              ><button id="benchmark" type="button">Measure 180 frames</button>
+            </div>
+            <p id="metrics">—</p>
+            <p id="gpu-status" role="status"></p>
+          </details>
+          <p id="test-instructions" class="test-instructions" hidden></p>
+        </section>
+        <aside id="lighting-panel" hidden aria-label="Scene lighting">
+          <div class="panel-heading">
+            <h2>Lighting</h2>
+            <p>Shape the light. Watch it on the flame, smoke, and room.</p>
+          </div>
+          <div id="lighting-controls" class="lighting-panel"></div>
+        </aside>
+      </div>
+      <footer class="studio-footer">
+        <span>Drag to create · Shift-drag to pan · Scroll to zoom</span>
+        <details>
+          <summary>Keyboard shortcuts</summary>
+          <p>
+            <kbd>Space</kbd> Pause &nbsp; <kbd>R</kbd> Restart &nbsp; <kbd>0</kbd> Reset view &nbsp;
+            <kbd>F</kbd> Fullscreen &nbsp; <kbd>Esc</kbd> Exit presentation / Fire tool
+          </p>
+        </details>
+      </footer>
+    </main>
+    <script src="scene-lights.js?v=studio-rc-6"></script>
+    <script type="module" src="studio.js?v=studio-rc-6"></script>
+  </body>
 </html>

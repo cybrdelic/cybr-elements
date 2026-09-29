@@ -40,7 +40,7 @@
           vec2 q=clamp(p+(vec2(x,y)-.5)*.5/vec2(128.,72.),.5/sourceSize,1.-.5/sourceSize);
           density+=texture(source,(base+q*sourceSize)/atlas).a;
         }
-        opticalDepth=sootExtinction(density*.25)*(7.875/72.);
+        opticalDepth=sootExtinction(density*.25)*(fireExtent.y/72.);
       }`);
       this.sum=compile(common+`
       uniform int stride;

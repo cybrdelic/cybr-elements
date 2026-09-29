@@ -8,14 +8,14 @@
     setup(gl, {nx, nz, depth, tilesX}) {
       // Follow the source and rising wake at finer spatial spacing instead of
       // evaluating an almost empty full-domain volume every step.
-      const vx = 192, vy = 144, vz = 16, tx = 4;
+      const vx = 192, vy = 144, vz = window.FireDomain?.blast?32:16, tx = 4;
       const width = vx * tx, height = vy * Math.ceil(vz / tx);
       const vertex = `#version 300 es
         void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0,1);}`;
       const grid = `
         precision highp float;
         precision highp sampler2D;
-        const vec3 extent=vec3(14.,7.875,1.8);
+        const vec3 extent=${window.FireDomain?.extentGLSL||"vec3(14.,7.875,1.8)"};
         uniform vec3 span;
         #define h (extent*span/vec3(${vx}.,${vy}.,${vz-1}.))
         const vec3 cell=vec3(1./${vx}.,1./${vy}.,1./${vz-1}.);
@@ -138,9 +138,10 @@
           }`,
         texture:force.texture,
         origin,span,
-        update(velocity,chemistry,source,freeMode) {
+        update(velocity,chemistry,source,freeMode,burst=false) {
           origin[0]=freeMode?source.x-2./14:0; origin[1]=freeMode?source.y-.45/7.875:0; origin[2]=0;
           span.set(freeMode?[4./14,5.6/7.875,1]:[1,1,1]);
+          if(burst){const e=window.FireDomain.extent;origin[0]=source.x-3./e[0];origin[1]=source.y-1.4/e[1];span.set([6./e[0],6.5/e[1],1]);}
           gl.viewport(0,0,width,height);
           gl.activeTexture(gl.TEXTURE7); gl.bindTexture(gl.TEXTURE_2D,null);
           gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,chemistry);

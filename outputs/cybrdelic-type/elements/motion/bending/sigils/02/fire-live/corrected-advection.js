@@ -128,7 +128,7 @@
         ivec2 cell=mcAtlasCell(c);
         return texelFetch(chemTex,cell,0);
       }
-      vec4 maccormackScalars(vec3 at,vec3 back,vec3 correctedVelocity) {
+      vec4 maccormackScalars(vec3 at,vec3 back,vec3 correctedVelocity,bool revertOvershoot) {
         ivec2 ip=ivec2(gl_FragCoord.xy);
         vec4 predicted=texelFetch(mcPredictorTex,ip,0);
         vec4 old=texelFetch(chemTex,ip,0);
@@ -150,9 +150,19 @@
           vec4 v=mcOldScalars(c);
           lower=min(lower,v); upper=max(upper,v);
         }
-        corrected=clamp(corrected,lower,upper);
+        // Clamping a corrected overshoot to the donor maximum can preserve
+        // bright stair-step trails. At the new presets' thin fronts use the stable
+        // predictor for that step; smooth regions retain the corrected result.
+        if(revertOvershoot){
+          // One overshooting scalar must not discard the valid correction of
+          // the other fields: that needlessly diffuses thin reaction fronts.
+          corrected=mix(corrected,predicted,notEqual(clamp(corrected,lower,upper),corrected));
+        }else corrected=clamp(corrected,lower,upper);
         // Fuel, O2, temperature, and soot are physical nonnegative scalars.
         return clamp(corrected,vec4(0.0),vec4(1.0,1.0,3.0,8.0));
+      }
+      vec4 maccormackScalars(vec3 at,vec3 back,vec3 correctedVelocity){
+        return maccormackScalars(at,back,correctedVelocity,false);
       }
       `;
     }
