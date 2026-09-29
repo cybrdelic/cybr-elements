@@ -1,6 +1,6 @@
 # Fire Studio release procedure
 
-The deployable unit is the output of `tools/fire-studio/package.py`. The development `fire-live/` directory also contains historical research; copying that directory directly can expose old pages and stale renderers.
+The deployable unit is the output of `tools/fire-studio/package.py`. Historical renderer trials are archived under `work/fire-studio-research-archive/`, outside the served source tree. Copy the validated package so authoring assets and development notes stay out of the release.
 
 ## Build and validate
 
