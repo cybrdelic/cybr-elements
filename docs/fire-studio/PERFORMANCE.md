@@ -1,5 +1,7 @@
 # Volume performance gate
 
+The September 30 rc.10 [sustained-run recovery](VOLUME_SUSTAINED.md) corrects a packed MAC border projection defect that progressively raised speed, substeps and frame cost. On matched RTX native runs, the 20–30 second window cost falls from 54.45 to 22.06 ms and the corrected minute retains fire detail. The final Intel minute remains about 100 ms per completed native frame; browser/mobile FPS and Original parity remain unverified.
+
 The September 30 rc.9 [performance update](VOLUME_SPEED.md) supersedes the latest cost measurements below: guarded donor caching and conservative shadow fetch rejection reduce native complete-scene median cost by 22.5%, with matching tested chemistry bytes and CFL steps. Live-browser parity remains unverified.
 
 The rc.8 regression recovery supersedes the rc.6 wood-source and Original optical/noise changes described below. Its matched rendering evidence, measured native tail costs, corrected QA scope and interaction fixes are recorded in [REGRESSION_RECOVERY.md](REGRESSION_RECOVERY.md). No current live-browser performance gate has passed.

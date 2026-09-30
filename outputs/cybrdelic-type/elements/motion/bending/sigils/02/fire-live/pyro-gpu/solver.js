@@ -3,12 +3,12 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-9';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-9';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-9';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-9';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-9';
-import { rendererShaders, dilateWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-9';
+} from './objects.js?v=studio-rc-10';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-10';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-10';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-10';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-10';
+import { rendererShaders, dilateWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-10';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   const lag = Math.max(0, Math.min(telemetryLag, 8));
@@ -151,6 +151,14 @@ export class PyroSolver {
     this.completedFrames = 0;
     this.inFlight = [];
     this.masks = [0, 1].map(() =>
+      d.createBuffer({
+        size: (this.D / 8) ** 3 * 4,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+      }),
+    );
+    // Transport keeps oxygen/cold fuel. The optical mask follows chemistry
+    // ping-pong separately so invisible state cannot fill the lighting mask.
+    this.opticalMasks = [0, 1].map(() =>
       d.createBuffer({
         size: (this.D / 8) ** 3 * 4,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
@@ -636,6 +644,7 @@ export class PyroSolver {
       this.D / 8,
     );
     encoder.clearBuffer(this.masks[1 - ci]);
+    encoder.clearBuffer(this.opticalMasks[1 - ci]);
     this.sparse(encoder, k.advectScalar, [
       ...base,
       [2, this.v[vi]],
@@ -651,6 +660,7 @@ export class PyroSolver {
       [5, this.c[1 - ci]],
       [6, { buffer: this.bricks }],
       [7, { buffer: this.masks[1 - ci] }],
+      [10, { buffer: this.opticalMasks[1 - ci] }],
       [8, this.sigilSource],
       ...this.objectBindings(true),
     ]);
@@ -892,7 +902,7 @@ export class PyroSolver {
         encoder,
         this.dilatePipeline,
         [
-          [0, { buffer: this.masks[this.ci] }],
+          [0, { buffer: this.opticalMasks[this.ci] }],
           [1, { buffer: this.visibleBricks }],
         ],
         32,
@@ -1083,6 +1093,7 @@ export class PyroSolver {
     encoder.clearBuffer(this.emberBuffer);
     this.resetSurface(encoder);
     for (const mask of this.masks) encoder.clearBuffer(mask);
+    for (const mask of this.opticalMasks) encoder.clearBuffer(mask);
     for (const fields of [this.v, this.c])
       this.dispatch(
         encoder,

@@ -16,7 +16,7 @@ const s=Object.assign(Object.create(PyroSolver.prototype),{
   latestTelemetry:{sampleFrame:0},telemetrySlots:[],query:null,lightReady:false,ci:0,si:0,
   source:[0,.58,0],effect:[1,1,0,1],objectId:null,objectModels:{},objectSettings:resource('object-settings'),
   color:'natural',embers:false,smoke:false,stats:resource('stats'),c:[tex('chem-a'),tex('chem-b')],sampler:resource('sampler'),
-  visibleBricks:resource('visible-mask'),masks:[resource('mask-a'),resource('mask-b')],view:resource('view'),
+  visibleBricks:resource('visible-mask'),masks:[resource('mask-a'),resource('mask-b')],opticalMasks:[resource('optical-a'),resource('optical-b')],view:resource('view'),
   lightSeeds:resource('seeds'),fireLights:resource('lights'),light:tex('incident'),roomTargets:[tex('direct-room'),tex('final-room')],
   emptyObject:tex('empty-solid'),surface:[tex('surface-a'),tex('surface-b')],outputView:resource('output'),
   context:{getCurrentTexture:()=>({createView:()=>resource('canvas')})},cache:new Map(),ids:new WeakMap(),nextId:0,
@@ -33,6 +33,7 @@ for(const tree of [false,true,false]){
   const result=await s.frame(0);
   assert.equal(result.relit,true);
   assert.ok(calls.findIndex(x=>x.label==='dilate')<calls.findIndex(x=>x.label==='room'),'fresh mask precedes room sampling');
+  assert.equal(value(bindings('dilate'),0)?.buffer,s.opticalMasks[s.ci],'render halo follows optical support, not invisible chemistry');
   for(const label of ['room','bounce','light','render'])assert.equal(value(bindings(label),9)?.buffer,s.visibleBricks,label+' shares the actual conservative mask');
   for(const label of ['room','bounce','light','render'])assert.equal(value(bindings(label),13)?.buffer,s.objectSettings,label+' preserves object settings');
   if(tree){

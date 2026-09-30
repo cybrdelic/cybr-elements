@@ -1,8 +1,8 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-9';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-9';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-9';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-9';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-9';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-10';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-10';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-10';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-10';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-10';
 export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=>{}}={}){
   const scope=runtimeScope(onFailure),on=scope.on;
   const qaParams=new URL(location.href).searchParams,qaCaptureStop=qaParams.has('qa')?Number(qaParams.get('capture'))||0:0;
