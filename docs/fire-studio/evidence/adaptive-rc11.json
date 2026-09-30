@@ -1,0 +1,444 @@
+{
+  "date": "2026-09-30",
+  "nativeOffscreenOnly": true,
+  "browserFPSVerified": false,
+  "mobileVerified": false,
+  "grids": {
+    "chemistry": 256,
+    "canonicalVelocity": 128,
+    "coarseCandidate": 64,
+    "incidentLighting": 64
+  },
+  "targetPixels": [
+    768,
+    432
+  ],
+  "window": "60 frames = 1 simulated second; timing frames8-59; matched fixed-CFL host recording with midpoint source movement; evidence readbacks and compilation outside GPU timing; frozen comparative variants include matching flow-support atomics, final default strips inactive support work",
+  "replacementDecision": "All new architecture components, including precise receivers, remain opt-in; stable complete-frame, conservation, quality and memory gates still open.",
+  "poolMiB": {
+    "retainedDenseChemistry": 384,
+    "additionalAtlas": 96
+  },
+  "adapters": [
+    {
+      "adapter": "integrated",
+      "variants": {
+        "dense": {
+          "pass": true,
+          "medianMs": 27.265910792661664,
+          "p95Ms": 101.6379923102703,
+          "frames": 52,
+          "measuredCFLMax": 0.9697474161783854
+        },
+        "pool": {
+          "pass": true,
+          "medianMs": 36.7897126434803,
+          "p95Ms": 115.3305414551462,
+          "frames": 52,
+          "measuredCFLMax": 0.971547614203559
+        },
+        "flow": {
+          "pass": true,
+          "medianMs": 24.09546816173172,
+          "p95Ms": 81.53714123851375,
+          "frames": 52,
+          "measuredCFLMax": 0.9697262234157985
+        },
+        "combined": {
+          "pass": true,
+          "medianMs": 31.64992110229683,
+          "p95Ms": 126.14833806603986,
+          "frames": 52,
+          "measuredCFLMax": 0.9722103542751737
+        }
+      },
+      "poolFieldDrift": [
+        {
+          "frame": 29,
+          "relativeL1": [
+            0.0010407082682794319,
+            0.0004936524457626888,
+            0.0005215217762058369,
+            0.0003159337419346416
+          ],
+          "relativeSumChange": [
+            9.88907885880714e-06,
+            3.974493646316998e-06,
+            7.677455208213713e-06,
+            5.81911894799693e-06
+          ],
+          "nonfinite": 0
+        },
+        {
+          "frame": 59,
+          "relativeL1": [
+            0.0022533966196015367,
+            0.001255690955431973,
+            0.0015926811826697108,
+            0.0009253318434090896
+          ],
+          "relativeSumChange": [
+            5.591986379043572e-06,
+            3.066786853267331e-06,
+            1.2561257671109732e-05,
+            1.3185596502758764e-05
+          ],
+          "nonfinite": 0
+        }
+      ],
+      "device": "Intel(R) UHD Graphics",
+      "backend": "Vulkan",
+      "privateCache": {
+        "pass": true,
+        "medianMs": 40.05828027201461,
+        "p95Ms": 133.57203580146384,
+        "frames": 52
+      }
+    },
+    {
+      "adapter": "discrete",
+      "variants": {
+        "dense": {
+          "pass": true,
+          "medianMs": 4.1159680000000005,
+          "p95Ms": 13.363199999999999,
+          "frames": 52,
+          "measuredCFLMax": 0.9328912523057725
+        },
+        "pool": {
+          "pass": true,
+          "medianMs": 7.7455359999999995,
+          "p95Ms": 58.083276799999986,
+          "frames": 52,
+          "measuredCFLMax": 0.9324502733018663
+        },
+        "flow": {
+          "pass": true,
+          "medianMs": 6.628352,
+          "p95Ms": 49.85815039999991,
+          "frames": 52,
+          "measuredCFLMax": 0.9325174967447917
+        },
+        "combined": {
+          "pass": true,
+          "medianMs": 5.124608,
+          "p95Ms": 40.09287679999986,
+          "frames": 52,
+          "measuredCFLMax": 0.9318651835123698
+        }
+      },
+      "poolFieldDrift": [
+        {
+          "frame": 29,
+          "relativeL1": [
+            0.0015201015260045032,
+            0.0007709154499569948,
+            0.0009306976468415325,
+            0.0005571816234168299
+          ],
+          "relativeSumChange": [
+            4.477968302605789e-05,
+            -0.0002940822082976285,
+            -0.000544656921119061,
+            -0.00027932715557778997
+          ],
+          "nonfinite": 0
+        },
+        {
+          "frame": 59,
+          "relativeL1": [
+            0.00385806405696324,
+            0.0020031572323412003,
+            0.003277812680402155,
+            0.001599792063735221
+          ],
+          "relativeSumChange": [
+            0.0008686441245903674,
+            -1.0808276229427761e-05,
+            -0.0018788647702844383,
+            -0.00032174669650517
+          ],
+          "nonfinite": 0
+        }
+      ],
+      "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "backend": "Vulkan",
+      "privateCache": {
+        "pass": true,
+        "medianMs": 5.461504,
+        "p95Ms": 17.501644799999998,
+        "frames": 52
+      }
+    }
+  ],
+  "lightingStage": {
+    "pairedPixelViews": 34,
+    "requiredIlluminationExact": true,
+    "cameraAndShadowMasksUnchanged": true,
+    "gains": [
+      {
+        "device": "Intel(R) UHD Graphics",
+        "minPercent": 8.724804891850846,
+        "maxPercent": 14.184387842650592
+      },
+      {
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "minPercent": 6.735340729001582,
+        "maxPercent": 8.27133479212252
+      }
+    ],
+    "productionDiagnosis": {
+      "nativeOnly": true,
+      "wholeFrameGatePassed": false,
+      "recordings": {
+        "submissionsEach": 65,
+        "uploadsEach": 222,
+        "uploadDifferences": 0,
+        "computePassesEach": 1384,
+        "renderPassesEach": 126,
+        "clearCommandsEach": 344,
+        "copyCommandsEach": 63,
+        "dispatchesMatch": true,
+        "receiverBufferBytes": 131072
+      },
+      "heldProductionLighting": [
+        {
+          "simulatedSeconds": 0.3999999999999999,
+          "pixelsExact": true,
+          "dilationMedianMs": {
+            "off": 0.06085937351417542,
+            "on": 0.06497395674705506
+          },
+          "incidentMedianMs": {
+            "off": 0.4216406147060394,
+            "on": 0.3519010330753326
+          },
+          "lightingMedianMs": {
+            "off": 1.243697886302948,
+            "on": 1.1547916384735109
+          },
+          "renderAndLightingMedianMs": {
+            "off": 2.4347916072235107,
+            "on": 2.1619009888858796
+          }
+        },
+        {
+          "simulatedSeconds": 1.9999999999999978,
+          "pixelsExact": true,
+          "dilationMedianMs": {
+            "off": 0.06218749848175049,
+            "on": 0.06716145669364929
+          },
+          "incidentMedianMs": {
+            "off": 1.5669010034122466,
+            "on": 1.3378645506706237
+          },
+          "lightingMedianMs": {
+            "off": 2.7391926414585113,
+            "on": 2.6629947266521454
+          },
+          "renderAndLightingMedianMs": {
+            "off": 4.01091136041069,
+            "on": 3.9391405288295744
+          }
+        }
+      ],
+      "wholeFrameProfile": {
+        "exactChemistryAndPixels": {
+          "imagesExact": true,
+          "chemistryExact": true
+        },
+        "unstableSameProgramRuns": [
+          {
+            "run": 0,
+            "receivers": false,
+            "gpuMedianMs": 68.33322749837494,
+            "correctVelocityMedianMs": 19.11229120005798
+          },
+          {
+            "run": 1,
+            "receivers": true,
+            "gpuMedianMs": 35.344191845438004,
+            "correctVelocityMedianMs": 7.407291485824585
+          },
+          {
+            "run": 2,
+            "receivers": true,
+            "gpuMedianMs": 103.2881485199833,
+            "correctVelocityMedianMs": 29.814296147111893
+          },
+          {
+            "run": 3,
+            "receivers": false,
+            "gpuMedianMs": 64.88976404077721,
+            "correctVelocityMedianMs": 17.276327703214648
+          }
+        ]
+      },
+      "matureFourSecondAttempt": {
+        "valid": false,
+        "stoppedFrame": 191,
+        "reason": "Fixed-CFL fixture exceeded measured CFL1.5 around3.2 simulated seconds; no4s result claimed."
+      },
+      "priorMatureStageGate": {
+        "validHeldFieldProof": true,
+        "dynamicSubsteps": true,
+        "source": "work/burning-sources-qa/run.py:153-180",
+        "doesNotEstablishWholeFrameWin": true
+      },
+      "decision": "Retain exact receivers as opt-in pending a stable whole-frame gain; no density/quality cut. Added dilation is4-5microseconds and incident light saves70-229microseconds on the tested thin states. Unpaired whole-frame regression cannot be assigned to receivers from these measurements.",
+      "proofPaths": [
+        "work/adaptive-volume-qa/paired-light-reference-60/receiver-pass-profile-60/pass-report.json",
+        "work/adaptive-volume-qa/receiver-pass-mature-off-240/receiver-held-profile/held-report.json"
+      ],
+      "limitations": [
+        "Per-pass instrumentation perturbs complete native replay and its full-frame timings are not a release gate.",
+        "Held-state lighting excludes physics evolution and browser scheduling."
+      ]
+    }
+  },
+  "artifactDigests": [
+    {
+      "path": "work/adaptive-volume-qa/paired-dense-60/native-integrated/report.json",
+      "sha256": "58ff2197442c61e95426a59dec0c3a9f28b1306ed12e6f082ff4f73a3c8e9d67"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-pool-60/native-integrated/report.json",
+      "sha256": "0429fc09e44416888e461d863ae2f425614040e0da3d876f124bb8a4cb746325"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-flow-60/native-integrated/report.json",
+      "sha256": "66c04d651538411d7130fa988845328572935a7f34e47763857fd020e9b861bc"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-combined-60/native-integrated/report.json",
+      "sha256": "6573502df351afd251c9c0d4b3482287365dd23d050db306cf75e6b41531e076"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-pool-60/native-integrated-cache/report.json",
+      "sha256": "5bac6ef9ceb20a557709eb618c2b7a356cac2a101d0abeb798f5781673e4f74a"
+    },
+    {
+      "path": "work/adaptive-volume-qa/compare-paired-dense-60-paired-pool-60-integrated/comparison.json",
+      "sha256": "8d20d3fc6f555af6ab31018312ac429efe77ba37ac574e251a31ac1a67e3932e"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-dense-60/native-discrete/report.json",
+      "sha256": "96d76179b3f238c47b48db25cf2342368f79bf9981d542a597c3220f31067df4"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-pool-60/native-discrete/report.json",
+      "sha256": "215d8bad0cb5285a6a628165baac50dd7a7811f59042c1e7c197450f086e6253"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-flow-60/native-discrete/report.json",
+      "sha256": "f0f1f1a6b41bb570b26888315d86971a587c95a3deaf5f5a301749b0489129e4"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-combined-60/native-discrete/report.json",
+      "sha256": "b17278e725aa4dcb658a52c915575473b9aff3aa83cef46cb243bb85574f7e8e"
+    },
+    {
+      "path": "work/adaptive-volume-qa/paired-pool-60/native-discrete-cache/report.json",
+      "sha256": "61740d306fd63f707189eafd8a0c96971cd3083e52cad8f9bef8fbe00918fe07"
+    },
+    {
+      "path": "work/adaptive-volume-qa/compare-paired-dense-60-paired-pool-60-discrete/comparison.json",
+      "sha256": "d66719d11096189ba09e4fd502fdeb8a5a89eb7f6c3f10504a761971f2d38fcd"
+    },
+    {
+      "path": "work/adaptive-volume-qa/lighting/receiver-results.json",
+      "sha256": "146aea3ea5dfa558c8bc3b55c541025d74720329193902c16f1ceb51cb8a3150"
+    },
+    {
+      "path": "work/adaptive-volume-qa/lighting/receiver-diagnosis.json",
+      "sha256": "f465f2e42298c323cb564d3c7008bc2806c16c6dbe78e7d635790113df1b6ecf"
+    },
+    {
+      "path": "work/adaptive-volume-qa/pool/layout-256/comparison.json",
+      "sha256": "660be700d08d42acd784edbbf375893dbbc67b5a2a8a3741f3a8da95cb7c11a8"
+    },
+    {
+      "path": "work/adaptive-volume-qa/default-reference.json",
+      "sha256": "b67fb9862416e0c4893fa4a89de731424bcc15c15605afd005473d664e7766a5"
+    },
+    {
+      "path": "work/adaptive-volume-qa/default-host-comparison.json",
+      "sha256": "3d812349a1b9564b29d6a23e3e6131909c69f671d391525a5db7cbbb434839d1"
+    },
+    {
+      "path": "work/adaptive-volume-qa/pressure-temporal-native-integrated-32.json",
+      "sha256": "1e170a978abc9e8d0e5162e70739c6a05f302f5868c285a00fcc816fcf5a74d5"
+    },
+    {
+      "path": "work/adaptive-volume-qa/pressure-temporal-native-integrated-128.json",
+      "sha256": "644e7b2e80233f616d4ac38c414c6f76a8c2d625b978ce1f2bbe7d9a6c2d37c0"
+    },
+    {
+      "path": "work/adaptive-volume-qa/pressure-temporal-native-discrete-32.json",
+      "sha256": "3a55bfc932944f3da854970a1939f067d50c5a890d6fda920c98f2d8413e3eb3"
+    },
+    {
+      "path": "work/adaptive-volume-qa/pressure-temporal-native-discrete-128.json",
+      "sha256": "469feb3632874dd1c7eababbf91c49c5cc6bd4833ca4fcefd7294304750bb52d"
+    }
+  ],
+  "scalarLayoutTrial": {
+    "nativeOffscreenOnly": true,
+    "decision": "Rejected for production; pooled cost increases, dense benefit modest and RTX near neutral",
+    "report": "work/adaptive-volume-qa/pool/layout-256/comparison.json",
+    "reportSHA256": "660be700d08d42acd784edbbf375893dbbc67b5a2a8a3741f3a8da95cb7c11a8",
+    "summary": {
+      "IntelDenseRatios": [
+        0.941,
+        0.955
+      ],
+      "RTXDenseRatios": [
+        0.993,
+        0.991
+      ],
+      "IntelPoolRatios": [
+        1.072,
+        1.053
+      ],
+      "RTXPoolRatios": [
+        1.014,
+        1.015
+      ],
+      "fullFieldsImagesPredictorMasksExact": true
+    }
+  },
+  "defaultRestoration": {
+    "referenceCommit": "0304ff5",
+    "defaultGPUDescriptorsAndCommandsMatch": true,
+    "shaderCommentsAndWhitespaceIgnored": true,
+    "resourcesEach": 271,
+    "operationsEach": 32,
+    "uploadedPayloadsEach": 20,
+    "allPayloadsIdentical": true,
+    "nativeBrowserFPSClaim": false,
+    "recordingSHA256": [
+      "132e84876ebfa34428a6c8bfadb91943ce7b142af39210e7d44b01ae10d8fc8e",
+      "0f7bc33388492243d981d660e46abfa0c2692052ec550f29a973f00865090a2a"
+    ],
+    "generatedOperatorsMatchCount": 39
+  },
+  "pressureTemporalTrial": {
+    "checks": 60,
+    "pressureMACDivergenceBitsExact": true,
+    "completeVcycleMs": {
+      "Intel": {
+        "reference": 5.187,
+        "trial": 20.874
+      },
+      "RTX": {
+        "reference": 1.11,
+        "trial": 2.272
+      }
+    },
+    "decision": "Rejected; halo arithmetic and shared-memory cost exceed removed dispatch/texture write cost",
+    "sharedBytes": 15680,
+    "tileUpdates": 2008,
+    "referenceUpdates": 768
+  }
+}
