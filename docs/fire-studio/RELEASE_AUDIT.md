@@ -2,6 +2,14 @@
 
 This audit covers packaging, dependency integrity, release copy and research leakage. It does not certify current browser appearance, frame rate or offline visual parity.
 
+## Startup hotfix rc.7
+
+The rc.6 cleanup removed the `halfFloatLinear` declaration while `target()` still used it during Original texture allocation. This caused `halfFloatLinear is not defined` at startup. JavaScript syntax checks and native GLSL compilation did not execute that allocation code and therefore missed the regression. The declaration is restored; source cache keys and the package version advance to rc.7.
+
+`original-startup.test.mjs` now executes the actual runtime loader, all eight Original helpers and `mountLegacy` against DOM/WebGL recording fixtures with real source/object binaries. Sigil, bonfire, explosion and house startup, first-frame JavaScript, shared appearance controls, hide/resume and disposal pass. An in-memory mutation removes the declaration and reproduces the exact reported ReferenceError, including failure cleanup. The startup regression is mandatory in package validation, the completed build and directory verification. It also supports `FIRE_STUDIO_ROOT` to check copied deployment bytes.
+
+The 32 existing Node state/lifecycle/telemetry tests, six new startup tests and six Python package tests pass. A static scope audit found no further undefined local startup bindings; the helper globals are supplied by the awaited loader scripts. These checks establish JavaScript initialization and packaging behavior, not rendered pixels or browser frame rate.
+
 ## Corrected defects
 
 The previous validator accepted missing plain HTML references such as `studio.css`, unprefixed fetch paths and CSS `url()` assets. It also did not check the dynamically selected source previews or object binaries. The package now validates these references, rejects paths escaping the deployment subtree and verifies object/tree bytes against their supplied SHA-256 manifests. Native source texture byte counts are checked against the runtime's upload dimensions.

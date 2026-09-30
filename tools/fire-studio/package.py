@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -10,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.6'
+VERSION = '0.1.0-rc.7'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 OPEN_GATES = [
     'Live browser motion and sustained completed-frame performance on the demo GPU',
@@ -226,6 +227,19 @@ def validate(files):
             problems.append('Unused script selected for release: ' + str(path.relative_to(SOURCE)))
     if problems:
         raise RuntimeError('\n'.join(problems))
+    validate_startup(SOURCE)
+
+
+def validate_startup(root):
+    """Execute boot code; syntax and shader validation miss undefined JS bindings."""
+    environment = dict(os.environ, FIRE_STUDIO_ROOT=str(root.resolve()))
+    result = subprocess.run(
+        ['node', str(Path(__file__).with_name('original-startup.test.mjs'))],
+        env=environment, capture_output=True, text=True, timeout=30,
+    )
+    if result.returncode:
+        details = (result.stdout + result.stderr)[-10000:]
+        raise RuntimeError('Original startup regression failed:\n' + details)
 
 
 def verify_artifact(destination):
@@ -282,7 +296,11 @@ def main():
     parser.add_argument('--out', type=Path, default=REPO / 'releases' / ('fire-studio-' + VERSION))
     args = parser.parse_args()
     if args.verify:
-        print(json.dumps(verify_artifact(args.verify)))
+        verification = verify_artifact(args.verify)
+        if args.verify.is_dir():
+            validate_startup(args.verify)
+            verification['originalStartup'] = 'passed-dom-webgl-fixture'
+        print(json.dumps(verification))
         return
     files = runtime_files()
     validate(files)
@@ -312,6 +330,7 @@ def main():
         'version': VERSION, 'build': token, 'status': 'release-candidate', 'entry': 'index.html',
         'files': entries, 'openGates': OPEN_GATES,
     }, indent=2), encoding='utf-8', newline='\n')
+    validate_startup(destination)
     with ZipFile(archive, 'w', ZIP_DEFLATED) as bundle:
         for file in sorted(destination.rglob('*')):
             if file.is_file():

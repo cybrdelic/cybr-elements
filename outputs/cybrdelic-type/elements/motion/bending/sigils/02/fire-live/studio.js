@@ -1,13 +1,13 @@
-import { readLook, writeLook } from './studio-location.js?v=studio-rc-6';
-import { createFireDomain } from './fire-domain.js?v=studio-rc-6';
-import { inspectionState } from './inspection-state.js?v=studio-rc-6';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-6';
-import { studioUI } from './studio-ui.js?v=studio-rc-6';
-import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-6';
-import { matchingPreset } from './preset-pairs.js?v=studio-rc-6';
-import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-6';
-import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-6';
-import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-6';
+import { readLook, writeLook } from './studio-location.js?v=studio-rc-7';
+import { createFireDomain } from './fire-domain.js?v=studio-rc-7';
+import { inspectionState } from './inspection-state.js?v=studio-rc-7';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-7';
+import { studioUI } from './studio-ui.js?v=studio-rc-7';
+import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-7';
+import { matchingPreset } from './preset-pairs.js?v=studio-rc-7';
+import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-7';
+import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-7';
+import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-7';
 
 const $ = (selector) => document.querySelector(selector);
 const params = new URL(location.href).searchParams;

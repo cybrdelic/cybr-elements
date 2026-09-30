@@ -1,5 +1,5 @@
-import {objectWGSL} from './objects.js?v=studio-rc-6';
-import {combustionWGSL} from './combustion.js?v=studio-rc-6';
+import {objectWGSL} from './objects.js?v=studio-rc-7';
+import {combustionWGSL} from './combustion.js?v=studio-rc-7';
 // MAC velocity components live on their own faces in one (N+1)^3 texture.
 // Scalars live at cell centers. All distances and velocities use world units.
 export function simulationShaders(N=128,D=256){

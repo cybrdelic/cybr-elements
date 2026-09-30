@@ -1,8 +1,8 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-6';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-6';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-6';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-6';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-6';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-7';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-7';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-7';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-7';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-7';
 export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=>{}}={}){
   const scope=runtimeScope(onFailure),on=scope.on;
   const qaParams=new URL(location.href).searchParams,qaCaptureStop=qaParams.has('qa')?Number(qaParams.get('capture'))||0:0;
@@ -85,7 +85,7 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
   if (!gl) { await scope.stop(); throw new Error('WebGL 2 is unavailable in this browser session. Reload or reopen the browser.'); }
   if (!gl.getExtension('EXT_color_buffer_float')) { await scope.stop(); gl.getExtension('WEBGL_lose_context')?.loseContext(); throw new Error('Floating point GPU targets are unavailable in this browser.'); }
   const probe=legacyProbe(gl);
-  gl.getExtension('OES_texture_float_linear');
+  const halfFloatLinear = !!gl.getExtension('OES_texture_float_linear');
 
   const vertex = `#version 300 es
   precision highp float;

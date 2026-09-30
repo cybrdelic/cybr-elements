@@ -4,7 +4,7 @@ The deployable unit is the output of `tools/fire-studio/package.py`. Historical 
 
 ## Build and validate
 
-Run the Node state/lifecycle/telemetry suites and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
+Run the Node state/lifecycle/telemetry suites, Original startup regression and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. The startup regression must also pass against the final package using `FIRE_STUDIO_ROOT` set to its runtime directory. It exercises JavaScript initialization with a DOM/WebGL fixture; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
 
 The package records the exact shipped bytes and a content-derived build fingerprint. JavaScript imports, classic shader scripts, stylesheets and local runtime asset URLs use that fingerprint as their cache key. The artifact preserves the single-page entry and the old `pyro-gpu/` redirect. Tree binaries and source previews are validated before packaging; imported tree geometry remains a lazy source load.
 

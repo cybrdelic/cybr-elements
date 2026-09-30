@@ -3,12 +3,12 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-6';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-6';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-6';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-6';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-6';
-import { rendererShaders, dilateWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-6';
+} from './objects.js?v=studio-rc-7';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-7';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-7';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-7';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-7';
+import { rendererShaders, dilateWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-7';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   const lag = Math.max(0, Math.min(telemetryLag, 8));

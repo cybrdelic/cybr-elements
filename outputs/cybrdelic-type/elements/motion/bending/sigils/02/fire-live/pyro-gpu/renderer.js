@@ -1,6 +1,6 @@
-import {objectWGSL} from './objects.js?v=studio-rc-6';
-import {combustionWGSL} from './combustion.js?v=studio-rc-6';
-import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-6';
+import {objectWGSL} from './objects.js?v=studio-rc-7';
+import {combustionWGSL} from './combustion.js?v=studio-rc-7';
+import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-7';
 // Five room faces share this irradiance resolution. Keep atlas allocation,
 // compute dispatch and sampling coordinates in sync with this value.
 export const ROOM_SIZE=64;
