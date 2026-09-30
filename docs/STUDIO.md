@@ -90,3 +90,16 @@ frames 165–223 to include fluid release; earth covers 140–198 to include com
 assembly. The other studies cover 90–148. All are two-second, 15fps reviews.
 No older film pixels, image generation, or screen-space
 glyph compositing enters this path.
+
+Download and extract the workflow shards into one directory. Encode the actual
+frames without interpolating motion or changing their native elapsed time:
+
+```sh
+python scripts/assemble_studio_reviews.py --inputs work/downloaded-studio-shards --output work/studio-downloads
+```
+
+The assembler verifies the image hashes, common renderer revision, uniform
+frame spacing and dimensions before encoding. It fully decodes each resulting
+MP4 and exports the seven PNG heroes, a contact sheet, provenance, and a ZIP.
+An additional local water review covering 135–163 can be supplied as a second
+input to show the intact lettering before the workflow's 165–223 release study.
