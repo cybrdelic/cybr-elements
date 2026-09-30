@@ -24,7 +24,7 @@ jobs:
       LP_NUM_THREADS: 4
       LIBGL_ALWAYS_SOFTWARE: '1'
       EGL_PLATFORM: surfaceless
-      XDG_CACHE_HOME: ${{ runner.temp }}/cybr-render-cache
+      XDG_CACHE_HOME: /tmp/cybr-render-cache
       RENDER_ELEMENT: ${{ matrix.element }}
     steps:
       - uses: actions/checkout@v4
