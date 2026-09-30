@@ -112,6 +112,7 @@ test('10,000 active display ticks keep quality fixed and queue/readback/cache gr
     outputView: resource('output'), context: { getCurrentTexture: () => ({ createView: () => resource('canvas') }) },
     cache: new Map(), ids: new WeakMap(), nextId: 0, vi: 0, ci: 0, si: 0,
     pipelines: {}, levels: [], lightReady: false,
+    floorFuel:[tex('floor-a',128),tex('floor-b',128)],floorIndex:0,hasFloorFuel:false,
   });
   for (const name of Object.keys(simulationShaders(s.N, s.D))) s.pipelines[name] = pipeline(name);
   for (let n = s.N; n >= 4; n /= 2) s.levels.push({ n, current: 0,

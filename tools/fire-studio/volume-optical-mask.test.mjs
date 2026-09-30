@@ -26,6 +26,8 @@ function fixture(){
   stateEpoch:0,frameNumber:7,
   levels:[{n:128,current:0,p:[texture('pressure-a'),texture('pressure-b')],b:texture('rhs')}],
   clearPipeline:resource('clear-state'),
+  floorFuel:[texture('floor-a'),texture('floor-b')],floorDeposits:texture('floor-deposits'),floorIndex:0,hasFloorFuel:false,
+  floorClear:resource('floor-fuel-clear'),fuelBrush:{clear(){}},
   group:(pipeline,items)=>({pipeline,items}),
   dispatch(encoder,pipeline,items,n){calls.push({label:pipeline.name,items,n});},
   sparse(encoder,pipeline,items){calls.push({label:pipeline.name,items});},

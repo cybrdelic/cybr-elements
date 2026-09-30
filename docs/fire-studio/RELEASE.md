@@ -4,11 +4,25 @@ The deployable unit is the output of `tools/fire-studio/package.py`. Historical 
 
 ## Build and validate
 
-Run the Node state/lifecycle/telemetry suites, startup/transition/reset/lighting/optical/sustained-scheduling regressions and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. Package validation runs the six original runtime checks and seven adaptive integration fixtures automatically against source, the completed build and directory verification. `FIRE_STUDIO_ROOT` can also select a directory for manual checks. They exercise JavaScript initialization, shared shell transitions, actual reset ordering, normal/tree lighting bindings, optical mask ping-pong and 10,000 display ticks with DOM/GPU fixtures; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
+Run the Node state/lifecycle/telemetry suites, startup/transition/reset/lighting/optical/sustained-scheduling regressions and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. Package validation runs **19 runtime runners** automatically against source, the completed build and directory verification: six original runtime checks, seven adaptive integration fixtures, and six fuel/sigil/lighting/lifetime fixtures. `FIRE_STUDIO_ROOT` can also select a directory for manual checks. They exercise JavaScript initialization, shared shell transitions, actual reset ordering, normal/tree lighting bindings, optical mask ping-pong, finite fuel lifecycle and 10,000 display ticks with DOM/GPU fixtures; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
 
 The package records the exact shipped bytes and a content-derived build fingerprint. JavaScript imports, classic shader scripts, stylesheets and local runtime asset URLs use that fingerprint as their cache key. The artifact preserves the single-page entry and the old `pyro-gpu/` redirect. Tree binaries and source previews are validated before packaging; imported tree geometry remains a lazy source load.
 
 Check the resulting `release.json`, ZIP and runtime directory together with `python tools/fire-studio/package.py --verify PATH-TO-DIRECTORY-OR-ZIP`. This confirms file hashes, transformed JavaScript syntax and that no unrecorded files are present. Never modify a packaged script after generating the manifest. Rebuild if any runtime or asset changes. `release.json` describes packaging verification and the open visual/performance gates; a successful build does not close those gates.
+
+## rc.12 fuel and inspection gates
+
+Usage and evidence scope are in [FUEL_AND_INSPECTION.md](FUEL_AND_INSPECTION.md). The release adds **Fully lit · neutral**, **Show sigil**, and finite floor fuel with **Drop fuel**, **Ignite fuel** and **Clear fuel** in both engines.
+
+| Feature | Recorded gate |
+| --- | --- |
+| Fully lit | Catalog, existing select/library, persistence, clamps and neutral bindings pass; native captures were inspected for room and source readability. |
+| Show sigil | Native contour tests execute 756 rays per GPU with zero hit disagreements on Intel UHD and RTX 4060; held-state angles were visually inspected. The artwork is a visible surface, not a fluid obstacle. |
+| Cold and ignited fuel | Cold inventory stays unlit. Original's production gas reacts after a finite pulse with its normal source disabled. Volume's final Intel/RTX production-command replay also produces soot from placed fuel with the source disabled. |
+| Smoke clearance | Native Volume lifetime is independent of CFL subdivisions; Original clears negligible stored soot. Source replenishment and Pause remain distinct from dissipation. |
+| Inventory and clearing | Surface stock/char accounting, independent clearing, restart and fixed resource lifetimes pass. Clearing fuel leaves existing gas and smoke evolving. |
+
+The compact native proof is recorded in `RC12_FUEL_PROOF.json`. These gates cover native shader/state paths. Browser automation was blocked by automatic approval review in this session; actual browser interaction, sustained frame pacing and mobile acceptance remain separate.
 
 ## Publish to GitHub Pages
 
@@ -26,6 +40,7 @@ The package contains a large imported tree model. A first tree selection transfe
 | Smoke coupling | Smoke-only burst expands and rolls; burning smoke follows the gas flow through fuel shutoff and source dragging. Inspect it with neutral side/back lighting and at several angles. |
 | Volume artifacts | Dense fire and oil bursts do not introduce crosshatching, tile boundaries, transient holes or transparent hollow cores. Inspect the full motion sequence, not one favorable still. |
 | Fire illumination | Source-shaped fire illumination reaches gas and room receivers. Check off-center sources, multiple emitting regions, paused light changes and darkness after emission ends. |
+| Inspection and fuel | Use Fully lit to read cold patches and source surfaces. Toggle Show sigil at front and grazing angles. Drop unlit fuel, ignite it once, inspect burn-down/char, clear only the deposits, then Restart. Repeat in both engines. |
 | Sources and presets | Both engines expose matching source IDs and recover camera/fuel/light settings across engine switches, shared URLs and saved looks. Experimental geometry/effects retain visible status. |
 | Objects | Inspect flame contact, finite fuel and char. Trees use the reviewed mesh; branch fracture/collapse and ember ignition are not presented as implemented. |
 | Frame pacing | Record completed FPS, frame p95, simulation seconds per wall second, GPU stages and memory over sustained interaction, with the browser renderer/adapter named. Repeated presentation of an unchanged frame does not count as simulation throughput. |

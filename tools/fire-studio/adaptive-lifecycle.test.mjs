@@ -68,6 +68,8 @@ function fixture(){
   emberPipeline:pipeline('embers'),emberRender:pipeline('ember-render'),present:pipeline('present'),
   output:resource('output'),outputView:resource('output-view'),context:{getCurrentTexture:()=>({createView:()=>resource('swapchain')})},
   prepareSource:async()=>{},
+  floorFuel:[texture('floor-a'),texture('floor-b')],floorDeposits:texture('floor-deposits'),floorIndex:0,hasFloorFuel:false,
+  floorClear:pipeline('floor-fuel-clear'),fuelBrush:{clear(){}},
  });
  s.pipelines=Object.fromEntries(['advectVelocity','curl','correctVelocity','rhs','project','reduceStats','buildBricks','advectScalar','correctScalar'].map(name=>[name,pipeline(name)]));
  s.levels=[{n:128,p:[texture('pressure-a'),texture('pressure-b')],b:texture('rhs'),current:0}];

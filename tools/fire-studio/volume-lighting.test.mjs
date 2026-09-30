@@ -21,6 +21,7 @@ const s=Object.assign(Object.create(PyroSolver.prototype),{
   emptyObject:tex('empty-solid'),surface:[tex('surface-a'),tex('surface-b')],outputView:resource('output'),
   context:{getCurrentTexture:()=>({createView:()=>resource('canvas')})},cache:new Map(),ids:new WeakMap(),nextId:0,
   prepareSource:async()=>{},
+  floorFuel:[tex('floor-a'),tex('floor-b')],floorIndex:0,hasFloorFuel:false,sigilSource:tex('sigil-source'),
 });
 for(const [key,label] of Object.entries({dilatePipeline:'dilate',gatherPipeline:'gather',gatherAdaptivePipeline:'adaptive',roomPipeline:'room',bouncePipeline:'bounce',lightPipeline:'light',renderPipeline:'render',present:'present'}))s[key]=pipeline(label);
 const forest=Object.assign(Object.create(ForestMesh.prototype),{targets:[tex('mesh-position'),tex('mesh-normal'),tex('mesh-color')],shadow:resource('tree-shadow'),compare:resource('tree-compare'),shadows(){calls.push({label:'tree-shadows'});},render(){calls.push({label:'tree-mesh'});}});

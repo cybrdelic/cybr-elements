@@ -5,8 +5,8 @@ import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 const root = resolve(process.env.FIRE_STUDIO_ROOT || resolve(import.meta.dirname, '../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'));
 const { FIRE_PRESETS, LEGACY_PRESETS, sourceOrigin } = await import(pathToFileURL(resolve(root, 'pyro-gpu/presets.js')).href);
-const sceneIds = ['simulation', 'preset', 'fuel', 'show-experiments', 'pause', 'restart', 'burst', 'extinguish', 'fire-tool', 'pan-tool', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen', 'flame-color', 'embers', 'smoke-only', 'benchmark', 'retry-runtime', 'use-original'];
-const cameraIds = ['fire-tool', 'pan-tool', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen'];
+const sceneIds = ['simulation', 'preset', 'fuel', 'show-experiments', 'pause', 'restart', 'burst', 'extinguish', 'fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen', 'flame-color', 'embers', 'smoke-only', 'benchmark', 'retry-runtime', 'use-original'];
+const cameraIds = ['fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen'];
 let serial = 0;
 const volumeSource = readFileSync(resolve(root, 'pyro-gpu/app.js'), 'utf8');
 const volumeFireStart = volumeSource.indexOf('  function applyFire(id) {');
@@ -326,16 +326,18 @@ test('custom lights and zero-valued shared controls survive engine switching and
   try {
     f.window.SceneLights.apply({ key: 175, rim: 70, ambient: .12, bounce: 0, keyColor: '#88AAFF' });
     f.window.dispatchEvent(new Event('scene-light-change'));
-    await f.change('room', false); await f.change('fire-light', 0, 'input'); await f.change('fuel', 'oil');
+    await f.change('room', false); await f.change('fire-light', 0, 'input'); await f.change('fuel', 'oil'); await f.change('source-guide', false);
     await f.change('simulation', 'legacy');
     shared = f.location.href;
     const lights = JSON.parse(new URL(shared).searchParams.get('lights'));
     assert.deepEqual([lights.key, lights.rim, lights.ambient, lights.bounce, lights.keyColor], [175, 70, .12, 0, '#88aaff']);
+    assert.equal(new URL(shared).searchParams.get('guide'),'0');
   } finally { f.restore(); }
   const reloaded = await studio(shared);
   try {
     assert.deepEqual([reloaded.runtime.snapshot().fire, reloaded.runtime.snapshot().room, reloaded.runtime.snapshot().fuel, reloaded.runtime.snapshot().fireLight], ['legacy:bonfire', false, 'oil', 0]);
     assert.deepEqual([reloaded.window.SceneLights.snapshot.key, reloaded.window.SceneLights.snapshot.bounce], [175, 0]);
+    assert.equal(reloaded.nodes.get('source-guide').checked,false,'Sigil visibility survives switching engines and reloading a shared URL');
   } finally { reloaded.restore(); }
 });
 

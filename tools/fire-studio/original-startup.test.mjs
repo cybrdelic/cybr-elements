@@ -9,7 +9,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, readFileSync } from 'node:fs';
+import { readFile, readFileSync,mkdirSync,writeFileSync } from 'node:fs';
 import { resolve, relative, isAbsolute } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -64,17 +64,25 @@ class FixtureElement extends FixtureTarget {
   get selectedOptions() { return this.children.filter(option => option.value === this.value); }
   matches() { return false; }
   click() { this.dispatchEvent(new Event('click')); }
+  focus() {}
+  setPointerCapture(id) { this.pointerCapture=id; }
+  releasePointerCapture() { this.pointerCapture=null; }
 }
 
 function recordingGL() {
   const gl = {};
-  const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F R8 RED REPEAT RGBA RGBA16F RGBA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER';
+  const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER';
   constants.split(' ').forEach((name, index) => gl[name] = index + 1);
   let serial = 0;
-  const textures = [], shaders = [];
+  const textures = [], shaders = [],programs=[];
   const bound = new Map();
-  const calls = { draws: 0, lost: 0, extensions: [] };
-  for (const name of ['createFramebuffer', 'createProgram', 'createVertexArray']) gl[name] = () => ({ kind: name, id: ++serial });
+  let boundFramebuffer=null;
+  const calls = { draws: 0, clears:0, clearedTextures:[], lost: 0, extensions: [] };
+  for (const name of ['createFramebuffer', 'createVertexArray']) gl[name] = () => ({ kind: name, id: ++serial });
+  gl.createProgram=()=>{const p={kind:'createProgram',id:++serial,shaders:[]};programs.push(p);return p;};
+  gl.attachShader=(p,s)=>p.shaders.push(s);
+  gl.bindFramebuffer=(target,fbo)=>{boundFramebuffer=fbo;};
+  gl.framebufferTexture2D=(target,attachment,type,texture)=>{if(boundFramebuffer){boundFramebuffer.attachments??=new Map();boundFramebuffer.attachments.set(attachment,texture);}};
   gl.createShader = type => { const shader = { type, id: ++serial }; shaders.push(shader); return shader; };
   gl.shaderSource = (shader, source) => shader.source = source;
   gl.createTexture = () => { const texture = { id: ++serial, parameters: new Map() }; textures.push(texture); return texture; };
@@ -82,6 +90,7 @@ function recordingGL() {
   gl.texParameteri = (type, parameter, value) => bound.get(type)?.parameters.set(parameter, value);
   gl.texImage2D = (type, level, internal, width, height, border, format, dataType, data) => Object.assign(bound.get(type), { internal, width, height, bytes: data?.byteLength });
   gl.texImage3D = (type, level, internal, width, height, depth, border, format, dataType, data) => Object.assign(bound.get(type), { internal, width, height, depth, bytes: data?.byteLength });
+  gl.texSubImage2D = (type, level, x, y, width, height, format, dataType, data) => {calls.fuelUploads=(calls.fuelUploads||0)+1;Object.assign(bound.get(type),{uploadBytes:data.byteLength});};
   gl.getExtension = name => {
     calls.extensions.push(name);
     if (name === 'WEBGL_lose_context') return { loseContext() { calls.lost++; } };
@@ -94,12 +103,14 @@ function recordingGL() {
   gl.getShaderInfoLog = gl.getProgramInfoLog = () => '';
   gl.getUniformLocation = (program, name) => ({ program, name });
   gl.drawArrays = () => calls.draws++;
-  for (const name of 'activeTexture attachShader bindFramebuffer bindVertexArray clearBufferfv compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers framebufferTexture2D generateMipmap linkProgram pixelStorei uniform1f uniform1i uniform2f uniform3f uniform3fv uniform4i useProgram viewport'.split(' ')) gl[name] = () => {};
-  return { gl, calls, textures, shaders };
+  gl.clearBufferfv=(buffer,index)=>{calls.clears++;const texture=boundFramebuffer?.attachments?.get(gl.COLOR_ATTACHMENT0+index);if(texture)calls.clearedTextures.push(texture.id);};
+  gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);};
+  for (const name of 'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei uniform1i uniform2f uniform3f uniform3fv uniform4fv uniform4i useProgram viewport'.split(' ')) gl[name] = () => {};
+  return { gl, calls, textures, shaders,programs };
 }
 
 function fixture(preset, fuel = 'wood') {
-  const { gl, calls, textures, shaders } = recordingGL();
+  const { gl, calls, textures, shaders,programs } = recordingGL();
   const ids = [...readFileSync(resolve(root, 'index.html'), 'utf8').matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   // Fire illumination is inserted by studio.js before runtime mounting.
   ids.push('fire-light', 'fire-light-value');
@@ -146,7 +157,7 @@ function fixture(preset, fuel = 'wood') {
     SceneLights: { active: false, revision: 0, bind() {} },
   });
   return {
-    gl, calls, textures, shaders, elements, frames, requested, loadedScripts, failures, document,
+    gl, calls, textures, shaders,programs, elements, frames, requested, loadedScripts, failures, document,
     listeners: () => document.listenerCount + windowEvents.listenerCount + [...elements.values()].reduce((sum, element) => sum + element.listenerCount, 0),
     async frame(now) {
       assert.equal(frames.size, 1, 'The runtime owns exactly one pending animation frame');
@@ -180,6 +191,11 @@ test('Original production startup and failure regression', async t => {
   for (const preset of ['sigil', 'bonfire', 'explosion', 'burning-house']) await t.test(preset + ' executes startup, first frame and disposal', async () => {
     const env = await prepare(preset, preset === 'explosion' ? 'oil' : 'wood');
     const runtime = await env.mountLegacy({ initialPreset: preset, onRemount: key => assert.fail('Unexpected remount: ' + key), onFailure: error => env.failures.push(String(error)) });
+    if(process.env.FIRE_STUDIO_SHADER_OUTPUT){
+      const directory=resolve(process.env.FIRE_STUDIO_SHADER_OUTPUT);mkdirSync(directory,{recursive:true});
+      writeFileSync(resolve(directory,'startup-'+preset+'.json'),JSON.stringify({preset,runtimeRoot:root,domain:window.FireDomain,programs:env.programs.map(p=>({id:p.id,
+        vertex:p.shaders.find(s=>s.type===env.gl.VERTEX_SHADER)?.source,fragment:p.shaders.find(s=>s.type===env.gl.FRAGMENT_SHADER)?.source}))}));
+    }
     if (preset === 'sigil') assert.equal(env.loadedScripts.length, 8, 'Actual runtime loader loaded all eight production helper scripts');
     assert.equal(runtime.snapshot().fire, 'legacy:' + preset);
     assert.ok(env.requested.includes('source/source-native.rgba8.bin'));
@@ -204,6 +220,68 @@ test('Original production startup and failure regression', async t => {
     assert.equal(env.frames.size, 0, 'Disposed runtime cancels animation');
     assert.equal(env.listeners(), 0, 'Disposed runtime aborts scope listeners');
     assert.equal(env.calls.lost, 1, 'Disposed runtime releases the WebGL context');
+  });
+
+  await t.test('Original fuel tool preserves the running source and clears only finite inventory',async()=>{
+    const env=await prepare('bonfire','wood');
+    const runtime=await env.mountLegacy({initialPreset:'bonfire',onFailure:error=>env.failures.push(String(error))});
+    assert.equal(env.elements.get('#fuel-actions').hidden,true,'Fuel actions do not crowd the camera before placement');
+    assert.equal(env.elements.get('#sigil-guide-control').hidden,true,'Non-sigil presets hide the sigil control');
+    env.elements.get('#fuel-tool').click();assert.equal(runtime.snapshot().tool,'fuel');assert.equal(runtime.snapshot().fire,'legacy:bonfire');
+    assert.equal(env.elements.get('#fuel-actions').hidden,false);
+    assert.equal(env.elements.get('#ignite-fuel').disabled,true,'Ignition is unavailable until fuel is placed');
+    assert.equal(env.elements.get('#fire-tool').attributes.get('aria-pressed'),'false');
+    const camera=runtime.snapshot().camera,yaw=camera.angle*Math.PI/180,eye=[camera.pan[0]+Math.sin(yaw)*13,3.5+camera.pan[1],Math.cos(yaw)*13],length=Math.hypot(13,1.1);
+    const f=[-Math.sin(yaw)*13/length,-1.1/length,-Math.cos(yaw)*13/length],right=[Math.cos(yaw),0,-Math.sin(yaw)];
+    const up=[right[1]*f[2]-right[2]*f[1],right[2]*f[0]-right[0]*f[2],right[0]*f[1]-right[1]*f[0]];
+    const d=[-eye[0],.018-eye[1],-eye[2]],dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),depth=dot(d,f);
+    const event=(type,clientX,clientY)=>({type,pointerId:7,pointerType:'mouse',button:0,clientX,clientY,preventDefault(){}});
+    const tan=.3443276133/camera.zoom,x=(.5+.5*dot(d,right)/(depth*tan*16/9))*1280,y=(.5-.5*dot(d,up)/(depth*tan))*720;
+    const view=env.elements.get('#view');view.dispatchEvent(event('pointerdown',x,y));view.dispatchEvent(event('pointerup',x,y));
+    await env.frame(performance.now()+80);assert.equal(env.calls.fuelUploads,1,'One bounded R16F packet uploads the click mass');
+    assert.equal(env.elements.get('#ignite-fuel').disabled,false);
+    assert.equal(runtime.snapshot().fire,'legacy:bonfire','Dropping fuel does not reset or replace the source');
+    assert.equal(env.calls.ignitionPasses||0,0,'Dropping fuel does not inject ignition');
+    const inspect=env.elements.get('#smoke-only');inspect.checked=true;inspect.dispatchEvent(new Event('change'));
+    assert.equal(runtime.snapshot().smoke,true);assert.equal(env.elements.get('#ignite-fuel').disabled,false,'Hiding visible flame does not disable real combustion ignition');
+    env.elements.get('#ignite-fuel').click();await env.frame(performance.now()+120);
+    assert.equal(env.calls.ignitionPasses,1,'Explicit ignition adds one thermal pulse');
+    await env.frame(performance.now()+160);assert.equal(env.calls.ignitionPasses,1,'The pulse is consumed after one physics step');
+    const clears=env.calls.clears;env.elements.get('#clear-fuel').click();assert.equal(env.calls.clears-clears,2,'Only the two finite inventory targets clear');
+    assert.equal(runtime.snapshot().fire,'legacy:bonfire');
+    view.dispatchEvent(event('pointerdown',x,0));view.dispatchEvent(event('pointerup',x,0));await env.frame(performance.now()+200);
+    assert.equal(env.calls.fuelUploads,1,'Invalid floor picks are refused without clamping or uploading');
+    runtime.look({sourceGuide:false,tool:'fire'});assert.equal(runtime.snapshot().sourceGuide,false);assert.equal(runtime.snapshot().tool,'fire');
+    assert.equal(env.elements.get('#fuel-actions').hidden,true,'Clear inventory and leaving the fuel tool hides the actions');
+    await runtime.fire('sigil');runtime.look({camera,tool:'fuel'});
+    assert.equal(env.elements.get('#sigil-guide-control').hidden,false,'Sigil guide remains available after switching source');
+    view.dispatchEvent(event('pointerdown',x,y));view.dispatchEvent(event('pointerup',x,y));
+    const start=performance.now()+200;
+    for(let i=1;i<=156;i++)await env.frame(start+i*80);
+    const gasTextureIds=new Set(env.textures.filter(t=>t.internal===env.gl.RGBA16F&&t.width===window.FireDomain.nx*8&&t.height===window.FireDomain.ny*window.FireDomain.depth/8).map(t=>t.id));
+    const gasClears=()=>env.calls.clearedTextures.filter(id=>gasTextureIds.has(id)).length;
+    const lateClears=env.calls.clears,lateGasClears=gasClears();env.elements.get('#clear-fuel').click();assert.equal(env.calls.clears-lateClears,2);
+    await env.frame(start+157*80);assert.equal(gasClears(),lateGasClears,'Clearing fuel after the sigil loop duration must not reset gas');
+    await runtime.dispose();assert.equal(env.listeners(),0);assert.equal(env.frames.size,0);
+  });
+
+  for(const preset of ['smoke-column','smoke-pair','smoke-burst'])await t.test(preset+' keeps fuel cold and disables ignition independently of inspection',async()=>{
+    const env=await prepare(preset,'oil');
+    const runtime=await env.mountLegacy({initialPreset:preset,onFailure:error=>env.failures.push(String(error))});
+    env.elements.get('#fuel-tool').click();
+    const camera=runtime.snapshot().camera,yaw=camera.angle*Math.PI/180,eye=[camera.pan[0]+Math.sin(yaw)*13,3.5+camera.pan[1],Math.cos(yaw)*13],length=Math.hypot(13,1.1);
+    const forward=[-Math.sin(yaw)*13/length,-1.1/length,-Math.cos(yaw)*13/length],right=[Math.cos(yaw),0,-Math.sin(yaw)],up=[right[1]*forward[2]-right[2]*forward[1],right[2]*forward[0]-right[0]*forward[2],right[0]*forward[1]-right[1]*forward[0]];
+    const d=[-eye[0],.018-eye[1],-eye[2]],dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),depth=dot(d,forward),tan=.3443276133/camera.zoom;
+    const clientX=(.5+.5*dot(d,right)/(depth*tan*16/9))*1280,clientY=(.5-.5*dot(d,up)/(depth*tan))*720;
+    const view=env.elements.get('#view'),event=type=>({type,pointerId:7,pointerType:'mouse',button:0,clientX,clientY,preventDefault(){}});
+    view.dispatchEvent(event('pointerdown'));view.dispatchEvent(event('pointerup'));await env.frame(performance.now()+80);
+    assert.equal(env.calls.fuelUploads,1);assert.equal(env.elements.get('#ignite-fuel').disabled,true);
+    assert.equal(env.elements.get('#ignite-fuel').title,'Choose a fire source to ignite fuel.');
+    runtime.look({smoke:false});env.elements.get('#ignite-fuel').click();await env.frame(performance.now()+120);
+    assert.equal(env.elements.get('#message').textContent,'Choose a fire source to ignite fuel.');
+    assert.equal(env.calls.ignitionPasses||0,0);assert.ok(env.calls.groundCombustion.length>0);
+    assert.ok(env.calls.groundCombustion.every(value=>value===0),'Actual smoke sources cannot consume fuel or release unburnable vapor');
+    await runtime.dispose();assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);
   });
 
   await t.test('Removing the texture capability declaration reproduces the reported ReferenceError', async () => {

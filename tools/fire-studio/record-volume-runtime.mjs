@@ -60,7 +60,8 @@ const {FIRE_PRESETS,sourceOrigin}=await import(pathToFileURL(path.join(source,'p
 const preset=FIRE_PRESETS.find(p=>p.id===value('preset','bonfire'));if(!preset)throw Error('Unknown preset');
 const sandbox={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(source,'scene-lights.js'),'utf8').split('  let state=')[0]+'window.catalog=presets;})();',sandbox);
-const light=sandbox.window.catalog.studio;
+const lighting=value('lighting','studio'),light=sandbox.window.catalog[lighting];
+if(!light)throw Error('Unknown lighting preset: '+lighting);
 const canvas={width:768,height:432};let back;
 const context={configure(){},getCurrentTexture(){return back;}};
 const solver=new PyroSolver(device,canvas,{context,format:'rgba8unorm',adaptive:option('flow'),pressureWork:option('pressure'),brickPool:option('pool'),lightWork:option('light'),lightReceivers:option('receivers')});
@@ -76,12 +77,15 @@ solver.treeMoisture=preset.moisture||'dry';
 solver.collectTelemetry=async slot=>{slot.pending=false;};
 solver.collectPoolTelemetry=async slot=>{slot.poolPending=false;};
 await solver.reset();
+if(option('fuel')){solver.dropFuel([-.7,0]);solver.dropFuel([.7,0]);solver.dropFuel([0,0],[-.7,0]);}
+if(option('unlit'))solver.active=false;
+if(option('ignite-fuel'))solver.igniteFuel();
 const normalize=v=>{const n=Math.hypot(...v);return v.map(x=>x/n);};
 const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 const color=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)/255);
 function camera(angle=16,inspect=false){
  const a=angle*Math.PI/180,eye=[Math.sin(a)*13,3.5,Math.cos(a)*13],f=normalize([-eye[0],2.4-eye[1],-eye[2]]),r=normalize(cross(f,[0,1,0])),u=cross(r,f);
- const v=[...eye,.3443276133/1.25,...r,0,...u,0,...f,0,1,+inspect,light.bounce,24,...color(light.tint).map(x=>x*light.ambient),0];
+ const v=[...eye,.3443276133/1.25,...r,+solver.hasFloorFuel,...u,0,...f,0,1,+inspect,light.bounce,24,...color(light.tint).map(x=>x*light.ambient),option('guide')&&solver.effect[0]===10?10:0];
  for(const k of ['key','rim']){const az=light[k+'Az']*Math.PI/180,pos=[Math.sin(az)*5,light[k+'Height'],1.2+Math.cos(az)*3],dir=normalize([light.aimX-pos[0],light.aimY-pos[1],-pos[2]]),cone=light[k+'Beam']*Math.PI/360;
   v.push(...pos,0,...dir,Math.cos(cone),...color(light[k+'Color']).map(x=>x*light[k]),Math.cos(cone*.7));}
  solver.camera(v);
@@ -94,11 +98,12 @@ for(let frame=0;frame<frames;frame++){
  camera();const frameResult=await solver.frame(1/60);await solver.drain();
  operations.push({kind:'frame',index:frame,time:solver.time,
   output:solver.output.__rid,dense:solver.c[solver.ci].t.__rid,stats:solver.stats.__rid,substeps:frameResult.substeps,dt:1/60,
+  floorFuel:solver.hasFloorFuel?solver.floorFuel[solver.floorIndex].t.__rid:null,
   pool:solver.chemistryPool?{plan:solver.chemistryPool.plan,atlas:solver.chemistryPool.fields[solver.ci].texture.__rid,
     pages:solver.chemistryPool.pageTable.__rid,metadata:solver.chemistryPool.metadata.__rid}:null,
   snapshot:frame%6===5||frame===frames-1||frame===Math.floor(frames/2)-1,
   saveField:frame===frames-1||frame===Math.floor(frames/2)-1});
 }
 for(const [angle,inspect] of [[-50,false],[100,false],[16,true]]){camera(angle,inspect);await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,snapshot:true});}
-const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{flow:option('flow'),pool:option('pool'),pressure:option('pressure'),light:option('light'),receivers:option('receivers'),preset:preset.id,frames,move:option('move'),fixedCFLFixture:true},resources,operations}));
+const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{flow:option('flow'),pool:option('pool'),pressure:option('pressure'),light:option('light'),receivers:option('receivers'),preset:preset.id,frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),fixedCFLFixture:true},resources,operations}));
 console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData}));

@@ -127,6 +127,21 @@ def read_chemistry(frame):
         target=folder/('chemistry-'+str(frame['index'])+'.npy');np.save(target,values);result['path']=str(target)
     return result
 
+def read_floor(texture_id, frame):
+    desc=descriptions[texture_id]['desc'];width,height,depth=size3(desc['size'])
+    dtype=np.float32 if desc['format']=='rgba32float' else np.float16
+    raw=queue.read_texture({'texture':objects[texture_id]}, {'bytes_per_row':width*4*np.dtype(dtype).itemsize,'rows_per_image':height},(width,height,depth))
+    values=np.frombuffer(raw,dtype).reshape(height,width,4).copy()
+    result={'sha256':hashlib.sha256(raw).hexdigest(),'sumByChannel':values.sum(axis=(0,1),dtype=np.float64).tolist(),
+            'maxByChannel':values.max(axis=(0,1)).astype(float).tolist(),'nonFinite':int(np.count_nonzero(~np.isfinite(values)))}
+    if result['nonFinite'] or np.any(values<0) or np.max(values[:,:,0])>4.01:
+        raise RuntimeError('Invalid floor fuel state at frame '+str(frame['index']))
+    if data.get('options',{}).get('unlit') and not data.get('options',{}).get('igniteFuel') and np.count_nonzero(values[:,:,1:]):
+        raise RuntimeError('Cold deposits ignited without a heat source')
+    if args.save_fields:
+        target=folder/('floor-'+str(frame['index'])+'.npy');np.save(target,values);result['path']=str(target)
+    return result
+
 try:
     started=time.perf_counter()
     for resource in data['resources']: objects[resource['id']]=create(resource)
@@ -172,6 +187,7 @@ try:
                         ': measured CFL='+str(result['stats']['measuredCFL'])+'. No performance acceptance is valid beyond this point.')
             if operation.get('snapshot'):
                 result['image']=read_image(operation['output'],'frame-'+str(operation['index']))
+                if operation.get('floorFuel'):result['floorFuel']=read_floor(operation['floorFuel'],operation)
                 if 'dense' in operation and operation.get('saveField', True):
                     result['chemistry']=read_chemistry(operation)
                     if result['chemistry']['nonFinite'] or result['chemistry']['staleMappings']:

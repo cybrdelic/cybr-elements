@@ -28,6 +28,7 @@ const fixture=()=>{
   opticalMasks:[resource('optical-a'),resource('optical-b')],
   sigilSource:texture('sigil'),objectId:null,objectModels:{},emptyObject:texture('empty'),objectSettings:resource('object'),surface:[texture('surface')],si:0,
   pipelines:Object.fromEntries(['advectVelocity','curl','correctVelocity'].map(name=>[name,{label:name,getBindGroupLayout:()=>({})}])),
+  floorFuel:[texture('floor-a'),texture('floor-b')],floorIndex:0,hasFloorFuel:false,
  });
  return {s,calls,allocations:()=>allocations,encoder:{clearBuffer(buffer){calls.push({clear:buffer});},beginComputePass:pass}};
 };

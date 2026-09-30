@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.11'
+VERSION = '0.1.0-rc.12'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 OPEN_GATES = [
     'Live browser motion and sustained completed-frame performance on the demo GPU',
@@ -236,7 +236,8 @@ def validate_startup(root):
     environment = dict(os.environ, FIRE_STUDIO_ROOT=str(root.resolve()))
     for runner in ['original-startup.test.mjs', 'control-transition.test.mjs', 'volume-reset.test.mjs', 'volume-lighting.test.mjs', 'volume-optical-mask.test.mjs', 'volume-longrun.test.mjs',
                    'adaptive-flow.test.mjs', 'adaptive-pressure.test.mjs', 'adaptive-runtime.test.mjs', 'adaptive-lifecycle.test.mjs',
-                   'brick-pool.test.mjs', 'pooled-coupling.test.mjs', 'lighting-work.test.mjs']:
+                   'brick-pool.test.mjs', 'pooled-coupling.test.mjs', 'lighting-work.test.mjs',
+                   'fuel-ground.test.mjs', 'floor-fuel.test.mjs', 'sigil-guide.test.mjs', 'scene-light-presets.test.mjs', 'smoke-lifecycle.test.mjs', 'original-smoke.test.mjs']:
         result = subprocess.run(
             ['node', str(Path(__file__).with_name(runner))],
             env=environment, capture_output=True, text=True, timeout=30,

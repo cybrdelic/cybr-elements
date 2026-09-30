@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#10100f" />
     <title>CYBRDELIC / Fire studio</title>
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="studio.css?v=studio-rc-11" />
-    <link rel="stylesheet" href="pyro-gpu/library.css?v=studio-rc-11" />
+    <link rel="stylesheet" href="studio.css?v=studio-rc-12" />
+    <link rel="stylesheet" href="pyro-gpu/library.css?v=studio-rc-12" />
   </head>
   <body>
     <main>
@@ -98,6 +98,8 @@
             <div class="control-group tool-switch">
               <button id="fire-tool" type="button" aria-pressed="true" title="Create and move fire">
                 Fire</button
+              ><button id="fuel-tool" type="button" aria-pressed="false" title="Lay unlit fuel on the floor">
+                Drop fuel</button
               ><button
                 id="pan-tool"
                 type="button"
@@ -126,7 +128,12 @@
               ><output id="angle-value" for="orbit">16°</output>
             </div>
             <label class="check-control"><input id="room" type="checkbox" checked />Room</label
-            ><button id="focus-fire" type="button" disabled>Focus</button
+            ><label id="sigil-guide-control" class="check-control" title="Show the solid sigil beneath the flame"><input id="source-guide" type="checkbox" checked />Show sigil</label>
+            <div id="fuel-actions" class="control-group" hidden aria-label="Placed fuel">
+              <button id="ignite-fuel" type="button" title="Apply a single ignition pulse to the placed fuel">Ignite fuel</button
+              ><button id="clear-fuel" type="button" title="Remove placed fuel and floor burn marks">Clear fuel</button>
+            </div>
+            <button id="focus-fire" type="button" disabled>Focus</button
             ><button id="reset-view" type="button">Reset view</button
             ><button id="fullscreen" type="button">Fullscreen</button>
           </div>
@@ -174,7 +181,7 @@
         </details>
       </footer>
     </main>
-    <script src="scene-lights.js?v=studio-rc-11"></script>
-    <script type="module" src="studio.js?v=studio-rc-11"></script>
+    <script src="scene-lights.js?v=studio-rc-12"></script>
+    <script type="module" src="studio.js?v=studio-rc-12"></script>
   </body>
 </html>
