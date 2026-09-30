@@ -12,6 +12,9 @@ import unittest
 from unittest.mock import patch
 import zipfile
 
+if importlib.util.find_spec('PIL') is None:
+    raise unittest.SkipTest('Film assembly integration checks require Pillow')
+
 from PIL import Image
 import assemble_slices as assembly
 
