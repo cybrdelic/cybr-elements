@@ -1,0 +1,70 @@
+name: Physical studio reviews
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/elements-showcase-hardening]
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[studio-review]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 21
+      matrix:
+        element: [water, fire, earth, air, ice, lava, lightning]
+        start: [90, 110, 130]
+    env:
+      OMP_NUM_THREADS: 3
+      OPENBLAS_NUM_THREADS: 2
+      RENDER_ELEMENT: ${{ matrix.element }}
+      FRAME_START: ${{ matrix.start }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned CPU renderer
+        run: |
+          python -m pip install bpy==4.5.3 numpy==1.26.4 scipy Pillow scikit-image numba
+          if [[ "$RENDER_ELEMENT" == fire || "$RENDER_ELEMENT" == air ]]; then
+            python -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
+          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg libegl1 libgl1 libxi6 libxfixes3 libxxf86vm1 libxkbcommon0
+      - name: Solve and render native review frames
+        run: |
+          if [[ "$RENDER_ELEMENT" == water ]]; then FRAME_START=$((FRAME_START+75)); fi
+          if [[ "$RENDER_ELEMENT" == earth ]]; then FRAME_START=$((FRAME_START+50)); fi
+          HERO_OPTION=()
+          if [[ "${{ matrix.start }}" == 130 ]]; then
+            HERO_FRAME=$((FRAME_START+4))
+            if [[ "$RENDER_ELEMENT" == water || "$RENDER_ELEMENT" == earth ]]; then HERO_FRAME=$FRAME_START; fi
+            if [[ "$RENDER_ELEMENT" == lightning ]]; then HERO_FRAME=140; fi
+            HERO_OPTION=(--hero-frame "$HERO_FRAME")
+          fi
+          python scripts/studio_pipeline.py --kind "$RENDER_ELEMENT" --output "work/studio-ci/$RENDER_ELEMENT-${{ matrix.start }}" --quality review --frames "$FRAME_START:$((FRAME_START+20)):2" --width 960 --height 540 --samples 48 --threads 3 "${HERO_OPTION[@]}"
+      - name: Upload actual rendered frames and provenance
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-${{ matrix.element }}-${{ matrix.start }}-${{ github.run_id }}
+          path: work/studio-ci/${{ matrix.element }}-${{ matrix.start }}/delivery/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-${{ matrix.element }}-${{ matrix.start }}-diagnostics-${{ github.run_id }}
+          path: work/studio-ci/${{ matrix.element }}-${{ matrix.start }}/**/*.log
+          if-no-files-found: warn
+          retention-days: 7

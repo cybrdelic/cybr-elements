@@ -43,6 +43,10 @@ def main():
  preview='--preview' in sys.argv;offline='--offline' in sys.argv
  if preview:out=O/'preview-mesh';out.mkdir(exist_ok=True)
  frameCount=int(json.loads((O/'config.json').read_text()).get('frames',240));frames=list(range(0,frameCount,6)) if preview else [f for f in [0,18,36,54,72,90,114,150,174] if f<frameCount] if pilot else range(frameCount);isolated=np.empty(0,bool);previous_ids=np.empty(0,np.uint32);previous_iso=1.8;begun=time.time()
+ if '--frames' in sys.argv:
+  selected=[int(x) for x in sys.argv[sys.argv.index('--frames')+1].split(',')]
+  if not selected or len(set(selected))!=len(selected) or min(selected)<0 or max(selected)>=frameCount:raise ValueError('Choose unique native particle frame IDs inside the solved timeline')
+  frames=sorted(selected)
  guides=np.load(O/'guides.npz');guideTree=cKDTree(guides['points']);guideRadii=guides['radii']
  for f in frames:
   if (O/f'frames/{f:04}.jpg').exists() and (out/f'{f:04}.json').exists():continue

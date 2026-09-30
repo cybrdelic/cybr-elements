@@ -64,15 +64,20 @@ bpy.ops.object.camera_add(location=(.25,-17.2,5.1));cam=bpy.context.object;cam.r
 # Broad studio illumination supplies a visible refracted body. Camera-ray
 # visibility keeps the backdrop black; no diffuse tint or emission is added.
 bg.inputs['Strength'].default_value=.48
-for light in bpy.data.lights:
- light.energy*=.11
- light.color=(.18,.52,1.)
+# Retain the neutral reflection cards at their authored power. The former
+# 0.11 multiplier and saturated-blue override hid the liquid body and made
+# water nearly indistinguishable from the ice film.
 
 # A real opaque stage floor matches the native solid collider exactly.
 bpy.ops.mesh.primitive_plane_add(size=40,location=(0,0,0));floor=bpy.context.object;floor.name='Ground / matches FLIP collider'
 fm=bpy.data.materials.new('Black ground / contact');fm.use_nodes=True;fp=fm.node_tree.nodes.get('Principled BSDF');fp.inputs['Base Color'].default_value=(.012,.012,.012,1);fp.inputs['Roughness'].default_value=.65;fp.inputs['Specular IOR Level'].default_value=.012;floor.data.materials.append(fm)
 # Studio environment illuminates transmissive water, but not the matte stage.
 camera_or_diffuse=wn.new('ShaderNodeMath');camera_or_diffuse.operation='MAXIMUM';wl.new(lp.outputs['Is Camera Ray'],camera_or_diffuse.inputs[0]);wl.new(lp.outputs['Is Diffuse Ray'],camera_or_diffuse.inputs[1]);wl.new(camera_or_diffuse.outputs[0],mix.inputs[0])
+studio=None
+if '--studio' in render_args:
+ sys.path.insert(0,str(R.parents[1]/'scripts'))
+ from studio_scene import Studio
+ studio=Studio(s,'water',camera=cam,samples=samples)
 
 bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2,radius=1);temp=bpy.context.object;iv=np.array([list(v.co) for v in temp.data.vertices]);ifa=np.array([list(p.vertices) for p in temp.data.polygons]);bpy.data.objects.remove(temp,do_unlink=True)
 origin=np.array(manifest['origin']);scale=manifest['spaceScale']
@@ -115,8 +120,10 @@ for f in frames:
   if me.shape_keys.animation_data and me.shape_keys.animation_data.action:
    for fc in me.shape_keys.animation_data.action.fcurves:
     for k in fc.keyframe_points:k.interpolation='LINEAR'
- s.render.use_motion_blur=True;s.render.motion_blur_shutter=.65;s.frame_set(1)
- s.render.filepath=str(out/f'{f:04}.jpg');bpy.ops.render.render(write_still=True);print('FRAME',f,round(time.time()-start,1),flush=True)
+ s.render.use_motion_blur=True;s.render.motion_blur_shutter=.24;s.frame_set(1)
+ if studio:studio.update(f/30)
+ s.render.image_settings.file_format='PNG' if studio else 'JPEG'
+ s.render.filepath=str(out/(f'{f:04}.png' if studio else f'{f:04}.jpg'));bpy.ops.render.render(write_still=True);print('FRAME',f,round(time.time()-start,1),flush=True)
  vectors.close()
  if ('--full' in args or '--preview' in args) and '--keep-cache' not in args:
   for suffix in ['mesh.gz','velocity.npz']:

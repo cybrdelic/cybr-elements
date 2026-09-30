@@ -89,6 +89,15 @@ npm run test:browser
 archive workflow. Numerical tests and successful decoding establish specific
 properties; the rendered appearance still needs visual review.
 
+## Physical studio renderer
+
+The newer [studio pipeline](docs/STUDIO.md) fixes suppressed water illumination,
+stone texture stretching and underlit ice, renders fire/air as perspective VDB
+volumes, and includes a separate conservative viscous lava study. It preserves
+the historical films above and records actual frame/source hashes for fresh
+reviews and complete rebuilds. Reviews and full production timelines are labeled
+separately; visual quality remains a frame-and-motion review requirement.
+
 ## Repository layout
 
 | Path | Purpose |
