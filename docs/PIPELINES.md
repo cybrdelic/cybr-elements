@@ -208,6 +208,23 @@ opts into rendering; the workflow also defines manual dispatch. Outputs are
 uploaded as per-element artifacts, with failure diagnostics retained separately.
 See [DEVELOPMENT.md](DEVELOPMENT.md) for the invocation and artifact lifecycle.
 
+For the five Blender films, `.github/workflows/rerender_slices.yml` distributes
+24 frame ranges across up to 20 workers, then assembles a complete movie for
+each element. A commit containing `[render-slices]` opts into this workflow;
+manual dispatch uses the same settings. Every range rebuilds the full physical
+timeline before selecting its images. Assembly requires matching source,
+retained-input and numeric simulation hashes, unchanged render settings, and
+exactly one image for every original output frame. It preserves Earth's
+documented editorial map and encodes each film at its original 30 fps cadence.
+
+`scripts/rerender_slice.py --kind ice --start 100 --end 150 --threads 4` runs
+one fresh range locally. `scripts/assemble_slices.py` accepts either verified
+ZIP archives with their GitHub artifact digests or an extracted artifact
+directory. It rejects overlapping, missing or modified frames and fully
+decodes the complete movie before writing its delivery receipt. Successful
+workflow artifacts contain movies and provenance; temporary simulation caches
+and source images remain outside the final film delivery.
+
 ## Fonts and README montage
 
 Typeface sources, coverage and rebuild instructions are in

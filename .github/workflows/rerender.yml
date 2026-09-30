@@ -62,7 +62,7 @@ jobs:
         with:
           name: elements-${{ matrix.element }}-diagnostics-${{ github.run_id }}
           path: |
-            work/rerenders/${{ matrix.element }}/*.log
+            work/rerenders/${{ matrix.element }}/**/*.log
             work/rerenders/${{ matrix.element }}/**/*report.json
           if-no-files-found: warn
           retention-days: 1

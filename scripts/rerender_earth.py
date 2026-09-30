@@ -14,6 +14,7 @@ import math
 import os
 from pathlib import Path
 import shutil
+import struct
 import subprocess
 import sys
 import time
@@ -39,8 +40,33 @@ def digest(path: Path) -> str:
         return hashlib.file_digest(handle, "sha256").hexdigest()
 
 
-def arguments():
-    values = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:]
+def parse_film_frames(value: str) -> list[int]:
+    """Validate final film IDs before creating files or importing Blender."""
+    fields = value.split(",")
+    if any(not field.strip() for field in fields):
+        raise argparse.ArgumentTypeError("film frames must be a nonempty comma-separated list")
+    try:
+        frames = [int(field.strip()) for field in fields]
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("film frames must be integer IDs") from error
+    if any(frame < 0 or frame >= len(FRAME_MAP) for frame in frames):
+        raise argparse.ArgumentTypeError("film frames must lie between 0 and 299")
+    if len(set(frames)) != len(frames):
+        raise argparse.ArgumentTypeError("film frames must not contain duplicate IDs")
+    return sorted(frames)
+
+
+def output_frame_ids(args) -> list[int]:
+    return list(range(len(FRAME_MAP))) if args.film_frames is None else args.film_frames
+
+
+def scene_frames_for_output(indices) -> set[int]:
+    return {FRAME_MAP[index] + 1 for index in indices}
+
+
+def arguments(values=None):
+    if values is None:
+        values = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, default=ROOT / "work/element-motion")
     parser.add_argument("--input-root", type=Path, default=ROOT / "work/element-motion")
@@ -54,6 +80,8 @@ def arguments():
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--no-motion-blur", action="store_true")
     parser.add_argument("--skip-encode", action="store_true")
+    parser.add_argument("--film-frames", type=parse_film_frames,
+                        help="Selected zero-based final film IDs, e.g. 0,120,299; requires --mode full --skip-encode.")
     parser.add_argument("--film-name", default="earth-02-r7-cpu720.mp4")
     parser.add_argument("--preflight", action="store_true", help="Verify inputs without importing Blender.")
     args = parser.parse_args(values)
@@ -64,6 +92,11 @@ def arguments():
         parser.error("benchmark frames must lie between 1 and 390")
     if Path(args.film_name).name != args.film_name or not args.film_name.endswith(".mp4"):
         parser.error("film name must be a local .mp4 filename")
+    if args.film_frames is not None:
+        if args.mode != "full":
+            parser.error("--film-frames requires --mode full")
+        if not args.skip_encode:
+            parser.error("--film-frames requires --skip-encode; selected frames cannot be encoded as a complete film")
     return args
 
 
@@ -174,6 +207,35 @@ def checked_run(command):
     return result.stdout
 
 
+def update_trajectory_digest(trajectory, frame: int, transforms):
+    """Hash canonical float32 translations/quaternions in creation order."""
+    trajectory.update(struct.pack("<I", frame))
+    for matrix in transforms:
+        quaternion = list(matrix.to_quaternion())
+        # q and -q represent the same rotation. Give the first nonzero
+        # component a positive sign, including exact half-turns.
+        first = next((value for value in quaternion if value != 0), 0)
+        if first < 0:
+            quaternion = [-value for value in quaternion]
+        values = list(matrix.translation) + quaternion
+        values = [0.0 if value == 0 else value for value in values]
+        if not all(math.isfinite(value) for value in values):
+            raise RuntimeError(f"Nonfinite rigid transform at scene frame {frame}")
+        trajectory.update(struct.pack("<7f", *values))
+
+
+def copy_output_frames(source_frames: Path, output_frames: Path, indices):
+    output_frames.mkdir(exist_ok=True)
+    for index in indices:
+        source = source_frames / f"{FRAME_MAP[index]:06d}.png"
+        target = output_frames / f"{index:04d}.png"
+        if not target.exists():
+            try:
+                os.link(source, target)
+            except OSError:
+                shutil.copy2(source, target)
+
+
 def encode(args):
     movie = args.output / args.film_name
     checked_run(["ffmpeg", "-v", "error", "-y", "-framerate", "30", "-i",
@@ -192,9 +254,13 @@ def encode(args):
 
 def main():
     args = arguments()
+    selected_output_frames = output_frame_ids(args)
     source_path, inputs, piece_count = preflight(args)
     if args.preflight:
-        print(json.dumps({"inputs": inputs, "fractures": piece_count, "uniqueSourceFrames": len(set(FRAME_MAP)), "outputFrames": 300}, indent=2))
+        print(json.dumps({"inputs": inputs, "fractures": piece_count,
+                          "uniqueSourceFrames": len(scene_frames_for_output(selected_output_frames)),
+                          "outputFrames": len(selected_output_frames),
+                          "selectedOutputFrames": selected_output_frames}, indent=2))
         return
     args.output.mkdir(parents=True, exist_ok=True)
     report_path = args.output / ("benchmark.json" if args.mode == "benchmark" else "render-report.json")
@@ -214,6 +280,7 @@ def main():
         "threads": args.threads,
         "fps": 30,
         "outputFrameMap": FRAME_MAP,
+        "selectedOutputFrames": selected_output_frames,
         "method": "Fresh geometry, Bullet dynamics and Blender rendering; original r6 reversed-breakup editorial mapping.",
         "newRenderedPixels": True,
         "oldVideoFramesRead": False,
@@ -235,18 +302,22 @@ def main():
                                             "inputHashes", "resolution", "samples")}
     settings["motionBlur"] = not args.no_motion_blur
     ensure_render_settings(args.output, args.mode, source_frames, settings)
-    wanted = set(args.benchmark_frames) if args.mode == "benchmark" else {frame + 1 for frame in FRAME_MAP}
+    wanted = set(args.benchmark_frames) if args.mode == "benchmark" else scene_frames_for_output(selected_output_frames)
+    physics_end = max(wanted) if args.mode == "benchmark" else 390
+    trajectory = hashlib.sha256()
+    trajectory.update(json.dumps([obj.name for obj in objects], separators=(",", ":")).encode("utf-8"))
     started = time.perf_counter()
-    for frame in range(1, max(wanted) + 1):
+    for frame in range(1, physics_end + 1):
         scene.frame_set(frame)
-        if frame not in wanted:
-            continue
         depsgraph = bpy.context.evaluated_depsgraph_get()
         transforms = [obj.evaluated_get(depsgraph).matrix_world for obj in objects]
         if not all(math.isfinite(value) for matrix in transforms for row in matrix for value in row):
             raise RuntimeError(f"Nonfinite rigid transform at scene frame {frame}")
         if [obj.rigid_body.mass for obj in objects] != initial_masses:
             raise RuntimeError(f"Rigid-body mass changed at scene frame {frame}")
+        update_trajectory_digest(trajectory, frame, transforms)
+        if frame not in wanted:
+            continue
         target = source_frames / f"{frame - 1:06d}.png"
         render_started = time.perf_counter()
         reused = target.exists()
@@ -265,21 +336,17 @@ def main():
         print("EARTH_RENDER " + json.dumps(row), flush=True)
     if args.mode == "full":
         output_frames = args.output / "frames"
-        output_frames.mkdir(exist_ok=True)
-        for index, source_frame in enumerate(FRAME_MAP):
-            source = source_frames / f"{source_frame:06d}.png"
-            target = output_frames / f"{index:04d}.png"
-            if not target.exists():
-                try:
-                    os.link(source, target)
-                except OSError:
-                    shutil.copy2(source, target)
+        copy_output_frames(source_frames, output_frames, selected_output_frames)
         if not args.skip_encode:
             report["film"] = encode(args)
-    report["complete"] = True
+    report["physicsFrames"] = physics_end
+    report["physicsTrajectorySha256"] = trajectory.hexdigest()
+    report["selectionComplete"] = True
+    report["complete"] = args.film_frames is None
     report["elapsedSeconds"] = time.perf_counter() - started
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps({"report": str(report_path), "complete": True, "elapsedSeconds": report["elapsedSeconds"]}), flush=True)
+    print(json.dumps({"report": str(report_path), "complete": report["complete"],
+                      "selectionComplete": True, "elapsedSeconds": report["elapsedSeconds"]}), flush=True)
 
 
 if __name__ == "__main__":

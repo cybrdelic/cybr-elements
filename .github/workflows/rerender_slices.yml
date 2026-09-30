@@ -1,0 +1,139 @@
+name: Render element frames in parallel
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/elements-showcase-hardening]
+
+permissions:
+  contents: read
+
+jobs:
+  frames:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[render-slices]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        include:
+          - { element: water, start: 0, end: 60 }
+          - { element: water, start: 60, end: 120 }
+          - { element: water, start: 120, end: 180 }
+          - { element: water, start: 180, end: 240 }
+          - { element: ice, start: 0, end: 50 }
+          - { element: ice, start: 50, end: 100 }
+          - { element: ice, start: 100, end: 150 }
+          - { element: ice, start: 150, end: 200 }
+          - { element: ice, start: 200, end: 250 }
+          - { element: ice, start: 250, end: 300 }
+          - { element: lava, start: 0, end: 50 }
+          - { element: lava, start: 50, end: 100 }
+          - { element: lava, start: 100, end: 150 }
+          - { element: lava, start: 150, end: 200 }
+          - { element: lava, start: 200, end: 250 }
+          - { element: lava, start: 250, end: 300 }
+          - { element: lightning, start: 0, end: 75 }
+          - { element: lightning, start: 75, end: 150 }
+          - { element: lightning, start: 150, end: 225 }
+          - { element: lightning, start: 225, end: 300 }
+          - { element: earth, start: 0, end: 75 }
+          - { element: earth, start: 75, end: 150 }
+          - { element: earth, start: 150, end: 225 }
+          - { element: earth, start: 225, end: 300 }
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 2
+      LP_NUM_THREADS: 4
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      EGL_PLATFORM: surfaceless
+      XDG_CACHE_HOME: /tmp/cybr-render-cache
+      RENDER_ELEMENT: ${{ matrix.element }}
+      FRAME_START: ${{ matrix.start }}
+      FRAME_END: ${{ matrix.end }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        if: matrix.element == 'water'
+        with:
+          node-version: '22'
+      - name: Install CPU renderer
+        run: |
+          python -m pip install --no-cache-dir bpy==4.5.3 scipy Pillow scikit-image numba
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg libegl1 libgl1 libxi6 libxfixes3 libxxf86vm1 libxkbcommon0 libgl1-mesa-dri
+      - name: Render fresh frame range
+        run: |
+          python scripts/rerender_slice.py --kind "$RENDER_ELEMENT" --start "$FRAME_START" --end "$FRAME_END" --threads 4
+      - name: Upload frames and receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frames-${{ matrix.element }}-${{ matrix.start }}-${{ matrix.end }}-${{ github.run_id }}
+          path: work/render-slices/${{ matrix.element }}-${{ matrix.start }}-${{ matrix.end }}/delivery/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+      - name: Upload failed-stage diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frames-${{ matrix.element }}-${{ matrix.start }}-diagnostics-${{ github.run_id }}
+          path: |
+            work/render-slices/${{ matrix.element }}-${{ matrix.start }}-${{ matrix.end }}/**/*.log
+            work/render-slices/${{ matrix.element }}-${{ matrix.start }}-${{ matrix.end }}/**/*report.json
+          if-no-files-found: warn
+          retention-days: 1
+
+  films:
+    needs: frames
+    if: always() && !cancelled() && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[render-slices]'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        element: [water, earth, ice, lava, lightning]
+    env:
+      RENDER_ELEMENT: ${{ matrix.element }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install film assembler
+        run: |
+          python -m pip install --no-cache-dir Pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Download completed frame ranges
+        uses: actions/download-artifact@v4
+        with:
+          pattern: frames-${{ matrix.element }}-[0-9]*-[0-9]*-${{ github.run_id }}
+          path: work/render-slices/downloaded/${{ matrix.element }}
+          merge-multiple: false
+      - name: Verify and assemble complete film
+        run: |
+          python scripts/assemble_slices.py --kind "$RENDER_ELEMENT" --commit "$GITHUB_SHA" --input-directory "work/render-slices/downloaded/$RENDER_ELEMENT" --output-directory "work/render-slices/assembled/$RENDER_ELEMENT" --threads 4
+      - name: Upload complete film and provenance
+        uses: actions/upload-artifact@v4
+        with:
+          name: elements-${{ matrix.element }}-${{ github.run_id }}
+          path: |
+            work/render-slices/assembled/${{ matrix.element }}/cybr-elements-${{ matrix.element }}-rerender.mp4
+            work/render-slices/assembled/${{ matrix.element }}/render-summary.json
+            work/render-slices/assembled/${{ matrix.element }}/shards/**/*.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+      - name: Upload assembly diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: elements-${{ matrix.element }}-assembly-diagnostics-${{ github.run_id }}
+          path: work/render-slices/assembled/${{ matrix.element }}/**/*.log
+          if-no-files-found: warn
+          retention-days: 1
