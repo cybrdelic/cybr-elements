@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.8'
+VERSION = '0.1.0-rc.9'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 OPEN_GATES = [
     'Live browser motion and sustained completed-frame performance on the demo GPU',
@@ -233,7 +233,7 @@ def validate(files):
 def validate_startup(root):
     """Execute boot, transition and reset behavior against the selected runtime."""
     environment = dict(os.environ, FIRE_STUDIO_ROOT=str(root.resolve()))
-    for runner in ['original-startup.test.mjs', 'control-transition.test.mjs', 'volume-reset.test.mjs']:
+    for runner in ['original-startup.test.mjs', 'control-transition.test.mjs', 'volume-reset.test.mjs', 'volume-lighting.test.mjs']:
         result = subprocess.run(
             ['node', str(Path(__file__).with_name(runner))],
             env=environment, capture_output=True, text=True, timeout=30,

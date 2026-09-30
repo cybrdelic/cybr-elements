@@ -1,5 +1,5 @@
 // Shared links contain presentation state; QA parameters stay untouched.
-import { cleanLights } from './look-storage.js?v=studio-rc-8';
+import { cleanLights } from './look-storage.js?v=studio-rc-9';
 
 export function readLook(params, camera) {
   const look = {};

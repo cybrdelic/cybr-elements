@@ -1,4 +1,4 @@
-import {combustionWGSL} from './combustion.js?v=studio-rc-8';
+import {combustionWGSL} from './combustion.js?v=studio-rc-9';
 // One-way Lagrangian tracers: born in reacting soot, carried by the actual
 // MAC velocity, with inertia, gravity and cooling. No screen-space spawner.
 export const emberComputeWGSL=`

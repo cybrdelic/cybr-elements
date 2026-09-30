@@ -1,9 +1,9 @@
-import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-8';
-import { PyroSolver } from './solver.js?v=studio-rc-8';
-import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-8';
-import { runtimeScope } from '../runtime-scope.js?v=studio-rc-8';
-import { outputSize } from './output-size.js?v=studio-rc-8';
-import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-8';
+import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-9';
+import { PyroSolver } from './solver.js?v=studio-rc-9';
+import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-9';
+import { runtimeScope } from '../runtime-scope.js?v=studio-rc-9';
+import { outputSize } from './output-size.js?v=studio-rc-9';
+import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-9';
 export async function mountVolume({
   initialPreset = 'explosion',
   onFailure = () => {},
@@ -430,7 +430,7 @@ export async function mountVolume({
           }
         : null;
     return {
-      build: 'fire-studio-rc-8',
+      build: 'fire-studio-rc-9',
       adapter: solver.adapter,
       grid: { velocity: solver.N, scalar: solver.D },
       settings: {
@@ -717,7 +717,7 @@ export async function mountVolume({
   try {
     solver = await PyroSolver.create(canvas);
     if (params.has('validate')) {
-      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-8');
+      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-9');
       const report = await pressureCheck(solver.device);
       await save(params.get('qa') + '-pressure', report);
       if (!report.pass) throw Error('GPU pressure reference failed: ' + JSON.stringify(report));

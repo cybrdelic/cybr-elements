@@ -3,12 +3,12 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-8';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-8';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-8';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-8';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-8';
-import { rendererShaders, dilateWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-8';
+} from './objects.js?v=studio-rc-9';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-9';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-9';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-9';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-9';
+import { rendererShaders, dilateWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-9';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   const lag = Math.max(0, Math.min(telemetryLag, 8));
@@ -936,6 +936,7 @@ export class PyroSolver {
             [2, { buffer: this.view }],
             [5, { buffer: this.fireLights }],
             [8, this.roomTargets[0]],
+            [9, { buffer: this.visibleBricks }],
             ...this.objectBindings(),
             ...this.meshShadowBindings(),
           ]),
@@ -952,6 +953,7 @@ export class PyroSolver {
             [2, { buffer: this.view }],
             [6, this.roomTargets[0]],
             [8, this.roomTargets[1]],
+            [9, { buffer: this.visibleBricks }],
             ...this.objectBindings(),
           ]),
         );

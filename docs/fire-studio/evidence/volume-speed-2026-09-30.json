@@ -1,0 +1,1251 @@
+{
+  "fullScene": {
+    "date": "2026-09-30",
+    "scope": "native-offscreen-not-browser-FPS",
+    "adapter": {
+      "vendor": "Intel Corporation",
+      "architecture": "",
+      "device": "Intel(R) UHD Graphics",
+      "description": "Intel driver",
+      "stackgroup_min_size": 4,
+      "stackgroup_max_size": 128,
+      "vendor_id": 32902,
+      "device_id": 42920,
+      "adapter_type": "IntegratedGPU",
+      "backend_type": "Vulkan"
+    },
+    "timestampPeriodNs": 52.08333206176758,
+    "grid": [
+      128,
+      256
+    ],
+    "render": [
+      768,
+      432
+    ],
+    "preset": "bonfire",
+    "lighting": "studio",
+    "simulatedSecondsPerRun": 4,
+    "framesPerRun": 240,
+    "runs": {
+      "speed-baseline": {
+        "adapter": {
+          "vendor": "Intel Corporation",
+          "architecture": "",
+          "device": "Intel(R) UHD Graphics",
+          "description": "Intel driver",
+          "stackgroup_min_size": 4,
+          "stackgroup_max_size": 128,
+          "vendor_id": 32902,
+          "device_id": 42920,
+          "adapter_type": "IntegratedGPU",
+          "backend_type": "Vulkan"
+        },
+        "nativeOffscreenOnly": true,
+        "timestampPeriodNs": 52.08333206176758,
+        "grid": [
+          128,
+          256
+        ],
+        "render": [
+          768,
+          432
+        ],
+        "frames": 240,
+        "fieldSha256": "0129131acbfd458f79747522ae0a5dfe22ddfc884deee0c0679ae26db1478488",
+        "completedWallMs": {
+          "median": 35.84539999428671,
+          "p95": 74.31751001859084
+        },
+        "gpuMs": {
+          "simulation": {
+            "median": 21.649035929792404,
+            "p95": 53.25570442897853
+          },
+          "lighting": {
+            "median": 10.996588273195266,
+            "p95": 16.57326522037926
+          },
+          "volume": {
+            "median": 1.5118489214229585,
+            "p95": 2.372372337914085
+          }
+        }
+      },
+      "speed-baseline-repeat": {
+        "adapter": {
+          "vendor": "Intel Corporation",
+          "architecture": "",
+          "device": "Intel(R) UHD Graphics",
+          "description": "Intel driver",
+          "stackgroup_min_size": 4,
+          "stackgroup_max_size": 128,
+          "vendor_id": 32902,
+          "device_id": 42920,
+          "adapter_type": "IntegratedGPU",
+          "backend_type": "Vulkan"
+        },
+        "nativeOffscreenOnly": true,
+        "timestampPeriodNs": 52.08333206176758,
+        "grid": [
+          128,
+          256
+        ],
+        "render": [
+          768,
+          432
+        ],
+        "frames": 240,
+        "fieldSha256": "0129131acbfd458f79747522ae0a5dfe22ddfc884deee0c0679ae26db1478488",
+        "completedWallMs": {
+          "median": 35.146450012689456,
+          "p95": 71.13308998959837
+        },
+        "gpuMs": {
+          "simulation": {
+            "median": 21.581535931440357,
+            "p95": 51.60213415684891
+          },
+          "lighting": {
+            "median": 10.038593504917145,
+            "p95": 14.97731734267616
+          },
+          "volume": {
+            "median": 1.5004166300354003,
+            "p95": 2.2603280698162074
+          }
+        }
+      },
+      "speed-guard-final": {
+        "adapter": {
+          "vendor": "Intel Corporation",
+          "architecture": "",
+          "device": "Intel(R) UHD Graphics",
+          "description": "Intel driver",
+          "stackgroup_min_size": 4,
+          "stackgroup_max_size": 128,
+          "vendor_id": 32902,
+          "device_id": 42920,
+          "adapter_type": "IntegratedGPU",
+          "backend_type": "Vulkan"
+        },
+        "nativeOffscreenOnly": true,
+        "timestampPeriodNs": 52.08333206176758,
+        "grid": [
+          128,
+          256
+        ],
+        "render": [
+          768,
+          432
+        ],
+        "frames": 240,
+        "fieldSha256": "0129131acbfd458f79747522ae0a5dfe22ddfc884deee0c0679ae26db1478488",
+        "completedWallMs": {
+          "median": 27.4446999974316,
+          "p95": 62.88284998590825
+        },
+        "gpuMs": {
+          "simulation": {
+            "median": 20.253332838867188,
+            "p95": 49.10948317603798
+          },
+          "lighting": {
+            "median": 3.8614842807254792,
+            "p95": 8.576463332280351
+          },
+          "volume": {
+            "median": 1.5015364216747282,
+            "p95": 2.2627447364238735
+          }
+        }
+      },
+      "speed-guard-final-repeat": {
+        "adapter": {
+          "vendor": "Intel Corporation",
+          "architecture": "",
+          "device": "Intel(R) UHD Graphics",
+          "description": "Intel driver",
+          "stackgroup_min_size": 4,
+          "stackgroup_max_size": 128,
+          "vendor_id": 32902,
+          "device_id": 42920,
+          "adapter_type": "IntegratedGPU",
+          "backend_type": "Vulkan"
+        },
+        "nativeOffscreenOnly": true,
+        "timestampPeriodNs": 52.08333206176758,
+        "grid": [
+          128,
+          256
+        ],
+        "render": [
+          768,
+          432
+        ],
+        "frames": 240,
+        "fieldSha256": "0129131acbfd458f79747522ae0a5dfe22ddfc884deee0c0679ae26db1478488",
+        "completedWallMs": {
+          "median": 27.576550011872314,
+          "p95": 63.15564997785259
+        },
+        "gpuMs": {
+          "simulation": {
+            "median": 20.338437003456114,
+            "p95": 49.3123816085844
+          },
+          "lighting": {
+            "median": 3.841979072868347,
+            "p95": 8.48457791785698
+          },
+          "volume": {
+            "median": 1.4979687134284974,
+            "p95": 2.2663046321702955
+          }
+        }
+      }
+    },
+    "completedWallMs": {
+      "before": {
+        "median": 35.49592500348808,
+        "p95": 72.7253000040946
+      },
+      "after": {
+        "median": 27.510625004651956,
+        "p95": 63.01924998188042
+      },
+      "medianReduction": 0.22496385142946507,
+      "p95Reduction": 0.1334618079494717
+    },
+    "chemicalByteHashesAllEqual": true,
+    "substepCountsEqual": true,
+    "maxSpeedValuesEqual": true,
+    "substepsTotal": 302,
+    "pixels": [
+      {
+        "frame": "0.5s",
+        "changedPixels": 1,
+        "maxChannel": 1,
+        "meanChannel": 1.0046939300411523e-06
+      },
+      {
+        "frame": "1.0s",
+        "changedPixels": 4,
+        "maxChannel": 1,
+        "meanChannel": 4.018775720164609e-06
+      },
+      {
+        "frame": "1.5s",
+        "changedPixels": 3,
+        "maxChannel": 1,
+        "meanChannel": 3.0140817901234566e-06
+      },
+      {
+        "frame": "2.0s",
+        "changedPixels": 12,
+        "maxChannel": 1,
+        "meanChannel": 1.2056327160493826e-05
+      },
+      {
+        "frame": "2.5s",
+        "changedPixels": 1,
+        "maxChannel": 1,
+        "meanChannel": 1.0046939300411523e-06
+      },
+      {
+        "frame": "3.0s",
+        "changedPixels": 4,
+        "maxChannel": 1,
+        "meanChannel": 4.018775720164609e-06
+      },
+      {
+        "frame": "3.5s",
+        "changedPixels": 8,
+        "maxChannel": 1,
+        "meanChannel": 8.037551440329219e-06
+      },
+      {
+        "frame": "4.0s",
+        "changedPixels": 5,
+        "maxChannel": 1,
+        "meanChannel": 5.023469650205761e-06
+      },
+      {
+        "frame": "4.0s-smoke",
+        "changedPixels": 5,
+        "maxChannel": 1,
+        "meanChannel": 5.023469650205761e-06
+      },
+      {
+        "frame": "final-angle",
+        "changedPixels": 5,
+        "maxChannel": 1,
+        "meanChannel": 5.023469650205761e-06
+      },
+      {
+        "frame": "final-fire-only",
+        "changedPixels": 2,
+        "maxChannel": 1,
+        "meanChannel": 2.0093878600823047e-06
+      }
+    ]
+  },
+  "shadow": {
+    "nativeOffscreenOnly": true,
+    "timestampPeriodNs": 52.083332,
+    "grid": [
+      128,
+      256
+    ],
+    "render": [
+      768,
+      432
+    ],
+    "sourceCount": 3,
+    "viewPairs": 15,
+    "fieldChangedPercent": 0.0,
+    "sources": [
+      {
+        "preset": "bonfire",
+        "adapter": "Intel(R) UHD Graphics",
+        "fieldHashUnchanged": true,
+        "lightingReductionPercentRange": [
+          51.43903842748363,
+          67.16203707864159
+        ],
+        "maximumChangedPixels": 13,
+        "maximumChannelDelta": 1,
+        "maximumMeanChannelDelta": 1.306102109053498e-05,
+        "views": [
+          {
+            "angle": 16,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 531624.0,
+            "candidateLightingTicks": 178664.5,
+            "baselineLightingMs": 27.688749291167998,
+            "candidateLightingMs": 9.305442470114,
+            "lightingReductionPercent": 66.39269483695243,
+            "baselineWallMs": 34.62540000327863,
+            "candidateWallMs": 16.35639999585692,
+            "pixels": {
+              "changed": 12,
+              "max": 1,
+              "mean": 1.2056327160493826e-05
+            }
+          },
+          {
+            "angle": -35,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 534976.5,
+            "candidateLightingTicks": 177562.0,
+            "baselineLightingMs": 27.863358661697998,
+            "candidateLightingMs": 9.248020596584,
+            "lightingReductionPercent": 66.80938321589827,
+            "baselineWallMs": 35.161650012014434,
+            "candidateWallMs": 16.416900005424395,
+            "pixels": {
+              "changed": 5,
+              "max": 1,
+              "mean": 5.023469650205761e-06
+            }
+          },
+          {
+            "angle": 55,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 545540.0,
+            "candidateLightingTicks": 181012.99999999997,
+            "baselineLightingMs": 28.41354093928,
+            "candidateLightingMs": 9.427760175316,
+            "lightingReductionPercent": 66.81948161454706,
+            "baselineWallMs": 36.182950003421865,
+            "candidateWallMs": 16.78669999819249,
+            "pixels": {
+              "changed": 2,
+              "max": 1,
+              "mean": 2.0093878600823047e-06
+            }
+          },
+          {
+            "angle": 16,
+            "smoke": true,
+            "studio": true,
+            "baselineLightingTicks": 556385.0,
+            "candidateLightingTicks": 182705.5,
+            "baselineLightingMs": 28.97838467482,
+            "candidateLightingMs": 9.515911214726,
+            "lightingReductionPercent": 67.16203707864159,
+            "baselineWallMs": 35.96090000064578,
+            "candidateWallMs": 16.486200009239838,
+            "pixels": {
+              "changed": 13,
+              "max": 1,
+              "mean": 1.306102109053498e-05
+            }
+          },
+          {
+            "angle": 16,
+            "smoke": false,
+            "studio": false,
+            "baselineLightingTicks": 225880.00000000003,
+            "candidateLightingTicks": 109689.5,
+            "baselineLightingMs": 11.764583032160001,
+            "candidateLightingMs": 5.712994645414,
+            "lightingReductionPercent": 51.43903842748363,
+            "baselineWallMs": 19.499899994116277,
+            "candidateWallMs": 13.304950000019744,
+            "pixels": {
+              "changed": 10,
+              "max": 1,
+              "mean": 1.0046939300411523e-05
+            }
+          }
+        ],
+        "sheet": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\volume-speed-qa\\shadow-skip\\shadow-baseline-bonfire-integrated-768\\shadow-comparison-sheet.jpg"
+      },
+      {
+        "preset": "oil-burst",
+        "adapter": "Intel(R) UHD Graphics",
+        "fieldHashUnchanged": true,
+        "lightingReductionPercentRange": [
+          49.87464003248555,
+          63.90958136673327
+        ],
+        "maximumChangedPixels": 6,
+        "maximumChannelDelta": 1,
+        "maximumMeanChannelDelta": 6.028163580246913e-06,
+        "views": [
+          {
+            "angle": 16,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 415373.0,
+            "candidateLightingTicks": 152831.5,
+            "baselineLightingMs": 21.634009862836,
+            "candidateLightingMs": 7.959973754558,
+            "lightingReductionPercent": 63.20620261788801,
+            "baselineWallMs": 26.392150000901893,
+            "candidateWallMs": 12.681950000114739,
+            "pixels": {
+              "changed": 1,
+              "max": 1,
+              "mean": 1.0046939300411523e-06
+            }
+          },
+          {
+            "angle": -35,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 383593.50000000006,
+            "candidateLightingTicks": 138440.50000000003,
+            "baselineLightingMs": 19.978827613542002,
+            "candidateLightingMs": 7.210442523746001,
+            "lightingReductionPercent": 63.90958136673327,
+            "baselineWallMs": 24.525299988454208,
+            "candidateWallMs": 11.812550001195632,
+            "pixels": {
+              "changed": 0,
+              "max": 0,
+              "mean": 0.0
+            }
+          },
+          {
+            "angle": 55,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 400016.99999999994,
+            "candidateLightingTicks": 149558.0,
+            "baselineLightingMs": 20.834218216643997,
+            "candidateLightingMs": 7.789478967256,
+            "lightingReductionPercent": 62.61208898621808,
+            "baselineWallMs": 26.001250007539056,
+            "candidateWallMs": 12.350999997579493,
+            "pixels": {
+              "changed": 0,
+              "max": 0,
+              "mean": 0.0
+            }
+          },
+          {
+            "angle": 16,
+            "smoke": true,
+            "studio": true,
+            "baselineLightingTicks": 453639.0,
+            "candidateLightingTicks": 168106.0,
+            "baselineLightingMs": 23.627030645148,
+            "candidateLightingMs": 8.755520609192,
+            "lightingReductionPercent": 62.942780492858866,
+            "baselineWallMs": 28.4251000121003,
+            "candidateWallMs": 13.759800014668144,
+            "pixels": {
+              "changed": 1,
+              "max": 1,
+              "mean": 1.0046939300411523e-06
+            }
+          },
+          {
+            "angle": 16,
+            "smoke": false,
+            "studio": false,
+            "baselineLightingTicks": 134213.5,
+            "candidateLightingTicks": 67275.0,
+            "baselineLightingMs": 6.990286279381999,
+            "candidateLightingMs": 3.5039061603,
+            "lightingReductionPercent": 49.87464003248555,
+            "baselineWallMs": 11.479699998744763,
+            "candidateWallMs": 7.754050006042235,
+            "pixels": {
+              "changed": 6,
+              "max": 1,
+              "mean": 6.028163580246913e-06
+            }
+          }
+        ],
+        "sheet": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\volume-speed-qa\\shadow-skip\\shadow-baseline-oil-burst-integrated-768\\shadow-comparison-sheet.jpg"
+      },
+      {
+        "preset": "sigil-cybr",
+        "adapter": "Intel(R) UHD Graphics",
+        "fieldHashUnchanged": true,
+        "lightingReductionPercentRange": [
+          25.92448096714932,
+          50.529802683828336
+        ],
+        "maximumChangedPixels": 3,
+        "maximumChannelDelta": 1,
+        "maximumMeanChannelDelta": 3.0140817901234566e-06,
+        "views": [
+          {
+            "angle": 16,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 331239.5,
+            "candidateLightingTicks": 185006.5,
+            "baselineLightingMs": 17.252056850014,
+            "candidateLightingMs": 9.635754961658,
+            "lightingReductionPercent": 44.14721070403742,
+            "baselineWallMs": 22.781450010370463,
+            "candidateWallMs": 14.68725000449922,
+            "pixels": {
+              "changed": 0,
+              "max": 0,
+              "mean": 0.0
+            }
+          },
+          {
+            "angle": -35,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 316674.49999999994,
+            "candidateLightingTicks": 156659.5,
+            "baselineLightingMs": 16.493463119433997,
+            "candidateLightingMs": 8.159348749454,
+            "lightingReductionPercent": 50.529802683828336,
+            "baselineWallMs": 21.632450007018633,
+            "candidateWallMs": 13.018850004300475,
+            "pixels": {
+              "changed": 1,
+              "max": 1,
+              "mean": 1.0046939300411523e-06
+            }
+          },
+          {
+            "angle": 55,
+            "smoke": false,
+            "studio": true,
+            "baselineLightingTicks": 267424.0,
+            "candidateLightingTicks": 134429.00000000003,
+            "baselineLightingMs": 13.928332976767999,
+            "candidateLightingMs": 7.0015102374280005,
+            "lightingReductionPercent": 49.73188644250328,
+            "baselineWallMs": 18.667799988179468,
+            "candidateWallMs": 11.554349999642,
+            "pixels": {
+              "changed": 3,
+              "max": 1,
+              "mean": 3.0140817901234566e-06
+            }
+          },
+          {
+            "angle": 16,
+            "smoke": true,
+            "studio": true,
+            "baselineLightingTicks": 266171.0,
+            "candidateLightingTicks": 138884.99999999997,
+            "baselineLightingMs": 13.863072561771999,
+            "candidateLightingMs": 7.233593564819999,
+            "lightingReductionPercent": 47.82113753940137,
+            "baselineWallMs": 18.31859999219887,
+            "candidateWallMs": 11.582049992284738,
+            "pixels": {
+              "changed": 1,
+              "max": 1,
+              "mean": 1.0046939300411523e-06
+            }
+          },
+          {
+            "angle": 16,
+            "smoke": false,
+            "studio": false,
+            "baselineLightingTicks": 101246.0,
+            "candidateLightingTicks": 74998.5,
+            "baselineLightingMs": 5.273229031672,
+            "candidateLightingMs": 3.9061717750019995,
+            "lightingReductionPercent": 25.92448096714932,
+            "baselineWallMs": 10.217649993137456,
+            "candidateWallMs": 8.429850015090778,
+            "pixels": {
+              "changed": 1,
+              "max": 1,
+              "mean": 1.0046939300411523e-06
+            }
+          }
+        ],
+        "sheet": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\volume-speed-qa\\shadow-skip\\shadow-baseline-sigil-cybr-integrated-768\\shadow-comparison-sheet.jpg"
+      }
+    ]
+  },
+  "velocity": [
+    {
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "preset": "bonfire",
+      "time": 1.0000000000000013,
+      "timestampPeriodNs": 1.0,
+      "timingScope": "advectVelocity and correctVelocity together; same held old field, separate predictors",
+      "median": {
+        "before": {
+          "ticks": 1773568.0,
+          "advectTicks": 496640.0,
+          "correctTicks": 1276416.0,
+          "wallMs": 2.087750006467104,
+          "gpuMs": 1.773568
+        },
+        "after": {
+          "ticks": 1641472.0,
+          "advectTicks": 496640.0,
+          "correctTicks": 1144832.0,
+          "wallMs": 1.9457500020507723,
+          "gpuMs": 1.641472
+        }
+      },
+      "field": {
+        "maxAbsDifference": 0.0,
+        "meanAbsDifference": 0.0,
+        "differentComponents": 0,
+        "components": 8586756,
+        "predictorXyzMaxDifference": 0.0,
+        "predictorXyzDifferentComponents": 0,
+        "validDonorCells": 1543063,
+        "cells": 2146689,
+        "validDonorFraction": 0.7188106893918961,
+        "donor8CubeTilesFullyValidFraction": 0.3277020150620802,
+        "donor8CubeTilesAtLeast99PercentValidFraction": 0.3401180541420721,
+        "encodedFinite": true,
+        "encodedIntegral": true,
+        "encodedRange": [
+          0.0,
+          43.0
+        ]
+      },
+      "candidateToBaselineTickRatio": 0.9255196304849884,
+      "candidateToBaselineWallRatio": 0.9319841916050934,
+      "thresholdCases": [
+        {
+          "case": "zero",
+          "displacementCells": [
+            0,
+            0,
+            0
+          ],
+          "spatialVariationCells": 0,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 0,
+          "cells": 2146689,
+          "validDonorFraction": 0.0,
+          "donor8CubeTilesFullyValidFraction": 0.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.0002035416242621616,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "positive-floor",
+          "displacementCells": [
+            0.0001,
+            0.9999,
+            1.0001
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 1870549,
+          "cells": 2146689,
+          "validDonorFraction": 0.8713646923238532,
+          "donor8CubeTilesFullyValidFraction": 0.007531040097699979,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.07592102584978629,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            23.0
+          ]
+        },
+        {
+          "case": "negative-floor",
+          "displacementCells": [
+            -0.0001,
+            -0.9999,
+            -1.0001
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 1870381,
+          "cells": 2146689,
+          "validDonorFraction": 0.8712864322684841,
+          "donor8CubeTilesFullyValidFraction": 0.00895583146753511,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.08284144107469978,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            63.0
+          ]
+        },
+        {
+          "case": "cfl-positive",
+          "displacementCells": [
+            1.5,
+            1.5,
+            1.5
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 2146689,
+          "cells": 2146689,
+          "validDonorFraction": 1.0,
+          "donor8CubeTilesFullyValidFraction": 1.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 1.0,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "case": "cfl-negative",
+          "displacementCells": [
+            -1.5,
+            -1.5,
+            -1.5
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 2146689,
+          "cells": 2146689,
+          "validDonorFraction": 1.0,
+          "donor8CubeTilesFullyValidFraction": 1.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 1.0,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            64.0,
+            64.0
+          ]
+        },
+        {
+          "case": "fallback-outside",
+          "displacementCells": [
+            2.25,
+            -2.25,
+            2.25
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 0,
+          "cells": 2146689,
+          "validDonorFraction": 0.0,
+          "donor8CubeTilesFullyValidFraction": 0.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.0002035416242621616,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "adapter": {
+        "vendor": "Intel Corporation",
+        "architecture": "",
+        "device": "Intel(R) UHD Graphics",
+        "description": "Intel driver",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 32902,
+        "device_id": 42920,
+        "adapter_type": "IntegratedGPU",
+        "backend_type": "Vulkan"
+      },
+      "preset": "bonfire",
+      "time": 1.0000000000000013,
+      "timestampPeriodNs": 52.08333206176758,
+      "timingScope": "advectVelocity and correctVelocity together; same held old field, separate predictors",
+      "median": {
+        "before": {
+          "ticks": 161351.5,
+          "advectTicks": 42242.0,
+          "correctTicks": 119043.5,
+          "wallMs": 9.243549997336231,
+          "gpuMs": 8.403723753164291
+        },
+        "after": {
+          "ticks": 152100.0,
+          "advectTicks": 40342.0,
+          "correctTicks": 111732.0,
+          "wallMs": 8.770149986958131,
+          "gpuMs": 7.9218748065948486
+        }
+      },
+      "field": {
+        "maxAbsDifference": 0.0,
+        "meanAbsDifference": 0.0,
+        "differentComponents": 0,
+        "components": 8586756,
+        "predictorXyzMaxDifference": 0.0,
+        "predictorXyzDifferentComponents": 0,
+        "validDonorCells": 1534485,
+        "cells": 2146689,
+        "validDonorFraction": 0.7148147682314485,
+        "donor8CubeTilesFullyValidFraction": 0.3297374313047018,
+        "donor8CubeTilesAtLeast99PercentValidFraction": 0.33971097089354774,
+        "encodedFinite": true,
+        "encodedIntegral": true,
+        "encodedRange": [
+          0.0,
+          43.0
+        ]
+      },
+      "candidateToBaselineTickRatio": 0.942662448133423,
+      "candidateToBaselineWallRatio": 0.948785909037705,
+      "thresholdCases": [
+        {
+          "case": "zero",
+          "displacementCells": [
+            0,
+            0,
+            0
+          ],
+          "spatialVariationCells": 0,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 0,
+          "cells": 2146689,
+          "validDonorFraction": 0.0,
+          "donor8CubeTilesFullyValidFraction": 0.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.0002035416242621616,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "positive-floor",
+          "displacementCells": [
+            0.0001,
+            0.9999,
+            1.0001
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 1880288,
+          "cells": 2146689,
+          "validDonorFraction": 0.87590144636694,
+          "donor8CubeTilesFullyValidFraction": 0.007531040097699979,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.07775290046814573,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            23.0
+          ]
+        },
+        {
+          "case": "negative-floor",
+          "displacementCells": [
+            -0.0001,
+            -0.9999,
+            -1.0001
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 1879663,
+          "cells": 2146689,
+          "validDonorFraction": 0.8756103003276208,
+          "donor8CubeTilesFullyValidFraction": 0.009362914716059434,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.08813352330551598,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            63.0
+          ]
+        },
+        {
+          "case": "cfl-positive",
+          "displacementCells": [
+            1.5,
+            1.5,
+            1.5
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 2146689,
+          "cells": 2146689,
+          "validDonorFraction": 1.0,
+          "donor8CubeTilesFullyValidFraction": 1.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 1.0,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "case": "cfl-negative",
+          "displacementCells": [
+            -1.5,
+            -1.5,
+            -1.5
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 2146689,
+          "cells": 2146689,
+          "validDonorFraction": 1.0,
+          "donor8CubeTilesFullyValidFraction": 1.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 1.0,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            64.0,
+            64.0
+          ]
+        },
+        {
+          "case": "fallback-outside",
+          "displacementCells": [
+            2.25,
+            -2.25,
+            2.25
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 0,
+          "cells": 2146689,
+          "validDonorFraction": 0.0,
+          "donor8CubeTilesFullyValidFraction": 0.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.0002035416242621616,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "adapter": {
+        "vendor": "Intel Corporation",
+        "architecture": "",
+        "device": "Intel(R) UHD Graphics",
+        "description": "Intel driver",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 32902,
+        "device_id": 42920,
+        "adapter_type": "IntegratedGPU",
+        "backend_type": "Vulkan"
+      },
+      "preset": "oil-burst",
+      "time": 1.0000000000000013,
+      "timestampPeriodNs": 52.08333206176758,
+      "timingScope": "advectVelocity and correctVelocity together; same held old field, separate predictors",
+      "median": {
+        "before": {
+          "ticks": 169402.0,
+          "advectTicks": 45815.0,
+          "correctTicks": 123637.5,
+          "wallMs": 9.532399999443442,
+          "gpuMs": 8.82302061792755
+        },
+        "after": {
+          "ticks": 152063.5,
+          "advectTicks": 43156.0,
+          "correctTicks": 108981.0,
+          "wallMs": 8.585500007029623,
+          "gpuMs": 7.9199737649745945
+        }
+      },
+      "field": {
+        "maxAbsDifference": 0.0,
+        "meanAbsDifference": 0.0,
+        "differentComponents": 0,
+        "components": 8586756,
+        "predictorXyzMaxDifference": 0.0,
+        "predictorXyzDifferentComponents": 0,
+        "validDonorCells": 1834122,
+        "cells": 2146689,
+        "validDonorFraction": 0.854395769485007,
+        "donor8CubeTilesFullyValidFraction": 0.35131284347649094,
+        "donor8CubeTilesAtLeast99PercentValidFraction": 0.39303887645023405,
+        "encodedFinite": true,
+        "encodedIntegral": true,
+        "encodedRange": [
+          0.0,
+          43.0
+        ]
+      },
+      "candidateToBaselineTickRatio": 0.897648788089869,
+      "candidateToBaselineWallRatio": 0.9006651008697595,
+      "thresholdCases": [
+        {
+          "case": "zero",
+          "displacementCells": [
+            0,
+            0,
+            0
+          ],
+          "spatialVariationCells": 0,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 0,
+          "cells": 2146689,
+          "validDonorFraction": 0.0,
+          "donor8CubeTilesFullyValidFraction": 0.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.0002035416242621616,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "positive-floor",
+          "displacementCells": [
+            0.0001,
+            0.9999,
+            1.0001
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 1880288,
+          "cells": 2146689,
+          "validDonorFraction": 0.87590144636694,
+          "donor8CubeTilesFullyValidFraction": 0.007531040097699979,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.07775290046814573,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            23.0
+          ]
+        },
+        {
+          "case": "negative-floor",
+          "displacementCells": [
+            -0.0001,
+            -0.9999,
+            -1.0001
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 1879663,
+          "cells": 2146689,
+          "validDonorFraction": 0.8756103003276208,
+          "donor8CubeTilesFullyValidFraction": 0.009362914716059434,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.08813352330551598,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            63.0
+          ]
+        },
+        {
+          "case": "cfl-positive",
+          "displacementCells": [
+            1.5,
+            1.5,
+            1.5
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 2146689,
+          "cells": 2146689,
+          "validDonorFraction": 1.0,
+          "donor8CubeTilesFullyValidFraction": 1.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 1.0,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "case": "cfl-negative",
+          "displacementCells": [
+            -1.5,
+            -1.5,
+            -1.5
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 2146689,
+          "cells": 2146689,
+          "validDonorFraction": 1.0,
+          "donor8CubeTilesFullyValidFraction": 1.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 1.0,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            64.0,
+            64.0
+          ]
+        },
+        {
+          "case": "fallback-outside",
+          "displacementCells": [
+            2.25,
+            -2.25,
+            2.25
+          ],
+          "spatialVariationCells": 0.08,
+          "maxAbsDifference": 0.0,
+          "meanAbsDifference": 0.0,
+          "differentComponents": 0,
+          "components": 8586756,
+          "predictorXyzMaxDifference": 0.0,
+          "predictorXyzDifferentComponents": 0,
+          "validDonorCells": 0,
+          "cells": 2146689,
+          "validDonorFraction": 0.0,
+          "donor8CubeTilesFullyValidFraction": 0.0,
+          "donor8CubeTilesAtLeast99PercentValidFraction": 0.0002035416242621616,
+          "encodedFinite": true,
+          "encodedIntegral": true,
+          "encodedRange": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ]
+}
