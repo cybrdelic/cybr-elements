@@ -1,5 +1,7 @@
 # Volume performance gate
 
+The rc.8 regression recovery supersedes the rc.6 wood-source and Original optical/noise changes described below. Its matched rendering evidence, measured native tail costs, corrected QA scope and interaction fixes are recorded in [REGRESSION_RECOVERY.md](REGRESSION_RECOVERY.md). No current live-browser performance gate has passed.
+
 Historical measurements below describe their dated builds. The September 29 release review at the end records the latest retained changes and its narrower verification scope.
 
 Status: **not passed**. The volume runtime does not yet match Original's rendered frame rate or realtime simulation speed on the browser-selected Intel UHD GPU.

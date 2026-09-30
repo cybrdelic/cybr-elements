@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.7'
+VERSION = '0.1.0-rc.8'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 OPEN_GATES = [
     'Live browser motion and sustained completed-frame performance on the demo GPU',
@@ -231,15 +231,16 @@ def validate(files):
 
 
 def validate_startup(root):
-    """Execute boot code; syntax and shader validation miss undefined JS bindings."""
+    """Execute boot, transition and reset behavior against the selected runtime."""
     environment = dict(os.environ, FIRE_STUDIO_ROOT=str(root.resolve()))
-    result = subprocess.run(
-        ['node', str(Path(__file__).with_name('original-startup.test.mjs'))],
-        env=environment, capture_output=True, text=True, timeout=30,
-    )
-    if result.returncode:
-        details = (result.stdout + result.stderr)[-10000:]
-        raise RuntimeError('Original startup regression failed:\n' + details)
+    for runner in ['original-startup.test.mjs', 'control-transition.test.mjs', 'volume-reset.test.mjs']:
+        result = subprocess.run(
+            ['node', str(Path(__file__).with_name(runner))],
+            env=environment, capture_output=True, text=True, timeout=30,
+        )
+        if result.returncode:
+            details = (result.stdout + result.stderr)[-10000:]
+            raise RuntimeError(runner + ' failed:\n' + details)
 
 
 def verify_artifact(destination):
@@ -300,6 +301,7 @@ def main():
         if args.verify.is_dir():
             validate_startup(args.verify)
             verification['originalStartup'] = 'passed-dom-webgl-fixture'
+            verification['transitionsAndResets'] = 'passed-runtime-contract-fixtures'
         print(json.dumps(verification))
         return
     files = runtime_files()

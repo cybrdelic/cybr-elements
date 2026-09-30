@@ -59,7 +59,7 @@ def compile_fragment(label: str, source: str) -> None:
     print(f"{label}: compiled")
 
 
-def real_room_sources() -> dict:
+def real_room_sources(object_source=False) -> dict:
     """Assemble real lighting shaders through the production room constructor."""
     js = JS.replace("await import(process.argv[2]);", "await import(process.argv[2]);await import(process.argv[4]);await import(process.argv[5]);")
     begin, end = js.index("const room={surfaceGLSL:"), js.index("const rendering=")
@@ -75,6 +75,8 @@ const gl=new Proxy({
 const room=window.FireRoom.setup(gl,{nx:NX,nz:NZ,depth:DEPTH,tilesX:TILES_X});
 """ + js[end:]
     js = js.replace("{emitters:window.FireEmitters,props:window.FireProps,simulation,rendering}", "{fragments,rendering}")
+    if object_source:
+        js = js.replace('const NX=', "domain.object=true;domain.extentGLSL='vec3(14.,7.875,3.)';domain.minimumGLSL='vec3(-7.,-1.05,-1.5)';const NX=", 1)
     result = subprocess.run([
         "node", "--input-type=module", "-e", js,
         (SOURCE / "fire-emitters.js").as_uri(), (SOURCE / "fire-props.js").as_uri(),
@@ -132,6 +134,8 @@ void spotSample(int index,vec3 point,out vec3 direction,out vec3 power){directio
         for i, fragment in enumerate(actual["fragments"]):
             compile_fragment(f"room lighting {i + 1}", fragment)
         compile_fragment("assembled room rendering", actual["rendering"])
+        objects = real_room_sources(object_source=True)
+        compile_fragment("assembled object room rendering", objects["rendering"])
     finally:
         glfw.destroy_window(window)
         glfw.terminate()

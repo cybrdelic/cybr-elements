@@ -76,6 +76,29 @@ process.stdout.write(JSON.stringify({fragments,samplingGLSL:vortex.samplingGLSL}
     return data
 
 
+def smoke_light_sources():
+    js = """globalThis.window={};await import(process.argv[1]);
+window.FireOptics=window.createFireOptics();await import(process.argv[2]);
+const fragments=[];
+const gl=new Proxy({
+ VERTEX_SHADER:35633,FRAGMENT_SHADER:35632,FRAMEBUFFER_COMPLETE:36053,
+ createShader:type=>type,getShaderParameter:()=>true,getProgramParameter:()=>true,
+ checkFramebufferStatus:()=>36053,
+ shaderSource:(type,source)=>{if(type===35632)fragments.push(source)}
+},{get(target,key){return key in target?target[key]:(...args)=>1}});
+window.SmokeLight.setup(gl,{nx:WIDTH,nz:HEIGHT,depth:32,tilesX:8});
+process.stdout.write(JSON.stringify(fragments));
+""".replace("WIDTH", str(VOLUME.WIDTH)).replace("HEIGHT", str(VOLUME.HEIGHT))
+    result = subprocess.run(["node", "--input-type=module", "-e", js,
+                             (SOURCE / "fire-optics.js").as_uri(),
+                             (SOURCE / "smoke-light.js").as_uri()],
+                            check=True, capture_output=True, text=True)
+    data = json.loads(result.stdout)
+    if len(data) != 2:
+        raise RuntimeError("Expected the production smoke gather and prefix shaders")
+    return data
+
+
 def shaders(pressure_glsl, vorticity_glsl):
     spec = importlib.util.spec_from_file_location("compile_qa", ROOT / "tools/fire-studio/compile-original-shaders.py")
     module = importlib.util.module_from_spec(spec)
@@ -203,17 +226,37 @@ def smooth_noise():
     return noise, turbulence
 
 
-def present_frame(render_prog, present_prog, projected_fbo, projected_tex, src, empty, object_tex, zoom):
+def present_frame(render_prog, present_prog, projected_fbo, projected_tex, src, empty, object_tex, zoom, source_scale=1., smoke_light=None):
     """Render one solver state through the production projection/presentation shaders."""
     begin = time.perf_counter()
+    smoke_texture = empty
+    if smoke_light:
+        programs, textures, framebuffers = smoke_light
+        GL.glViewport(0, 0, 128 * 8, 72 * 4)
+        GL.glUseProgram(programs[0])
+        GL.glBindFramebuffer(GL.GL_FRAMEBUFFER, framebuffers[0])
+        bind(programs[0], "source", src[1], 8)
+        GL.glDrawArrays(GL.GL_TRIANGLES, 0, 3)
+        read = 0
+        for stride in (1, 2, 4, 8, 16, 32, 64):
+            write = 1 - read
+            GL.glUseProgram(programs[1])
+            GL.glBindFramebuffer(GL.GL_FRAMEBUFFER, framebuffers[write])
+            bind(programs[1], "source", textures[read], 8)
+            seti(programs[1], "stride", stride)
+            GL.glDrawArrays(GL.GL_TRIANGLES, 0, 3)
+            read = write
+        smoke_texture = textures[read]
     GL.glUseProgram(render_prog)
     GL.glBindFramebuffer(GL.GL_FRAMEBUFFER, projected_fbo)
     GL.glViewport(0, 0, VOLUME.OUT_W, VOLUME.OUT_H)
     bind(render_prog, "chemTex", src[1], 0)
     bind(render_prog, "vfTex", src[0], 1)
-    bind(render_prog, "smokeLightTex", empty, 2)
+    bind(render_prog, "smokeLightTex", smoke_texture, 2)
     bind3d(render_prog, "objectTex", object_tex, 14)
     setf(render_prog, "viewZoom", zoom)
+    setf(render_prog, "sourceScale", source_scale)
+    GL.glUniform2f(GL.glGetUniformLocation(render_prog, "sourcePosition"), .5, 1.05 / 7.875)
     setf(render_prog, "roomEnabled", 0.)
     GL.glUniform2f(GL.glGetUniformLocation(render_prog, "viewPan"), 0., -1.)
     GL.glUniform3f(GL.glGetUniformLocation(render_prog, "flameTint"), 1., 1., 1.)
@@ -263,6 +306,7 @@ def sequence_artifacts(directory, frame_records, capture_fps):
 
 
 def main():
+    global SOURCE, W, H, PRESSURE_X, PRESSURE_Z
     parser = argparse.ArgumentParser()
     parser.add_argument("output", type=Path)
     parser.add_argument("--steps", type=int, default=90)
@@ -272,12 +316,21 @@ def main():
     parser.add_argument("--source-lift", type=float, default=1.)
     parser.add_argument("--source-feed", type=float, default=1.)
     parser.add_argument("--zoom", type=float, default=1.6)
+    parser.add_argument("--source-root", type=Path, help="Execute an isolated runtime snapshot for a matched regression comparison")
+    parser.add_argument("--preset", choices=("campfire", "sigil"), default="campfire")
+    parser.add_argument("--source-heat", type=float, default=1.)
+    parser.add_argument("--cooling-scale", type=float, default=1.)
     parser.add_argument("--ambient-forces", action="store_true", help="Compare the former empty-air force path")
     parser.add_argument("--unfiltered-noise", action="store_true", help="Compare the former non-mipmapped noise sampler")
+    parser.add_argument("--force-object-shader", action="store_true", help="Measure the otherwise unreachable object branch in a normal-source shader")
     parser.add_argument("--sequence-dir", type=Path, help="Save intermediate frames, contact sheet, GIF and metadata")
     parser.add_argument("--report", type=Path, help="Save complete timing, shader hashes and capture metadata as JSON")
     parser.add_argument("--capture-fps", type=int, default=10, help="Intermediate capture rate, a divisor of 30 (default 10)")
     args = parser.parse_args()
+    if args.source_root:
+        SOURCE = args.source_root.resolve()
+        VOLUME.SOURCE = SOURCE
+    uses_mipmapped_noise = not args.unfiltered_noise and "gl.LINEAR_MIPMAP_LINEAR" in (SOURCE / "fire.js").read_text(encoding="utf-8")
     if not 1 <= args.steps <= 900:
         parser.error("--steps must be between 1 and 900")
     if args.capture_fps not in (1, 2, 3, 5, 6, 10, 15, 30):
@@ -288,8 +341,7 @@ def main():
             parser.error("--sequence-dir already contains frames; choose a new directory for a complete run")
     source_hashes = {name: hashlib.sha256((SOURCE / name).read_bytes()).hexdigest()
                      for name in ("fire.js", "fire-optics.js", "fire-emitters.js", "fire-props.js",
-                                  "coarse-pressure.js", "corrected-advection.js", "vorticity.js")}
-    global W, H, PRESSURE_X, PRESSURE_Z
+                                  "coarse-pressure.js", "corrected-advection.js", "vorticity.js", "smoke-light.js")}
     if args.full:
         VOLUME.WIDTH, VOLUME.HEIGHT = 640, 360
         VOLUME.ATLAS_W, VOLUME.ATLAS_H = 5120, 1440
@@ -297,13 +349,16 @@ def main():
         PRESSURE_X, PRESSURE_Z = 128, 72
     pressure_glsl = pressure_sources()
     vorticity_glsl = vorticity_sources()
+    smoke_glsl = smoke_light_sources()
     snippets = shaders(pressure_glsl["samplingGLSL"], vorticity_glsl["samplingGLSL"])
     if args.ambient_forces:
         if "if(fuel+temp+soot<=.00001 && oxygen>=.99999){" not in snippets["simulation"]:
             raise RuntimeError("Empty-air comparison marker changed")
         snippets["simulation"] = snippets["simulation"].replace(
             "if(fuel+temp+soot<=.00001 && oxygen>=.99999){", "if(false){", 1)
-    render_source = VOLUME.assembled_rendering().replace("visibleEmitter==1?.42:.025", ".42")
+    render_source = VOLUME.assembled_rendering()
+    if args.force_object_shader:
+        render_source = render_source.replace("#define FIRE_OBJECT_SOURCE 0", "#define FIRE_OBJECT_SOURCE 1")
     if not glfw.init():
         raise RuntimeError("GLFW initialization failed")
     glfw.window_hint(glfw.VISIBLE, glfw.FALSE)
@@ -323,6 +378,14 @@ def main():
         vorticity_progs = [VOLUME.program(fragment) for fragment in vorticity_glsl["fragments"]]
         render_prog = VOLUME.program(render_source)
         present_prog = VOLUME.program(VOLUME.PRESENT)
+        smoke_programs = [VOLUME.program(fragment) for fragment in smoke_glsl]
+        smoke_textures = [red_texture(128 * 8, 72 * 4) for _ in range(2)]
+        for tex in smoke_textures:
+            GL.glBindTexture(GL.GL_TEXTURE_2D, tex)
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_R16F, 128 * 8, 72 * 4, 0, GL.GL_RED, GL.GL_HALF_FLOAT, None)
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR)
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR)
+        smoke_light = (smoke_programs, smoke_textures, [fbo(tex) for tex in smoke_textures])
         states = []
         for _ in range(2):
             vel, chem = float_texture(W, H), float_texture(W, H)
@@ -363,17 +426,20 @@ def main():
         GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT)
         GL.glGenerateMipmap(GL.GL_TEXTURE_2D)
         GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-                           GL.GL_LINEAR if args.unfiltered_noise else GL.GL_LINEAR_MIPMAP_LINEAR)
+                           GL.GL_LINEAR_MIPMAP_LINEAR if uses_mipmapped_noise else GL.GL_LINEAR)
         turbulence = volume_texture(turbulence_data)
         object_tex = volume_texture(np.array([[[[10., 0., 0., 0.]]]], dtype=np.float32), floating=True)
         GL.glUseProgram(sim_prog)
-        seti(sim_prog, "emitterKind", 1)
-        setf(sim_prog, "sourceEnabled", 0.)
-        setf(sim_prog, "brushActive", 1.)
+        seti(sim_prog, "emitterKind", 1 if args.preset == "campfire" else 0)
+        GL.glUseProgram(render_prog)
+        seti(render_prog, "visibleEmitter", 1 if args.preset == "campfire" else 0)
+        GL.glUseProgram(sim_prog)
+        setf(sim_prog, "sourceEnabled", 0. if args.preset == "campfire" else 1.)
+        setf(sim_prog, "brushActive", 1. if args.preset == "campfire" else 0.)
         setf(sim_prog, "sourceScale", args.source_scale)
         setf(sim_prog, "sourceLift", args.source_lift)
-        setf(sim_prog, "sourceHeat", 1.)
-        setf(sim_prog, "coolingScale", 1.)
+        setf(sim_prog, "sourceHeat", args.source_heat)
+        setf(sim_prog, "coolingScale", args.cooling_scale)
         setf(sim_prog, "presetBuoyancy", 4.)
         setf(sim_prog, "delta", 1. / 30.)
         GL.glUniform3f(GL.glGetUniformLocation(sim_prog, "fuelProfile"), args.source_feed, 1., 1.)
@@ -381,8 +447,18 @@ def main():
             GL.glUniform2f(GL.glGetUniformLocation(sim_prog, name), .5, 1.05 / 7.875)
         GL.glUniform2f(GL.glGetUniformLocation(sim_prog, "pointer"), .5, 1.05 / 7.875)
         GL.glUniform2f(GL.glGetUniformLocation(sim_prog, "pointerMotion"), 0., 0.)
-        bind(sim_prog, "sourceTex", empty, 2)
-        bind(sim_prog, "widthTex", empty, 4)
+        source_tex, width_tex = empty, empty
+        if args.preset == "sigil":
+            source_data = np.frombuffer((SOURCE / "source/source-native.rgba8.bin").read_bytes(), dtype=np.uint8).reshape((504, 896, 4))
+            source_tex = VOLUME.texture(None, float_texture=False)
+            GL.glBindTexture(GL.GL_TEXTURE_2D, source_tex)
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA8, 896, 504, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, source_data)
+            width_data = np.frombuffer((SOURCE / "source/halfwidth-native.r8.bin").read_bytes(), dtype=np.uint8).reshape((504, 896))
+            width_tex = VOLUME.texture(None, float_texture=False)
+            GL.glBindTexture(GL.GL_TEXTURE_2D, width_tex)
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_R8, 896, 504, 0, GL.GL_RED, GL.GL_UNSIGNED_BYTE, width_data)
+        bind(sim_prog, "sourceTex", source_tex, 2)
+        bind(sim_prog, "widthTex", width_tex, 4)
         bind(sim_prog, "noiseTex", noise, 3)
         bind3d(sim_prog, "objectTex", object_tex, 14)
         bind3d(sim_prog, "turbulenceTex", turbulence, 15)
@@ -396,8 +472,8 @@ def main():
             begin = time.perf_counter()
             src = states[current]
             dst = states[1 - current]
-            vortex_origin = [.5 - 2. / 14., 1.05 / 7.875 - .45 / 7.875, 0.]
-            vortex_span = [4. / 14., 5.6 / 7.875, 1.]
+            vortex_origin = [.5 - 2. / 14., 1.05 / 7.875 - .45 / 7.875, 0.] if args.preset == "campfire" else [0., 0., 0.]
+            vortex_span = [4. / 14., 5.6 / 7.875, 1.] if args.preset == "campfire" else [1., 1., 1.]
             GL.glViewport(0, 0, vortex_width, vortex_height)
             GL.glUseProgram(vorticity_progs[0])
             GL.glBindFramebuffer(GL.GL_FRAMEBUFFER, curl_fbo)
@@ -425,6 +501,8 @@ def main():
             bind(sim_prog, "chemTex", src[1], 1)
             bind(sim_prog, "mcPredictorTex", predictor_tex, 6)
             bind(sim_prog, "pressureCorrectionTex", correction_tex, 5)
+            bind(sim_prog, "sourceTex", source_tex, 2)
+            bind(sim_prog, "widthTex", width_tex, 4)
             bind(sim_prog, "noiseTex", noise, 3)
             bind3d(sim_prog, "objectTex", object_tex, 14)
             bind3d(sim_prog, "turbulenceTex", turbulence, 15)
@@ -459,7 +537,7 @@ def main():
             current = 1 - current
             if args.sequence_dir and ((step + 1) % capture_every == 0 or step + 1 == args.steps):
                 frame, elapsed = present_frame(render_prog, present_prog, projected_fbo,
-                                               projected_tex, states[current], empty, object_tex, args.zoom)
+                                               projected_tex, states[current], empty, object_tex, args.zoom, args.source_scale, smoke_light)
                 render_ms.append(elapsed)
                 name = f"frame-{len(frame_records) + 1:04d}.png"
                 frame.save(args.sequence_dir / name)
@@ -468,7 +546,7 @@ def main():
             if error:
                 errors.append({"step": step + 1, "code": error})
         frame, elapsed = present_frame(render_prog, present_prog, projected_fbo,
-                                       projected_tex, states[current], empty, object_tex, args.zoom)
+                                       projected_tex, states[current], empty, object_tex, args.zoom, args.source_scale, smoke_light)
         render_ms.append(elapsed)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         frame.save(args.output)
@@ -480,20 +558,34 @@ def main():
         report = {"path": str(args.output), "dimensions": [VOLUME.OUT_W, VOLUME.OUT_H],
                   "steps": args.steps, "simulated_seconds": args.steps / 30.,
                   "expansion": args.expansion, "ambient_forces": args.ambient_forces,
-                  "mipmapped_noise": not args.unfiltered_noise,
+                  "mipmapped_noise": uses_mipmapped_noise, "force_object_shader": args.force_object_shader,
                   "source_scale": args.source_scale, "source_lift": args.source_lift,
                   "source_feed": args.source_feed, "zoom": args.zoom,
+                  "preset": args.preset, "source_heat": args.source_heat, "cooling_scale": args.cooling_scale,
                   "grid": [VOLUME.WIDTH, VOLUME.HEIGHT, VOLUME.DEPTH], "gpu": renderer,
                   "step_ms_median": round(statistics.median(measured), 2),
+                  "step_ms_mean": round(statistics.mean(measured), 2),
                   "step_ms_p95": round(float(np.percentile(measured, 95)), 2),
                   "step_ms_max": round(max(measured), 2),
                   "render_ms_median": round(statistics.median(render_ms), 2),
+                  "render_ms_mean": round(statistics.mean(render_ms), 2),
+                  "render_ms_p95": round(float(np.percentile(render_ms, 95)), 2),
+                  "render_ms_max": round(max(render_ms), 2),
+                  "render_ms_samples": render_ms, "step_ms_samples": step_ms,
                   "gl_error": final_error, "gl_error_count": len(errors), "errors": errors,
                   "source_sha256": source_hashes,
+                  "fixture_uniforms": {"emitterKind": 1 if args.preset == "campfire" else 0,
+                    "sourceEnabled": args.preset == "sigil", "brushActive": args.preset == "campfire",
+                    "sourceScale": args.source_scale, "sourceLift": args.source_lift,
+                    "sourceHeat": args.source_heat, "coolingScale": args.cooling_scale,
+                    "fuelProfile": [args.source_feed, 1., 1.], "visibleEmitter": 1 if args.preset == "campfire" else 0,
+                    "vortexOrigin": vortex_origin, "vortexSpan": vortex_span,
+                    "sourcePosition": [.5, 1.05 / 7.875], "viewZoom": args.zoom,
+                    "viewPan": [0., -1.], "roomEnabled": 0, "flameTint": [1., 1., 1.], "tintStrength": 0},
                   "noise_basis": "production fire.js hash/valueNoise and 64-cubed turbulence, exact JS byte generation",
                   "noise_sha256": hashlib.sha256(noise_data.tobytes()).hexdigest(),
                   "turbulence_sha256": hashlib.sha256(turbulence_data.tobytes()).hexdigest(),
-                  "scope": "Native GLES 3 fixed-step solver and isolated black-room render; not browser pacing or full room/props cost."}
+                  "scope": "Native GLES 3 fixed-step solver, actual overhead soot shadow gather/prefix passes and isolated black-room projection/props; no actual room light, browser pacing, presentation composition or mobile cost."}
         if args.sequence_dir:
             report.update(sequence_artifacts(args.sequence_dir, frame_records, args.capture_fps))
             report["capture_fps"] = args.capture_fps
@@ -505,7 +597,7 @@ def main():
             args.report.write_text(json.dumps(report, indent=2), encoding="utf-8")
             report["report"] = str(args.report)
         # The complete trace stays on disk; return only bounded artifact metadata.
-        summary = {key: value for key, value in report.items() if key not in ("frames", "errors", "source_sha256")}
+        summary = {key: value for key, value in report.items() if key not in ("frames", "errors", "source_sha256", "render_ms_samples", "step_ms_samples")}
         print(json.dumps(summary))
         if errors:
             raise RuntimeError(f"OpenGL reported {len(errors)} errors; inspect the saved report")

@@ -1,8 +1,8 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-7';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-7';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-7';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-7';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-7';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-8';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-8';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-8';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-8';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-8';
 export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=>{}}={}){
   const scope=runtimeScope(onFailure),on=scope.on;
   const qaParams=new URL(location.href).searchParams,qaCaptureStop=qaParams.has('qa')?Number(qaParams.get('capture'))||0:0;
@@ -96,6 +96,7 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
     gl_Position=vec4(p*2.0-1.0,0.0,1.0);
   }`;
   const shared = `
+  #define FIRE_OBJECT_SOURCE ${domain.object ? 1 : 0}
   precision highp float;
   precision highp sampler2D;
   in vec2 uv;
@@ -286,28 +287,19 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
     // Soot travels with the same corrected flow as heat and fuel. Fuel-rich
     // burning produces more soot; hot oxygen oxidizes it. Cold smoke survives
     // cooling, rather than disappearing with the flame's temperature.
-    float fuelBed=sourceEnabled<.5&&emitterKind==1?1.:0.;
-    float sootYield=mix(.45,1.55,1.0-oxygen)*fuelProfile.y*mix(1.,.75,fuelBed);
+    float sootYield=mix(.45,1.55,1.0-oxygen)*fuelProfile.y;
     soot+=burn*sootYield;
     float oxidized=soot*(1.0-exp(-1.2*oxygen*smoothstep(.7,1.8,temp)*delta));
     oxidized=min(oxidized,oxygen/.08);
-    soot=clamp((soot-oxidized)*exp(-mix(.055,.22,fuelBed)*delta),0.0,8.0);
+    soot=clamp((soot-oxidized)*exp(-.055*delta),0.0,8.0);
     oxygen=max(0.0,oxygen-oxidized*.08);
     temp=min(3.0,temp+oxidized*.3);
 
     // Buoyancy, resolved swirl and an interactive force all modify the live state.
     float n1=texture(noiseTex,p*vec2(1.6,1.2)+vec2(clock*.037,depth*.41)).r;
-    // Reuse the second noise lookup for a finer, depth-varying velocity field.
-    // It folds the transported heat/reaction fronts instead of drawing detail
-    // on top of the final image or adding another full-screen sample pass.
-    vec2 fineNoise=textureLod(noiseTex,p*vec2(7.6,6.2)+vec2(-clock*.12,depth*1.37),1.5).rg;
-    float n2=fineNoise.g;
+    float n2=texture(noiseTex,p*vec2(4.2,3.0)+vec2(-clock*.08,depth*.83)).g;
     float curl=(n1-n2)*(.035+.13*temp);
     vf.x+=curl*delta*(sourceEnabled<.5&&emitterKind==2?.8:5.0);
-    if(emitterKind!=6 && smokeOnly<.5 && temp>.2){
-      vec2 fineFlow=vec2(fineNoise.r-.5,.5-fineNoise.g);
-      vf.xy+=fineFlow*delta*smoothstep(.2,1.2,temp)*vec2(3.2,2.4)/simExtent.xy;
-    }
     float buoyancy=sourceEnabled>.5?6.5:emitterKind==1?3.2*sourceLift:emitterKind==2?3.:emitterKind==3||emitterKind==4?.35:emitterKind>=7?presetBuoyancy:6.5;
     if(sourceEnabled<.5 && emitterKind==6)buoyancy=mix(.3,3.6,smoothstep(.2,1.2,burstAge));
     vf.y+=(temp*buoyancy-soot*.32)*delta/simExtent.y;
@@ -412,9 +404,8 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
       float temp=c.b, soot=c.a;
       if(temp<=0.0 && soot<=0.0) continue;
       float reaction=fineDepth?field(vfTex,vec3(p,z/float(${DEPTH-1}))).a:layer(vfTex,p,z).a;
-      // Reacting gas absorbs as well as emits. A nearly transparent flame
-      // stacks dozens of bright layers into one pale sheet and hides gaps.
-      float sigma=clamp(sootExtinction(soot)+(1.-inspectSmoke)*reaction*(visibleEmitter==1?.42:.025),0.0,24.0);
+      // Soot provides the bulk extinction; reacting gas remains optically thin.
+      float sigma=clamp(sootExtinction(soot)+(1.-inspectSmoke)*reaction*.025,0.0,24.0);
       vec3 emission=(1.-inspectSmoke)*(fireEmission(reaction,temp)+sootEmission(soot,temp));
       float stepLength=fireExtent.z/float(sampleCount)/(roomEnabled>.5?max(-ray.z,.1):1.);
       float opacity=1.0-exp(-sigma*stepLength);
@@ -575,7 +566,7 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
     current = 1 - current;
     gl.activeTexture(gl.TEXTURE5); gl.bindTexture(gl.TEXTURE_2D, null);
     const blastAge=elapsed-burstStart;
-    const expansion=freeMode&&emitterKind===6?1.25+380.*(sharedPresets.get(activePreset)?.dynamics[1]||1)*Math.exp(-Math.max(blastAge,0)*14.):freeMode&&emitterKind===1?1.2:0;
+    const expansion=freeMode&&emitterKind===6?1.25+380.*(sharedPresets.get(activePreset)?.dynamics[1]||1)*Math.exp(-Math.max(blastAge,0)*14.):0;
     pressure.update(targets[current].vf,expansion);
     stateRevision++;
     pointer.vx *= .48; pointer.vy *= .48;
@@ -963,10 +954,6 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
       gl.bindTexture(gl.TEXTURE_2D, noiseTexture);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-      // The fine velocity forcing samples a filtered mip to avoid sub-cell
-      // noise folding into a stationary grid pattern at the live resolution.
-      gl.generateMipmap(gl.TEXTURE_2D);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
       turbulenceTexture=gl.createTexture();gl.bindTexture(gl.TEXTURE_3D,turbulenceTexture);
       for(const axis of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T,gl.TEXTURE_WRAP_R])gl.texParameteri(gl.TEXTURE_3D,axis,gl.REPEAT);
       gl.texParameteri(gl.TEXTURE_3D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_3D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);

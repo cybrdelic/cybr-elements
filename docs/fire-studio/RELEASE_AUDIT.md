@@ -2,6 +2,10 @@
 
 This audit covers packaging, dependency integrity, release copy and research leakage. It does not certify current browser appearance, frame rate or offline visual parity.
 
+## Regression recovery rc.8
+
+The startup hotfix did not address the rendering and interaction regressions reported afterward. [REGRESSION_RECOVERY.md](REGRESSION_RECOVERY.md) records the restored source/optical behavior, corrected comparison fixtures, shared control/reset race fixes, native evidence and remaining gates. Package validation now runs startup, actual shell transitions and actual Volume reset ordering on the source and built/deployed directories. 59 Node tests and six package tests pass; native GLSL compilation covers normal and object room renderers. Rendering/native timings remain separate from browser acceptance.
+
 ## Startup hotfix rc.7
 
 The rc.6 cleanup removed the `halfFloatLinear` declaration while `target()` still used it during Original texture allocation. This caused `halfFloatLinear is not defined` at startup. JavaScript syntax checks and native GLSL compilation did not execute that allocation code and therefore missed the regression. The declaration is restored; source cache keys and the package version advance to rc.7.

@@ -1,4 +1,4 @@
-import { FIRE_PRESETS } from './pyro-gpu/presets.js?v=studio-rc-7';
+import { FIRE_PRESETS } from './pyro-gpu/presets.js?v=studio-rc-8';
 
 // Shared authored IDs have independent implementations in both solvers.
 const originalToVolume = Object.freeze({
