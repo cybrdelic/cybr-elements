@@ -132,6 +132,9 @@ def field_topology(binary):
 
 
 def resample_source(a, destination):
+    if destination.resolve() == a.source.resolve():
+        raise ValueError('Output must not overwrite the original source NPZ')
+    original_checksum = checksum(a.source)
     x, _, z = a.grid
     with np.load(a.source, allow_pickle=False) as original:
         required = ('support', 'sdf', 'arrival', 'dirx', 'dirz', 'lo', 'extent')
@@ -163,7 +166,7 @@ def resample_source(a, destination):
     Image.fromarray(preview).resize((1280, 720), Image.Resampling.LANCZOS).save(a.output / 'source-support.png')
     return {'original_grid': [original_x, original_z], 'resampled_grid': [x, z],
             'original_topology': original_topology, 'resampled_topology': field_topology(fields['support'] > .5),
-            'sha256_original': checksum(a.source), 'sha256_resampled': checksum(destination)}
+            'sha256_original': original_checksum, 'sha256_resampled': checksum(destination)}
 
 
 def source_function(text, name):
@@ -205,7 +208,7 @@ def load_solver(a):
     namespace.update(FPS=a.fps, SIM_FPS=a.fps, TOTAL=a.frames, W=a.resolution[0], H=a.resolution[1])
     exec(compile(render_source, f'{path}:portable-render', 'exec'), namespace)
     execution_metadata = install_cpu_operators(namespace, a.kind, source_function(source, 'step'), specialize=not a.native_transport)
-    evidence = {'solver_file': str(path), 'solver_sha256': checksum(path),
+    evidence = {'adapter_sha256': checksum(Path(__file__).resolve()), 'solver_file': str(path), 'solver_sha256': checksum(path),
                 'original_step_sha256': hashlib.sha256(source_function(source, 'step').encode()).hexdigest(),
                 'original_radiance_sha256': hashlib.sha256(source_function(source, 'radiance').encode()).hexdigest(),
                 'original_render_sha256': hashlib.sha256(source_function(source, 'render').encode()).hexdigest(),

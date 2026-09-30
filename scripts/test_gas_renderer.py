@@ -93,6 +93,10 @@ class GasRendererTests(unittest.TestCase):
             output.mkdir()
             a = Namespace(grid=[16, 8, 10], source=source, output=output)
             destination = output / 'resampled.npz'
+            original_checksum = self.renderer.checksum(source)
+            with self.assertRaisesRegex(ValueError, 'overwrite'):
+                self.renderer.resample_source(a, source)
+            self.assertEqual(self.renderer.checksum(source), original_checksum)
             report = self.renderer.resample_source(a, destination)
             with np.load(destination) as resampled:
                 self.assertEqual(resampled['support'].shape, (10, 16))
