@@ -4,7 +4,7 @@ The deployable unit is the output of `tools/fire-studio/package.py`. Historical 
 
 ## Build and validate
 
-Run the Node state/lifecycle/telemetry suites, startup/transition/reset/lighting/optical/sustained-scheduling regressions and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. Package validation runs **19 runtime runners** automatically against source, the completed build and directory verification: six original runtime checks, seven adaptive integration fixtures, and six fuel/sigil/lighting/lifetime fixtures. `FIRE_STUDIO_ROOT` can also select a directory for manual checks. They exercise JavaScript initialization, shared shell transitions, actual reset ordering, normal/tree lighting bindings, optical mask ping-pong, finite fuel lifecycle and 10,000 display ticks with DOM/GPU fixtures; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
+Run the Node state/lifecycle/telemetry suites, startup/transition/reset/lighting/optical/sustained-scheduling regressions and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. Package validation runs **22 runtime runners** automatically against source, the completed build and directory verification: six original runtime checks, seven adaptive integration fixtures, six fuel/sigil/lighting/lifetime fixtures and three simulation-mode runners. `FIRE_STUDIO_ROOT` can also select a directory for manual checks. They exercise JavaScript initialization, shared shell transitions, actual reset ordering, normal/tree lighting bindings, optical mask ping-pong, finite fuel lifecycle and 10,000 display ticks with DOM/GPU fixtures; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
 
 The package records the exact shipped bytes and a content-derived build fingerprint. JavaScript imports, classic shader scripts, stylesheets and local runtime asset URLs use that fingerprint as their cache key. The artifact preserves the single-page entry and the old `pyro-gpu/` redirect. Tree binaries and source previews are validated before packaging; imported tree geometry remains a lazy source load.
 
@@ -24,6 +24,19 @@ Usage and evidence scope are in [FUEL_AND_INSPECTION.md](FUEL_AND_INSPECTION.md)
 
 The compact native proof is recorded in `RC12_FUEL_PROOF.json`. These gates cover native shader/state paths. Browser automation was blocked by automatic approval review in this session; actual browser interaction, sustained frame pacing and mobile acceptance remain separate.
 
+## rc.13 Sparse mode gates
+
+[SPARSE_MODE.md](SPARSE_MODE.md) describes the third same-page selection, **Sparse volume · experimental**. It enables pooled chemistry while retaining global Volume flow and pressure, full voxel spacing, reference lighting and the shared source/control library. Fully lit, Show sigil and finite floor fuel remain available. URLs and saved looks retain the selected mode.
+
+The pool adds **96 MiB** to **384 MiB** of retained dense chemistry backing. Capacity or safety fallback continues in dense storage and remains there until Restart. This is an experimental storage route; it is not established as faster, lossless during atlas transport or supported on mobile.
+
+| Gate | rc.13 status |
+| --- | --- |
+| Selection and shared state | 150 CPU tests pass, including all three choices, counterpart sources, presentation continuity, library routing, canonical URLs, saved/imported looks, recovery and valid tools. The three new mode runners are included in package validation. |
+| Chemistry and imagery | Four native 60-frame replays pass shader, CFL and finite-field checks; pooled snapshots have no stale mappings. Lit sigil/floor fuel captures and alternate views were inspected. Atlas-filtering quality equivalence and sustained motion remain open. |
+| Complete-frame cost | Matched native frames 6–29 have mixed costs: sparse is slower on Intel and faster in this single RTX trial. No sustained browser speedup is established; details and scope are in `RC13_SPARSE_PROOF.json`. |
+| Capacity and devices | This sigil/fuel case switches to dense at frame 32 on Intel and 30 on RTX and remains dense. Existing migration/reset/disposal fixtures pass. Browser frame pacing and physical mobile memory/device acceptance remain open. |
+
 ## Publish to GitHub Pages
 
 The local checkout `../firesim-site` points to `https://github.com/cybrdelic/cybrdelic.github.io.git`. The public path is `/firesim/`. Inspect its branch, working tree and GitHub Pages configuration before publishing. Preserve unrelated site contents and copy only a validated package into the `firesim/` subtree. Do not copy test tools, screenshots or historical experiment folders.
@@ -42,6 +55,7 @@ The package contains a large imported tree model. A first tree selection transfe
 | Fire illumination | Source-shaped fire illumination reaches gas and room receivers. Check off-center sources, multiple emitting regions, paused light changes and darkness after emission ends. |
 | Inspection and fuel | Use Fully lit to read cold patches and source surfaces. Toggle Show sigil at front and grazing angles. Drop unlit fuel, ignite it once, inspect burn-down/char, clear only the deposits, then Restart. Repeat in both engines. |
 | Sources and presets | Both engines expose matching source IDs and recover camera/fuel/light settings across engine switches, shared URLs and saved looks. Experimental geometry/effects retain visible status. |
+| Sparse mode | Select Sparse volume on the same page, verify its shared sources/inspection/fuel controls, and compare fields and motion with standard 3D volume. Record actual storage mode and any fallback alongside cost and memory. |
 | Objects | Inspect flame contact, finite fuel and char. Trees use the reviewed mesh; branch fracture/collapse and ember ignition are not presented as implemented. |
 | Frame pacing | Record completed FPS, frame p95, simulation seconds per wall second, GPU stages and memory over sustained interaction, with the browser renderer/adapter named. Repeated presentation of an unchanged frame does not count as simulation throughput. |
 | Device handling | Verify cold start, engine switch, restart, rapid preset selection, resize, background/foreground, back/forward restoration and recoverable device failure on the demonstration machine. |

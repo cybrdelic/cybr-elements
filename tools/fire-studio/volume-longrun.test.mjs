@@ -132,7 +132,7 @@ test('10,000 active display ticks keep quality fixed and queue/readback/cache gr
   };
   const scope = { visible: true, disposed: false, schedule() { scheduled++; } };
   const dependencies = { solver: s, scope, $, params: new URLSearchParams(), metrics: {}, message: {}, sync() {},
-    canvas: s.canvas, activeFire: preset, flameColor: 'natural', embers: true, fireLight: 24,
+    canvas: s.canvas, activeFire: preset, simulation: 'volume', flameColor: 'natural', embers: true, fireLight: 24,
     smoke: false, zoom: 1.25, angle: 16, lightState: () => ({}), viewUniform: () => viewData,
     advanceTest() {}, releaseBusy: null, onFailure(error) { throw error; },
   };
@@ -143,6 +143,7 @@ test('10,000 active display ticks keep quality fixed and queue/readback/cache gr
       captureIndex=0, saved=false;
     releaseBusy=()=>{busy=false;};
     ${functionSource('summary')}
+    ${functionSource('runtimeStatus')}
     ${functionSource('frame')}
     return {frame,state:()=>({busy,paused,traceLength:trace.length})};
   `);

@@ -1,9 +1,9 @@
-import {objectWGSL} from './objects.js?v=studio-rc-12';
-import {combustionWGSL} from './combustion.js?v=studio-rc-12';
-import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-12';
-import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-12';
-import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-12';
-import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-12';
+import {objectWGSL} from './objects.js?v=studio-rc-13';
+import {combustionWGSL} from './combustion.js?v=studio-rc-13';
+import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-13';
+import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-13';
+import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-13';
+import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-13';
 // Five room faces share this irradiance resolution. Keep atlas allocation,
 // compute dispatch and sampling coordinates in sync with this value.
 export const ROOM_SIZE=64;

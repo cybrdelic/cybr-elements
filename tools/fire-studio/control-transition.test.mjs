@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 const root = resolve(process.env.FIRE_STUDIO_ROOT || resolve(import.meta.dirname, '../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'));
 const { FIRE_PRESETS, LEGACY_PRESETS, sourceOrigin } = await import(pathToFileURL(resolve(root, 'pyro-gpu/presets.js')).href);
+const { DEMO_PRESETS } = await import(pathToFileURL(resolve(root, 'demo-presets.js')).href);
 const sceneIds = ['simulation', 'preset', 'fuel', 'show-experiments', 'pause', 'restart', 'burst', 'extinguish', 'fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen', 'flame-color', 'embers', 'smoke-only', 'benchmark', 'retry-runtime', 'use-original'];
 const cameraIds = ['fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen'];
 let serial = 0;
@@ -120,10 +121,10 @@ async function studio(url = 'https://example.com/firesim/?simulation=volume&fire
   const fixture = {
     nodes: document.nodes, calls, runtimes, location, document, window, nextMountFailure: null,
     load: async kind => async options => {
-      calls.push(['mount', kind, options.initialPreset]);
+      calls.push(['mount', kind, options.initialPreset, options.simulation]);
       if (fixture.nextMountFailure) { const error = fixture.nextMountFailure; fixture.nextMountFailure = null; throw error; }
       const original = kind === 'legacy';
-      let state = { fire: '', fuel: 'wood', room: new URL(location.href).searchParams.get('room') !== '0', color: 'natural', smoke: false, fireLight: 24,
+      let state = { fire: '', simulation:options.simulation||kind, fuel: 'wood', room: new URL(location.href).searchParams.get('room') !== '0', color: 'natural', smoke: false, fireLight: 24,
         ...(original ? {} : { embers: true }), camera: { zoom: original ? 1.8 : 1.25, angle: 16, pan: [0, original ? -1 : 0] } };
       const synchronize = () => {
         for (const [id, key] of [['fuel', 'fuel'], ['flame-color', 'color'], ['fire-light', 'fireLight']]) document.ensure(id).value = state[key];
@@ -150,10 +151,10 @@ async function studio(url = 'https://example.com/firesim/?simulation=volume&fire
         () => fixture.fireGate || Promise.resolve(),
       );
       const runtime = {
-        kind, disposed: false, visible: true,
+        kind, mountOptions:options, disposed: false, visible: true,
         async dispose() { this.disposed = true; calls.push(['dispose', kind]); },
         setVisible(value) { this.visible = value; }, fire,
-        snapshot: () => structuredClone(state),
+        snapshot: () => ({...structuredClone(state),sourceGuide:document.ensure('source-guide').checked}),
         look(item) {
           calls.push(['look', kind, structuredClone(item)]);
           for (const key of ['fuel', 'room', 'smoke', 'color', 'fireLight', 'embers']) if (item[key] !== undefined && (!original || key !== 'embers')) state[key] = item[key];
@@ -353,4 +354,78 @@ test('library visibility and the back-forward cache resume only the live runtime
     f.document.querySelectorAll('[data-panel]')[0].onclick();
     assert.equal(f.runtime.visible, true);
   } finally { f.restore(); }
+});
+
+test('sparse startup and the old brick-pool alias select the same Volume runtime mode',async()=>{
+  for(const url of ['https://example.com/firesim/?simulation=sparse&firePreset=torch','https://example.com/firesim/?simulation=volume&bricks=1&firePreset=torch']){
+    const f=await studio(url);
+    try{
+      assert.equal(f.runtime.kind,'sparse');assert.equal(f.runtime.mountOptions.simulation,'sparse');
+      assert.equal(f.runtime.snapshot().fire,'torch');assert.equal(f.nodes.get('simulation').value,'sparse');
+      assert.equal(new URL(f.location.href).searchParams.get('simulation'),'sparse');
+    }finally{f.restore();}
+  }
+});
+
+test('volume and sparse remount while preserving the current source and shared presentation',async()=>{
+  const f=await studio('https://example.com/firesim/?simulation=volume&firePreset=torch');
+  try{
+    f.runtime.look({fuel:'oil',smoke:true,color:'cobalt',room:false,fireLight:0,embers:false,camera:{zoom:2.4,angle:53,pan:[.4,-.2]}});
+    await f.change('source-guide',false);f.window.SceneLights.apply({key:220,rim:140,ambient:1,bounce:0,keyColor:'#88aaff'});
+    const original=f.runtime,before=f.runtime.snapshot();await f.change('simulation','sparse');
+    assert.equal(original.disposed,true);assert.equal(f.runtime.mountOptions.simulation,'sparse');
+    assert.deepEqual(f.runtime.snapshot(),{...before,simulation:'sparse'});
+    assert.equal(f.window.SceneLights.snapshot.key,220);assert.equal(f.window.SceneLights.snapshot.bounce,0);
+    const sparse=f.runtime;await f.change('simulation','volume');assert.equal(sparse.disposed,true);
+    assert.deepEqual(f.runtime.snapshot(),before);assert.equal(f.runtime.mountOptions.simulation,'volume');
+  }finally{f.restore();}
+});
+
+test('library filter, saved look and demo routing keep the intended sparse mode',async()=>{
+  const f=await studio('https://example.com/firesim/?simulation=sparse&firePreset=bonfire');
+  try{
+    await f.api.fire('ring','volume');assert.equal(f.runtime.snapshot().simulation,'volume');
+    await f.api.fire('sigil-cybr','sparse');assert.equal(f.runtime.snapshot().simulation,'sparse');
+    const saved={name:'Sparse torch',fire:'torch',simulation:'sparse',fireLight:0,sourceGuide:false,camera:{zoom:2,angle:0,pan:[0,.2]}};
+    await f.api.look(saved);assert.equal(f.runtime.snapshot().fire,'torch');assert.equal(f.runtime.snapshot().simulation,'sparse');
+    assert.deepEqual(f.runtime.snapshot().camera,saved.camera);assert.equal(f.runtime.snapshot().fireLight,0);
+    await f.api.look(DEMO_PRESETS.find(item=>item.id==='demo-bonfire'));
+    assert.equal(f.runtime.snapshot().simulation,'sparse');assert.equal(f.runtime.snapshot().fire,'bonfire');
+    await f.api.look({...saved,simulation:'volume'});assert.equal(f.runtime.snapshot().simulation,'volume');
+  }finally{f.restore();}
+  const linked=await studio('https://example.com/firesim/?simulation=sparse&scene=demo-bonfire');
+  try{assert.equal(linked.runtime.snapshot().simulation,'sparse');assert.equal(linked.runtime.snapshot().fire,'bonfire');}finally{linked.restore();}
+});
+
+test('sparse retry preserves the source and recovery maps it back to Original',async()=>{
+  const f=await studio('https://example.com/firesim/?simulation=sparse&firePreset=ring');
+  try{
+    await f.change('fuel','oil');await f.change('fire-light',0,'input');
+    f.runtime.fail(new Error('Fixture sparse device lost'));f.nodes.get('retry-runtime').onclick();await f.settle();
+    assert.equal(f.runtime.mountOptions.simulation,'sparse');assert.equal(f.runtime.snapshot().fire,'ring');
+    assert.equal(f.runtime.snapshot().fuel,'oil');assert.equal(f.runtime.snapshot().fireLight,0);assert.equal(f.nodes.get('view-state').hidden,true);
+    f.runtime.fail(new Error('Fixture sparse lost again'));f.nodes.get('use-original').onclick();await f.settle();
+    assert.equal(f.runtime.snapshot().fire,'legacy:ring');assert.equal(f.runtime.snapshot().simulation,'legacy');
+    assert.equal(f.runtime.snapshot().fuel,'oil');assert.equal(f.runtime.snapshot().fireLight,0);
+  }finally{f.restore();}
+});
+
+test('sparse selected experiments stay reachable and map the sigil to Original',async()=>{
+  const f=await studio('https://example.com/firesim/?simulation=sparse&firePreset=explosion');
+  try{
+    const values=()=>f.nodes.get('preset').children.flatMap(group=>group.children.map(option=>option.value));
+    assert.ok(values().includes('explosion'));assert.equal(values().includes('burning-house'),false);
+    await f.change('simulation','volume');assert.equal(f.runtime.snapshot().fire,'explosion');assert.ok(values().includes('explosion'));
+    await f.api.fire('sigil-cybr','sparse');await f.change('simulation','legacy');assert.equal(f.runtime.snapshot().fire,'legacy:sigil-cybr');
+    await f.change('simulation','sparse');assert.equal(f.runtime.snapshot().fire,'sigil-cybr');
+  }finally{f.restore();}
+});
+
+test('inspection camera restoration treats Volume and Sparse as the same camera family',async()=>{
+  const f=await studio('https://example.com/firesim/?simulation=sparse&firePreset=bonfire');
+  try{
+    const camera={zoom:2.4,angle:53,pan:[.4,-.2]};f.runtime.look({camera});
+    await f.api.look({name:'Fixture inspection',fire:'bonfire',camera:{zoom:1.25,angle:16,pan:[0,0]},test:{instruction:'Inspect smoke'}});
+    await f.change('simulation','volume');assert.deepEqual(f.runtime.snapshot().camera,camera);
+  }finally{f.restore();}
 });

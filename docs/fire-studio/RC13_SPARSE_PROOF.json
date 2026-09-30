@@ -1,0 +1,273 @@
+{
+  "candidate": "0.1.0-rc.13",
+  "scope": "CPU state fixtures and short native production-command replay; no browser FPS/mobile acceptance or lossless atlas-trajectory claim",
+  "configuration": {
+    "adaptive": false,
+    "pressureWork": false,
+    "brickPool": true,
+    "lightWork": false,
+    "lightReceivers": false
+  },
+  "dimensions": {
+    "globalMAC": 128,
+    "chemistry": 256,
+    "output": [
+      768,
+      432
+    ],
+    "poolPages": 1024,
+    "pageInterior": 16
+  },
+  "cpuTests": 150,
+  "cpuLog": "work/adaptive-volume-qa/rc13-cpu-final-repaired.log",
+  "nativeRuns": [
+    {
+      "mode": "sparse",
+      "adapter": "Intel(R) UHD Graphics",
+      "report": "work/adaptive-volume-qa/rc13-sparse-sigil-fuel-60/native-integrated/report.json",
+      "reportSha256": "2cbfcd022f36e4775712e829a7411104dd37e51fcafdb304ce548a42a8f2cbcf",
+      "options": {
+        "simulation": "sparse",
+        "flow": false,
+        "pool": true,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "sigil-cybr",
+        "frames": 60,
+        "move": false,
+        "lighting": "fully-lit",
+        "guide": true,
+        "fuel": true,
+        "unlit": false,
+        "igniteFuel": true,
+        "fixedCFLFixture": true
+      },
+      "pass": true,
+      "simulatedSeconds": 1.0000000000000013,
+      "simulationFrames": 60,
+      "images": 13,
+      "maxMeasuredCFL": 0.7093193054199219,
+      "nonfiniteChemistryValues": 0,
+      "staleMappings": 0,
+      "firstDenseFallbackFrame": 32,
+      "finalPoolStatus": [
+        1,
+        1034,
+        1019,
+        0,
+        5,
+        3,
+        51,
+        0
+      ],
+      "costWindowInclusive": [
+        6,
+        29
+      ],
+      "medianGpuMs": 34.70150956946182,
+      "medianCompletedWallMs": 36.446850004722364,
+      "finalFuel": {
+        "sha256": "c5097d943fb6fc9c9a5a63ac77f3b94b627f6f5fe1ac355152c6599d0637fc3e",
+        "sumByChannel": [
+          58.94047657216288,
+          138.38533464903756,
+          46.83032796630869,
+          90.25272062123781
+        ],
+        "maxByChannel": [
+          0.6282378435134888,
+          1.3744473457336426,
+          0.6709269881248474,
+          1.3720375299453735
+        ],
+        "nonFinite": 0
+      }
+    },
+    {
+      "mode": "volume",
+      "adapter": "Intel(R) UHD Graphics",
+      "report": "work/adaptive-volume-qa/rc13-dense-sigil-fuel-60/native-integrated/report.json",
+      "reportSha256": "24a99e616564f2bd34230dd2958c8358f82c208dfcba6225144f822375e78a13",
+      "options": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "sigil-cybr",
+        "frames": 60,
+        "move": false,
+        "lighting": "fully-lit",
+        "guide": true,
+        "fuel": true,
+        "unlit": false,
+        "igniteFuel": true,
+        "fixedCFLFixture": true
+      },
+      "pass": true,
+      "simulatedSeconds": 1.0000000000000013,
+      "simulationFrames": 60,
+      "images": 13,
+      "maxMeasuredCFL": 0.7101782904730903,
+      "nonfiniteChemistryValues": 0,
+      "staleMappings": 0,
+      "firstDenseFallbackFrame": null,
+      "finalPoolStatus": null,
+      "costWindowInclusive": [
+        6,
+        29
+      ],
+      "medianGpuMs": 24.09135357849884,
+      "medianCompletedWallMs": 25.638799997977912,
+      "finalFuel": {
+        "sha256": "5ae64b2ceaab1e770bef28c700bad2fae5df21b245c386e28b87339401b8def5",
+        "sumByChannel": [
+          58.93943866193149,
+          138.61362528024657,
+          46.828314210884855,
+          90.25375700062227
+        ],
+        "maxByChannel": [
+          0.6282376050949097,
+          1.3762942552566528,
+          0.6709269881248474,
+          1.3720375299453735
+        ],
+        "nonFinite": 0
+      }
+    },
+    {
+      "mode": "sparse",
+      "adapter": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "report": "work/adaptive-volume-qa/rc13-sparse-sigil-fuel-60/native-discrete/report.json",
+      "reportSha256": "070cb09071b8ec4a3747ba14044cc73695174c83ecf7ea82ffc78c7e8f388e20",
+      "options": {
+        "simulation": "sparse",
+        "flow": false,
+        "pool": true,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "sigil-cybr",
+        "frames": 60,
+        "move": false,
+        "lighting": "fully-lit",
+        "guide": true,
+        "fuel": true,
+        "unlit": false,
+        "igniteFuel": true,
+        "fixedCFLFixture": true
+      },
+      "pass": true,
+      "simulatedSeconds": 1.0000000000000013,
+      "simulationFrames": 60,
+      "images": 13,
+      "maxMeasuredCFL": 0.787870364718967,
+      "nonfiniteChemistryValues": 0,
+      "staleMappings": 0,
+      "firstDenseFallbackFrame": 30,
+      "finalPoolStatus": [
+        1,
+        1030,
+        1023,
+        0,
+        1,
+        3,
+        49,
+        0
+      ],
+      "costWindowInclusive": [
+        6,
+        29
+      ],
+      "medianGpuMs": 5.288448,
+      "medianCompletedWallMs": 6.602849985938519,
+      "finalFuel": {
+        "sha256": "3f27107de8d61d37fc3a659500e8b6087ce3b74d807d979ef33506750b94c3db",
+        "sumByChannel": [
+          58.911400338445674,
+          138.48392959953404,
+          46.77917016239371,
+          90.2817956298154
+        ],
+        "maxByChannel": [
+          0.61546790599823,
+          1.3729584217071533,
+          0.6709269881248474,
+          1.3720375299453735
+        ],
+        "nonFinite": 0
+      }
+    },
+    {
+      "mode": "volume",
+      "adapter": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "report": "work/adaptive-volume-qa/rc13-dense-sigil-fuel-60/native-discrete/report.json",
+      "reportSha256": "c65ad719e36a6f8d3153b7c758f435dee726cc1ec77e8820ef79d55615762cc5",
+      "options": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "sigil-cybr",
+        "frames": 60,
+        "move": false,
+        "lighting": "fully-lit",
+        "guide": true,
+        "fuel": true,
+        "unlit": false,
+        "igniteFuel": true,
+        "fixedCFLFixture": true
+      },
+      "pass": true,
+      "simulatedSeconds": 1.0000000000000013,
+      "simulationFrames": 60,
+      "images": 13,
+      "maxMeasuredCFL": 0.7874018351236979,
+      "nonfiniteChemistryValues": 0,
+      "staleMappings": 0,
+      "firstDenseFallbackFrame": null,
+      "finalPoolStatus": null,
+      "costWindowInclusive": [
+        6,
+        29
+      ],
+      "medianGpuMs": 11.485184,
+      "medianCompletedWallMs": 18.51140000508167,
+      "finalFuel": {
+        "sha256": "413e7826046363246e16c68a38ad72075d1f6ee7ee0c7afa0be370807f040bf9",
+        "sumByChannel": [
+          58.8770408368855,
+          138.75821946427473,
+          46.77679079119116,
+          90.31615442661041
+        ],
+        "maxByChannel": [
+          0.6155281662940979,
+          1.3751518726348877,
+          0.6709269881248474,
+          1.3720375299453735
+        ],
+        "nonFinite": 0
+      }
+    }
+  ],
+  "limits": [
+    "One fixed-CFL fixture run per adapter/mode, 1 simulated second; costs are not sustained performance or a repeatable speedup gate.",
+    "Lit sigil plus floor fuel reaches fallback at frames30/32. Sparse mode retains dense backing and adds atlas memory.",
+    "Existing filtering-equivalence and offline/fire motion gates remain open."
+  ],
+  "canonicalRuntimeSha256": {
+    "simulation-modes.js": "1ed850aa2f7418a536f2a000eb54f961e9a4cf4a035a3f55563c67ef39645358",
+    "studio.js": "89ffab76a606e1687b0246b373e146d46d7c791901820aefe605abd92dd8bab4",
+    "studio-location.js": "167c1a33431cd79f8bd17a19a2ad845a367c049b1859e934df20b8b66451c6e6",
+    "pyro-gpu/app.js": "40b56e5cde30be88f0a04abc0dbeb2ca3a0394c0e959b9b83ed2db871d73013b",
+    "pyro-gpu/solver.js": "25d2e8820f24da67ed9f858cf85f62b8d66fa0f1a56419cd9d0481daf8acfda5",
+    "pyro-gpu/brick-pool.js": "8bfc50813b8dfc6f7bd67a2a8fade8e0b2d16a3706e83561a588e744dfbce7c9",
+    "pyro-gpu/shaders.js": "4bf5a5959e68aad29f3b3d3827973866e7dcb3bff868f2604f0591711ab4a1e6"
+  }
+}

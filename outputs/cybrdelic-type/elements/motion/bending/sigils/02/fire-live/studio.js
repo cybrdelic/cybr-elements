@@ -1,13 +1,14 @@
-import { readLook, writeLook } from './studio-location.js?v=studio-rc-12';
-import { createFireDomain } from './fire-domain.js?v=studio-rc-12';
-import { inspectionState } from './inspection-state.js?v=studio-rc-12';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-12';
-import { studioUI } from './studio-ui.js?v=studio-rc-12';
-import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-12';
-import { matchingPreset } from './preset-pairs.js?v=studio-rc-12';
-import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-12';
-import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-12';
-import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-12';
+import { readLook, writeLook } from './studio-location.js?v=studio-rc-13';
+import { createFireDomain } from './fire-domain.js?v=studio-rc-13';
+import { inspectionState } from './inspection-state.js?v=studio-rc-13';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-13';
+import { studioUI } from './studio-ui.js?v=studio-rc-13';
+import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-13';
+import { matchingPreset } from './preset-pairs.js?v=studio-rc-13';
+import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-13';
+import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-13';
+import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-13';
+import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-13';
 
 const $ = (selector) => document.querySelector(selector);
 const params = new URL(location.href).searchParams;
@@ -38,6 +39,7 @@ function snapshot() {
     fuel: $('#fuel').value,
     sourceGuide: $('#source-guide').checked,
     ...runtime?.snapshot(),
+    simulation: $('#simulation').value,
     lights: window.SceneLights.snapshot,
     fireLight: Number($('#fire-light').value),
   };
@@ -96,12 +98,19 @@ function transitionLook(kind, chosen, old, force) {
       smoke: old.smoke,
       color: old.color,
       fireLight: old.fireLight,
+      sourceGuide: old.sourceGuide,
     };
+    if (runtimeFamily(engine) === runtimeFamily(kind)) {
+      state.camera = old.camera;
+      state.embers = old.embers;
+      state.tool = old.tool;
+      return state;
+    }
     // Each solver keeps its own framing. A previous source's camera would
     // overwrite the source selected by this transition.
     if (previous?.fire === chosen.id) {
       state.camera = previous.camera;
-      if (kind === 'volume') state.embers = previous.embers;
+      if (kind !== 'legacy') state.embers = previous.embers;
     }
     return state;
   }
@@ -154,6 +163,7 @@ async function mount(kind, chosen, plain, old, look) {
     }
     runtime = await createRuntime({
       initialPreset: plain,
+      simulation: kind,
       onRemount: (key) => requestActivate('legacy', key),
       onFailure: (error) => fail(error, kind),
     });
@@ -192,7 +202,7 @@ function activate(kind, key, look, force = false) {
               ...old,
               camera:
                 old.camera ||
-                (kind === 'volume' ? { zoom: 1.25, angle: 16, pan: [0, 0] } : undefined),
+                (kind !== 'legacy' ? { zoom: 1.25, angle: 16, pan: [0, 0] } : undefined),
             },
             engine || kind,
           );
@@ -248,8 +258,8 @@ function requestActivate(...args) {
 
 library = mountLibrary({
   snapshot,
-  fire: (id) => activate(id.startsWith('legacy:') ? 'legacy' : 'volume', id),
-  look: (item) => activate(item.fire.startsWith('legacy:') ? 'legacy' : 'volume', item.fire, item),
+  fire: (id, preferredMode = $('#simulation').value) => activate(modeForFire(id, preferredMode), id),
+  look: (item) => activate(modeForFire(item.fire, item.simulation ?? $('#simulation').value), item.fire, item),
   applied: (category) => ui.showPanel(category === 'Lighting' ? 'lighting' : 'scene', true),
 });
 $('#simulation').onchange = () => {
@@ -272,15 +282,15 @@ ui.showPanel('scene');
 const initialScene = [...DEMO_PRESETS, ...SCENES].find((p) => p.id === params.get('scene'));
 if (initialScene)
   await requestActivate(
-    initialScene.fire.startsWith('legacy:') ? 'legacy' : 'volume',
+    modeForFire(initialScene.fire, readSimulation(params)),
     initialScene.fire,
     { ...initialScene, ...readLook(params, initialScene.camera) },
   );
 else {
-  const kind = params.get('simulation') === 'volume' ? 'volume' : 'legacy';
-  const catalog = kind === 'volume' ? FIRE_PRESETS : LEGACY_PRESETS;
-  const fallback = kind === 'volume' ? 'bonfire' : 'sigil';
-  const requested = params.get(kind === 'volume' ? 'firePreset' : 'preset') || fallback;
+  const kind = readSimulation(params);
+  const catalog = kind !== 'legacy' ? FIRE_PRESETS : LEGACY_PRESETS;
+  const fallback = kind !== 'legacy' ? 'bonfire' : 'sigil';
+  const requested = params.get(kind !== 'legacy' ? 'firePreset' : 'preset') || fallback;
   const key = catalog.some((p) => p.id.replace(/^legacy:/, '') === requested) ? requested : fallback;
   await requestActivate(kind, key, readLook(params));
 }

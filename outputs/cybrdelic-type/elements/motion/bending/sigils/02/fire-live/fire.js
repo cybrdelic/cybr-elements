@@ -1,11 +1,11 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-12';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-12';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-12';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-12';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-12';
-import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-12';
-import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-12';
-import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-12';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-13';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-13';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-13';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-13';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-13';
+import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-13';
+import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-13';
+import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-13';
 export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=>{}}={}){
   const scope=runtimeScope(onFailure),on=scope.on;
   const qaParams=new URL(location.href).searchParams,qaCaptureStop=qaParams.has('qa')?Number(qaParams.get('capture'))||0:0;

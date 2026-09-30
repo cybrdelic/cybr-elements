@@ -70,6 +70,7 @@ function fixture({ initiallyBusy = true, visible = false, waitForFrameStop = fal
     history: { replaceState() {} },
     onFailure: (error) => failures.push(error),
     fireHelp: () => calls.push('help'), sync: () => calls.push('sync'),
+    presentationStatus: () => calls.push('presentation-status'),
     resizeObserver: { disconnect() { calls.push('disconnect'); } },
     viewUniform: () => [],
     gpuSessionTimeout: (promise, name, timeout) => {

@@ -57,6 +57,7 @@ const device={
 globalThis.fetch=async url=>{const file=fileURLToPath(url),bytes=fs.readFileSync(file);return {ok:true,arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)};};
 const {PyroSolver}=await import(pathToFileURL(path.join(source,'pyro-gpu/solver.js')).href);
 const {FIRE_PRESETS,sourceOrigin}=await import(pathToFileURL(path.join(source,'pyro-gpu/presets.js')).href);
+const {volumeOptions}=await import(pathToFileURL(path.join(source,'simulation-modes.js')).href);
 const preset=FIRE_PRESETS.find(p=>p.id===value('preset','bonfire'));if(!preset)throw Error('Unknown preset');
 const sandbox={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(source,'scene-lights.js'),'utf8').split('  let state=')[0]+'window.catalog=presets;})();',sandbox);
@@ -64,7 +65,10 @@ const lighting=value('lighting','studio'),light=sandbox.window.catalog[lighting]
 if(!light)throw Error('Unknown lighting preset: '+lighting);
 const canvas={width:768,height:432};let back;
 const context={configure(){},getCurrentTexture(){return back;}};
-const solver=new PyroSolver(device,canvas,{context,format:'rgba8unorm',adaptive:option('flow'),pressureWork:option('pressure'),brickPool:option('pool'),lightWork:option('light'),lightReceivers:option('receivers')});
+const simulation=value('simulation',null);
+if(simulation!==null&&!['volume','sparse'].includes(simulation))throw Error('Unknown simulation mode');
+const solverConfig=simulation?volumeOptions(new URLSearchParams(),simulation):{adaptive:option('flow'),pressureWork:option('pressure'),brickPool:option('pool'),lightWork:option('light'),lightReceivers:option('receivers')};
+const solver=new PyroSolver(device,canvas,{context,format:'rgba8unorm',...solverConfig});
 await solver.init();
 back=device.createTexture({size:[768,432],format:'rgba8unorm',usage:16|1});
 solver.effect=[...preset.effect];solver.dynamics=[...preset.dynamics];solver.chemistry=[...preset.chemistry];
@@ -105,5 +109,5 @@ for(let frame=0;frame<frames;frame++){
   saveField:frame===frames-1||frame===Math.floor(frames/2)-1});
 }
 for(const [angle,inspect] of [[-50,false],[100,false],[16,true]]){camera(angle,inspect);await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,snapshot:true});}
-const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{flow:option('flow'),pool:option('pool'),pressure:option('pressure'),light:option('light'),receivers:option('receivers'),preset:preset.id,frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),fixedCFLFixture:true},resources,operations}));
+const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,preset:preset.id,frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),fixedCFLFixture:true},resources,operations}));
 console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData}));
