@@ -1,0 +1,11 @@
+{
+  "name": "cybr-elements-checks",
+  "private": true,
+  "description": "Browser regression checks for the static CYBR Elements player",
+  "scripts": {
+    "test": "node --test scripts/test_water_browser.mjs",
+    "test:browser": "node --test scripts/test_player.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": { "playwright": "1.58.2" }
+}

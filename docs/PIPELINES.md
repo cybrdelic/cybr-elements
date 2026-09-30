@@ -1,107 +1,236 @@
-# Pipelines and rebuilding
+# Simulation and rendering pipelines
 
-This is a working graphics research archive, not a packaged cross-platform
-simulation application. The static player runs immediately; production render
-scripts expect their inputs, output folders, dependencies and renderer settings.
-Earlier experiments are retained so decisions and failures can be inspected.
+The supported browser entry point is `python scripts/serve.py`. It serves
+rendered films and font specimens, without starting a simulation. Production
+sources live in `work/element-motion/`; they form an offline graphics research
+archive rather than a single packaged renderer.
 
-## Current delivery
+## Current pipeline sources
 
-The current output lives in
-`outputs/cybrdelic-type/elements/motion/bending/sigils/02/`.
-`work/element-motion/sigil-02-active-elements/README.md` contains the detailed
-delivery notes, limitations and validation receipts for the latest four films.
+All filenames below are relative to `work/element-motion/`.
 
 | Material | Main sources | Method |
 | --- | --- | --- |
-| Fire | `sigil_02_source.py`, `sigil_02_build_v2.py`, `sigil_02_fire_v2.py` | Original sigil source fields, fuel transport, reaction, cooling, buoyancy and custom volume rendering |
+| Fire | `sigil_02_source.py`, `sigil_02_build_v2.py`, `sigil_02_fire_v2.py` | Artwork source fields, reactive gas transport, cooling, buoyancy and custom volume rendering |
 | Air | `sigil_02_air_v2.py` | 3D gas transport and turbulent smoke rendering |
-| Earth | `sigil_02_ground_earth_build.py`, `sigil_02_ground_earth_render.py`, later arrival revisions | Guided fragments followed by native rigid collisions and floor settling |
-| Water | `sigil_02_active_water.mjs`, `sigil_02_active_mesh.py`, `sigil_02_active_water_render.py` | Native APIC/FLIP, pressure projection, reconstructed liquid surface, Cycles optics |
-| Ice / lava | `sigil_02_new_materials.py`, `sigil_02_atmosphere.py` | Fractured solids, Bullet release, advected gas, material-specific surface rendering |
-| Lightning | `sigil_02_electric_tree_export.py`, `sigil_02_atmosphere.py`, `sigil_02_new_materials.py` | Retained Laplacian-growth trees, pulse timing, channel lights and volumetric clouds |
+| Earth | `sigil_02_ground_earth_build.py`, `sigil_02_ground_earth_render.py`, subsequent arrival revisions | Guided fragments, then Bullet rigid collisions and floor settling |
+| Water | `sigil_02_active_water.mjs`, `sigil_02_active_mesh.py`, `sigil_02_active_water_render.py` | APIC/FLIP, pressure projection, reconstructed liquid surfaces and Cycles optics |
+| Ice / lava | `sigil_02_new_materials.py`, `sigil_02_atmosphere.py` | Fractured solids, Bullet release, advected gas and surface rendering |
+| Lightning | `sigil_02_electric_tree_export.py`, `sigil_02_atmosphere.py`, `sigil_02_new_materials.py` | 3D growth trees, pulse timing, channel lights and volumetric clouds |
 
-All filenames in the table are relative to `work/element-motion/`.
+The current films are in
+`outputs/cybrdelic-type/elements/motion/bending/sigils/02/`. Historical production
+notes and diagnostic files remain under
+`work/element-motion/sigil-02-active-elements/`; their completion records describe
+past render runs, not current automated test results.
 
-## What is simulated and what is authored
+## Water
 
-**Water.** The latest forward segment evolves 138,022 parcels for 240 frames.
-Gravity stays active; bounded external forces recover sagging water toward the
-mark. A deterministic subset of parcels is exempted from upward recovery so
-small droplets can fall. Reconstruction accounts for both the main surface
-and isolated liquid clusters. The final edit reuses the previous 3.4-second
-opening and overlaps the new segment by 0.2 seconds. It is not one uninterrupted
-forward solve.
+`sigil_02_active_water.mjs` runs the vendored JavaScript `FlipSolver` through
+Node.js. The solver uses quadratic APIC/FLIP transfers, affine particle data,
+multigrid-preconditioned conjugate-gradient pressure solves, surface tension
+and floor collisions. The water production segment evolves 138,022 parcels
+for 240 frames; the smaller CPU configuration uses 24,698 parcels.
 
-**Earth, ice and lava.** Assembly and suspension use authored rigid trajectories.
-Released fragments collide with each other and the floor. Ice and lava each
-use 174 fragments; their gas emission follows the fragment transforms. Ice has
-transmission, absorption and surface detail. Lava uses displaced basalt crust
-and emissive interior seams. These do not solve latent heat, freezing, melting,
-viscous liquid lava or a coupled phase-changing MPM system.
+The unsupported hovering form is deliberately controlled. Gravity remains
+active during the hold. Bounded horizontal/depth forces contain the mark, and
+vertical recovery waits for sag. A deterministic 1/193 subset of parcels is
+exempted from upward recovery, allowing small droplets to fall. These external
+forces are authored animation controls, not a naturally stable fluid shape.
 
-**Atmosphere.** The current gas pipeline uses semi-Lagrangian advection,
-buoyancy, dissipation and FFT pressure projection with absorbing edges.
-Density is stored in atlases and sampled as a 3D volume. Emission and small-scale
-forcing remain authored. The atlas is a storage representation, not a flat smoke overlay.
+Reconstruction uses the liquid particles for both the main surface and detached
+clusters. Isolated clusters become droplets with volume/velocity taken from
+their particles. Their resolution is limited by particle spacing.
 
-**Electricity.** The current channels are branching 3D growth trees with trunk,
-fork and fine-branch widths. Irregular pulses illuminate the accompanying gas.
-This is a visual discharge model, without a calibrated electromagnetic/plasma solve.
+The final edit retains a 3.4-second opening from the previous film and overlaps
+the new segment by 0.2 seconds. That opening is reverse playback of a solved
+breakup; the new hold and release run forward. The full film is therefore an
+edited sequence, not one continuous forward simulation.
 
-## Environment
+## Fire and gas
 
-The final production machine used Windows, Python 3.12, Node.js 20+, Blender
-4.5.3 LTS and an NVIDIA RTX 4060 Laptop GPU. Full-resolution renders use OptiX
-where configured. Rendering has not been validated on every operating system.
+The fire implementation uses PyTorch/CUDA to transport velocity, fuel, oxidizer
+and heat on a 3D grid. It includes projected velocity, limited MacCormack
+scalar transport, reaction, cooling, buoyancy and authored wind/source controls.
+It is a graphics combustion model, without calibrated chemical kinetics.
 
-Typical Python packages vary by pipeline:
+The ice/lava/lightning atmosphere implementation uses CPU semi-Lagrangian
+advection, buoyancy, dissipation and Fourier-space Helmholtz pressure projection.
+The FFT solve is periodic; padding and absorbing edges reduce visible boundary
+effects. Emission and small-scale forcing are authored. Ice/lava emitters follow
+the per-frame fracture transforms.
+
+The current `gas_projection.py` zeros derivatives at self-conjugate Nyquist
+modes to keep the real-valued FFT projection valid. The divergence guarantee
+applies to the periodic projection step; the absorbing-edge mask can introduce
+local divergence afterward. The included films predate this solver correction
+and have not been rerendered.
+
+PNG atlases encode slices of the 3D density field. The renderer samples those
+fields as volumes. Eevee uses explicit trilinear atlas sampling to avoid mip
+filtering across unrelated slices; Cycles uses its volume sampling path.
+
+## Fractured solids and electricity
+
+Earth, ice and lava use authored assembly and suspension trajectories. Released
+fragments use Bullet inter-body/floor collision handling. Ice and lava each use
+174 fragments, with material-specific mass, friction and damping.
+
+Ice uses transmission, blue absorption and fracture surface detail. Lava uses
+displaced basalt crust over emissive interior geometry, with authored cooling.
+These are solid-fracture effects. There is no latent-heat solve, freezing or
+melting transition, liquid-lava rheology or thermally driven fracture creation.
+
+Lightning uses retained 3D branching growth trees with trunk, fork and finer
+branch widths. Irregular authored pulses and channel lights illuminate advected
+gas. This is a visual discharge model rather than an electromagnetic or plasma
+simulation. `sigil_02_native_volume_experiment.py` and `sigil_02_electric_paths.py`
+are retained experiments, not the current final lightning pipeline.
+
+Cycles renders the current water, ice and lava surfaces. Lightning uses Eevee
+volumetric lighting. Full-resolution OptiX settings were developed for the
+original NVIDIA production machine.
+
+## Rebuilding
+
+The production environment used Windows, Python 3.12, Node.js 20+, Blender 4.5.3
+LTS and an NVIDIA RTX 4060 Laptop GPU. Browser playback and repository tooling
+do not depend on this environment. Full rendering has not been verified across
+operating systems or GPU vendors.
+
+Restore retained inputs with `python scripts/fetch_assets.py --all`. The release
+excludes regenerated per-frame render caches, solver checkpoints, gas atlases,
+local environments and compiled caches. Restoring inputs does not make a render
+resumable without rebuilding those outputs.
+
+Python dependencies vary by pipeline:
+
+| Pipeline | Dependencies |
+| --- | --- |
+| Water reconstruction | NumPy, SciPy, scikit-image, Numba; Node.js for the solver |
+| Local atmospheres | NumPy, SciPy, Pillow |
+| Reactive fire | Compatible CUDA/PyTorch installation, NumPy, Pillow |
+| Blender rendering | Blender and the packages available in its Python environment |
+| Fonts | NumPy, OpenCV, Pillow, Shapely, fontTools, Brotli; see specimen sources |
+| Encoding/showcase | FFmpeg/ffprobe, Pillow |
+
+Other retained experiments use Mitsuba, Warp, OpenCV and Shapely. They are not
+universal prerequisites and are not needed to view the current showcase.
+
+Before a production run:
+
+1. Inspect the chosen source and configuration for local input paths, output
+   revisions and renderer settings. Historical scripts still contain absolute
+   Windows paths and cache references.
+2. Use a fresh output revision. Existing completed simulations have guards
+   against replacement, and some queues wait for review files.
+3. Run the small configuration and representative render frames first. Inspect
+   finite state, convergence, silhouettes, volume accounting and floor contact.
+4. Reserve storage for regenerated per-frame data and run one GPU render at a
+   time. Concurrent rendering slowed the original laptop production machine.
+5. Encode and fully decode the final film, inspect its motion, and run the
+   repository/player checks before promoting it.
+
+`sigil_02_active_water_run.py` orchestrates the solver, reconstruction and
+Cycles rendering. It accepts executables from PATH, `--node`/`--blender`, or
+`NODE_BIN`/`BLENDER_BIN`; `--output` selects a fresh revision. `--input-root`
+and `--force-root` allow retained inputs to be located explicitly. The input
+preflight can run without starting workers or writing files:
 
 ```sh
-python -m pip install numpy scipy pillow opencv-python scikit-image shapely fonttools brotli
+python work/element-motion/sigil_02_active_water_run.py \
+  --output work/element-motion/sigil-02-active-elements/water-preview-new \
+  --dry-run
 ```
 
-Fire/gas scripts additionally require a compatible PyTorch installation.
-Historical research includes Mitsuba, Warp and MPM experiments with separate
-environment requirements; these are not needed to play the delivered movies.
-Install FFmpeg/ffprobe on PATH. Blender scripts use Blender's Python environment.
+The default pipeline is a CPU preview; `--full` selects production settings.
+Preflight verifies input files and executable paths, not every installed
+render dependency. Fresh revisions copy the selected configuration, parcels
+and reconstruction guides; legacy input paths fall back to repository-relative
+locations. CPU previews use OpenImageDenoise. Full rendering selects an available
+Blender compute backend and falls back to CPU when none is available.
+The supervisor propagates worker failures and terminates
+the remaining workers. `--timeout` and `--minimum-free-mb` bound runtime and
+the remaining disk reserve. These improvements to orchestration do not imply
+that full renders have been verified on another platform.
 
-Several historical scripts retain absolute Windows executable paths and local
-cache references. Set these for your machine before running them. Do not run
-the whole directory indiscriminately: some builders rewrite generated scripts,
-some experiments were rejected, and some queues wait for review receipts.
+`sigil_02_active_material_queue.py` queues ice/lava/lightning
+production with existing review gates. Inspect their inputs before execution;
+neither is a general batch runner for the whole research directory.
 
-## Rebuilding the active materials
+## Fresh CPU rerender recipes
 
-1. Restore all retained inputs with `python scripts/fetch_assets.py --all`.
-2. Read the active-elements README and inspect the relevant script's input paths.
-3. Select a fresh output revision. Existing simulation and render receipts are
-   deliberately protected against accidental replacement or cache reuse.
-4. Run the CPU preparation and small representative frames first. Check finite
-   state, volume, containment, silhouettes and contact before a full render.
-5. Run one GPU render at a time. The laptop production queue became slower with
-   concurrent jobs. Full simulations need substantially more storage than the
-   published checkout.
-6. Encode, fully decode, inspect motion and verify playback before changing the
-   player. A numerical audit alone does not establish visual quality.
+`scripts/rerender_batch.py` is the bounded CPU entry point for the seven current
+material pipelines. It restores only the retained release inputs needed by the
+selected element, then writes a new delivery under
+`work/rerenders/<element>/delivery/`. These exports do not update the current
+1080p player automatically.
 
-`sigil_02_active_water_run.py` orchestrates the native water solve, mesh
-reconstruction and Cycles render. `sigil_02_active_material_queue.py` consumes
-review gates and queues ice/lava/lightning rendering. The final gas caches and
-frames are rebuildable and intentionally absent from the publication. Retained
-inputs and source code do not mean the full render can resume without rebuilding
-those caches.
+```sh
+python scripts/rerender_batch.py --kind earth --preflight
+python scripts/rerender_batch.py --kind earth --threads 4
+```
 
-The earlier `sigil_02_native_volume_experiment.py` and
-`sigil_02_electric_paths.py` are retained experiments, not the adopted final
-electricity pipeline.
+`--preflight` lists required inputs without downloading or rendering. A full
+run needs the dependencies installed by `.github/workflows/rerender.yml`,
+including Blender's pinned `bpy==4.5.3` wheel in a matching Python 3.11
+environment. `scripts/blender_python.py` provides the headless Blender-script
+launcher; a compatible Blender executable can be selected with `--blender`.
 
-## Fonts and showcase
+The batch recipes export **1280 × 720 at 30 fps** with these settings:
 
-Font rebuild instructions are in
-`outputs/cybrdelic-type/typefaces/README.md`. The source includes outline JSON,
-OpenType features and the Python builders.
+| Element | CPU render method | Frames / duration |
+| --- | --- | --- |
+| Fire / air | Retained graphics gas solver and volume optics on PyTorch CPU; 320 × 32 × 180 grid | 294 / 9.8 s |
+| Water | Fresh APIC/FLIP hold and release, reconstructed surface, Cycles at 24 samples | 240 / 8 s |
+| Earth | Fresh Bullet scene and Cycles at 16 samples; retained r6 editorial mapping | 300 / 10 s |
+| Ice / lava | Fresh Bullet transforms and gas fields; Cycles at 24 samples | 300 / 10 s |
+| Lightning | Fresh gas field stored as float32 OpenVDB; retained discharge trees, Eevee at 64 samples | 300 / 10 s |
 
-`python scripts/build_showcase.py` builds the README GIF from the seven existing
-MP4s using CPU FFmpeg and Pillow. It writes a source/timing receipt alongside
-the GIF. It does not change the films or invoke a simulation.
+Water's export covers the forward hold/release segment; it omits the earlier
+opening used by the current 11.2-second edit. Earth's entrance remains reverse
+playback of freshly rendered breakup poses. It renders 180 unique physical
+poses and assembles the exact 300-frame r6 map. Rigid-body mass stays fixed;
+the final forward fall preserves source frames 243–389 at output frames 153–299.
+
+These are new lower-resolution CPU exports, not pixel matches to the original
+GPU films. Their source/input hashes, settings, frame mapping and diagnostics
+accompany each delivery. The batch checks resolution, frame count and cadence,
+then fully decodes the encoded film before producing its delivery receipt.
+Batch runs require a fresh per-element output directory; choose a new
+`--output-root` after a partial or completed run. The standalone Earth helper
+also protects against resuming mismatched render settings. Review the encoded
+motion and material appearance before promoting a new film.
+
+The optional GitHub Actions workflow runs each element in a separate job. On
+`codex/elements-showcase-hardening`, a commit containing `[render-elements]`
+opts into rendering; the workflow also defines manual dispatch. Outputs are
+uploaded as per-element artifacts, with failure diagnostics retained separately.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the invocation and artifact lifecycle.
+
+For the five Blender films, `.github/workflows/rerender_slices.yml` distributes
+24 frame ranges across up to 20 workers, then assembles a complete movie for
+each element. A commit containing `[render-slices]` opts into this workflow;
+manual dispatch uses the same settings. Every range rebuilds the full physical
+timeline before selecting its images. Assembly requires matching source,
+retained-input and numeric simulation hashes, unchanged render settings, and
+exactly one image for every original output frame. It preserves Earth's
+documented editorial map and encodes each film at its original 30 fps cadence.
+
+`scripts/rerender_slice.py --kind ice --start 100 --end 150 --threads 4` runs
+one fresh range locally. `scripts/assemble_slices.py` accepts either verified
+ZIP archives with their GitHub artifact digests or an extracted artifact
+directory. It rejects overlapping, missing or modified frames and fully
+decodes the complete movie before writing its delivery receipt. Successful
+workflow artifacts contain movies and provenance; temporary simulation caches
+and source images remain outside the final film delivery.
+
+## Fonts and README montage
+
+Typeface sources, coverage and rebuild instructions are in
+`outputs/cybrdelic-type/typefaces/README.md`.
+
+With FFmpeg and Pillow installed, `python scripts/build_showcase.py` rebuilds
+`docs/media/elements-02.gif` from the current seven MP4s on the CPU. It also writes
+the still montage and timing/source metadata. This does not run a simulation or
+change the films.

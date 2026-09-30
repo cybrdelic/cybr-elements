@@ -13,10 +13,12 @@
 .env.*
 !.env.example
 /.asset-downloads/
+/test-results/
 /outputs/**/*.mp4
 /outputs/**/*.webm
 /outputs/**/*.mov
 /outputs/**/*.zip
+!/outputs/cybrdelic-type/typefaces/Cybrdelic-Fonts.zip
 /outputs/**/*.gz
 /outputs/**/*.f32
 /outputs/**/*.bin

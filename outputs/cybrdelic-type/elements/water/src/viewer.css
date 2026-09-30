@@ -1,0 +1,36 @@
+:root { color-scheme: dark; font-family: Arial, sans-serif; color: #e8ecef; background: #10161d; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 14px; }
+#view { display: block; width: 100vw; height: 100dvh; touch-action: none; }
+a { color: inherit; text-underline-offset: 4px; }
+a:hover { color: #a4e9dc; }
+header { position: fixed; top: 22px; left: 4%; right: 4%; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: 11px; letter-spacing: .06em; }
+header b { margin-right: auto; }
+#archive-note { flex-basis: 100%; margin: 0; font-size: 11px; color: #c1d2d9; }
+footer { position: fixed; bottom: max(18px, env(safe-area-inset-bottom)); left: 4%; right: 4%; display: grid; gap: 12px; padding: 14px; border: 1px solid #455861; background: #10202bea; border-radius: 4px; }
+.playback, .tools { display: flex; align-items: center; gap: 12px; }
+button, select { background: #17282d; border: 1px solid #60747c; border-radius: 2px; color: inherit; padding: 9px 12px; font: inherit; cursor: pointer; }
+button:disabled { cursor: default; opacity: .45; }
+button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid #b1f8e5; outline-offset: 4px; }
+input[type=range] { flex: 1; min-width: 40px; accent-color: #87dacf; }
+#status { min-width: 220px; text-align: right; font-size: 12px; font-variant-numeric: tabular-nums; }
+.tools { font-size: 12px; flex-wrap: wrap; }
+.tools label { display: flex; align-items: center; gap: 7px; }
+#reference { position: fixed; right: 4%; top: 65px; width: min(240px, 20vw); opacity: .85; }
+#reference img { width: 100%; display: block; }
+#reference figcaption { font-size: 10px; margin-top: 6px; }
+#cache-error { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(560px, 90vw); padding: 24px; background: #10202bf5; border: 1px solid #60747c; border-radius: 4px; line-height: 1.5; }
+#cache-error h1 { margin: 0 0 12px; font-size: 20px; }
+#cache-error code { display: block; padding: 12px; overflow-wrap: anywhere; background: #061219; font-size: 12px; }
+.capture header, .capture footer, .capture #reference, .capture #archive-note { display: none; }
+@media (max-width: 650px) {
+  header { top: 16px; gap: 12px; }
+  header b { width: 100%; }
+  #archive-note { font-size: 10px; }
+  #reference { display: none; }
+  footer { padding: 10px; }
+  .playback { flex-wrap: wrap; gap: 8px; }
+  #status { width: 100%; min-width: 0; text-align: left; }
+  .tools { gap: 8px; }
+  button, select { padding: 8px; font-size: 12px; }
+}

@@ -1,13 +1,38 @@
-import bpy,json,gzip,struct,sys,time
+import json,gzip,struct,sys,time
 from pathlib import Path
-import numpy as np
-from mathutils import Vector
-R=Path(__file__).resolve().parent;full='--full' in sys.argv;O=R/'sigil-02-active-elements'/('water-full' if full else 'water-cpu');cache=O/('preview-mesh' if '--preview' in sys.argv else 'mesh');out=O/('frames' if full else 'preview-frames' if '--preview' in sys.argv else 'pilot');out.mkdir(exist_ok=True)
+render_args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
+def option(name,default,convert=int):
+ if name not in render_args:return default
+ i=render_args.index(name)
+ if i+1>=len(render_args):raise ValueError('Missing value for '+name)
+ return convert(render_args[i+1])
+width=option('--width',1920 if '--full' in render_args else 768);height=option('--height',1080 if '--full' in render_args else 432);samples=option('--samples',96 if '--full' in render_args else 12);threads=option('--threads',3);device=option('--device','auto',str)
+if min(width,height,samples,threads)<=0 or device not in ['auto','cpu']:raise ValueError('Invalid render dimensions, samples, threads or device')
+R=Path(__file__).resolve().parent;full='--full' in sys.argv;O=Path(sys.argv[sys.argv.index('--output')+1]).resolve() if '--output' in sys.argv else R/'sigil-02-active-elements'/('water-full' if full else 'water-cpu');cache=O/('preview-mesh' if '--preview' in sys.argv else 'mesh');out=Path(option('--render-output',str(O/('frames' if full else 'preview-frames' if '--preview' in sys.argv else 'pilot')),str)).resolve()
 while not (cache/'manifest.json').exists():time.sleep(.5)
 manifest=json.loads((cache/'manifest.json').read_text())
-s=bpy.context.scene;bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);s.render.engine='CYCLES';s.cycles.device='GPU' if '--full' in sys.argv else 'CPU';s.cycles.samples=96 if '--full' in sys.argv else 12;s.cycles.use_denoising=True;s.cycles.denoiser='OPTIX';s.cycles.adaptive_threshold=.012;s.cycles.max_bounces=12;s.cycles.transmission_bounces=10;s.cycles.glossy_bounces=6;s.cycles.diffuse_bounces=2;s.cycles.caustics_reflective=False;s.cycles.caustics_refractive=False;s.render.use_persistent_data=True;s.render.threads_mode='FIXED';s.render.threads=3;s.render.resolution_x=1920 if '--full' in sys.argv else 768;s.render.resolution_y=1080 if '--full' in sys.argv else 432;s.render.resolution_percentage=100;s.render.image_settings.file_format='JPEG';s.render.image_settings.quality=97;s.view_settings.view_transform='AgX'
-prefs=bpy.context.preferences.addons['cycles'].preferences;prefs.compute_device_type='OPTIX';prefs.get_devices()
-for d in prefs.devices:d.use=d.type=='OPTIX'
+frameCount=int(manifest['config'].get('frames',240));selectedFrames=None
+if '--frames' in render_args:
+ selectedFrames=[int(value) for value in option('--frames','',str).split(',')]
+ if not selectedFrames or any(f<0 or f>=frameCount for f in selectedFrames):raise ValueError('Selected frames must lie inside the simulated sequence')
+ if len(selectedFrames)!=len(set(selectedFrames)):raise ValueError('Selected frames must be unique')
+import bpy
+import numpy as np
+from mathutils import Vector
+out.mkdir(parents=True,exist_ok=True)
+s=bpy.context.scene;bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);s.render.engine='CYCLES';s.cycles.device='CPU';s.cycles.samples=samples;s.cycles.use_denoising=True;s.cycles.denoiser='OPENIMAGEDENOISE';s.cycles.adaptive_threshold=.012;s.cycles.max_bounces=12;s.cycles.transmission_bounces=10;s.cycles.glossy_bounces=6;s.cycles.diffuse_bounces=2;s.cycles.caustics_reflective=False;s.cycles.caustics_refractive=False;s.render.use_persistent_data=True;s.render.threads_mode='FIXED';s.render.threads=threads;s.render.resolution_x=width;s.render.resolution_y=height;s.render.resolution_percentage=100;s.render.image_settings.file_format='JPEG';s.render.image_settings.quality=97;s.view_settings.view_transform='AgX'
+if full and device!='cpu':
+ prefs=bpy.context.preferences.addons['cycles'].preferences
+ for backend in ['OPTIX','CUDA','HIP','METAL','ONEAPI']:
+  try:prefs.compute_device_type=backend;prefs.get_devices()
+  except (TypeError,ValueError,RuntimeError):continue
+  devices=[d for d in prefs.devices if d.type==backend]
+  if devices:
+   for d in prefs.devices:d.use=d in devices
+   s.cycles.device='GPU'
+   if backend=='OPTIX':s.cycles.denoiser='OPTIX'
+   break
+ print('Cycles render device:',s.cycles.device,flush=True)
 # Black camera background; studio illumination is configured below.
 w=s.world;w.use_nodes=True;w.node_tree.nodes.get('Background').inputs['Color'].default_value=(0,0,0,1);w.node_tree.nodes.get('Background').inputs['Strength'].default_value=0
 # Studio illumination visible in reflection/refraction; the camera sees pure black.
@@ -39,15 +64,20 @@ bpy.ops.object.camera_add(location=(.25,-17.2,5.1));cam=bpy.context.object;cam.r
 # Broad studio illumination supplies a visible refracted body. Camera-ray
 # visibility keeps the backdrop black; no diffuse tint or emission is added.
 bg.inputs['Strength'].default_value=.48
-for light in bpy.data.lights:
- light.energy*=.11
- light.color=(.18,.52,1.)
+# Retain the neutral reflection cards at their authored power. The former
+# 0.11 multiplier and saturated-blue override hid the liquid body and made
+# water nearly indistinguishable from the ice film.
 
 # A real opaque stage floor matches the native solid collider exactly.
 bpy.ops.mesh.primitive_plane_add(size=40,location=(0,0,0));floor=bpy.context.object;floor.name='Ground / matches FLIP collider'
 fm=bpy.data.materials.new('Black ground / contact');fm.use_nodes=True;fp=fm.node_tree.nodes.get('Principled BSDF');fp.inputs['Base Color'].default_value=(.012,.012,.012,1);fp.inputs['Roughness'].default_value=.65;fp.inputs['Specular IOR Level'].default_value=.012;floor.data.materials.append(fm)
 # Studio environment illuminates transmissive water, but not the matte stage.
 camera_or_diffuse=wn.new('ShaderNodeMath');camera_or_diffuse.operation='MAXIMUM';wl.new(lp.outputs['Is Camera Ray'],camera_or_diffuse.inputs[0]);wl.new(lp.outputs['Is Diffuse Ray'],camera_or_diffuse.inputs[1]);wl.new(camera_or_diffuse.outputs[0],mix.inputs[0])
+studio=None
+if '--studio' in render_args:
+ sys.path.insert(0,str(R.parents[1]/'scripts'))
+ from studio_scene import Studio
+ studio=Studio(s,'water',camera=cam,samples=samples)
 
 bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2,radius=1);temp=bpy.context.object;iv=np.array([list(v.co) for v in temp.data.vertices]);ifa=np.array([list(p.vertices) for p in temp.data.polygons]);bpy.data.objects.remove(temp,do_unlink=True)
 origin=np.array(manifest['origin']);scale=manifest['spaceScale']
@@ -56,7 +86,9 @@ pointGroup=bpy.data.node_groups.new('Analytic water droplet cloud','GeometryNode
 pointGroup.interface.new_socket(name='Geometry',in_out='INPUT',socket_type='NodeSocketGeometry');pointGroup.interface.new_socket(name='Geometry',in_out='OUTPUT',socket_type='NodeSocketGeometry')
 gin=pointGroup.nodes.new('NodeGroupInput');gout=pointGroup.nodes.new('NodeGroupOutput');points=pointGroup.nodes.new('GeometryNodeMeshToPoints');points.mode='VERTICES';rad=pointGroup.nodes.new('GeometryNodeInputNamedAttribute');rad.data_type='FLOAT';rad.inputs['Name'].default_value='droplet_radius';mat=pointGroup.nodes.new('GeometryNodeSetMaterial');mat.inputs['Material'].default_value=m
 pointGroup.links.new(gin.outputs['Geometry'],points.inputs['Mesh']);pointGroup.links.new(rad.outputs['Attribute'],points.inputs['Radius']);pointGroup.links.new(points.outputs['Points'],mat.inputs['Geometry']);pointGroup.links.new(mat.outputs['Geometry'],gout.inputs['Geometry'])
-obj=None;sprayObj=None;start=time.time();args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [];frames=range(240) if '--full' in args else list(range(0,240,6)) if '--preview' in args else [0,18,36,54,72,90,114,150,174]
+obj=None;sprayObj=None;start=time.time();args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [];frameCount=int(manifest['config'].get('frames',240));frames=range(frameCount) if '--full' in args else list(range(0,frameCount,6)) if '--preview' in args else [f for f in [0,18,36,54,72,90,114,150,174] if f<frameCount]
+if '--frames' in args:
+ frames=selectedFrames
 if '--floor-check' in args:
  frames=[0,180,300,389];out=O/'floor-check';out.mkdir(exist_ok=True)
 if '--impact-check' in args:
@@ -88,10 +120,12 @@ for f in frames:
   if me.shape_keys.animation_data and me.shape_keys.animation_data.action:
    for fc in me.shape_keys.animation_data.action.fcurves:
     for k in fc.keyframe_points:k.interpolation='LINEAR'
- s.render.use_motion_blur=True;s.render.motion_blur_shutter=.65;s.frame_set(1)
- s.render.filepath=str(out/f'{f:04}.jpg');bpy.ops.render.render(write_still=True);print('FRAME',f,round(time.time()-start,1),flush=True)
- if '--full' in args or '--preview' in args:
-  vectors.close()
+ s.render.use_motion_blur=True;s.render.motion_blur_shutter=.24;s.frame_set(1)
+ if studio:studio.update(f/30)
+ s.render.image_settings.file_format='PNG' if studio else 'JPEG'
+ s.render.filepath=str(out/(f'{f:04}.png' if studio else f'{f:04}.jpg'));bpy.ops.render.render(write_still=True);print('FRAME',f,round(time.time()-start,1),flush=True)
+ vectors.close()
+ if ('--full' in args or '--preview' in args) and '--keep-cache' not in args:
   for suffix in ['mesh.gz','velocity.npz']:
    exact=cache/f'{f:04}.{suffix}';assert exact.resolve().parent==cache.resolve();exact.unlink()
 print('COMPLETE',flush=True)

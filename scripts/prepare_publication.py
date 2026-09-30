@@ -2,17 +2,19 @@
 
 Git retains source, documentation, web UI, fonts and current films. Rebuildable
 frame/solver caches stay local. The release restores the remaining site assets
-and non-sequential research inputs at their original relative paths.
+and non-sequential research inputs at their original relative paths. New release
+plans are staged in work/publication; published docs are never overwritten here.
 """
 from pathlib import Path
+import argparse
 import collections
 import hashlib
 import json
 import os
 import re
+import fetch_assets
 
 ROOT = Path(__file__).resolve().parents[1]
-TAG = 'v0.1.0'
 CODE = {'.py','.js','.mjs','.cjs','.ts','.html','.css','.wgsl','.glsl','.cpp','.h',
         '.md','.toml','.bat','.ps1','.sh','.feat','.txt','.csv','.yaml','.yml'}
 MEDIA = {'.mp4','.mov','.webm','.zip','.gz','.npz','.npy','.f32','.bin','.blend',
@@ -27,23 +29,43 @@ def sha(path):
     with path.open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
-def main():
+def prepare(tag, repository='cybrdelic/cybr-elements'):
+    # An ordinary clone contains only a fraction of the full release inventory.
+    # Do not silently turn that partial checkout into the next release manifest.
+    previous = fetch_assets.safe_target('docs/assets.json', ROOT)
+    if previous.exists():
+        manifest = fetch_assets.validate_manifest(json.loads(previous.read_text(encoding='utf-8')))
+        if tag == manifest['tag'] and any('sha256' in pack for pack in manifest['packs']):
+            raise ValueError('Choose a new release tag; the existing release manifest is immutable.')
+        missing = []
+        for asset in manifest['assets']:
+            source = fetch_assets.safe_target(asset['path'], ROOT)
+            if not source.is_file():
+                missing.append(asset['path'])
+        if missing:
+            raise ValueError(f'{len(missing)} released inputs are missing. Run python scripts/fetch_assets.py --all before preparing a complete release.')
+    fetch_assets.validate_manifest({'version': 1, 'repository': repository, 'tag': tag, 'assets': [], 'packs': []})
     tracked, assets, excluded = [], [], collections.Counter()
     inode_hashes = {}
+    def walk_error(error):
+        raise error
     for top in ['outputs','work']:
-        for base, dirs, files in os.walk(ROOT / top):
+        if not (ROOT / top).exists():
+            continue
+        for base, dirs, files in os.walk(ROOT / top, onerror=walk_error):
             dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS and not d.startswith('tmp'))
+            for directory in dirs:
+                if (Path(base) / directory).is_symlink():
+                    raise ValueError(f'Symbolic links cannot be inventoried: {Path(base) / directory}')
             for name in sorted(files):
                 p = Path(base) / name
+                if p.is_symlink():
+                    raise ValueError(f'Symbolic links cannot be inventoried: {p}')
                 rel = p.relative_to(ROOT).as_posix()
                 ext = p.suffix.lower()
                 if top == 'work' and '/publication/' in rel:
                     continue
-                try:
-                    stat = p.stat()
-                except OSError:
-                    excluded['unreadable temporary files'] += 1
-                    continue
+                stat = p.stat()
                 if ext in CODE or name.upper().startswith('LICENSE'):
                     if ext == '.txt' and ('log' in name or stat.st_size > 1024**2):
                         excluded['logs'] += 1
@@ -75,13 +97,15 @@ def main():
                     if ext not in MEDIA | {'.json'}:
                         excluded['temporary or generated data'] += 1
                         continue
-                digest = inode_hashes.setdefault(stat.st_ino, None)
+                inode_key = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns)
+                digest = inode_hashes.get(inode_key)
                 if digest is None:
                     digest = sha(p)
-                    inode_hashes[stat.st_ino] = digest
+                    inode_hashes[inode_key] = digest
                 assets.append({'path':rel, 'bytes':stat.st_size, 'sha256':digest})
     # Preserve the final verification receipts even when their location is a cache.
     for p in (ROOT/'work/element-motion/sigil-02-active-elements').rglob('*audit.json'):
+        fetch_assets.safe_target(p.relative_to(ROOT).as_posix(), ROOT)
         if p.stat().st_size < 256*1024:
             tracked.append(p.relative_to(ROOT).as_posix())
     tracked = sorted(set(tracked))
@@ -106,20 +130,32 @@ def main():
             mapping[a['sha256']] = {'pack':name, 'member':a['path']}
     for a in assets:
         a.update(mapping[a['sha256']])
-    out = ROOT/'docs'
-    out.mkdir(exist_ok=True)
-    manifest = {'version':1, 'repository':'cybrdelic/cybr-elements', 'tag':TAG,
+    out = fetch_assets.safe_target('work/publication/assets.json', ROOT).parent
+    out.mkdir(parents=True, exist_ok=True)
+    manifest = {'version':1, 'repository':repository, 'tag':tag,
                 'assets':assets, 'packs':[{k:v for k,v in p.items() if k!='files'} for p in packs]}
-    (out/'assets.json').write_text(json.dumps(manifest, indent=2)+'\n')
+    fetch_assets.validate_manifest(manifest)
+    fetch_assets.safe_target('work/publication/assets.json', ROOT).write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')
     plan = {'tracked':tracked, 'packs':packs, 'excludedCategories':dict(excluded)}
-    (ROOT/'work/publication').mkdir(exist_ok=True)
-    (ROOT/'work/publication/plan.json').write_text(json.dumps(plan, indent=2))
+    fetch_assets.safe_target('work/publication/plan.json', ROOT).write_text(json.dumps(plan, indent=2)+'\n', encoding='utf-8')
     stats = {'gitFiles':len(tracked), 'gitMiB':round(sum((ROOT/p).stat().st_size for p in tracked)/1024**2,1),
              'releasePaths':len(assets),'uniqueAssets':len(unique),'packs':len(packs),
              'releaseMiB':round(sum(a['bytes'] for a in unique.values())/1024**2,1),
              'excludedCategories':dict(excluded)}
-    (out/'publication-scope.json').write_text(json.dumps(stats, indent=2)+'\n')
+    fetch_assets.safe_target('work/publication/publication-scope.json', ROOT).write_text(json.dumps(stats, indent=2)+'\n', encoding='utf-8')
     print(json.dumps(stats, indent=2))
+    return manifest
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--tag', required=True, help='New draft-release tag, e.g. v0.2.0')
+    parser.add_argument('--repository', default='cybrdelic/cybr-elements', help='owner/repository for the release')
+    args = parser.parse_args(argv)
+    try:
+        prepare(args.tag, args.repository)
+    except (OSError, ValueError, KeyError) as error:
+        parser.exit(1, f'Publication inventory failed: {error}\n')
 
 if __name__ == '__main__':
     main()
