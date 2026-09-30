@@ -97,13 +97,18 @@ def make_plan(args: argparse.Namespace) -> dict:
     config.update(forceRoot=str(force_root), sourceRoot=str(source_root))
     switches = ["--full"] if args.full else []
     shared = ["--output", str(output)]
+    render_options = []
+    for name in ("width", "height", "samples", "threads", "device"):
+        value = getattr(args, name, None)
+        if value is not None:
+            render_options += [f"--{name}", str(value)]
     commands = [
         ("sim", [node, str(ROOT / "sigil_02_active_water.mjs"), *switches, *shared,
                  "--force-root", str(force_root)]),
         ("mesh", [sys.executable, str(ROOT / "sigil_02_active_mesh.py"),
                   *(switches or ["--preview"]), *shared]),
         ("render", [blender, "--background", "--python", str(ROOT / "sigil_02_active_water_render.py"),
-                    "--", *(switches or ["--preview"]), *shared]),
+                    "--", *(switches or ["--preview"]), *shared, *render_options]),
     ]
     return dict(output=output, inputs=inputs, config=config, commands=commands)
 
@@ -172,9 +177,16 @@ def main(argv=None) -> int:
     parser.add_argument("--dry-run", action="store_true", help="Validate inputs and tools and print commands without writing files.")
     parser.add_argument("--minimum-free-mb", type=int, default=1024)
     parser.add_argument("--timeout", type=float, default=0, help="Maximum run time in seconds; zero leaves it unbounded.")
+    parser.add_argument("--width", type=int, help="Override render width without changing the solver grid.")
+    parser.add_argument("--height", type=int, help="Override render height without changing the solver grid.")
+    parser.add_argument("--samples", type=int, help="Override Cycles samples.")
+    parser.add_argument("--threads", type=int, help="Override Cycles CPU render threads.")
+    parser.add_argument("--device", choices=("cpu", "auto"), help="Force CPU rendering or choose an available GPU.")
     args = parser.parse_args(argv)
     if args.minimum_free_mb < 0 or args.timeout < 0:
         parser.error("Disk reserve and timeout must be nonnegative.")
+    if any(value is not None and value <= 0 for value in (args.width, args.height, args.samples, args.threads)):
+        parser.error("Render dimensions, samples and threads must be positive.")
     try:
         plan = make_plan(args)
         if args.dry_run:

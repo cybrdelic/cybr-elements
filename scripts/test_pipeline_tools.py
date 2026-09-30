@@ -10,6 +10,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -133,6 +134,71 @@ class PreflightTests(unittest.TestCase):
                 runner.make_plan(args)
 
 
+class RenderCliTests(unittest.TestCase):
+    def test_runner_rejects_nonpositive_render_values_before_creating_output(self):
+        for flag, value in (("--width", "0"), ("--height", "-1"), ("--samples", "0"), ("--threads", "-2")):
+            with self.subTest(flag=flag), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "fresh"
+                result = subprocess.run([sys.executable, str(WORK / "sigil_02_active_water_run.py"),
+                                         flag, value, "--output", str(output)], capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 2)
+                self.assertIn("must be positive", result.stderr)
+                self.assertFalse(output.exists())
+
+    def test_renderer_rejects_invalid_settings_without_loading_blender(self):
+        for flags in (("--width", "0"), ("--height", "-1"), ("--samples", "0"),
+                      ("--threads", "-1"), ("--device", "invalid")):
+            with self.subTest(flags=flags), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "frames"
+                result = subprocess.run([sys.executable, str(WORK / "sigil_02_active_water_render.py"),
+                                         "--", *flags, "--render-output", str(output)], capture_output=True, text=True, timeout=10)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Invalid render dimensions", result.stderr)
+                self.assertNotIn("No module named 'bpy'", result.stderr)
+                self.assertFalse(output.exists())
+
+    def test_out_of_range_selected_frames_fail_before_creating_output(self):
+        for frames in ("-1", "3", "0,3"):
+            with self.subTest(frames=frames), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / "mesh").mkdir()
+                (root / "mesh" / "manifest.json").write_text(json.dumps({"config": {"frames": 3}}))
+                output = root / "rendered"
+                result = subprocess.run([sys.executable, str(WORK / "sigil_02_active_water_render.py"), "--",
+                                         "--output", str(root), "--frames", frames, "--render-output", str(output)],
+                                        capture_output=True, text=True, timeout=10)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Selected frames must lie inside", result.stderr)
+                self.assertFalse(output.exists())
+
+    def test_duplicate_selected_frames_are_rejected_before_loading_blender(self):
+        for frames in ('0,0', '0,1,0'):
+            with self.subTest(frames=frames), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / 'mesh').mkdir()
+                (root / 'mesh' / 'manifest.json').write_text(json.dumps({'config': {'frames': 3}}))
+                output = root / 'rendered'
+                result = subprocess.run([sys.executable, str(WORK / 'sigil_02_active_water_render.py'), '--',
+                                         '--output', str(root), '--frames', frames, '--render-output', str(output)],
+                                        capture_output=True, text=True, timeout=10)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('Selected frames must be unique', result.stderr)
+                self.assertNotIn("No module named 'bpy'", result.stderr)
+                self.assertFalse(output.exists())
+
+    def test_render_overrides_reach_the_renderer_without_changing_solver_grid(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = PreflightTests.fixture(self, Path(directory))
+            args.width, args.height, args.samples, args.threads, args.device = 1280, 720, 32, 6, "cpu"
+            plan = runner.make_plan(args)
+            render_command = dict(plan['commands'])['render']
+            for flag, value in (("--width", "1280"), ("--height", "720"), ("--samples", "32"),
+                                ("--threads", "6"), ("--device", "cpu")):
+                self.assertEqual(render_command[render_command.index(flag) + 1], value)
+            self.assertEqual(plan['config']['nx'], 8)
+            self.assertEqual(plan['config']['h'], .05)
+
+
 @unittest.skipUnless(shutil.which("node"), "Native solver smoke check requires Node")
 class NativeSolverTests(unittest.TestCase):
     fixture = PreflightTests.fixture
@@ -164,6 +230,49 @@ class NativeSolverTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn(str(Path(directory) / "missing"), result.stderr)
             self.assertFalse((args.input_root / "particles").exists())
+
+    def test_offline_mode_retains_every_frame_without_a_consumer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.fixture(Path(directory))
+            config_path = args.input_root / "config.json"
+            config = json.loads(config_path.read_text())
+            config['frames'] = 12
+            config_path.write_text(json.dumps(config))
+            result = subprocess.run([shutil.which('node'), str(WORK / 'sigil_02_active_water.mjs'),
+                                     '--full', '--offline', '--output', str(args.input_root),
+                                     '--force-root', str(Path(directory) / 'force')],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            manifest = json.loads((args.input_root / 'particles' / 'manifest.json').read_text())
+            self.assertTrue(manifest['complete'])
+            self.assertEqual(len(list((args.input_root / 'particles').glob('*.gz'))), 12)
+
+    def test_streamed_mode_waits_at_its_cache_bound_without_a_consumer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.fixture(Path(directory))
+            config_path = args.input_root / 'config.json'
+            config = json.loads(config_path.read_text())
+            config['frames'] = 12
+            config_path.write_text(json.dumps(config))
+            process = subprocess.Popen([shutil.which('node'), str(WORK / 'sigil_02_active_water.mjs'),
+                                        '--full', '--output', str(args.input_root),
+                                        '--force-root', str(Path(directory) / 'force')],
+                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            try:
+                deadline = time.monotonic() + 5
+                while len(list((args.input_root / 'particles').glob('*.gz'))) < 10 and time.monotonic() < deadline:
+                    if process.poll() is not None:
+                        self.fail('Streamed solver exited before reaching its cache bound')
+                    time.sleep(.02)
+                time.sleep(.05)
+                self.assertIsNone(process.poll())
+                self.assertEqual(len(list((args.input_root / 'particles').glob('*.gz'))), 10)
+                manifest = json.loads((args.input_root / 'particles' / 'manifest.json').read_text())
+                self.assertFalse(manifest.get('complete', False))
+                self.assertEqual(len(manifest['frames']), 10)
+            finally:
+                process.terminate()
+                process.wait(timeout=5)
 
 
 @unittest.skipUnless(importlib.util.find_spec("numpy"), "Sparse reconstruction checks require numpy")

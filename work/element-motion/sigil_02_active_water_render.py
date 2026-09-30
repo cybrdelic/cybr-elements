@@ -1,12 +1,27 @@
-import bpy,json,gzip,struct,sys,time
+import json,gzip,struct,sys,time
 from pathlib import Path
-import numpy as np
-from mathutils import Vector
-R=Path(__file__).resolve().parent;full='--full' in sys.argv;O=Path(sys.argv[sys.argv.index('--output')+1]).resolve() if '--output' in sys.argv else R/'sigil-02-active-elements'/('water-full' if full else 'water-cpu');cache=O/('preview-mesh' if '--preview' in sys.argv else 'mesh');out=O/('frames' if full else 'preview-frames' if '--preview' in sys.argv else 'pilot');out.mkdir(parents=True,exist_ok=True)
+render_args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
+def option(name,default,convert=int):
+ if name not in render_args:return default
+ i=render_args.index(name)
+ if i+1>=len(render_args):raise ValueError('Missing value for '+name)
+ return convert(render_args[i+1])
+width=option('--width',1920 if '--full' in render_args else 768);height=option('--height',1080 if '--full' in render_args else 432);samples=option('--samples',96 if '--full' in render_args else 12);threads=option('--threads',3);device=option('--device','auto',str)
+if min(width,height,samples,threads)<=0 or device not in ['auto','cpu']:raise ValueError('Invalid render dimensions, samples, threads or device')
+R=Path(__file__).resolve().parent;full='--full' in sys.argv;O=Path(sys.argv[sys.argv.index('--output')+1]).resolve() if '--output' in sys.argv else R/'sigil-02-active-elements'/('water-full' if full else 'water-cpu');cache=O/('preview-mesh' if '--preview' in sys.argv else 'mesh');out=Path(option('--render-output',str(O/('frames' if full else 'preview-frames' if '--preview' in sys.argv else 'pilot')),str)).resolve()
 while not (cache/'manifest.json').exists():time.sleep(.5)
 manifest=json.loads((cache/'manifest.json').read_text())
-s=bpy.context.scene;bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);s.render.engine='CYCLES';s.cycles.device='CPU';s.cycles.samples=96 if '--full' in sys.argv else 12;s.cycles.use_denoising=True;s.cycles.denoiser='OPENIMAGEDENOISE';s.cycles.adaptive_threshold=.012;s.cycles.max_bounces=12;s.cycles.transmission_bounces=10;s.cycles.glossy_bounces=6;s.cycles.diffuse_bounces=2;s.cycles.caustics_reflective=False;s.cycles.caustics_refractive=False;s.render.use_persistent_data=True;s.render.threads_mode='FIXED';s.render.threads=3;s.render.resolution_x=1920 if '--full' in sys.argv else 768;s.render.resolution_y=1080 if '--full' in sys.argv else 432;s.render.resolution_percentage=100;s.render.image_settings.file_format='JPEG';s.render.image_settings.quality=97;s.view_settings.view_transform='AgX'
-if full:
+frameCount=int(manifest['config'].get('frames',240));selectedFrames=None
+if '--frames' in render_args:
+ selectedFrames=[int(value) for value in option('--frames','',str).split(',')]
+ if not selectedFrames or any(f<0 or f>=frameCount for f in selectedFrames):raise ValueError('Selected frames must lie inside the simulated sequence')
+ if len(selectedFrames)!=len(set(selectedFrames)):raise ValueError('Selected frames must be unique')
+import bpy
+import numpy as np
+from mathutils import Vector
+out.mkdir(parents=True,exist_ok=True)
+s=bpy.context.scene;bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);s.render.engine='CYCLES';s.cycles.device='CPU';s.cycles.samples=samples;s.cycles.use_denoising=True;s.cycles.denoiser='OPENIMAGEDENOISE';s.cycles.adaptive_threshold=.012;s.cycles.max_bounces=12;s.cycles.transmission_bounces=10;s.cycles.glossy_bounces=6;s.cycles.diffuse_bounces=2;s.cycles.caustics_reflective=False;s.cycles.caustics_refractive=False;s.render.use_persistent_data=True;s.render.threads_mode='FIXED';s.render.threads=threads;s.render.resolution_x=width;s.render.resolution_y=height;s.render.resolution_percentage=100;s.render.image_settings.file_format='JPEG';s.render.image_settings.quality=97;s.view_settings.view_transform='AgX'
+if full and device!='cpu':
  prefs=bpy.context.preferences.addons['cycles'].preferences
  for backend in ['OPTIX','CUDA','HIP','METAL','ONEAPI']:
   try:prefs.compute_device_type=backend;prefs.get_devices()
@@ -67,6 +82,8 @@ pointGroup.interface.new_socket(name='Geometry',in_out='INPUT',socket_type='Node
 gin=pointGroup.nodes.new('NodeGroupInput');gout=pointGroup.nodes.new('NodeGroupOutput');points=pointGroup.nodes.new('GeometryNodeMeshToPoints');points.mode='VERTICES';rad=pointGroup.nodes.new('GeometryNodeInputNamedAttribute');rad.data_type='FLOAT';rad.inputs['Name'].default_value='droplet_radius';mat=pointGroup.nodes.new('GeometryNodeSetMaterial');mat.inputs['Material'].default_value=m
 pointGroup.links.new(gin.outputs['Geometry'],points.inputs['Mesh']);pointGroup.links.new(rad.outputs['Attribute'],points.inputs['Radius']);pointGroup.links.new(points.outputs['Points'],mat.inputs['Geometry']);pointGroup.links.new(mat.outputs['Geometry'],gout.inputs['Geometry'])
 obj=None;sprayObj=None;start=time.time();args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [];frameCount=int(manifest['config'].get('frames',240));frames=range(frameCount) if '--full' in args else list(range(0,frameCount,6)) if '--preview' in args else [f for f in [0,18,36,54,72,90,114,150,174] if f<frameCount]
+if '--frames' in args:
+ frames=selectedFrames
 if '--floor-check' in args:
  frames=[0,180,300,389];out=O/'floor-check';out.mkdir(exist_ok=True)
 if '--impact-check' in args:
@@ -100,8 +117,8 @@ for f in frames:
     for k in fc.keyframe_points:k.interpolation='LINEAR'
  s.render.use_motion_blur=True;s.render.motion_blur_shutter=.65;s.frame_set(1)
  s.render.filepath=str(out/f'{f:04}.jpg');bpy.ops.render.render(write_still=True);print('FRAME',f,round(time.time()-start,1),flush=True)
- if '--full' in args or '--preview' in args:
-  vectors.close()
+ vectors.close()
+ if ('--full' in args or '--preview' in args) and '--keep-cache' not in args:
   for suffix in ['mesh.gz','velocity.npz']:
    exact=cache/f'{f:04}.{suffix}';assert exact.resolve().parent==cache.resolve();exact.unlink()
 print('COMPLETE',flush=True)

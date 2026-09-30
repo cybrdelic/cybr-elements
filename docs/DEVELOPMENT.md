@@ -103,6 +103,43 @@ This requires FFmpeg on PATH, writes the GIF/still/source metadata under
 `docs/media/`, and uses temporary working files under `work/publication/`.
 It does not simulate or render new materials.
 
+## Optional fresh CPU renders
+
+The CPU render batch restores the exact release inputs needed for one element
+and writes a separate film plus receipts:
+
+```sh
+python scripts/rerender_batch.py --kind earth --preflight
+python scripts/rerender_batch.py --kind earth --threads 4
+```
+
+Valid elements are `fire`, `water`, `earth`, `air`, `ice`, `lava` and `lightning`.
+The first command only lists inputs; the second starts the full render. Install
+the dependencies from `.github/workflows/rerender.yml` in Python 3.11, or use the
+optional workflow. Blender jobs use the genuine `bpy==4.5.3` renderer through
+`scripts/blender_python.py`; `--blender` selects a compatible standalone Blender
+executable. Fire/air additionally need the CPU PyTorch installation.
+
+Deliveries appear under `work/rerenders/<element>/delivery/` and contain the
+film, render diagnostics and a summary with source/input hashes. The recipes
+export 720p30 and include full decoding and frame-count checks. A partial or
+completed run requires a fresh `--output-root` for that element. Existing current
+1080p films remain selected in the player. Inspect the new film before any
+deliberate player update. [Pipeline settings](PIPELINES.md#fresh-cpu-rerender-recipes)
+document the numerical methods, samples and editorial differences.
+
+For isolated rendering, `.github/workflows/rerender.yml` defines seven parallel
+GitHub Actions jobs. A push on `codex/elements-showcase-hardening` starts them
+only when the commit message contains `[render-elements]`. The workflow also
+defines `workflow_dispatch` for manual invocation when available in GitHub.
+Ordinary pushes continue to use the separate repository-check workflow.
+
+Successful job artifacts are named `elements-<element>-<run-id>`. Failed jobs
+upload available logs and reports with `diagnostics` in the artifact name.
+These render artifacts have **one-day retention**; download the films and
+receipts promptly. Check each job's result and delivery receipt before promoting
+its film.
+
 ## Asset publication
 
 `docs/assets.json` describes the existing published archive. Treat it as release

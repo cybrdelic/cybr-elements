@@ -40,13 +40,13 @@ def main():
  from scipy.spatial import cKDTree
  from bending_surface import DetailReconstruction,encode
  O=Path(sys.argv[sys.argv.index('--output')+1]).resolve() if '--output' in sys.argv else R/'sigil-02-active-elements'/('water-full' if '--full' in sys.argv else 'water-cpu');source=O/'particles';out=O/'mesh';out.mkdir(parents=True,exist_ok=True);pilot='--pilot' in sys.argv
- preview='--preview' in sys.argv
+ preview='--preview' in sys.argv;offline='--offline' in sys.argv
  if preview:out=O/'preview-mesh';out.mkdir(exist_ok=True)
  frameCount=int(json.loads((O/'config.json').read_text()).get('frames',240));frames=list(range(0,frameCount,6)) if preview else [f for f in [0,18,36,54,72,90,114,150,174] if f<frameCount] if pilot else range(frameCount);isolated=np.empty(0,bool);previous_ids=np.empty(0,np.uint32);previous_iso=1.8;begun=time.time()
  guides=np.load(O/'guides.npz');guideTree=cKDTree(guides['points']);guideRadii=guides['radii']
  for f in frames:
   if (O/f'frames/{f:04}.jpg').exists() and (out/f'{f:04}.json').exists():continue
-  if not pilot and not preview:
+  if not pilot and not preview and not offline:
    while len(list(out.glob('*.mesh.gz')))>=5:time.sleep(.3)
   while True:
    try:m=json.loads((source/'manifest.json').read_text());info=m['frames'][f];break
@@ -80,7 +80,7 @@ def main():
   (out/'manifest.tmp').write_text(json.dumps(m));(out/'manifest.tmp').replace(out/'manifest.json')
   row=dict(frame=f,vertices=len(verts),triangles=len(faces),renderedDrops=len(drops),seconds=round(time.time()-begun,1),**measure);(out/f'{f:04}.json').write_text(json.dumps(row))
   encode(out/f'{f:04}.mesh.tmp',verts,normals,faces,drops,radii,np.zeros((len(drops),6),np.float32),p[::max(1,n//10000)],extent,np.zeros(len(verts),np.float32),np.zeros((1,1,2),np.uint8));(out/f'{f:04}.mesh.tmp').replace(out/f'{f:04}.mesh.gz')
-  if not pilot and f not in [0,60,120,150,180,239]:
+  if not pilot and not offline and f not in [0,60,120,150,180,239]:
    path=source/f'{f:04}.gz';assert path.resolve().parent==source.resolve();path.unlink()
   print('MESH',f,'vertices',len(verts),'unresolved',round(measure['unresolvedMarkerFraction'],3),'seconds',round(time.time()-begun,1),flush=True)
   del verts,normals,faces,vv,p,v;gc.collect()

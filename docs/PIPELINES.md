@@ -158,6 +158,56 @@ that full renders have been verified on another platform.
 production with existing review gates. Inspect their inputs before execution;
 neither is a general batch runner for the whole research directory.
 
+## Fresh CPU rerender recipes
+
+`scripts/rerender_batch.py` is the bounded CPU entry point for the seven current
+material pipelines. It restores only the retained release inputs needed by the
+selected element, then writes a new delivery under
+`work/rerenders/<element>/delivery/`. These exports do not update the current
+1080p player automatically.
+
+```sh
+python scripts/rerender_batch.py --kind earth --preflight
+python scripts/rerender_batch.py --kind earth --threads 4
+```
+
+`--preflight` lists required inputs without downloading or rendering. A full
+run needs the dependencies installed by `.github/workflows/rerender.yml`,
+including Blender's pinned `bpy==4.5.3` wheel in a matching Python 3.11
+environment. `scripts/blender_python.py` provides the headless Blender-script
+launcher; a compatible Blender executable can be selected with `--blender`.
+
+The batch recipes export **1280 × 720 at 30 fps** with these settings:
+
+| Element | CPU render method | Frames / duration |
+| --- | --- | --- |
+| Fire / air | Retained graphics gas solver and volume optics on PyTorch CPU; 320 × 32 × 180 grid | 294 / 9.8 s |
+| Water | Fresh APIC/FLIP hold and release, reconstructed surface, Cycles at 24 samples | 240 / 8 s |
+| Earth | Fresh Bullet scene and Cycles at 16 samples; retained r6 editorial mapping | 300 / 10 s |
+| Ice / lava | Fresh Bullet transforms and gas fields; Cycles at 24 samples | 300 / 10 s |
+| Lightning | Fresh gas field stored as float32 OpenVDB; retained discharge trees, Eevee at 64 samples | 300 / 10 s |
+
+Water's export covers the forward hold/release segment; it omits the earlier
+opening used by the current 11.2-second edit. Earth's entrance remains reverse
+playback of freshly rendered breakup poses. It renders 180 unique physical
+poses and assembles the exact 300-frame r6 map. Rigid-body mass stays fixed;
+the final forward fall preserves source frames 243–389 at output frames 153–299.
+
+These are new lower-resolution CPU exports, not pixel matches to the original
+GPU films. Their source/input hashes, settings, frame mapping and diagnostics
+accompany each delivery. The batch checks resolution, frame count and cadence,
+then fully decodes the encoded film before producing its delivery receipt.
+Batch runs require a fresh per-element output directory; choose a new
+`--output-root` after a partial or completed run. The standalone Earth helper
+also protects against resuming mismatched render settings. Review the encoded
+motion and material appearance before promoting a new film.
+
+The optional GitHub Actions workflow runs each element in a separate job. On
+`codex/elements-showcase-hardening`, a commit containing `[render-elements]`
+opts into rendering; the workflow also defines manual dispatch. Outputs are
+uploaded as per-element artifacts, with failure diagnostics retained separately.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the invocation and artifact lifecycle.
+
 ## Fonts and README montage
 
 Typeface sources, coverage and rebuild instructions are in

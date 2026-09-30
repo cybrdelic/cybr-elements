@@ -2,7 +2,7 @@ import {FlipSolver,makeProductionPreset} from '../flip-lettering/vendor/src/main
 import fs from 'node:fs';import zlib from 'node:zlib';
 import path from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';
 const argument=name=>{const i=process.argv.indexOf(name);if(i<0)return null;if(!process.argv[i+1]||process.argv[i+1].startsWith('--'))throw Error('Missing value for '+name);return process.argv[i+1]};
-const full=process.argv.includes('--full'),outputPath=argument('--output'),root=outputPath?pathToFileURL(path.resolve(outputPath)+path.sep):new URL(`sigil-02-active-elements/water-${full?'full':'cpu'}/`,import.meta.url),out=new URL('particles/',root);
+const full=process.argv.includes('--full'),offline=process.argv.includes('--offline'),outputPath=argument('--output'),root=outputPath?pathToFileURL(path.resolve(outputPath)+path.sep):new URL(`sigil-02-active-elements/water-${full?'full':'cpu'}/`,import.meta.url),out=new URL('particles/',root);
 if(fs.existsSync(new URL('manifest.json',out)))throw Error('Simulation already exists. Choose a fresh --output directory.');
 const cfg=JSON.parse(fs.readFileSync(new URL('config.json',root)));
 for(const key of ['h','spaceScale','timeScale'])if(!Number.isFinite(cfg[key])||cfg[key]<=0)throw Error('Water config '+key+' must be positive and finite');
@@ -71,7 +71,7 @@ class Flow extends FlipSolver{
 const sim=new Flow(c),manifest={config:c,origin:cfg.origin,spaceScale:cfg.spaceScale,timeScale:cfg.timeScale,frameDt:cfg.timeScale/30,playbackFps:30,frames:[],source:'Fresh native FLIP initialized in the approved 02 volume. Gravity stays on during the hold. A travelling soft finite-range bending force restores stretched liquid; detached primary water falls. Pressure, surface tension and floor collisions are solved. No position overwrite or synthetic spray.',cacheFormat:'position-u16-velocity-i16-id-u32',cacheVelocityRange:16};
 const started=performance.now();
 for(let f=0;f<cfg.frames;f++){
- while(full&&fs.readdirSync(out).filter(n=>n.endsWith('.gz')).length>=10)await new Promise(r=>setTimeout(r,400));
+ while(full&&!offline&&fs.readdirSync(out).filter(n=>n.endsWith('.gz')).length>=10)await new Promise(r=>setTimeout(r,400));
  const info=sim.advance(manifest.frameDt);if(!info.finite||!info.pressure.converged||info.capacityRejected||Math.abs(info.sourceVolumeBalance)>1e-8)throw Error(JSON.stringify(info));
  let floorContacts=0,minHeight=Infinity;for(let i=0;i<sim.count;i++){minHeight=Math.min(minHeight,sim.p[i*3+1]);if(sim.p[i*3+1]<cfg.origin[1]+cfg.h*1.5)floorContacts++;}
  manifest.frames.push({frame:f,...info,floorContacts,minHeightWorld:(minHeight-cfg.origin[1])/cfg.spaceScale});

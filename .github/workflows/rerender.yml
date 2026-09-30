@@ -1,0 +1,68 @@
+name: Rerender elements
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/elements-showcase-hardening]
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[render-elements]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        element: [fire, water, earth, air, ice, lava, lightning]
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 2
+      LP_NUM_THREADS: 4
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      EGL_PLATFORM: surfaceless
+      XDG_CACHE_HOME: ${{ runner.temp }}/cybr-render-cache
+      RENDER_ELEMENT: ${{ matrix.element }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        if: matrix.element == 'water'
+        with:
+          node-version: '22'
+      - name: Install CPU renderer
+        run: |
+          python -m pip install --no-cache-dir bpy==4.5.3 scipy Pillow scikit-image numba
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg libegl1 libgl1 libxi6 libxfixes3 libxxf86vm1 libxkbcommon0 libgl1-mesa-dri
+      - name: Install CPU gas solver
+        if: matrix.element == 'fire' || matrix.element == 'air'
+        run: python -m pip install --no-cache-dir torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
+      - name: Validate CPU gas operators
+        if: matrix.element == 'fire' || matrix.element == 'air'
+        run: python -m unittest scripts.test_gas_renderer
+      - name: Produce fresh film
+        run: python scripts/rerender_batch.py --kind "$RENDER_ELEMENT" --threads 4
+      - name: Upload film and receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: elements-${{ matrix.element }}-${{ github.run_id }}
+          path: work/rerenders/${{ matrix.element }}/delivery/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+      - name: Upload failed-stage diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: elements-${{ matrix.element }}-diagnostics-${{ github.run_id }}
+          path: |
+            work/rerenders/${{ matrix.element }}/*.log
+            work/rerenders/${{ matrix.element }}/**/*report.json
+          if-no-files-found: warn
+          retention-days: 1
