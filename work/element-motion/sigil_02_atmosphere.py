@@ -1,6 +1,6 @@
 """CPU incompressible advection for the three new local atmospheres.
 
-Periodic FFT pressure projection with padded, absorbing outer boundaries.
+Real-valued, Nyquist-safe FFT projection with padded, absorbing outer boundaries.
 Authored emission/curl force, semi-Lagrangian transport, buoyancy, dissipation.
 PNG atlases retain the 3D density; they are sampled as a volume in Cycles.
 """
@@ -9,7 +9,7 @@ os.environ['OPENBLAS_NUM_THREADS']='2'
 from pathlib import Path
 import numpy as np,json,sys
 from scipy.ndimage import map_coordinates,gaussian_filter
-from scipy.fft import rfftn,irfftn
+from gas_projection import FourierProjector
 from PIL import Image
 R=Path(__file__).resolve().parent;O=R/'sigil-02-active-elements'
 kind=sys.argv[1];assert kind in ['ice','lava','lightning']
@@ -21,8 +21,7 @@ distance=map_coordinates(a,[z,x],order=1,mode='constant',cval=-2)
 source=np.exp(-(np.maximum(0,-distance)/.20)**2)*np.exp(-(xyz[1]/.43)**2)
 source*=np.clip((distance+.28)/.28,0,1)
 edge=np.prod([np.clip(np.minimum(q[i],shape[i]-1-q[i])/5,0,1) for i in range(3)],axis=0)
-freq=[2*np.pi*np.fft.fftfreq(shape[i],d=dx[i]) for i in range(2)]+[2*np.pi*np.fft.rfftfreq(shape[2],d=dx[2])]
-k=np.meshgrid(*freq,indexing='ij');k2=sum(v*v for v in k);k2[0,0,0]=1
+projector=FourierProjector(shape,dx,workers=2)
 v=np.zeros((3,*shape),np.float32);density=np.zeros(shape,np.float32);temp=density.copy();dt=1/60
 rng=np.random.default_rng(721);seed=gaussian_filter(rng.normal(size=shape).astype('f'),2);seed/=seed.std()
 trajectories=None
@@ -53,8 +52,7 @@ for f in range(300):
   v[0]+=dt*.24*np.sin(xyz[2]*2.1+t*.5)*np.cos(xyz[1]*3.1)
   v[1]+=dt*.18*np.sin(xyz[0]*2.8-t*.4)*np.cos(xyz[2]*2.1)
   # Fourier-space Helmholtz projection, not a decorative density warp.
-  vh=[rfftn(v[i],workers=2) for i in range(3)];div=sum(k[i]*vh[i] for i in range(3))
-  v=np.stack([irfftn(vh[i]-k[i]*div/k2,s=shape,workers=2).real for i in range(3)]).astype('f')
+  v=projector.project(v)
   v*=edge[None];density*=edge;temp*=edge
  assert np.isfinite(v).all() and np.isfinite(density).all()
  nz=shape[2];atlas=np.zeros((nz*6,112*6),np.uint8)

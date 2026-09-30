@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "elements": {
+    "fire": {
+      "title": "Fire",
+      "index": "01",
+      "family": "Combustion",
+      "accent": "#eb9557",
+      "description": "Flame climbs through the sigil, with rolling turbulence, glowing edges and a trail of smoke.",
+      "current": {
+        "file": "fire-02.mp4",
+        "poster": "poster.jpg",
+        "duration": 9.8,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    },
+    "water": {
+      "title": "Water",
+      "index": "02",
+      "family": "Liquid",
+      "accent": "#7bbad1",
+      "description": "Suspended liquid sags and recovers, shedding droplets before a floor impact and spreading release.",
+      "current": {
+        "file": "water-02-r8.mp4",
+        "poster": "water-r8-poster.jpg",
+        "duration": 11.2,
+        "revision": 8,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "previous": {
+        "file": "water-02-r7.mp4",
+        "poster": "water-r7-poster.jpg",
+        "duration": 10,
+        "revision": 7,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    },
+    "earth": {
+      "title": "Earth",
+      "index": "03",
+      "family": "Stone",
+      "accent": "#baa17f",
+      "description": "Interlocking rock fragments hold the mark in suspension, then fall, collide and settle.",
+      "current": {
+        "file": "earth-02-r6.mp4",
+        "poster": "earth-r6-poster.jpg",
+        "duration": 10,
+        "revision": 6,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "previous": {
+        "file": "earth-02-r5.mp4",
+        "poster": "earth-r5-poster.jpg",
+        "duration": 13,
+        "revision": 5,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    },
+    "air": {
+      "title": "Air",
+      "index": "04",
+      "family": "Volume",
+      "accent": "#c0c2bb",
+      "description": "A turbulent smoke volume curls through the mark, folds into itself and disperses into darkness.",
+      "current": {
+        "file": "air-02.mp4",
+        "poster": "air-poster.jpg",
+        "duration": 9.8,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    },
+    "ice": {
+      "title": "Ice",
+      "index": "05",
+      "family": "Transmission",
+      "accent": "#a2d6e7",
+      "description": "Blue fractures catch the light through translucent ice, with cold mist and a collapsing pile.",
+      "current": {
+        "file": "ice-02.mp4",
+        "poster": "ice-poster.jpg",
+        "duration": 10,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    },
+    "lava": {
+      "title": "Lava",
+      "index": "06",
+      "family": "Incandescence",
+      "accent": "#f18c59",
+      "description": "A heavy basalt crust carries incandescent seams, smoke and glowing fragments through the mark.",
+      "current": {
+        "file": "lava-02.mp4",
+        "poster": "lava-poster.jpg",
+        "duration": 10,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    },
+    "lightning": {
+      "title": "Lightning",
+      "index": "07",
+      "family": "Discharge",
+      "accent": "#b8a6ed",
+      "description": "Branching discharge trees pulse irregularly through the sigil, illuminating a moving gas volume.",
+      "current": {
+        "file": "lightning-02-r5.mp4",
+        "poster": "lightning-r5-poster.jpg",
+        "duration": 10,
+        "revision": 5,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "previous": {
+        "file": "lightning-02-r4.mp4",
+        "poster": "lightning-r4-poster.jpg",
+        "duration": 10,
+        "revision": 4,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      }
+    }
+  }
+}

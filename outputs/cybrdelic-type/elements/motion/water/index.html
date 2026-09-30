@@ -1,1 +1,42 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CYBRDELIC / Water sigils</title><style>*{box-sizing:border-box}body{margin:0;background:#10161d;color:#e8ecef;font:14px Arial,sans-serif}#view{display:block;width:100vw;height:100vh}header{position:fixed;top:24px;left:4%;right:4%;display:flex;gap:24px;align-items:center;font-size:11px;letter-spacing:.08em}a{color:inherit}header b{margin-right:auto}footer{position:fixed;bottom:22px;left:4%;right:4%;display:flex;align-items:center;gap:16px}button{background:#17282d;border:1px solid #60747c;color:inherit;padding:9px 16px;cursor:pointer}input{flex:1;accent-color:#87dacf}.capture header,.capture footer{display:none}#reference{position:fixed;right:4%;top:65px;width:240px;opacity:.85}#reference img{width:100%;display:block}#reference span{font-size:10px;display:block;padding-top:6px}.capture #reference{display:none}</style></head><body><canvas id="view"></canvas><header><b>CYBRDELIC / WATER</b><a href="?variant=01">01 / Fluid sigil</a><a href="?variant=02">02 / Cut blackletter</a><a href="../../?study=6">Approved marks</a><a href="../">Elements</a></header><footer><button id="play">Play</button><input id="timeline" aria-label="Animation time" type="range" min="0" max="143" value="0"><span id="status">Loading…</span></footer><script src="../../water/vendor/three.global.js"></script><script src="../../water/src/renderer.js"></script><script src="water.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cybr Elements / Archived Water Motion</title>
+  <link rel="stylesheet" href="../../water/src/viewer.css">
+</head>
+<body>
+  <canvas id="view" aria-label="Interactive archived water motion geometry"></canvas>
+  <header>
+    <b>CYBR ELEMENTS / WATER MOTION</b>
+    <a href="../bending/sigils/02/">Current films</a>
+    <a href="../">Motion archive</a>
+    <label for="variant">Study <select id="variant"><option value="01">01 / snapshots</option><option value="02">02 / complete</option><option value="03">03 / snapshots</option><option value="shared">Shared trail</option><option value="material">Material trail</option><option value="viscous">Viscous trail</option></select></label>
+    <p id="archive-note">Archived simulation geometry · optional cache assets</p>
+  </header>
+  <section id="cache-error" role="alert" hidden>
+    <h1>Water geometry could not load</h1>
+    <p id="error-detail"></p>
+    <p>From the project checkout:</p>
+    <code>python scripts/fetch_assets.py --site</code>
+    <p><a href="../bending/sigils/02/">Watch the current films</a> · <a href="https://github.com/cybrdelic/cybr-elements/blob/master/docs/RELEASE.md">Asset setup</a></p>
+  </section>
+  <footer>
+    <div class="playback">
+      <button id="play" disabled aria-pressed="false">Play</button>
+      <input id="timeline" aria-label="Animation frame" type="range" min="0" max="0" step="1" value="0" disabled>
+      <output id="status" aria-label="Playback status">Loading water geometry…</output>
+    </div>
+    <div class="tools">
+      <label for="mode">View <select id="mode"><option value="water">Water</option><option value="wire">Wireframe</option><option value="normal">Normals</option><option value="thickness">Thickness</option><option value="whitewater">Whitewater</option><option value="particles">Primary particles</option></select></label>
+      <label for="speed">Speed <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+      <button id="reset-camera">Reset camera</button>
+    </div>
+  </footer>
+  <script src="../../water/vendor/three.global.js"></script>
+  <script src="../../water/src/renderer.js"></script>
+  <script src="../../water/src/cache-player.js"></script>
+  <script src="water.js"></script>
+</body>
+</html>

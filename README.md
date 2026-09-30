@@ -1,188 +1,148 @@
-<p align="center">
-  <img src="outputs/cybrdelic-type/elements/motion/bending/sigils/02/artwork-02.png" width="480" alt="Cybrdelic custom sigil 02">
-</p>
+# CYBR ELEMENTS
 
-<h1 align="center">CYBR / ELEMENTS</h1>
+Offline graphics and simulation experiments by **Alejandro Figueroa / Cybrdelic**.
+The project turns custom sigil geometry into liquid, reactive fire, smoke,
+fractured solids and branching electrical channels, then renders the results
+into a browser showcase.
 
-<p align="center"><strong>Seven materials. One mark.</strong><br>
-Elemental motion, custom typography, and simulation-driven identity for Cybrdelic.</p>
+![Montage of the actual fire, water, earth, air, ice, lava and lightning films](docs/media/elements-02.gif)
 
-<p align="center">
-  <a href="#watch">Films</a> ·
-  <a href="#run-it-locally">Run locally</a> ·
-  <a href="#the-typefaces">Typefaces</a> ·
-  <a href="docs/PIPELINES.md">Under the hood</a> ·
-  <a href="https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0">Complete asset release</a>
-</p>
+The montage is assembled from the included renders at 10 fps. The individual
+films are **1920 × 1080, 30 fps**, without audio. The browser plays those films;
+the simulation and rendering pipelines run offline.
 
-![Fire, water, earth, air, ice, lava and lightning forming the Cybrdelic 02 sigil](docs/media/elements-02.gif)
+## Run the showcase
 
-The same interlocked artwork becomes flame, suspended water, fractured stone,
-smoke, ice, glowing basalt and electrical discharge. Each material has its own
-motion, surface and ending. The surrounding world stays black; water and solids
-meet a visible floor when the bending releases.
-
-The GIF uses the actual delivered films. It is reduced to **10 fps** for the
-README; the individual films below are **1920 × 1080 at 30 fps**. No audio.
-
-## Watch
-
-| Element | Motion and material | Film |
-| :-- | :-- | :-- |
-| **Fire** | A travelling ignition front, sustained fuel, rising flame and burnout | [Fire · 9.8 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-02.mp4) |
-| **Water** | Sag, delayed recovery, falling droplets, then a floor impact and spreading liquid | [Water · 11.2 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r8.mp4) |
-| **Earth** | Interlocking rock fragments, a suspended hold, then collision and settling | [Earth · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r6.mp4) |
-| **Air** | A turbulent smoke volume that curls through the mark and disperses | [Air · 9.8 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/air-02.mp4) |
-| **Ice** | Transmissive blue fractures, cold mist and a collapsing pile | [Ice · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/ice-02.mp4) |
-| **Lava** | Heavy basalt crust, incandescent seams, smoke and solid fragments | [Lava · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/lava-02.mp4) |
-| **Lightning** | Branching 3D discharge trees and irregular pulses illuminating a moving gas volume | [Lightning · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r5.mp4) |
-
-The local **02 player** switches between all seven films, downloads each one,
-compares the underlying artwork, and retains the previous water, earth and
-lightning versions. GitHub may show a download button for MP4s; the local player
-provides continuous playback.
-
-## Run it locally
-
-The current seven films, player, posters and fonts are included in the checkout.
-Viewing them needs **Python 3**, a browser, and no GPU or npm install.
+Requires **Python 3.11+** and a browser. The current films, posters and fonts are
+included in Git; viewing them needs no GPU, Python packages or npm install.
 
 ```sh
 git clone https://github.com/cybrdelic/cybr-elements.git
 cd cybr-elements
-python -m http.server 8767 --bind 127.0.0.1 --directory outputs/cybrdelic-type
+python scripts/serve.py
 ```
 
-Open **[the 02 player](http://127.0.0.1:8767/elements/motion/bending/sigils/02/)**.
-The [font specimen](http://127.0.0.1:8767/typefaces/) also works immediately.
+Open **[http://127.0.0.1:8767/](http://127.0.0.1:8767/)** for the current player.
+The [font specimen](http://127.0.0.1:8767/typefaces/) is served by the same command.
 
-### Restore the complete project assets
+## Current films
 
-The full historical gallery contains hundreds of renders and cached browser
-meshes. These larger assets are published in the
-[versioned release](https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0)
-instead of inflating Git history. The downloader restores original paths,
-verifies SHA-256, skips matching files, and refuses to overwrite changed files.
-The downloader requires **Python 3.11+**.
+| Material | Implementation | Film |
+| --- | --- | --- |
+| Fire | 3D fuel/oxidizer transport, reaction, cooling and buoyancy; custom volume rendering | [9.8 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-02.mp4) |
+| Water | Particle-grid APIC/FLIP, pressure projection, surface reconstruction and Cycles rendering | [11.2 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r8.mp4) |
+| Earth | Guided fractured geometry, Bullet collisions and floor settling | [10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r6.mp4) |
+| Air | Advected 3D smoke and turbulent forcing | [9.8 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/air-02.mp4) |
+| Ice | Transmissive fractured solids, rigid-body release and advected cold mist | [10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/ice-02.mp4) |
+| Lava | Displaced basalt crust, emissive interior geometry, rigid fragments and smoke | [10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/lava-02.mp4) |
+| Lightning | Branching 3D growth trees, authored discharge pulses and volumetric lighting | [10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r5.mp4) |
+
+GitHub may download MP4 links. The local player provides native playback,
+scrubbing and fullscreen controls, earlier water/earth/lightning revisions,
+artwork comparison, film downloads and shareable selection URLs. Keyboard
+navigation and reduced-motion handling are included.
+
+## Engineering scope
+
+- **Fluid solver:** the vendored JavaScript APIC/FLIP implementation runs under
+  Node.js for production water. It uses quadratic particle-grid transfers,
+  multigrid-preconditioned conjugate-gradient pressure projection, surface
+  tension and collider handling. Surface reconstruction separates the main
+  liquid body from isolated particle clusters.
+- **Gas volumes:** fire uses a PyTorch/CUDA graphics combustion model. The
+  ice/lava/lightning atmospheres use CPU semi-Lagrangian advection, buoyancy,
+  dissipation and Fourier-space pressure projection. Density atlases store
+  3D fields for volumetric rendering.
+- **Geometry and shading:** custom artwork defines source fields and fracture
+  geometry. Blender handles Bullet rigid bodies, Cycles surface rendering and
+  Eevee lightning volumes. Materials include absorption/transmission, basalt
+  displacement and emissive seams.
+- **Delivery:** a static media player, versioned archive restoration with
+  SHA-256 verification, automated repository checks and browser regressions.
+
+The suspended forms and assembly trajectories are art-directed. The current
+water film joins an earlier opening to a new forward-simulated hold/release;
+it is not one uninterrupted solve. Ice and lava are fractured-solid material
+effects, and electricity is a visual discharge model. There is no calibrated
+freezing, molten-lava rheology or plasma simulation. See
+[pipeline details](docs/PIPELINES.md) for the actual algorithms and limitations.
+
+## Check the project
 
 ```sh
-# All historical galleries, films, browser meshes and downloadable design packs
-python scripts/fetch_assets.py --site
+# Check the current showcase and repository contracts
+python scripts/check.py
 
-# Also restore research inputs, geometry, textures and retained simulation states
-python scripts/fetch_assets.py --all
+# Python regression suite
+python -m unittest discover -s scripts -p 'test_*.py'
+
+# Also probe and fully decode the current films; requires FFmpeg/ffprobe
+python scripts/check.py --media
+
+# Player regression suite; requires Node.js 20+ and Chromium
+npm ci
+npx playwright install chromium
+npm run test:browser
 ```
 
-Allow several GB of free disk space for the complete archive. You do not need
-these downloads for the current 02 player. Per-frame working renders, compiled
-caches and raw solver checkpoints are intentionally excluded; the source that
-produces them is included. [Publication scope](docs/publication-scope.json) and
-[the asset manifest](docs/assets.json) list the exact contents.
+[Development notes](docs/DEVELOPMENT.md) describe the server, checks and optional
+archive workflow. Numerical tests and successful decoding establish specific
+properties; the rendered appearance still needs visual review.
 
-## The typefaces
+## Repository layout
 
-Two custom display families extend the original wordmarks into usable fonts:
+| Path | Purpose |
+| --- | --- |
+| [`outputs/cybrdelic-type/elements/motion/bending/sigils/02/`](outputs/cybrdelic-type/elements/motion/bending/sigils/02/) | Current player, films, posters and selected earlier revisions |
+| [`outputs/cybrdelic-type/typefaces/`](outputs/cybrdelic-type/typefaces/) | Font specimen, font files, vector masters and build sources |
+| [`work/element-motion/`](work/element-motion/) | Simulation, reconstruction, material and rendering source; retained experiments |
+| [`work/flip-lettering/vendor/`](work/flip-lettering/vendor/) | APIC/FLIP implementation and reconstruction tools |
+| [`work/brand-font/`](work/brand-font/) | Typeface construction tools |
+| [`scripts/`](scripts/) | Local server, checks, asset restoration and publication tools |
+| [`docs/`](docs/) | Pipeline documentation, asset inventory and third-party notices |
 
-- **Cybrdelic Sigil / 01** — hooked, tapered, flowing forms.
-- **Cybrdelic Cut / 02** — angular forms, diamond cuts and pointed terminals.
+The current showcase is the supported viewing entry point. Older research
+galleries remain in the archive; they include prototypes with different
+dependencies, visual quality and simulation methods.
 
-Both include **TTF + WOFF2**, uppercase, lowercase, figures, punctuation and
-Latin accents. Enable discretionary ligatures to turn lowercase `cybrdelic`
-into the complete wordmark, or insert **U+E000**. These are single-weight display
-faces for identity and artwork, rather than body-text families.
+## Optional archive and rebuilding
+
+Larger historical media, cached browser meshes, textures and retained research
+inputs are stored in the [v0.1.0 asset release](https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0).
+Restore original paths with the standard-library downloader:
+
+```sh
+python scripts/fetch_assets.py --site  # Historical galleries and browser assets
+python scripts/fetch_assets.py --all   # Also geometry, textures and research inputs
+```
+
+The downloader verifies hashes, skips matching files and refuses to overwrite
+modified files. The full archive requires several GB of disk space. After
+`--site`, open the [historical gallery](http://127.0.0.1:8767/archive/).
+
+**Rebuilding renders is a separate workflow.** It requires pipeline-specific
+dependencies and regenerated caches; production was developed on Windows with
+Blender 4.5.3 LTS and an RTX 4060 Laptop GPU. Several historical scripts retain
+machine-specific paths and review gates. Start with [rebuild notes](docs/PIPELINES.md)
+before launching a simulation. Archive restoration does not constitute a
+portable, complete render environment.
+
+## Custom typefaces
+
+**Cybrdelic Sigil / 01** uses hooked, tapered forms; **Cybrdelic Cut / 02** uses
+angular forms and diamond cuts. Both include TTF/WOFF2, uppercase, lowercase,
+figures, punctuation and Latin accents. The lowercase `cybrdelic` wordmark is
+available as a discretionary ligature or at **U+E000**. These are single-weight
+display faces.
 
 [Font files](outputs/cybrdelic-type/typefaces/fonts/) ·
 [Usage and coverage](outputs/cybrdelic-type/typefaces/README.md) ·
 [SVG masters](outputs/cybrdelic-type/typefaces/vector/)
 
-## Under the hood
-
-This repository combines custom source fields, fluid and gas calculations,
-rigid bodies, authored bending controls, and material-specific rendering.
-
-```mermaid
-flowchart LR
-    A[Original 01 / 02 artwork] --> B[Source fields and geometry]
-    B --> C[Material motion + bending controls]
-    C --> D[Gas / APIC-FLIP / rigid bodies / discharge trees]
-    D --> E[Surface and volume reconstruction]
-    E --> F[Cycles / Eevee / custom volume rendering]
-    F --> G[1080p films + individual player]
-```
-
-Water uses the native **APIC/FLIP** solver and reconstructed liquid surfaces.
-Earth, ice and lava use rigid fragments with **Bullet** collisions after release.
-Gas is advected in 3D; electricity uses branching channel geometry coupled to
-cloud lighting. Blender **Cycles** handles the current water, ice and lava
-surface rendering; the current electrical volume is rendered with **Eevee**.
-
-The bending is art-directed. The latest water film joins an existing opening
-to a new forward-simulated hold and release. Ice and lava are fractured material
-effects, not calibrated freezing or molten-rock phase-change solvers. The
-electrical channels are a visual discharge model, not a plasma simulation.
-[Pipeline details and rebuild notes](docs/PIPELINES.md) distinguish these parts.
-
-## Project map
-
-| Path | Contents |
-| :-- | :-- |
-| [`outputs/cybrdelic-type/`](outputs/cybrdelic-type/) | Static site, design studies, font guide and all element galleries |
-| [`outputs/cybrdelic-type/elements/motion/bending/sigils/02/`](outputs/cybrdelic-type/elements/motion/bending/sigils/02/) | Current seven-element player and full-resolution films |
-| [`outputs/cybrdelic-fonts/`](outputs/cybrdelic-fonts/) | Font handoff, outlines and build sources |
-| [`work/element-motion/`](work/element-motion/) | Simulation, material, reconstruction and rendering scripts, including earlier experiments |
-| [`work/flip-lettering/vendor/`](work/flip-lettering/vendor/) | Vendored native FLIP implementation and reconstruction tools |
-| [`work/brand-font/`](work/brand-font/) | Typeface construction and validation tools |
-| [`scripts/`](scripts/) | Asset restoration, CPU GIF assembly and publication tooling |
-| [`docs/`](docs/) | Showcase, pipeline notes, attribution and asset inventory |
-
-Earlier material and solver studies remain available as research history.
-The current delivery is the **02 player** above; older gallery entries are not
-claims of equivalent visual quality or physical accuracy.
-
-<details>
-<summary><strong>Explore the wider material library</strong></summary>
-
-The archive also includes metal, foam, sand, mud, plants, snow, glass, crystal,
-blood, steam, blue fire, combustion, healing, spirit and energy studies, along
-with lightning redirection, seismic sense, sound, flight, spirit projection,
-pressure and heat. It preserves shared-trail motion tests, both original sigil
-styles, material comparisons, and the lava/MPM research sequence.
-
-After restoring the site assets, explore the
-[motion gallery](http://127.0.0.1:8767/elements/motion/) and
-[subelement studies](http://127.0.0.1:8767/elements/motion/subelements/).
-
-</details>
-
-## Verification
-
-The four newest films were decoded completely (**1,236 frames**), visually
-reviewed, and checked for playback in the local player. Their receipts include
-resolution, timing and SHA-256. Existing fire, air and earth clips were preserved.
-
-[Completion record](work/element-motion/sigil-02-active-elements/completion.json) ·
-[Playback checks](work/element-motion/sigil-02-active-elements/browser-verification.json) ·
-[Water physics audit](work/element-motion/sigil-02-active-elements/water-full/physics-audit.json)
-
-All **50 release archives** were verified against GitHub's asset digests. A fresh,
-unauthenticated download through the included restoration script also passed.
-[Release checks](docs/release-verification.json) ·
-[Public download check](docs/public-download-verification.json)
-
-To regenerate only the README showcase, with FFmpeg and Pillow installed:
-
-```sh
-python scripts/build_showcase.py
-```
-
-This assembles existing films on the CPU and does not start a simulation or GPU render.
-
 ## License and credits
 
-The repository retains its existing [GNU GPL v2 license](LICENSE).
-Bundled components retain their own notices. The basalt scans come from
-**Poly Haven** under CC0; the original artists are credited in
-[third-party notices](docs/THIRD_PARTY.md).
-
-The bending vocabulary is inspired by *Avatar: The Last Airbender* and
-*The Legend of Korra*. This is an independent Cybrdelic visual project.
+[GNU GPL v2](LICENSE), with component-specific notices retained.
+The basalt textures originate from Poly Haven CC0 scans; attribution and
+dependency notices are in [THIRD_PARTY.md](docs/THIRD_PARTY.md).
+The elemental bending vocabulary is inspired by *Avatar: The Last Airbender*
+and *The Legend of Korra*. This is an independent project.

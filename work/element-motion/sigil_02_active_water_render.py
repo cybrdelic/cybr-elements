@@ -2,12 +2,22 @@ import bpy,json,gzip,struct,sys,time
 from pathlib import Path
 import numpy as np
 from mathutils import Vector
-R=Path(__file__).resolve().parent;full='--full' in sys.argv;O=R/'sigil-02-active-elements'/('water-full' if full else 'water-cpu');cache=O/('preview-mesh' if '--preview' in sys.argv else 'mesh');out=O/('frames' if full else 'preview-frames' if '--preview' in sys.argv else 'pilot');out.mkdir(exist_ok=True)
+R=Path(__file__).resolve().parent;full='--full' in sys.argv;O=Path(sys.argv[sys.argv.index('--output')+1]).resolve() if '--output' in sys.argv else R/'sigil-02-active-elements'/('water-full' if full else 'water-cpu');cache=O/('preview-mesh' if '--preview' in sys.argv else 'mesh');out=O/('frames' if full else 'preview-frames' if '--preview' in sys.argv else 'pilot');out.mkdir(parents=True,exist_ok=True)
 while not (cache/'manifest.json').exists():time.sleep(.5)
 manifest=json.loads((cache/'manifest.json').read_text())
-s=bpy.context.scene;bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);s.render.engine='CYCLES';s.cycles.device='GPU' if '--full' in sys.argv else 'CPU';s.cycles.samples=96 if '--full' in sys.argv else 12;s.cycles.use_denoising=True;s.cycles.denoiser='OPTIX';s.cycles.adaptive_threshold=.012;s.cycles.max_bounces=12;s.cycles.transmission_bounces=10;s.cycles.glossy_bounces=6;s.cycles.diffuse_bounces=2;s.cycles.caustics_reflective=False;s.cycles.caustics_refractive=False;s.render.use_persistent_data=True;s.render.threads_mode='FIXED';s.render.threads=3;s.render.resolution_x=1920 if '--full' in sys.argv else 768;s.render.resolution_y=1080 if '--full' in sys.argv else 432;s.render.resolution_percentage=100;s.render.image_settings.file_format='JPEG';s.render.image_settings.quality=97;s.view_settings.view_transform='AgX'
-prefs=bpy.context.preferences.addons['cycles'].preferences;prefs.compute_device_type='OPTIX';prefs.get_devices()
-for d in prefs.devices:d.use=d.type=='OPTIX'
+s=bpy.context.scene;bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);s.render.engine='CYCLES';s.cycles.device='CPU';s.cycles.samples=96 if '--full' in sys.argv else 12;s.cycles.use_denoising=True;s.cycles.denoiser='OPENIMAGEDENOISE';s.cycles.adaptive_threshold=.012;s.cycles.max_bounces=12;s.cycles.transmission_bounces=10;s.cycles.glossy_bounces=6;s.cycles.diffuse_bounces=2;s.cycles.caustics_reflective=False;s.cycles.caustics_refractive=False;s.render.use_persistent_data=True;s.render.threads_mode='FIXED';s.render.threads=3;s.render.resolution_x=1920 if '--full' in sys.argv else 768;s.render.resolution_y=1080 if '--full' in sys.argv else 432;s.render.resolution_percentage=100;s.render.image_settings.file_format='JPEG';s.render.image_settings.quality=97;s.view_settings.view_transform='AgX'
+if full:
+ prefs=bpy.context.preferences.addons['cycles'].preferences
+ for backend in ['OPTIX','CUDA','HIP','METAL','ONEAPI']:
+  try:prefs.compute_device_type=backend;prefs.get_devices()
+  except (TypeError,ValueError,RuntimeError):continue
+  devices=[d for d in prefs.devices if d.type==backend]
+  if devices:
+   for d in prefs.devices:d.use=d in devices
+   s.cycles.device='GPU'
+   if backend=='OPTIX':s.cycles.denoiser='OPTIX'
+   break
+ print('Cycles render device:',s.cycles.device,flush=True)
 # Black camera background; studio illumination is configured below.
 w=s.world;w.use_nodes=True;w.node_tree.nodes.get('Background').inputs['Color'].default_value=(0,0,0,1);w.node_tree.nodes.get('Background').inputs['Strength'].default_value=0
 # Studio illumination visible in reflection/refraction; the camera sees pure black.
@@ -56,7 +66,7 @@ pointGroup=bpy.data.node_groups.new('Analytic water droplet cloud','GeometryNode
 pointGroup.interface.new_socket(name='Geometry',in_out='INPUT',socket_type='NodeSocketGeometry');pointGroup.interface.new_socket(name='Geometry',in_out='OUTPUT',socket_type='NodeSocketGeometry')
 gin=pointGroup.nodes.new('NodeGroupInput');gout=pointGroup.nodes.new('NodeGroupOutput');points=pointGroup.nodes.new('GeometryNodeMeshToPoints');points.mode='VERTICES';rad=pointGroup.nodes.new('GeometryNodeInputNamedAttribute');rad.data_type='FLOAT';rad.inputs['Name'].default_value='droplet_radius';mat=pointGroup.nodes.new('GeometryNodeSetMaterial');mat.inputs['Material'].default_value=m
 pointGroup.links.new(gin.outputs['Geometry'],points.inputs['Mesh']);pointGroup.links.new(rad.outputs['Attribute'],points.inputs['Radius']);pointGroup.links.new(points.outputs['Points'],mat.inputs['Geometry']);pointGroup.links.new(mat.outputs['Geometry'],gout.inputs['Geometry'])
-obj=None;sprayObj=None;start=time.time();args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [];frames=range(240) if '--full' in args else list(range(0,240,6)) if '--preview' in args else [0,18,36,54,72,90,114,150,174]
+obj=None;sprayObj=None;start=time.time();args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [];frameCount=int(manifest['config'].get('frames',240));frames=range(frameCount) if '--full' in args else list(range(0,frameCount,6)) if '--preview' in args else [f for f in [0,18,36,54,72,90,114,150,174] if f<frameCount]
 if '--floor-check' in args:
  frames=[0,180,300,389];out=O/'floor-check';out.mkdir(exist_ok=True)
 if '--impact-check' in args:
