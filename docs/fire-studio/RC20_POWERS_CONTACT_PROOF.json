@@ -1,0 +1,123 @@
+{
+  "version": "0.1.0-rc.20",
+  "build": "467fdf306aa8ace5",
+  "changes": [
+    "swept projectile-floor contact",
+    "directional floor crown, rebound and finite residual fuel",
+    "air endpoints no longer pretend to hit a surface",
+    "quadratic curved sweeps",
+    "sustained breath without resetting its length",
+    "base-fed tornado",
+    "irregular gradient fuel folds replacing directional sinusoid bands",
+    "body clearance rather than oversized aftermath target insets",
+    "source-independent aim height and real floor ray picking"
+  ],
+  "nativeVolume": [
+    {
+      "recording": "work\\adaptive-volume-qa\\powers-contact-final-meteor",
+      "preset": "meteor-strike",
+      "mode": "volume",
+      "frames": 150,
+      "heldViews": 0,
+      "nativePass": true,
+      "hostPass": true,
+      "numericalPass": true,
+      "resourcePoolStable": true,
+      "readbackLag": 0,
+      "maxMeasuredCFL": 0.5611275990804037,
+      "gpuMsMedian": 20.715519999999998,
+      "gpuMsP95": 27.491328,
+      "adapter": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "shaderFingerprint": "42c85e7386c134b6503ece8fb74b614a1a7bd64ec96ca47a70809225c47f56bd"
+    },
+    {
+      "recording": "work\\adaptive-volume-qa\\powers-contact-final-ground",
+      "preset": "fireball",
+      "mode": "volume",
+      "frames": 150,
+      "heldViews": 3,
+      "nativePass": true,
+      "hostPass": true,
+      "numericalPass": true,
+      "resourcePoolStable": true,
+      "readbackLag": 4,
+      "maxMeasuredCFL": 0.7740732828776041,
+      "gpuMsMedian": 15.776256,
+      "gpuMsP95": 23.769088,
+      "adapter": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "shaderFingerprint": "42c85e7386c134b6503ece8fb74b614a1a7bd64ec96ca47a70809225c47f56bd"
+    },
+    {
+      "recording": "work\\adaptive-volume-qa\\powers-motion-final-sparse",
+      "preset": "meteor-barrage",
+      "mode": "sparse",
+      "frames": 240,
+      "heldViews": 3,
+      "nativePass": true,
+      "hostPass": true,
+      "numericalPass": true,
+      "resourcePoolStable": true,
+      "readbackLag": 8,
+      "maxMeasuredCFL": 0.7094118330213758,
+      "gpuMsMedian": 40.731648,
+      "gpuMsP95": 46.932992,
+      "adapter": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "shaderFingerprint": "03b3c04523bf0f4edb0186a06d6048f02a9498e9da9dab7bbad512239cb9efac"
+    },
+    {
+      "recording": "work\\adaptive-volume-qa\\powers-motion-final-tornado",
+      "preset": "fire-tornado",
+      "mode": "volume",
+      "frames": 144,
+      "heldViews": 3,
+      "nativePass": true,
+      "hostPass": true,
+      "numericalPass": true,
+      "resourcePoolStable": true,
+      "readbackLag": 4,
+      "maxMeasuredCFL": 1.1659340187355325,
+      "gpuMsMedian": 16.610304,
+      "gpuMsP95": 25.967616,
+      "adapter": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "shaderFingerprint": "7261379dcfd342d74b5cdc84abdd526e0a54b69390ad92560c827609581b7b7c"
+    }
+  ],
+  "nativeOriginal": [
+    {
+      "recording": "work\\original-powers-visual\\contact-final",
+      "pass": true,
+      "cases": 24,
+      "completeAndHashCheckedCaptures": 192,
+      "adapter": "Intel(R) UHD Graphics"
+    },
+    {
+      "recording": "work\\original-powers-visual\\motion-final",
+      "pass": true,
+      "cases": 2,
+      "completeAndHashCheckedCaptures": 16,
+      "adapter": "Intel(R) UHD Graphics"
+    }
+  ],
+  "strictCompilerReport": "work/dawn-qa/rc20-final-complete/report.json",
+  "targetedTests": 67,
+  "packageRunners": 43,
+  "packageUnitTests": 9,
+  "meteorComparison": {
+    "sameGPU": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "sameFrames": 150,
+    "sameReadbackLag": 0,
+    "sameGrid": "128 cubed flow, 256 cubed chemistry",
+    "sameOutput": "768 x 432",
+    "baselineGpuMsMedian": 20.848128000000003,
+    "baselineGpuMsP95": 29.406208,
+    "finalGpuMsMedian": 20.715519999999998,
+    "finalGpuMsP95": 27.491328,
+    "conclusion": "No material native GPU cost regression in this comparison; variation is not a browser FPS improvement claim."
+  },
+  "remaining": [
+    "Floor contact only: arbitrary mesh collision, debris, scorch decals and surface damage are not added by this update.",
+    "All 24 Original powers were replayed; only representative Volume/Sparse motion and numerical scenarios were replayed.",
+    "Original still has its projected renderer constraints.",
+    "Browser interaction, sustained display pacing, mobile performance and overall game-quality visual acceptance remain open."
+  ]
+}

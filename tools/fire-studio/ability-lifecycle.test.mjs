@@ -63,7 +63,7 @@ test('uniform uploads are bounded, leave the older128-byte prefix untouched and 
  assert.equal(new Set(pool.slots.map(s=>s.age)).size,4);
  for(let i=0;i<4;i++){const o=32+i*16,s=pool.slots[i];assert.equal(uniform[o],i*.25);assert.equal(uniform[o+3],Math.fround(s.age));assert.equal(uniform[o+8],2);assert.equal(uniform[o+10],1);
   for(let axis=0;axis<3;axis++)assert.equal(uniform[o+12+axis],Math.fround(s.target[axis]));
-  assert.ok(Math.abs(s.target[0]-.64)<1e-12);assert.equal(uniform[o+14],Math.fround(i*.1));}
+  assert.ok(Math.abs(s.target[0]-1)<1e-12);assert.equal(uniform[o+14],Math.fround(i*.1));}
  pool.stop();pool.write(uniform,32);for(let i=0;i<4;i++)assert.equal(uniform[32+i*16+10],0);
  assert.throws(()=>pool.write(new Float32Array(63)),/too small/);
 });

@@ -1,17 +1,17 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-19';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-19';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-19';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-19';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-19';
-import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-19';
-import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-19';
-import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-19';
-import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-19';
-import {createWoodStateGL,originalWoodSource,woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-19';
-import {createWoodStructureGL,createWoodMeshGL,woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-19';
-import {POWER_DEFINITIONS,powerDefinition,powerSourceGLSL,normalizePowerSettings} from './fire-powers.js?v=studio-rc-19';
-import {PowerCastPool} from './fire-abilities.js?v=studio-rc-19';
-import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-19';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-20';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-20';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-20';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-20';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-20';
+import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-20';
+import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-20';
+import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-20';
+import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-20';
+import {createWoodStateGL,originalWoodSource,woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-20';
+import {createWoodStructureGL,createWoodMeshGL,woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-20';
+import {POWER_DEFINITIONS,powerDefinition,powerSourceGLSL,normalizePowerSettings} from './fire-powers.js?v=studio-rc-20';
+import {PowerCastPool} from './fire-abilities.js?v=studio-rc-20';
+import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-20';
 
 const MAX_POWER_EMITTER=21+Math.max(...POWER_DEFINITIONS.map(power=>power.kind));
 const DIRECTIONAL_GROUND_POWERS=new Set(['flame-dash','eruption-chain','fire-cross']);
@@ -925,7 +925,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
   }
   function aimHeldPower(e,release=false){
     const cast=powerPool.latest;if(!cast?.active||!cast.held)return false;
-    const floor=roomEnabled&&(currentPower().floor||currentPower().targetMode==='ground')?floorPoint(e):null,point=scenePoint(e);
+    const point=scenePoint(e),floor=roomEnabled&&(currentPower().floor||currentPower().targetMode==='ground'||MINY+point.y*WY<.35)?floorPoint(e):null;
     const target=floor?[floor[0],.14,floor[1]]:[MINX+point.x*WX,Math.max(.14,MINY+point.y*WY),0];
     for(let axis=0;axis<3;axis++)target[axis]=Math.max(powerTargetBounds.min[axis],Math.min(powerTargetBounds.max[axis],target[axis]));
     const direction=target.map((value,axis)=>value-cast.origin[axis]);

@@ -1,15 +1,15 @@
-import { readLook, writeLook } from './studio-location.js?v=studio-rc-19';
-import { createFireDomain } from './fire-domain.js?v=studio-rc-19';
-import { inspectionState } from './inspection-state.js?v=studio-rc-19';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-19';
-import { studioUI } from './studio-ui.js?v=studio-rc-19';
-import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-19';
-import { matchingPreset } from './preset-pairs.js?v=studio-rc-19';
-import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-19';
-import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-19';
-import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-19';
-import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-19';
-import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=studio-rc-19';
+import { readLook, writeLook } from './studio-location.js?v=studio-rc-20';
+import { createFireDomain } from './fire-domain.js?v=studio-rc-20';
+import { inspectionState } from './inspection-state.js?v=studio-rc-20';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-20';
+import { studioUI } from './studio-ui.js?v=studio-rc-20';
+import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-20';
+import { matchingPreset } from './preset-pairs.js?v=studio-rc-20';
+import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-20';
+import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-20';
+import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-20';
+import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-20';
+import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=studio-rc-20';
 
 const $ = (selector) => document.querySelector(selector);
 const params = new URL(location.href).searchParams;

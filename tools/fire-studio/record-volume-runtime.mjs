@@ -124,7 +124,9 @@ if(!nativeFeedback){
 await solver.reset();
 await solver.prepareSource();
 const launchOrigin=[...solver.source],launchDirection=[...solver.powerDirection];
-if(power)solver.castPower(launchOrigin,launchDirection,powers.strength,{held:powerScenario==='charge'});
+const powerTarget=option('power-target')?value('power-target','').split(',').map(Number):null;
+if(powerTarget&&(!power||powerTarget.length!==3||!powerTarget.every(Number.isFinite)))throw Error('--power-target requires a power and three finite world coordinates.');
+if(power)solver.castPower(launchOrigin,launchDirection,powers.strength,{held:powerScenario==='charge',target:powerTarget});
 // Controlled structural gate, deliberately separate from a natural burn.
 // Seed bounded pre-charred stock only in finite occupied donors; production
 // failure, rigid motion, collision, heat transfer and lighting run unchanged.
@@ -196,7 +198,7 @@ function manifestData() {
  const shaderFingerprint=createHash('sha256').update(resources.filter(r=>r.kind==='module').map(r=>r.desc.code).join('\n')).digest('hex');
  return {nativeOnly:true,shaderFingerprint,hostFingerprint,
   options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,
-   preset:preset.id,powers:power?powers:null,powerScenario:power?powerScenario:null,captureEvery,cameraViews,cameraHeight,trailPath:option('trail-path'),frames,
+   preset:preset.id,powers:power?powers:null,powerTarget,powerScenario:power?powerScenario:null,captureEvery,cameraViews,cameraHeight,trailPath:option('trail-path'),frames,
    move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),woodTimeScale:solver.woodTimeScale,
    preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,
    fixedCFLFixture:!nativeFeedback,nativeFeedback,nativeFieldSummaries:nativeFeedback&&option('native-field-summaries'),

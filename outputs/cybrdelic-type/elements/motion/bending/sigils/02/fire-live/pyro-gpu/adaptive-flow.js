@@ -1,4 +1,4 @@
-import { simulationShaders } from './shaders.js?v=studio-rc-19';
+import { simulationShaders } from './shaders.js?v=studio-rc-20';
 
 // Byte offsets in the persistent STORAGE | INDIRECT | COPY_DST command buffer.
 // The first seven dispatches and telemetry retain their existing layout.

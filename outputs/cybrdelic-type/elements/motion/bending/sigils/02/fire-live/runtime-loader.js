@@ -17,7 +17,7 @@ function loadScript(file) {
       file,
       new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = new URL(file + '?v=studio-rc-19', import.meta.url).href;
+        script.src = new URL(file + '?v=studio-rc-20', import.meta.url).href;
         script.onload = resolve;
         script.onerror = () => {
           scripts.delete(file);
@@ -32,9 +32,9 @@ function loadScript(file) {
 }
 
 export async function loadRuntime(kind) {
-  if (kind === 'volume' || kind === 'sparse') return (await import('./pyro-gpu/app.js?v=studio-rc-19')).mountVolume;
-  const { woodMaterialGLSL } = await import('./wood-material.js?v=studio-rc-19');
+  if (kind === 'volume' || kind === 'sparse') return (await import('./pyro-gpu/app.js?v=studio-rc-20')).mountVolume;
+  const { woodMaterialGLSL } = await import('./wood-material.js?v=studio-rc-20');
   window.WoodMaterialGLSL = woodMaterialGLSL;
   await Promise.all(legacyScripts.map(loadScript));
-  return (await import('./fire.js?v=studio-rc-19')).mountLegacy;
+  return (await import('./fire.js?v=studio-rc-20')).mountLegacy;
 }
