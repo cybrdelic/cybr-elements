@@ -1,12 +1,12 @@
-import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-18';
-import { PyroSolver } from './solver.js?v=studio-rc-18';
-import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-18';
-import { runtimeScope } from '../runtime-scope.js?v=studio-rc-18';
-import { outputSize } from './output-size.js?v=studio-rc-18';
-import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-18';
-import { floorHit } from '../fuel-ground.js?v=studio-rc-18';
-import { volumeOptions } from '../simulation-modes.js?v=studio-rc-18';
-import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-18';
+import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-19';
+import { PyroSolver } from './solver.js?v=studio-rc-19';
+import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-19';
+import { runtimeScope } from '../runtime-scope.js?v=studio-rc-19';
+import { outputSize } from './output-size.js?v=studio-rc-19';
+import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-19';
+import { floorHit } from '../fuel-ground.js?v=studio-rc-19';
+import { volumeOptions } from '../simulation-modes.js?v=studio-rc-19';
+import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-19';
 export async function mountVolume({
   initialPreset = 'explosion',
   initialPowers,
@@ -542,7 +542,7 @@ export async function mountVolume({
           }
         : null;
     return {
-      build: 'fire-studio-rc-18',
+      build: 'fire-studio-rc-19',
       adapter: solver.adapter,
       grid: { velocity: solver.N, scalar: solver.D },
       settings: {
@@ -839,7 +839,7 @@ export async function mountVolume({
     solver = await PyroSolver.create(canvas, volumeOptions(params, simulation));
     solver.woodTimeScale = woodTimeScale;
     if (params.has('validate')) {
-      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-18');
+      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-19');
       const report = await pressureCheck(solver.device);
       await save(params.get('qa') + '-pressure', report);
       if (!report.pass) throw Error('GPU pressure reference failed: ' + JSON.stringify(report));

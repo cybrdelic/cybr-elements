@@ -1,10 +1,10 @@
-import {objectWGSL} from './objects.js?v=studio-rc-18';
-import {combustionWGSL} from './combustion.js?v=studio-rc-18';
-import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-18';
-import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-18';
-import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-18';
-import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-18';
-import {woodMaterialWGSL} from '../wood-material.js?v=studio-rc-18';
+import {objectWGSL} from './objects.js?v=studio-rc-19';
+import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-19';
+import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-19';
+import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-19';
+import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-19';
+import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-19';
+import {woodMaterialWGSL} from '../wood-material.js?v=studio-rc-19';
 // Five room faces share this irradiance resolution. Keep atlas allocation,
 // compute dispatch and sampling coordinates in sync with this value.
 export const ROOM_SIZE=64;
@@ -12,6 +12,7 @@ export const ROOM_SIZE=64;
 function renderSource(tree,sparse,fastSeams){return `
 ${combustionWGSL}
 ${objectWGSL}
+${objectCombustionWGSL}
 ${woodMaterialWGSL}
 struct View{eye:vec4f,right:vec4f,up:vec4f,forward:vec4f,options:vec4f,ambient:vec4f,
  spotPos0:vec4f,spotDir0:vec4f,spotPower0:vec4f,spotPos1:vec4f,spotDir1:vec4f,spotPower1:vec4f};
@@ -39,7 +40,7 @@ ${floorFuelRenderWGSL}
 fn floorWearAt(xz:vec2f)->vec4f{let size=vec2i(textureDimensions(floorWoodWear));return textureLoad(floorWoodWear,clamp(vec2i((xz+3.)/6.*vec2f(size)),vec2i(0),size-1),0);}
 fn extinction(c:vec4f)->f32{return c.x*3.0;}
 fn emission(c:vec4f)->vec3f{
- let reaction=flameActivity(c);
+ let reaction=sceneFlameActivity(c);
  if(c.y<=.2||(reaction==0.&&c.x==0.)){return vec3f(0);}
  let kelvin=clamp(300.+1200.*c.y,700.,2800.);
  let wavelength=vec3f(.61,.55,.46);
@@ -239,7 +240,7 @@ ${tree?` let mesh=textureLoad(meshPosition,vec2i(v.pos.xy),0);
     i+=u32(max(0.,floor(distance/step)));continue;
    }
    let c=field(at);let sigma=extinction(c);
-   if(sigma<.0001&&flameActivity(c)<.0001){continue;}
+   if(sigma<.0001&&sceneFlameActivity(c)<.0001){continue;}
    let opacity=1.-exp(-sigma*step);
    let incident=textureSampleLevel(illumination,smp,(at-LO)/EXT,0).xyz;
    // Normalized isotropic scattering; physically separate from extinction.
@@ -279,7 +280,7 @@ var<workgroup> energy:array<vec4f,64>;var<workgroup> moment:array<vec4f,64>;var<
 // First pass locates emission in the full domain. The second partitions its
 // padded bounds into eight clusters, retaining the existing eight shadow rays.
 // Bounds need only conservative emission support, not spectral power.
-const coarseSource=base=>gatherSource(base).replace('let value=emission(field(at));','let c=field(at);let value=vec3f(select(0.,max(flameActivity(c),c.x*max(c.y-.55,0.)),c.y>.2));');
+const coarseSource=base=>gatherSource(base).replace('let value=emission(field(at));','let c=field(at);let value=vec3f(select(0.,max(sceneFlameActivity(c),c.x*max(c.y-.55,0.)),c.y>.2));');
 const adaptiveSource=base=>gatherSource(base).replace('var<workgroup> energy:', '@group(0) @binding(10) var<storage,read> seeds:array<FireLight>;\nvar<workgroup> energy:').replace('let origin=LO;let extent=EXT;', `
  var lower=vec3f(1e4);var upper=vec3f(-1e4);
  for(var j=0u;j<8u;j++){lower=min(lower,seeds[j].lower.xyz);upper=max(upper,seeds[j].upper.xyz);}

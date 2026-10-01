@@ -3,32 +3,41 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-18';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-18';
-import {WoodStructure} from '../wood-structure.js?v=studio-rc-18';
-import {WoodCollision} from './wood-collision.js?v=studio-rc-18';
-import {WoodFlux} from './wood-flux.js?v=studio-rc-18';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-18';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-18';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-18';
-import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-18';
-import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-18';
-import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-18';
-import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-18';
-import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-18';
-import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-18';
-import { FuelBrush } from '../fuel-ground.js?v=studio-rc-18';
-import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-18';
-import {powerDirection as authoredPowerDirection, powerDefinition} from '../fire-powers.js?v=studio-rc-18';
-import {PowerCastPool} from '../fire-abilities.js?v=studio-rc-18';
-import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-18';
+} from './objects.js?v=studio-rc-19';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-19';
+import {WoodStructure} from '../wood-structure.js?v=studio-rc-19';
+import {WoodCollision} from './wood-collision.js?v=studio-rc-19';
+import {WoodFlux,WOOD_GAS_PILOT} from './wood-flux.js?v=studio-rc-19';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-19';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-19';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-19';
+import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-19';
+import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-19';
+import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-19';
+import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-19';
+import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-19';
+import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-19';
+import { FuelBrush } from '../fuel-ground.js?v=studio-rc-19';
+import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-19';
+import {powerDirection as authoredPowerDirection, powerDefinition} from '../fire-powers.js?v=studio-rc-19';
+import {PowerCastPool} from '../fire-abilities.js?v=studio-rc-19';
+import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-19';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
-  const lag = Math.max(0, Math.min(telemetryLag, 8));
+  // Even a current readback describes the completed interval. Reserve one
+  // further interval for the frame we are about to simulate, plus map lag.
+  const lag = Math.max(0, Math.min(telemetryLag, 8)) + 1;
   // A few late readbacks do not imply a new explosion. Bound ordinary velocity
   // growth from the last observed field instead of jumping straight to 12.
   const predicted = Math.max(maxSpeed * (1 + 0.05 * lag), maxSpeed + 0.35 * lag);
   return telemetryLag > 8 ? Math.max(predicted, 12) : predicted;
+}
+// A finite startup safety margin covers new wood source-volume flow before
+// asynchronous velocity telemetry has observed it. This only chooses dt;
+// it never clips physical velocity or disables the current invalid-state gate.
+export function woodIgnitionSpeedFloor(structured,active,age,tree=false){
+  const duration=tree?WOOD_GAS_PILOT.treeDurationS:WOOD_GAS_PILOT.durationS;
+  return structured&&active&&age>=0&&age<duration+.5?12:0;
 }
 export class PyroSolver {
   static async create(canvas, options = {}) {
@@ -494,7 +503,7 @@ export class PyroSolver {
     run(a.coarseAdvect,[...base,[2,this.coarseV[0]],[3,this.coarseV[2]]],0);
     run(a.coarseCurl,[[1,this.sampler],[2,this.coarseV[0]],[3,this.coarseCurl]],0);
     run(a.coarseCorrect,[...base,[2,this.coarseV[0]],[3,this.coarseV[2]],[4,this.c[ci]],
-      [5,this.coarseCurl],[6,this.coarseV[1]],[8,this.sigilSource],...this.objectBindings(true),...this.chemistryBindings(ci)],0);
+      [5,this.coarseCurl],[6,this.coarseV[1]],[8,this.sigilSource],...this.objectBindings(true),...this.chemistryBindings(ci),...this.woodFluxBindings()],0);
     run(a.fill,[[0,this.coarseV[2]],[1,this.v[2]]],12);
     run(a.fillCell,[[0,this.coarseCurl],[1,this.vort],[2,this.sampler]],12);
     run(a.fill,[[0,this.coarseV[1]],[1,this.v[1-vi]]],12);
@@ -502,11 +511,11 @@ export class PyroSolver {
     run(a.fineAdvect,[...base,[2,this.v[vi]],[3,this.v[2]],tiles],24);
     run(a.fineCurl,[[1,this.sampler],[2,this.v[vi]],[3,this.vort],tiles],36);
     run(a.fineCorrect,[...base,[2,this.v[vi]],[3,this.v[2]],[4,this.c[ci]],
-      [5,this.vort],[6,this.v[1-vi]],[8,this.sigilSource],...this.objectBindings(true),tiles,...this.chemistryBindings(ci)],36);
+      [5,this.vort],[6,this.v[1-vi]],[8,this.sigilSource],...this.objectBindings(true),tiles,...this.chemistryBindings(ci),...this.woodFluxBindings()],36);
     run(k.advectVelocity,[...base,[2,this.v[vi]],[3,this.v[2]]],48);
     run(k.curl,[[1,this.sampler],[2,this.v[vi]],[3,this.vort]],60);
     run(k.correctVelocity,[...base,[2,this.v[vi]],[3,this.v[2]],[4,this.c[ci]],
-      [5,this.vort],[6,this.v[1-vi]],[8,this.sigilSource],...this.objectBindings(true),...this.chemistryBindings(ci)],72);
+      [5,this.vort],[6,this.v[1-vi]],[8,this.sigilSource],...this.objectBindings(true),...this.chemistryBindings(ci),...this.woodFluxBindings()],72);
   }
   async prepareRenderer(tree) {
     if (!this.rendererFamilies.has(tree)) {
@@ -830,6 +839,7 @@ export class PyroSolver {
         [8, this.sigilSource],
         ...this.objectBindings(true),
         ...this.chemistryBindings(ci),
+        ...this.woodFluxBindings(),
       ],
       this.N + 1,
     );
@@ -1064,14 +1074,16 @@ export class PyroSolver {
     present.end();
   }
   async collectTelemetry(slot, substeps, sampleFrame, epoch, dt, collectQuery = !!slot.query) {
+    const sampledTime = this.time;
     let statsReleased = false;
     try {
       await slot.stats.mapAsync(GPUMapMode.READ);
+      if (this.destroyed || epoch !== this.stateEpoch) return;
       const mapped = slot.stats.getMappedRange();
       const values = new Float32Array(mapped);
       const maxSpeed = values[0];
       if (!Number.isFinite(maxSpeed) || maxSpeed > 1000)
-        throw Error('Invalid velocity state: ' + JSON.stringify({ time: this.time, maxSpeed }));
+        throw Error('Invalid velocity state: ' + JSON.stringify({ time: sampledTime, sampleFrame, maxSpeed }));
       const diagnostic = {
         maxSpeed,
         preDivergence: values[1] / Math.max(values[3], 1),
@@ -1087,6 +1099,7 @@ export class PyroSolver {
       if (collectQuery) {
         try {
           await slot.query.mapAsync(GPUMapMode.READ);
+          if (this.destroyed || epoch !== this.stateEpoch) return;
           const t = new BigUint64Array(slot.query.getMappedRange());
           const gpu = {
             velocity: 0,
@@ -1109,13 +1122,15 @@ export class PyroSolver {
             this.latestTelemetry = { ...this.latestTelemetry, gpu, gpuSampleFrame: sampleFrame };
         } catch (error) {
           // Timestamp queries are diagnostic. A failed map must not stop fire.
-          this.queryTimingAvailable = false;
-          if (!this.destroyed && epoch === this.stateEpoch)
+          if (!this.destroyed && epoch === this.stateEpoch) {
+            this.queryTimingAvailable = false;
             this.latestTelemetry = { ...this.latestTelemetry, gpu: null };
+          }
         }
       }
     } catch (error) {
-      if (!this.destroyed && !this.lost) this.errors.push(error?.message || String(error));
+      if (!this.destroyed && !this.lost && epoch === this.stateEpoch)
+        this.errors.push(error?.message || String(error));
     } finally {
       if (!statsReleased) {
         if (slot.stats.mapState === 'mapped') slot.stats.unmap();
@@ -1175,7 +1190,8 @@ export class PyroSolver {
     encoder.clearBuffer(this.stats);
     const telemetryLag = this.frameNumber - (this.latestTelemetry.sampleFrame || 0);
     const safeSpeed = Math.max(cflSafeSpeed(this.maxSpeed, telemetryLag, this.burstAge),
-      this.active ? this.powerCasts?.speedFloor(dt)||0 : 0);
+      this.active ? this.powerCasts?.speedFloor(dt)||0 : 0,
+      woodIgnitionSpeedFloor(!!this.woodStructure,this.active,this.burstAge,this.objectId==='cybr-tree'));
     const substeps =
       dt > 0
         ? Math.max(
@@ -1212,6 +1228,7 @@ export class PyroSolver {
           [1, this.sampler],
           [2, { buffer: this.view }],
           [5, { buffer: this.lightSeeds }],
+          [13, { buffer: this.objectSettings }],
           ...this.chemistryBindings(this.ci,true),
         ]),
       );

@@ -5,11 +5,18 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {NativeFeedbackReadbacks} from './native-feedback-readbacks.mjs';
+import {NativeVolumeStream} from './native-volume-stream.mjs';
 const args=process.argv.slice(2), name=args[0];
 if(!name||!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,80}$/.test(name))
  throw Error('Provide a new recording name (letters, numbers, hyphens or underscores).');
 const option=k=>args.some(a=>a==='--'+k||a.startsWith('--'+k+'='));
 const value=(k,fallback)=>{const i=args.indexOf('--'+k),inline=args.find(a=>a.startsWith('--'+k+'='));return i>=0?args[i+1]:inline?inline.slice(k.length+3):fallback;};
+const nativeFeedback=option('native-feedback'),readbackLag=Number(value('readback-lag',0));
+if(![0,4,8].includes(readbackLag))throw Error('--readback-lag must be 0, 4 or 8 completed frames.');
+if(option('readback-lag')&&!nativeFeedback)throw Error('--readback-lag requires --native-feedback.');
+if(option('native-field-summaries')&&!nativeFeedback)throw Error('--native-field-summaries requires --native-feedback.');
+const readbacks=nativeFeedback?new NativeFeedbackReadbacks(readbackLag):null;
 const powerScenario=value('power-scenario','single');
 if(!['single','overlap','charge'].includes(powerScenario))throw Error('--power-scenario must be single, overlap or charge.');
 const captureEvery=Number(value('capture-every',6));
@@ -22,6 +29,7 @@ const cameraViews=angles===null?[[-50,false],[100,false],[16,true]]:angles==='no
 if(cameraViews.length>12||cameraViews.some(([a])=>!Number.isFinite(a)||Math.abs(a)>360))throw Error('--camera-angles needs at most 12 comma-separated angles in [-360,360], or none.');
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const source=process.env.FIRE_STUDIO_ROOT?path.resolve(process.env.FIRE_STUDIO_ROOT):path.join(root,'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live');
+const hostFingerprint=createHash('sha256').update(fs.readFileSync(path.join(source,'pyro-gpu/solver.js'))).digest('hex');
 const folder=path.join(root,'work/adaptive-volume-qa',name);
 if(fs.existsSync(folder))throw Error('Recording already exists; use a new name.');
 const resources=[],operations=[];let nextId=1,nextData=0;
@@ -60,7 +68,7 @@ globalThis.GPUMapMode={READ:1};
 const device={
  features:new Set(),limits:{maxTextureDimension3D:2048},lost:new Promise(()=>{}),addEventListener(){},
  createTexture(desc){let t;return t=resource('texture',desc,{createView(settings={}){return resource('view',{texture:t,...settings});},destroy(){}});},
- createBuffer(desc){return resource('buffer',desc,{destroy(){}});},
+ createBuffer(desc){const buffer=resource('buffer',desc,{destroy(){}});return readbacks&&(desc.usage&1)?readbacks.attach(buffer,desc.size):buffer;},
  createSampler(desc={}){return resource('sampler',desc);},
  createShaderModule(desc){return resource('module',desc,{getCompilationInfo:async()=>({messages:[]})});},
  async createComputePipelineAsync(desc){const p=resource('computePipeline',desc);p.label=desc.label;p.getBindGroupLayout=index=>({pipeline:p,index});return p;},
@@ -82,6 +90,7 @@ const {PyroSolver}=await import(pathToFileURL(path.join(source,'pyro-gpu/solver.
 const {FIRE_PRESETS,sourceOrigin}=await import(pathToFileURL(path.join(source,'pyro-gpu/presets.js')).href);
 const {volumeOptions}=await import(pathToFileURL(path.join(source,'simulation-modes.js')).href);
 const {powerDefinition,normalizePowerSettings,powerDirection}=await import(pathToFileURL(path.join(source,'fire-powers.js')).href);
+const {WOOD_FLUX}=await import(pathToFileURL(path.join(source,'pyro-gpu/wood-flux.js')).href);
 const preset=FIRE_PRESETS.find(p=>p.id===value('preset','bonfire'));if(!preset)throw Error('Unknown preset');
 const power=powerDefinition(preset),powers=normalizePowerSettings({strength:value('power-strength',1),heading:value('power-heading',power?.defaultHeading??0),elevation:value('power-elevation',9)});
 if(option('power-scenario')&&!power)throw Error('--power-scenario requires a power preset.');
@@ -108,8 +117,10 @@ solver.woodTimeScale=Number(value('wood-time',12));
 solver.powerStrength=powers.strength;solver.powerDirection=powerDirection(powers);
 // Native replay checks command correctness. Driver telemetry is not fabricated
 // into a browser performance claim; both comparisons use this same CFL fixture.
-solver.collectTelemetry=async slot=>{slot.pending=false;};
-solver.collectPoolTelemetry=async slot=>{slot.poolPending=false;};
+if(!nativeFeedback){
+ solver.collectTelemetry=async slot=>{slot.pending=false;};
+ solver.collectPoolTelemetry=async slot=>{slot.poolPending=false;};
+}
 await solver.reset();
 await solver.prepareSource();
 const launchOrigin=[...solver.source],launchDirection=[...solver.powerDirection];
@@ -179,6 +190,46 @@ function powerEvent(frame){
  return null;
 }
 if(option('cold'))solver.active=false;
+const target=path.join(folder,'commands.json');
+function manifestData() {
+ const stable=allocations.buffers===startupAllocations.buffers&&allocations.textures===startupAllocations.textures;
+ const shaderFingerprint=createHash('sha256').update(resources.filter(r=>r.kind==='module').map(r=>r.desc.code).join('\n')).digest('hex');
+ return {nativeOnly:true,shaderFingerprint,hostFingerprint,
+  options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,
+   preset:preset.id,powers:power?powers:null,powerScenario:power?powerScenario:null,captureEvery,cameraViews,cameraHeight,trailPath:option('trail-path'),frames,
+   move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),woodTimeScale:solver.woodTimeScale,
+   preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,
+   fixedCFLFixture:!nativeFeedback,nativeFeedback,nativeFieldSummaries:nativeFeedback&&option('native-field-summaries'),
+   readbackLagFrames:nativeFeedback?readbackLag:null,grid:{velocity:solver.N,chemistry:solver.D},
+   recordedMaxSpeed:nativeFeedback?null:Number(value('max-speed',3)),
+   telemetryFixture:nativeFeedback?'Real native mapped bytes feed unchanged production collectors; serial GPU completion with bounded completed-frame readback delay.':
+    'Per-frame recorded max speed; runtime ability speed floors preserved; native replay must verify measured CFL.'},
+  resourcePool:{startup:startupAllocations,final:{...allocations},stable},resources,operations};
+}
+let stream=null,sentResources=resources.length,sentOperations=0,batchNumber=0,hostError=null,nativeResult=null;
+const feedbackFrames=[];
+async function sendNativeBatch(){
+ const file=`feedback-batch-${batchNumber++}.json`;
+ const requests=readbacks.requests();
+ fs.writeFileSync(path.join(folder,file),JSON.stringify({resources:resources.slice(sentResources),operations:operations.slice(sentOperations),readbacks:requests}));
+ sentResources=resources.length;sentOperations=operations.length;
+ const reply=await stream.request({kind:'batch',file});
+ if(reply.kind!=='batch')throw Error('Native stream did not acknowledge the command batch.');
+ if(reply.readbacks.length!==requests.length)throw Error('Native stream omitted a production readback.');
+ for(const item of reply.readbacks){
+  const filePath=path.resolve(folder,item.file),relative=path.relative(folder,filePath);
+  if(relative.startsWith('..')||path.isAbsolute(relative))throw Error('Native readback path escaped the recording.');
+  readbacks.accept(item.request,fs.readFileSync(filePath));
+ }
+ await readbacks.deliver(solver.frameNumber);
+}
+try {
+ if(nativeFeedback){
+  fs.writeFileSync(target,JSON.stringify({...manifestData(),operations:[]}));
+  stream=new NativeVolumeStream({python:value('python','python'),script:path.join(root,'tools/fire-studio/replay-volume-runtime.py'),
+   recording:folder,adapter:value('adapter','integrated'),output:'native-feedback',profile:option('native-profile'),fieldSummaries:option('native-field-summaries')});
+  await stream.start();
+ }
 for(let frame=0;frame<frames;frame++){
  let event=powerEvent(frame);
  if(frame===Number(value('stop',-1))){if(power)solver.stopPower();else solver.active=false;event={kind:'stop'};}
@@ -186,25 +237,47 @@ for(let frame=0;frame<frames;frame++){
   const t=Math.min(frame/90,1);solver.movePower([-1.5+3*t,.18,.55*Math.sin(t*Math.PI*2)]);
  }
  if(option('move')&&frame===Math.floor(frames/2))solver.burst([solver.source[0]+.45,solver.source[1]+.15,solver.source[2]-.2]);
- solver.maxSpeed=Number(value('max-speed',3));solver.latestTelemetry.sampleFrame=solver.frameNumber;
+ if(!nativeFeedback){solver.maxSpeed=Number(value('max-speed',3));solver.latestTelemetry.sampleFrame=solver.frameNumber;}
+ if(readbacks)readbacks.frame=solver.frameNumber+1;
+ const before=nativeFeedback?{frame:solver.frameNumber,maxSpeed:solver.maxSpeed,sampleFrame:solver.latestTelemetry.sampleFrame,telemetryLag:solver.frameNumber-solver.latestTelemetry.sampleFrame,pending:solver.telemetrySlots.filter(s=>s.pending).length}:null;
  camera();const frameResult=await solver.frame(1/60);await solver.drain();
  operations.push({kind:'frame',index:frame,time:solver.time,
   ability:power?solver.powerCasts.snapshot():null,powerEvent:event,allocations:{...allocations},
   camera:{angle:Number(value('angle',16)),targetY:Number(value('target-y',2.4)),zoom:Number(value('zoom',1.25)),height:cameraHeight},
   output:solver.output.__rid,dense:solver.c[solver.ci].t.__rid,stats:solver.stats.__rid,substeps:frameResult.substeps,dt:1/60,
+  velocity:solver.v.map(f=>f.t.__rid),velocityIndex:solver.vi,
   floorFuel:solver.hasFloorFuel?solver.floorFuel[solver.floorIndex].t.__rid:null,
   wood:solver.woodStructure?{stock:solver.surface[solver.si].t.__rid,wear:solver.damage[solver.si].t.__rid,
     poses:solver.woodStructure.state.__rid,fractures:solver.woodStructure.metadata.__rid,
-    flux:solver.woodFlux.flux.__rid,fluxStatsOffset:solver.woodFlux.statsOffset,
-    mass:solver.woodFluxMetadata.t.__rid,scale:solver.effect[1]}:null,
+    flux:solver.woodFlux.flux.__rid,fluxStatsOffset:solver.woodFlux.statsOffset,residual:solver.woodFlux.residual.__rid,
+    mass:solver.woodFluxMetadata.t.__rid,scale:solver.effect[1],origin:[...solver.source],fluxLayout:{N:WOOD_FLUX.N,stride:WOOD_FLUX.stride,
+      massUnitsPerKg:WOOD_FLUX.massUnitsPerKg,energyUnitsPerJ:WOOD_FLUX.energyUnitsPerJ,
+      gasHeatCapacityJkgK:WOOD_FLUX.gasHeatCapacityJkgK,gasHeatScaleK:WOOD_FLUX.gasHeatScaleK}}:null,
   pool:solver.chemistryPool?{plan:solver.chemistryPool.plan,atlas:solver.chemistryPool.fields[solver.ci].texture.__rid,
     pages:solver.chemistryPool.pageTable.__rid,metadata:solver.chemistryPool.metadata.__rid}:null,
   snapshot:frame%captureEvery===captureEvery-1||frame===frames-1||frame===Math.floor(frames/2)-1,
-  saveField:frame===frames-1||frame===Math.floor(frames/2)-1});
+  saveField:!nativeFeedback&&(frame===frames-1||frame===Math.floor(frames/2)-1)});
+ if(nativeFeedback){await sendNativeBatch();feedbackFrames.push({index:frame,time:solver.time,substeps:frameResult.substeps,before,after:{maxSpeed:solver.maxSpeed,telemetry:{...solver.latestTelemetry},pending:solver.telemetrySlots.filter(s=>s.pending).length}});
+  fs.writeFileSync(path.join(folder,'host-feedback-progress.json'),JSON.stringify({frames:feedbackFrames.length,last:feedbackFrames.at(-1)},null,2));
+  if(solver.errors.length)throw Error(solver.errors.at(-1));}
 }
-for(const [angle,inspect] of cameraViews){camera(angle,inspect);await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,ability:power?solver.powerCasts.snapshot():null,camera:{angle,inspect},snapshot:true});}
+for(const [angle,inspect] of cameraViews){camera(angle,inspect);if(readbacks)readbacks.frame=solver.frameNumber+1;await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,ability:power?solver.powerCasts.snapshot():null,camera:{angle,inspect},snapshot:true});if(nativeFeedback){await sendNativeBatch();if(solver.errors.length)throw Error(solver.errors.at(-1));}}
+ if(nativeFeedback){
+  await readbacks.deliver(solver.frameNumber,true);
+  if(solver.errors.length)throw Error(solver.errors.at(-1));
+ }
+} catch(error){hostError=error?.message||String(error);process.exitCode=1;}
+if(nativeFeedback){
+ try {nativeResult=await stream?.finish(hostError);if(nativeResult?.pass===false)process.exitCode=1;}
+ catch(error){hostError ||= error?.message||String(error);process.exitCode=1;stream?.terminate();}
+ readbacks.fail(Error(hostError||'Recording finished.'));
+ fs.writeFileSync(path.join(folder,'host-feedback.json'),JSON.stringify({pass:!hostError&&nativeResult?.pass!==false,error:hostError,
+  productionHostPass:!hostError,numericalPass:nativeResult?.numericalPass??null,nativeResult,frames:feedbackFrames,
+  readbackLagFrames:readbackLag,deliveries:readbacks.deliveries,productionCollectors:true,serialNativeCompletion:true},null,2));
+}
 const resourcePoolStable=allocations.buffers===startupAllocations.buffers&&allocations.textures===startupAllocations.textures;
 if(power&&!resourcePoolStable)throw Error('A power scenario allocated GPU buffers or textures after startup.');
-const shaderFingerprint=createHash('sha256').update(resources.filter(r=>r.kind==='module').map(r=>r.desc.code).join('\n')).digest('hex');
-const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,shaderFingerprint,options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,preset:preset.id,powers:power?powers:null,powerScenario:power?powerScenario:null,captureEvery,cameraViews,cameraHeight,trailPath:option('trail-path'),frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,fixedCFLFixture:true,grid:{velocity:solver.N,chemistry:solver.D},recordedMaxSpeed:Number(value('max-speed',3)),telemetryFixture:'Per-frame recorded max speed; runtime ability speed floors preserved; native replay must verify measured CFL.'},resourcePool:{startup:startupAllocations,final:{...allocations},stable:resourcePoolStable},resources,operations}));
-console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData,resourcePoolStable,shaderFingerprint}));
+const manifest=manifestData();fs.writeFileSync(target,JSON.stringify(manifest));
+console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData,
+ resourcePoolStable,shaderFingerprint:manifest.shaderFingerprint,nativeFeedback,hostError,nativeFeedbackPass:nativeResult?.pass??null,
+ hostFeedback:nativeFeedback?path.join(folder,'host-feedback.json'):null}));

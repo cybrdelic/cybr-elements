@@ -1,5 +1,5 @@
-import {powerDefinition,powerDirection} from './fire-powers.js?v=studio-rc-18';
-import {POWER_CAST_CAPACITY,powerPhase,powerSpeedFloor,powerExpansion} from './fire-power-definitions.js?v=studio-rc-18';
+import {powerDefinition,powerDirection} from './fire-powers.js?v=studio-rc-19';
+import {POWER_CAST_CAPACITY,powerPhase,powerSpeedFloor,powerExpansion} from './fire-power-definitions.js?v=studio-rc-19';
 const finite3=v=>Array.isArray(v)||ArrayBuffer.isView(v)?v.length===3&&Array.from(v).every(Number.isFinite):false;
 const set3=(to,v)=>{for(let i=0;i<3;i++)to[i]=v[i];};
 // Reserve room for the burning impact and fan spread, not just its center.

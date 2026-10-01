@@ -1,5 +1,5 @@
 // Original's simulation-specific emitter IDs for the shared authored sources.
-import {powerDefinition} from './fire-powers.js?v=studio-rc-18';
+import {powerDefinition} from './fire-powers.js?v=studio-rc-19';
 export function emitterKindFor(preset) {
   if (!preset) throw new Error('Missing Original source preset');
   const power=powerDefinition(preset.power);

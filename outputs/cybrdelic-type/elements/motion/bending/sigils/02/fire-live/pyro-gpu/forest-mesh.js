@@ -1,9 +1,9 @@
 // The reviewed forest-surface asset is rasterized at its original topology.
 // A separate 64³ fuel/collision proxy is used by the fluid solver.
-import { SOURCE_SCALE, SOURCE_CENTER } from './objects/forest-tree/source-space.js?v=studio-rc-18';
-import { woodStateWGSL } from './objects.js?v=studio-rc-18';
-import { woodMaterialWGSL } from '../wood-material.js?v=studio-rc-18';
-import {woodPoseWGSL} from '../wood-structure.js?v=studio-rc-18';
+import { SOURCE_SCALE, SOURCE_CENTER } from './objects/forest-tree/source-space.js?v=studio-rc-19';
+import { woodStateWGSL } from './objects.js?v=studio-rc-19';
+import { woodMaterialWGSL } from '../wood-material.js?v=studio-rc-19';
+import {woodPoseWGSL} from '../wood-structure.js?v=studio-rc-19';
 export const forestMeshWGSL = `
 ${woodStateWGSL}
 ${woodMaterialWGSL}

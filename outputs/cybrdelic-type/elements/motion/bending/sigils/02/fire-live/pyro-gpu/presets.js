@@ -2,7 +2,7 @@
 
 // never the simulation grid or ray-march resolution.
 
-import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-18';
+import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-19';
 
 const preset = (id, name, description, fuel, effect, dynamics, chemistry, options = {}) => ({
   id,

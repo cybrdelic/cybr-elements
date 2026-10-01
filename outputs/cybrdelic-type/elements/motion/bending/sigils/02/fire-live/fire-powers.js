@@ -1,7 +1,7 @@
 // Authored supernatural sources feed the existing gas solve. These functions
 // never draw a flame, lower resolution or allocate particle/texture resources.
-import {POWER_DEFINITIONS} from './fire-power-definitions.js?v=studio-rc-18';
-import {abilityMotionWGSL} from './fire-ability-motions.js?v=studio-rc-18';
+import {POWER_DEFINITIONS} from './fire-power-definitions.js?v=studio-rc-19';
+import {abilityMotionWGSL} from './fire-ability-motions.js?v=studio-rc-19';
 export {POWER_DEFINITIONS};
 
 export function powerDefinition(value) {
