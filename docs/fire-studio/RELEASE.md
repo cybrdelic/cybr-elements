@@ -110,12 +110,13 @@ All 128³ flow and 256³ gas voxels remain. The correction adds no simulation pa
 
 | Gate | rc.19 result |
 | --- | --- |
-| CPU and packaging | 39 runtime runners pass source validation; 9 package unit tests pass. Targeted native-feedback, telemetry and wood checks are recorded in the proof. |
+| CPU and packaging | 39 runtime runners pass source, package and directory validation; 9 package unit tests pass. The directory and ZIP verify 155 runtime files, build `46ff16af6f281449`. Targeted native-feedback, telemetry and wood checks are recorded in the proof. |
 | Strict compiler | 211 unique WGSL modules / 515 generated and recorded variants pass official Dawn/Tint null-backend validation with no errors or warnings, including wood mechanics and actual dense/Sparse/tree commands. The divergent derivative fixture is rejected. |
 | Actual adaptive feedback | Seven final native cases pass: 1,860 simulation frames plus three held views. Maximum measured CFL is 1.393519 against the 1.5 limit. Normal logs run 600 frames; delayed 24× wood runs 360. |
 | Modes and hardware | RTX 4060 and Intel UHD/Vulkan bonfires pass. Sparse's pooled stage has no stale mappings and later uses its existing sticky dense fallback. Ordinary Bonfire and nonwood Torch controls pass. The cold tree checks bindings and finite state; it does not establish successful tree ignition. |
 | Sampled appearance | Normal logs retain rooted flames after the finite starter ends, then approach weaker flaming/smolder. Held Sparse views and the Intel capture retain rooted flame and room illumination. The delayed 24× stress extinguishes; it is a numerical and quenching gate, not persistent-fire evidence. |
 | Performance and fidelity | Resolution and render integration remain unchanged. Recorded native costs depend on smoke coverage and hardware; these runs establish no paired speedup, browser FPS, mobile support or cinematic/offline parity. |
+| Public delivery | Completed Pages build `b433b0bcaf33b02f85dd31434842b47a963ac6bf`; all 155 runtime files plus `release.json` return HTTP 200 with exact package hashes. `work/powers-qa/public-rc19.json` records the independent byte check. |
 
 ## Publish to GitHub Pages
 

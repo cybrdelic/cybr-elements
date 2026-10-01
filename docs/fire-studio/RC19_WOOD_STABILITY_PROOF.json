@@ -1,9 +1,9 @@
 {
   "candidate": "0.1.0-rc.19",
-  "status": "V5c-scoped-wood-bonfire-crash-fix-accepted-package-and-public-pending",
+  "status": "V5c-scoped-wood-bonfire-crash-fix-accepted-package-and-public-bytes-verified",
   "acceptedForRelease": true,
   "template": false,
-  "generatedAtUTC": "2026-10-01T12:33:24.110525+00:00",
+  "generatedAtUTC": "2026-10-01T12:43:21.786448+00:00",
   "scope": {
     "scene": "Wood bonfire / burning-logs",
     "implementation": "Actual production PyroSolver adaptive timestep loop with native-mapped stats; no fixed speed/sample-frame overrides",
@@ -865,10 +865,97 @@
     }
   ],
   "delivery": {
-    "verifiedPackage": null,
-    "publicDeployment": null,
+    "verifiedPackage": {
+      "version": "0.1.0-rc.19",
+      "build": "46ff16af6f281449",
+      "runtimeFiles": 155,
+      "runtimeBytes": 204570403,
+      "directory": "releases/fire-studio-0.1.0-rc.19-final",
+      "releaseManifest": {
+        "path": "releases/fire-studio-0.1.0-rc.19-final/release.json",
+        "sha256": "c33873ce32a953207a4d6075f6085a3273b894fa1063764fdfd947138c792422",
+        "bytes": 26416
+      },
+      "archive": {
+        "path": "releases/fire-studio-0.1.0-rc.19-final.zip",
+        "sha256": "f51bd786f6a42633743f4714c1279d8dc840eba8bba55ee3fca1f5b15aa9d050",
+        "bytes": 90858233
+      },
+      "buildReport": {
+        "path": "work/powers-qa/rc19-final-package-build-recovered.log",
+        "sha256": "9da1731b6d9e90ad900329e82f2e7ed7f86366b27ade96aeaec9ce5770b62812",
+        "bytes": 274
+      },
+      "directoryVerification": {
+        "path": "work/powers-qa/rc19-final-directory-verify.log",
+        "sha256": "3c609a2aa5b4a9668375480dfc219c0ffe541202eb69bb7bee131101507958b6",
+        "bytes": 550
+      },
+      "archiveVerification": {
+        "path": "work/powers-qa/rc19-final-zip-verify.log",
+        "sha256": "58ab3dea4c9d24f948d1b64f9a74c7e97609b000d167971c41b95e6459f4b8a4",
+        "bytes": 443
+      },
+      "independentDirectoryHashMatches": 155,
+      "sourceCommit": "9c33716d1fe29aec17c471be42daf03a3a3918f5",
+      "sourceBranch": "codex/fire-studio-release-rc6",
+      "openGates": [
+        "Live browser motion and sustained completed-frame performance on the demo GPU",
+        "Mobile GPU memory, compatibility and sustained performance",
+        "Original/offline detail comparison and Volume smoke/flame motion review",
+        "Experimental adaptive flow, brick pool and precise receivers: complete-frame speed, quality and memory replacement gates"
+      ]
+    },
+    "publicDeployment": {
+      "status": "Pages-built-and-public-HTTP-byte-verification-complete",
+      "siteCommit": "b433b0bcaf33b02f85dd31434842b47a963ac6bf",
+      "branch": "master",
+      "url": "https://cybrdelic.github.io/firesim/",
+      "runtimeFiles": 155,
+      "indexedRuntimeAndManifestBlobs": 156,
+      "indexedHashMatches": 156,
+      "siteIndexProof": {
+        "path": "work/powers-qa/rc19-final-site-index-proof.json",
+        "sha256": "785d98f735509747d905db53c9202b23a65ac1cbd4c9fbec1c3fc83681be4935",
+        "bytes": 195
+      },
+      "siteCopyReport": {
+        "path": "work/powers-qa/rc19-final-site-copy.json",
+        "sha256": "bdcd135d5f683b3d581c27478d4eb6ae7e379eb04ee27076e55170fd22b67614",
+        "bytes": 408
+      },
+      "deploymentPreflight": {
+        "path": "work/powers-qa/rc19-final-deployment-preflight.json",
+        "sha256": "d57c1353ef1eebdbfd05d3ef8a2890faa0fb25f76acec4f7c112d4b8840e4177",
+        "bytes": 357
+      },
+      "publicReport": {
+        "path": "work/powers-qa/public-rc19.json",
+        "sha256": "0257719c0a3d26c4c3693624c4116e45cb2a665d38d05ea551c7a9416e68aa8e",
+        "bytes": 34327
+      },
+      "publicRuntimeHashMatches": 155,
+      "scope": "Local package, published commit, built Pages artifact and all served runtime/manifest bytes verified. No live browser, frame-pacing or mobile GPU claim.",
+      "publicVerificationLog": {
+        "path": "work/powers-qa/rc19-final-public-verify.log",
+        "sha256": "add968625c14af64f4a5415298989f3d2d2ef8e863fe6d4ed5de6b53e6d1283c",
+        "bytes": 136
+      },
+      "pagesBuildReport": {
+        "path": "work/powers-qa/rc19-pages-build.json",
+        "sha256": "84209906aa6aa63b6ed7a0de6d00eddf58503f2726ca1ed87625d5dce496f453",
+        "bytes": 132
+      },
+      "pagesBuildStatus": "built",
+      "pagesBuildUpdatedAtUTC": "2026-10-01T12:39:16Z",
+      "publicManifestHashMatched": true,
+      "publicRuntimeAndManifestHashMatches": 156,
+      "allPublicHTTPStatus200": true,
+      "publicDeliveredBytesIncludingManifest": 204596819
+    },
     "browserDemo": "unverified",
-    "physicalMobilePerformance": "unverified"
+    "physicalMobilePerformance": "unverified",
+    "complete": true
   },
   "timingClaims": {
     "browserFPSClaimed": false,
@@ -878,7 +965,7 @@
   },
   "acceptanceScope": "Reproduced structured-wood thermal/CFL crash, production bindings, and sampled finite log ignition. Not full-pile spread, burning-tree propagation, cinematic parity, browser pacing, mobile performance, or a universal future-force guarantee.",
   "finalCandidate": {
-    "status": "V5c-scoped-wood-bonfire-crash-fix-accepted-package-and-public-pending",
+    "status": "V5c-scoped-wood-bonfire-crash-fix-accepted-package-and-public-bytes-verified",
     "finiteGasPilot": "finite budget and limited rooted log patch reviewed; no full-pile/tree propagation claim",
     "cpuPilot": {
       "tests": 11,
