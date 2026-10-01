@@ -36,6 +36,6 @@ Shared WGSL wood helpers are now pure. Mesh derivatives and implicit samples exe
 
 ## Verification status
 
-The release passes **237 CPU tests**, including source pairing, saved aim, conditional controls, queued casting, finite inventory, lifecycle and shader-uniformity checks. The packaged checks execute 35 runtime runners against the shipped files.
+The release passes **241 CPU tests**, including source pairing, saved aim, conditional controls, queued casting, finite inventory, lifecycle and shader-uniformity checks. The packaged checks execute 35 runtime runners against the shipped files.
 
 Official Dawn/Tint with its null backend accepts **145 unique WGSL modules / 172 generated variants**, with zero errors or warnings; a deliberately divergent derivative fixture is rejected. Native Original passes 13 gates and compiles 61 unique production GLSL programs. Final Volume frame, field and timing results are recorded in [RC15_POWERS_PROOF.json](RC15_POWERS_PROOF.json). These native and compiler checks do not establish browser FPS or mobile performance. See the [release report](RELEASE.md) for conditions and remaining gates.

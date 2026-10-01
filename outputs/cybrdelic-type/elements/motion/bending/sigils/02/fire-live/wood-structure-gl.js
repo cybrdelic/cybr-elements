@@ -1,6 +1,6 @@
-import {woodStructureGLSL} from './wood-structure.js?v=studio-rc-15';
-import {SOURCE_SCALE,SOURCE_CENTER} from './pyro-gpu/objects/forest-tree/source-space.js?v=studio-rc-15';
-import {woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-15';
+import {woodStructureGLSL} from './wood-structure.js?v=studio-rc-16';
+import {SOURCE_SCALE,SOURCE_CENTER} from './pyro-gpu/objects/forest-tree/source-space.js?v=studio-rc-16';
+import {woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-16';
 
 const COLUMNS=12,PER_ROW=4,WIDTH=COLUMNS*PER_ROW;
 const structure=woodStructureGLSL(64)

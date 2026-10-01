@@ -1,15 +1,15 @@
-import { readLook, writeLook } from './studio-location.js?v=studio-rc-15';
-import { createFireDomain } from './fire-domain.js?v=studio-rc-15';
-import { inspectionState } from './inspection-state.js?v=studio-rc-15';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-15';
-import { studioUI } from './studio-ui.js?v=studio-rc-15';
-import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-15';
-import { matchingPreset } from './preset-pairs.js?v=studio-rc-15';
-import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-15';
-import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-15';
-import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-15';
-import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-15';
-import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=studio-rc-15';
+import { readLook, writeLook } from './studio-location.js?v=studio-rc-16';
+import { createFireDomain } from './fire-domain.js?v=studio-rc-16';
+import { inspectionState } from './inspection-state.js?v=studio-rc-16';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-16';
+import { studioUI } from './studio-ui.js?v=studio-rc-16';
+import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-16';
+import { matchingPreset } from './preset-pairs.js?v=studio-rc-16';
+import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-16';
+import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-16';
+import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-16';
+import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-16';
+import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=studio-rc-16';
 
 const $ = (selector) => document.querySelector(selector);
 const params = new URL(location.href).searchParams;
@@ -191,6 +191,7 @@ async function mount(kind, chosen, plain, old, look) {
     }
     runtime = await createRuntime({
       initialPreset: plain,
+      initialPowers: look?.powers,
       simulation: kind,
       onRemount: (key) => requestActivate('legacy', key),
       onFailure: (error) => fail(error, kind),
@@ -256,6 +257,7 @@ function activate(kind, key, look, force = false) {
         if (remount) await mount(kind, chosen, plain, old, look);
         else {
           ui.loading();
+          if(look?.powers)runtime.look({powers:look.powers});
           await runtime.fire(plain);
           if (look) runtime.look(look);
           ui.ready();

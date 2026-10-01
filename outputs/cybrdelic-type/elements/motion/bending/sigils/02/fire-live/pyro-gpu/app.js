@@ -1,14 +1,15 @@
-import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-15';
-import { PyroSolver } from './solver.js?v=studio-rc-15';
-import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-15';
-import { runtimeScope } from '../runtime-scope.js?v=studio-rc-15';
-import { outputSize } from './output-size.js?v=studio-rc-15';
-import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-15';
-import { floorHit } from '../fuel-ground.js?v=studio-rc-15';
-import { volumeOptions } from '../simulation-modes.js?v=studio-rc-15';
-import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-15';
+import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-16';
+import { PyroSolver } from './solver.js?v=studio-rc-16';
+import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-16';
+import { runtimeScope } from '../runtime-scope.js?v=studio-rc-16';
+import { outputSize } from './output-size.js?v=studio-rc-16';
+import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-16';
+import { floorHit } from '../fuel-ground.js?v=studio-rc-16';
+import { volumeOptions } from '../simulation-modes.js?v=studio-rc-16';
+import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-16';
 export async function mountVolume({
   initialPreset = 'explosion',
+  initialPowers,
   simulation = 'volume',
   onFailure = () => {},
 } = {}) {
@@ -40,7 +41,7 @@ export async function mountVolume({
     trace = [],
     captureIndex = 0,
     saved = false;
-  let powers=normalizePowerSettings({strength:params.get('powerStrength')??1,heading:params.get('powerHeading')??0,elevation:params.get('powerElevation')??9});
+  let powers=normalizePowerSettings(initialPowers??{strength:params.get('powerStrength')??1,heading:params.get('powerHeading')??0,elevation:params.get('powerElevation')??9});
   let frameCount = 0,
     queueLimitedRafs = 0,
     testScenario = null,
@@ -522,7 +523,7 @@ export async function mountVolume({
           }
         : null;
     return {
-      build: 'fire-studio-rc-15',
+      build: 'fire-studio-rc-16',
       adapter: solver.adapter,
       grid: { velocity: solver.N, scalar: solver.D },
       settings: {
@@ -819,7 +820,7 @@ export async function mountVolume({
     solver = await PyroSolver.create(canvas, volumeOptions(params, simulation));
     solver.woodTimeScale = woodTimeScale;
     if (params.has('validate')) {
-      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-15');
+      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-16');
       const report = await pressureCheck(solver.device);
       await save(params.get('qa') + '-pressure', report);
       if (!report.pass) throw Error('GPU pressure reference failed: ' + JSON.stringify(report));

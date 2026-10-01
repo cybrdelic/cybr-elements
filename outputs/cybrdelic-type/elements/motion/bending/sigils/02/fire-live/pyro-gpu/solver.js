@@ -3,24 +3,24 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-15';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-15';
-import {WoodStructure} from '../wood-structure.js?v=studio-rc-15';
-import {WoodCollision} from './wood-collision.js?v=studio-rc-15';
-import {WoodFlux} from './wood-flux.js?v=studio-rc-15';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-15';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-15';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-15';
-import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-15';
-import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-15';
-import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-15';
-import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-15';
-import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-15';
-import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-15';
-import { FuelBrush } from '../fuel-ground.js?v=studio-rc-15';
-import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-15';
-import {powerDirection as authoredPowerDirection} from '../fire-powers.js?v=studio-rc-15';
-import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-15';
+} from './objects.js?v=studio-rc-16';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-16';
+import {WoodStructure} from '../wood-structure.js?v=studio-rc-16';
+import {WoodCollision} from './wood-collision.js?v=studio-rc-16';
+import {WoodFlux} from './wood-flux.js?v=studio-rc-16';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-16';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-16';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-16';
+import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-16';
+import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-16';
+import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-16';
+import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-16';
+import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-16';
+import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-16';
+import { FuelBrush } from '../fuel-ground.js?v=studio-rc-16';
+import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-16';
+import {powerDirection as authoredPowerDirection} from '../fire-powers.js?v=studio-rc-16';
+import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-16';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   const lag = Math.max(0, Math.min(telemetryLag, 8));

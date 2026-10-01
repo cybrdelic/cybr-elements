@@ -1,16 +1,16 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-15';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-15';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-15';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-15';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-15';
-import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-15';
-import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-15';
-import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-15';
-import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-15';
-import {createWoodStateGL,originalWoodSource,woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-15';
-import {createWoodStructureGL,createWoodMeshGL,woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-15';
-import {powerSourceGLSL,normalizePowerSettings} from './fire-powers.js?v=studio-rc-15';
-export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=>{}}={}){
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-16';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-16';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-16';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-16';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-16';
+import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-16';
+import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-16';
+import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-16';
+import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-16';
+import {createWoodStateGL,originalWoodSource,woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-16';
+import {createWoodStructureGL,createWoodMeshGL,woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-16';
+import {powerSourceGLSL,normalizePowerSettings} from './fire-powers.js?v=studio-rc-16';
+export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount,onFailure=()=>{}}={}){
   const scope=runtimeScope(onFailure),on=scope.on;
   const qaParams=new URL(location.href).searchParams,qaCaptureStop=qaParams.has('qa')?Number(qaParams.get('capture'))||0:0;
   'use strict';
@@ -691,7 +691,7 @@ export async function mountLegacy({initialPreset='sigil',onRemount,onFailure=()=
   const brush = { x: .5, y: .5, fromX: .5, fromY: .5, active: false };
   let freeMode = false, activePreset = initialPreset;
   let emitterKind=0, burstStart=-100,powerOriginZ=0,powerTrailLast=null;
-  let powers=normalizePowerSettings({strength:qaParams.get('powerStrength')??1,heading:qaParams.get('powerHeading')??0,elevation:qaParams.get('powerElevation')??9});
+  let powers=normalizePowerSettings(initialPowers??{strength:qaParams.get('powerStrength')??1,heading:qaParams.get('powerHeading')??0,elevation:qaParams.get('powerElevation')??9});
   let launchedPowers={...powers};
   const powerKind=()=>emitterKind>=22&&emitterKind<=27?emitterKind-21:0;
   const finitePower=()=>[1,2,6].includes(powerKind());

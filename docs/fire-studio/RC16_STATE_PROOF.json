@@ -1,0 +1,43 @@
+{
+  "release": "0.1.0-rc.16",
+  "build": "7a3bf1fa893730f2",
+  "cpu": {
+    "tests": 241,
+    "passed": 241,
+    "runtimeRunners": 35,
+    "report": "work/powers-rc16-tests-final.log"
+  },
+  "stateFix": {
+    "sameEngine": "Saved power settings applied before source reset/automatic cast",
+    "remount": "Factory receives initialPowers before initialization and first cast",
+    "covered": [
+      "Same-engine saved power looks in all three modes",
+      "Original domain remount",
+      "Saved look simulation remounts",
+      "Counterpart simulation switches",
+      "Actual Original first submitted power uniforms",
+      "Actual finite floor-trail first dose"
+    ]
+  },
+  "strictCompiler": {
+    "tool": "Official Dawn webgpu@0.6.1, null backend",
+    "modules": 145,
+    "sourceVariants": 172,
+    "errors": 0,
+    "warnings": 0,
+    "report": "work/dawn-qa/tint-rc16-package/report.json",
+    "all145ShaderHashesIdenticalToNativeCheckedRc15": true
+  },
+  "nativeEvidence": "RC15_POWERS_PROOF.json",
+  "package": {
+    "runtimeFiles": 152,
+    "directoryAndZipVerified": true,
+    "archiveBytes": 90834070
+  },
+  "openGates": [
+    "Live browser motion and sustained completed-frame performance on the demo GPU",
+    "Mobile GPU memory, compatibility and sustained performance",
+    "Original/offline detail comparison and Volume smoke/flame motion review",
+    "Experimental adaptive flow, brick pool and precise receivers: complete-frame speed, quality and memory replacement gates"
+  ]
+}

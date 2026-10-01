@@ -42,7 +42,7 @@ function fixture(params=''){
  for(const method of['uniform1f','uniform1i','uniform2f','uniform3f','uniform3fv','uniform4fv','uniform4i'])gl[method]=(location,...values)=>calls.uniforms.push({name:location?.name,values:values.map(value=>ArrayBuffer.isView(value)?Array.from(value):value)});
  gl.drawArrays=()=>{calls.draws++;const fragment=currentProgram?.shaders?.find(s=>s.type===gl.FRAGMENT_SHADER)?.source||'';if(fragment.includes('out vec4 nextStock;'))calls.woodSteps=(calls.woodSteps||0)+1;};
   for(const name of'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei viewport bindRenderbuffer renderbufferStorage framebufferRenderbuffer bindBuffer bufferData enableVertexAttribArray vertexAttribPointer vertexAttribIPointer deleteBuffer deleteRenderbuffer enable disable depthFunc drawElements clearBufferfv texSubImage2D'.split(' '))gl[name]=()=>{};
-  gl.texSubImage2D=(type,level,x,y,width,height,format,dataType,data)=>{if(format===gl.RED&&dataType===gl.HALF_FLOAT){calls.fuelUploads=(calls.fuelUploads||0)+1;(calls.fuelFootprints??=[]).push(data.reduce((sum,v)=>sum+(v>0?1:0),0));}};
+  gl.texSubImage2D=(type,level,x,y,width,height,format,dataType,data)=>{if(format===gl.RED&&dataType===gl.HALF_FLOAT){calls.fuelUploads=(calls.fuelUploads||0)+1;(calls.fuelFootprints??=[]).push(data.reduce((sum,v)=>sum+(v>0?1:0),0));(calls.fuelPacketPeaks??=[]).push(data.reduce((peak,v)=>Math.max(peak,v),0));}};
  const ids=[...readFileSync(resolve(root,'index.html'),'utf8').matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);ids.push('fire-light','fire-light-value');
  const elements=new Map(ids.map(id=>['#'+id,new Element(id)]));for(const selector of['main','.stamp strong','.fire-light-control small'])elements.set(selector,new Element(selector));
  const document=new Target();document.hidden=false;document.querySelector=selector=>{assert.ok(elements.has(selector),'Missing fixture markup '+selector);return elements.get(selector);};document.querySelector('#fire').getContext=type=>type==='webgl2'?gl:null;document.querySelector('#fuel').value='gas';
@@ -60,14 +60,20 @@ test('Original powers production runtime controls and GPU allocation lifetime',a
  const {createFireDomain}=await import(moduleURL('fire-domain.js')),{LEGACY_PRESETS}=await import(moduleURL('pyro-gpu/presets.js')),{loadRuntime}=await import(moduleURL('runtime-loader.js')+'?fixture=powers');
  for(const [index,id]of['radial-blast','fireball','fire-rain','fire-tornado','floor-trail','combustion-bomb'].entries())await t.test(id,async()=>{
   const env=fixture('powerStrength=1.5&powerHeading=30&powerElevation=15'),mount=await loadRuntime('legacy');env.elements.get('#preset').replaceChildren(...LEGACY_PRESETS.map(p=>new Option(p.name,p.id.replace(/^legacy:/,''))));window.FireDomain=createFireDomain(id);window.FireOptics=window.createFireOptics();window.createFireRoom();
-  const runtime=await mount({initialPreset:id,onRemount:key=>assert.fail('Unexpected remount '+key),onFailure:error=>env.failures.push(String(error))});
-  assert.equal(runtime.snapshot().fire,'legacy:'+id);assert.deepEqual(runtime.snapshot().powers,{strength:1.5,heading:30,elevation:15},'The first cast consumes the shared URL settings');assert.ok(!env.requested.some(name=>name.includes('/objects/')),'Powers do not load wood geometry');
+  const initialPowers=['fireball','floor-trail'].includes(id)?{strength:1.25,heading:-30,elevation:20}:undefined,initial=initialPowers||{strength:1.5,heading:30,elevation:15};
+  const runtime=await mount({initialPreset:id,initialPowers,onRemount:key=>assert.fail('Unexpected remount '+key),onFailure:error=>env.failures.push(String(error))});
+  assert.equal(runtime.snapshot().fire,'legacy:'+id);assert.deepEqual(runtime.snapshot().powers,initial,initialPowers?'The saved look overrides URL settings before the first projectile or trail dose':'The first cast consumes the shared URL settings');assert.ok(!env.requested.some(name=>name.includes('/objects/')),'Powers do not load wood geometry');
   const allocations=env.textures.length,programCount=env.programs.length,start=performance.now()+100;for(let frame=0;frame<6;frame++)await env.frame(start+frame*40);
   assert.equal(env.textures.length,allocations,'No per-frame GPU texture allocation');assert.equal(env.programs.length,programCount,'No per-frame shader compile');assert.equal(env.calls.woodSteps||0,0);
   const uniform=name=>env.calls.uniforms.filter(u=>u.name===name).at(-1)?.values;
-  if(id==='floor-trail')assert.equal(env.calls.fuelUploads,1,'A stationary floor source deposits only its single finite cast dose');
+  assert.equal(uniform('powerStrength')[0],initial.strength,'The first submitted cast uses the supplied scene settings');
+  if(id==='floor-trail'){
+    assert.equal(env.calls.fuelUploads,1,'A stationary floor source deposits only its single finite cast dose');
+    const half=env.calls.fuelPacketPeaks[0],exponent=(half>>10)&31,peak=exponent?2**(exponent-15)*(1+(half&1023)/1024):(half&1023)*2**-24;
+    assert.ok(peak>1&&peak<1.1,'The first actual fuel packet uses the saved 125% dose, rather than stale URL or default strength');
+  }
   runtime.look({powers:{strength:1.75,heading:90,elevation:30}});await env.frame(start+260);assert.deepEqual(runtime.snapshot().powers,{strength:1.75,heading:90,elevation:30});
-  const transient=[0,1,5].includes(index),settings=transient?{strength:1.5,heading:30,elevation:15}:{strength:1.75,heading:90,elevation:30};
+  const transient=[0,1,5].includes(index),settings=transient?initial:{strength:1.75,heading:90,elevation:30};
   assert.equal(uniform('powerStrength')[0],settings.strength,transient?'Strength remains fixed for the cast in flight':'Continuous source strength updates live');const direction=uniform('powerDirection'),h=settings.heading*Math.PI/180,e=settings.elevation*Math.PI/180;assert.ok(Math.abs(direction[0]-Math.cos(h)*Math.cos(e))<1e-6&&Math.abs(direction[1]-Math.sin(e))<1e-6&&Math.abs(direction[2]-Math.sin(h)*Math.cos(e))<1e-6,transient?'An airborne cast cannot teleport when the next aim changes':'Continuous source direction updates live');
   assert.equal(env.calls.uniforms.filter(u=>u.name==='emitterKind').at(-1).values[0],22+index);assert.equal(env.elements.get('#burst').hidden,false,'Every power exposes an explicit cast control');
   env.elements.get('#extinguish').click();await env.frame(start+300);assert.equal(env.calls.uniforms.filter(u=>u.name==='brushActive').at(-1).values[0],0);

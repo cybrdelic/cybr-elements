@@ -65,6 +65,12 @@ The reported rc.14 startup failure was real: screen derivatives in wood helpers 
 
 The previous wood report remains historical evidence of its reductions and tests; it did not certify browser startup. The new strict compiler gate specifically covers the failure reported by the user. Native screenshots and field probes are development evidence, excluded from the public runtime package.
 
+## rc.16 saved-look cast ordering
+
+The first cast now receives a saved look's strength and aim before source reset or runtime creation. A remounted runtime receives `initialPowers`; the same-engine source switch applies those settings before `fire()`. Finite floor trails also receive the correct first deposit strength. Subsequent edits still apply to the next finite cast.
+
+All **241 CPU tests** pass, including four new shell tests for saved first casts, domain remounts, simulation remounts and counterpart mode switches. Original also checks actual first submitted aim/strength uniforms and the initial floor-fuel packet. This correction changes host state ordering, not generated shader equations, simulation resolution, GPU passes or source geometry. [RC16_STATE_PROOF.json](RC16_STATE_PROOF.json) records the final state tests, package checks and compiler-module identity with rc.15. The native field and frame evidence above remains applicable to the identical shaders.
+
 ## Publish to GitHub Pages
 
 The local checkout `../firesim-site` points to `https://github.com/cybrdelic/cybrdelic.github.io.git`. The public path is `/firesim/`. Inspect its branch, working tree and GitHub Pages configuration before publishing. Preserve unrelated site contents and copy only a validated package into the `firesim/` subtree. Do not copy test tools, screenshots or historical experiment folders.

@@ -6,7 +6,8 @@ import { resolve } from 'node:path';
 const root = resolve(process.env.FIRE_STUDIO_ROOT || resolve(import.meta.dirname, '../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'));
 const { FIRE_PRESETS, LEGACY_PRESETS, sourceOrigin } = await import(pathToFileURL(resolve(root, 'pyro-gpu/presets.js')).href);
 const { DEMO_PRESETS } = await import(pathToFileURL(resolve(root, 'demo-presets.js')).href);
-const sceneIds = ['simulation', 'preset', 'fuel', 'show-experiments', 'pause', 'restart', 'burst', 'extinguish', 'fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen', 'flame-color', 'embers', 'smoke-only', 'benchmark', 'retry-runtime', 'use-original'];
+const { powerDefinition, powerDirection, normalizePowerSettings } = await import(pathToFileURL(resolve(root, 'fire-powers.js')).href);
+const sceneIds = ['simulation', 'preset', 'fuel', 'show-experiments', 'pause', 'restart', 'burst', 'extinguish', 'fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen', 'flame-color', 'embers', 'smoke-only', 'benchmark', 'retry-runtime', 'use-original', 'power-strength', 'power-heading', 'power-elevation'];
 const cameraIds = ['fire-tool', 'fuel-tool', 'pan-tool', 'source-guide', 'ignite-fuel', 'clear-fuel', 'zoom', 'zoom-in', 'zoom-out', 'orbit', 'room', 'focus-fire', 'reset-view', 'fullscreen'];
 let serial = 0;
 const volumeSource = readFileSync(resolve(root, 'pyro-gpu/app.js'), 'utf8');
@@ -17,10 +18,10 @@ const volumeFireBody = volumeSource.slice(volumeFireStart, volumeFireEnd);
 function volumeFireContract($, solver, location, history, configured, restarted) {
   // Execute the production source selection function with a delayed reset
   // double. This catches missing reset Promise propagation in the real app.
-  return Function('FIRE_PRESETS', '$', 'solver', 'location', 'history', 'configured', 'restart', 'sourceOrigin',
+  return Function('FIRE_PRESETS', '$', 'solver', 'location', 'history', 'configured', 'restart', 'sourceOrigin', 'powerDefinition',
     'let benchmarkActive=false,cancelBenchmark=false,testScenario=null,testStopped=false,activeFire,flameColor,smoke;\n' +
     'const configureFire=()=>configured(activeFire,flameColor,smoke),fireHelp=()=>{};\n' + volumeFireBody + '\nreturn applyFire;')
-    (FIRE_PRESETS, $, solver, location, history, configured, restarted, sourceOrigin);
+    (FIRE_PRESETS, $, solver, location, history, configured, restarted, sourceOrigin, powerDefinition);
 }
 
 // This runs the actual shell and its real state/source/camera serializers.
@@ -124,8 +125,20 @@ async function studio(url = 'https://example.com/firesim/?simulation=volume&fire
       calls.push(['mount', kind, options.initialPreset, options.simulation]);
       if (fixture.nextMountFailure) { const error = fixture.nextMountFailure; fixture.nextMountFailure = null; throw error; }
       const original = kind === 'legacy';
+      const launchParams = new URL(location.href).searchParams;
       let state = { fire: '', simulation:options.simulation||kind, fuel: 'wood', room: new URL(location.href).searchParams.get('room') !== '0', color: 'natural', smoke: false, fireLight: 24,
+        powers: normalizePowerSettings(options.initialPowers || {
+          strength: launchParams.get('powerStrength') ?? 1,
+          heading: launchParams.get('powerHeading') ?? 0,
+          elevation: launchParams.get('powerElevation') ?? 9,
+        }),
         ...(original ? {} : { embers: true }), camera: { zoom: original ? 1.8 : 1.25, angle: 16, pan: [0, original ? -1 : 0] } };
+      // The engines launch during their startup/source-reset operation. Record
+      // the settings at that instant, not the final snapshot after shell.look.
+      const captureCast = () => {
+        if (powerDefinition(state.fire)) calls.push(['cast', kind, state.fire,
+          structuredClone(state.powers), powerDirection(state.powers)]);
+      };
       const synchronize = () => {
         for (const [id, key] of [['fuel', 'fuel'], ['flame-color', 'color'], ['fire-light', 'fireLight']]) document.ensure(id).value = state[key];
         for (const [id, key] of [['room', 'room'], ['smoke-only', 'smoke'], ['embers', 'embers']]) if (state[key] !== undefined) document.ensure(id).checked = state[key];
@@ -140,7 +153,7 @@ async function studio(url = 'https://example.com/firesim/?simulation=volume&fire
         assert.ok(preset, key);
         state = { ...state, fire: preset.id, fuel: preset.fuel, color: preset.color || 'natural', smoke: !!preset.smokeSimulation || key === 'smoke-burst' };
         if (original) state.camera = { zoom: key.startsWith('sigil') ? 1 : 1.8, angle: state.camera.angle, pan: [0, key.startsWith('sigil') ? 0 : -1] };
-        calls.push(['fire', kind, key]); synchronize();
+        calls.push(['fire', kind, key]); synchronize();captureCast();
       };
       const fire = original ? originalFire : volumeFireContract(
         selector => document.querySelector(selector), {}, location, globalThis.history,
@@ -148,7 +161,7 @@ async function studio(url = 'https://example.com/firesim/?simulation=volume&fire
           state = { ...state, fire: preset.id, fuel: document.ensure('fuel').value, color, smoke };
           calls.push(['fire', kind, preset.id]); synchronize();
         },
-        () => fixture.fireGate || Promise.resolve(),
+        async () => { if (fixture.fireGate) await fixture.fireGate;captureCast(); },
       );
       const runtime = {
         kind, mountOptions:options, disposed: false, visible: true,
@@ -158,6 +171,7 @@ async function studio(url = 'https://example.com/firesim/?simulation=volume&fire
         look(item) {
           calls.push(['look', kind, structuredClone(item)]);
           for (const key of ['fuel', 'room', 'smoke', 'color', 'fireLight', 'embers']) if (item[key] !== undefined && (!original || key !== 'embers')) state[key] = item[key];
+          if (item.powers) state.powers = normalizePowerSettings({ ...state.powers, ...item.powers });
           if (item.camera) state.camera = { ...state.camera, ...item.camera,
             angle: Math.max(original ? -30 : -75, Math.min(original ? 30 : 75, item.camera.angle ?? state.camera.angle)),
             pan: [...(item.camera.pan || state.camera.pan)] };
@@ -428,4 +442,75 @@ test('inspection camera restoration treats Volume and Sparse as the same camera 
     await f.api.look({name:'Fixture inspection',fire:'bonfire',camera:{zoom:1.25,angle:16,pan:[0,0]},test:{instruction:'Inspect smoke'}});
     await f.change('simulation','volume');assert.deepEqual(f.runtime.snapshot().camera,camera);
   }finally{f.restore();}
+});
+
+test('a saved power look supplies aim before the first same-engine cast', async () => {
+  const powers = { strength: 1.7, heading: -54, elevation: 31 };
+  for (const simulation of ['legacy', 'volume', 'sparse']) {
+    const original = simulation === 'legacy';
+    const f = await studio('https://example.com/firesim/?simulation=' + simulation +
+      '&' + (original ? 'preset' : 'firePreset') + '=fireball');
+    try {
+      const before = f.runtime, start = f.calls.length;
+      await f.api.look({ name: 'Saved aimed launch', fire: original ? 'legacy:fireball' : 'fireball',
+        simulation, powers });
+      assert.equal(f.runtime, before, simulation + ': this route must not remount');
+      const casts = f.calls.slice(start).filter(call => call[0] === 'cast');
+      assert.equal(casts.length, 1, simulation + ': one automatic first cast');
+      assert.deepEqual(casts[0].slice(3), [powers, powerDirection(powers)],
+        simulation + ': launch must capture saved aim, not a later snapshot');
+      assert.deepEqual(f.runtime.snapshot().powers, powers);
+    } finally { f.restore(); }
+  }
+});
+
+test('Original domain remount receives saved powers before its startup cast', async () => {
+  const f = await studio('https://example.com/firesim/?simulation=legacy&preset=bonfire');
+  const powers = { strength: .65, heading: 92, elevation: 44 };
+  try {
+    const before = f.runtime, start = f.calls.length;
+    await f.api.look({ name: 'Remounted fireball', fire: 'legacy:fireball', simulation: 'legacy', powers });
+    assert.notEqual(f.runtime, before);
+    assert.equal(before.disposed, true);
+    assert.deepEqual(f.runtime.mountOptions.initialPowers, powers);
+    const casts = f.calls.slice(start).filter(call => call[0] === 'cast');
+    assert.equal(casts.length, 1);
+    assert.deepEqual(casts[0].slice(3), [powers, powerDirection(powers)]);
+  } finally { f.restore(); }
+});
+
+test('saved power looks cast with their own settings during simulation remounts', async () => {
+  const powers = { strength: 1.85, heading: 68, elevation: 23 };
+  for (const [from, to] of [['legacy', 'volume'], ['volume', 'legacy'], ['volume', 'sparse'], ['sparse', 'volume']]) {
+    const f = await studio('https://example.com/firesim/?simulation=' + from +
+      '&' + (from === 'legacy' ? 'preset' : 'firePreset') + '=bonfire');
+    try {
+      const before = f.runtime, start = f.calls.length;
+      await f.api.look({ name: 'Switched aimed launch', fire: to === 'legacy' ? 'legacy:fireball' : 'fireball',
+        simulation: to, powers });
+      assert.notEqual(f.runtime, before);
+      assert.equal(before.disposed, true);
+      assert.equal(f.runtime.snapshot().simulation, to);
+      assert.deepEqual(f.runtime.mountOptions.initialPowers, powers);
+      const casts = f.calls.slice(start).filter(call => call[0] === 'cast');
+      assert.equal(casts.length, 1, from + ' to ' + to);
+      assert.deepEqual(casts[0].slice(3), [powers, powerDirection(powers)], from + ' to ' + to);
+    } finally { f.restore(); }
+  }
+});
+
+test('counterpart mode switches capture the existing power settings on the new first cast', async () => {
+  const f = await studio('https://example.com/firesim/?simulation=volume&firePreset=fireball');
+  const powers = { strength: 1.35, heading: -112, elevation: 37 };
+  try {
+    f.runtime.look({ powers });
+    for (const simulation of ['sparse', 'legacy', 'volume']) {
+      const start = f.calls.length;
+      await f.change('simulation', simulation);
+      const casts = f.calls.slice(start).filter(call => call[0] === 'cast');
+      assert.equal(casts.length, 1, simulation);
+      assert.deepEqual(casts[0].slice(3), [powers, powerDirection(powers)], simulation);
+      assert.deepEqual(f.runtime.snapshot().powers, powers);
+    }
+  } finally { f.restore(); }
 });
