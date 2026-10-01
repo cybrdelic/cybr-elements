@@ -119,5 +119,15 @@
     "All 24 Original powers were replayed; only representative Volume/Sparse motion and numerical scenarios were replayed.",
     "Original still has its projected renderer constraints.",
     "Browser interaction, sustained display pacing, mobile performance and overall game-quality visual acceptance remain open."
-  ]
+  ],
+  "publication": {
+    "status": "built-and-exact-bytes-verified",
+    "siteCommit": "1f7070ad9c38a953fdc4994a1faf6c2630a37c90",
+    "implementationCommit": "9930924",
+    "publicBuild": "467fdf306aa8ace5",
+    "publicFilesMatched": 156,
+    "report": "work/powers-qa/public-rc20.json",
+    "reportSha256": "ed95cfb25e1c4239ecd37e4f9352b326fcf451de21aad5de8e9054e00a626560",
+    "url": "https://cybrdelic.github.io/firesim/?simulation=volume&firePreset=fireball&fuel=gas&room=1&powerElevation=-20&v=467fdf306aa8ace5"
+  }
 }
