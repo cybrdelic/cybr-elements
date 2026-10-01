@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.16'
+VERSION = '0.1.0-rc.17'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 WOOD_DIRECTORIES = ['forest-tree/structure', 'logs', 'house', 'wood-sigil']
 OPEN_GATES = [

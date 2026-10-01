@@ -132,7 +132,7 @@ test('requests are transport/source footprints and allocator preflights before m
   assert.match(kernels.requestExpand, /base\[p\]\|extra\[p\]/);
   assert.match(kernels.requestExpand, /for\(var z=-1;z<=1;z\+\+\)/);
   assert.doesNotMatch(kernels.requestScatter + kernels.requestExpand, /optical|temperature|soot/);
-  assert.ok(kernels.topology.indexOf('if(failed!=0u){return;}') < kernels.topology.indexOf('poolState[16u+s]=0u'));
+  assert.ok(kernels.topology.indexOf('let mutate=mode==0u&&failureFlags==0u;') < kernels.topology.indexOf('poolState[16u+s]=0u'));
   assert.match(kernels.clearNew, /textureStore\(a,i,vec4f\(0\)\);textureStore\(b,i,vec4f\(0\)\);textureStore\(c,i,vec4f\(0\)\)/);
   assert.match(kernels.migrate, /migrateChemPoolClampedCell\(vec3i\(i\)\)/);
   assert.match(kernels.routeScalar, /commands\[18u\+i\]=legacyArgs\[i\]/);
@@ -144,7 +144,8 @@ test('10,000 encoded steps retain fixed resources and bounded cached bind groups
   const resource = () => ({ destroy() { counts.destroyed++; } });
   const device = { limits: { maxTextureDimension3D: 256 },
     createTexture() { counts.textures++;const t = resource();t.createView = () => ({});return t; },
-    createBuffer() { counts.buffers++;return resource(); },createShaderModule: ({ code }) => ({ code }),
+    createBuffer() { counts.buffers++;return resource(); },
+    createShaderModule: ({ code }) => ({ code, getCompilationInfo: async () => ({ messages: [] }) }),
     async createComputePipelineAsync({ label }) { return { label, getBindGroupLayout: () => ({}) }; },
     createBindGroup({ entries }) { counts.groups++;return { entries }; }
   };
@@ -167,4 +168,64 @@ test('10,000 encoded steps retain fixed resources and bounded cached bind groups
   assert.equal(records[6].indirect, POOL_INDIRECT.migrate);
   assert.equal(pool.statusSource.size, 64);
   pool.destroy();assert.equal(counts.destroyed, frozen.textures + frozen.buffers);
+});
+
+test('invalid pool shaders report their first compiler errors before pipeline creation and release resources', async () => {
+  const counts = { created: 0, destroyed: 0, pipelines: 0, modules: 0 };
+  const resource = () => { counts.created++;return { destroy() { counts.destroyed++; } }; };
+  const device = { limits: { maxTextureDimension3D: 256 },
+    createTexture() { return { ...resource(), createView: () => ({}) }; },
+    createBuffer: resource,
+    createShaderModule({ label }) {
+      counts.modules++;assert.equal(label, 'chemistry-pool-topology');
+      return { getCompilationInfo: async () => ({ messages: [
+        { type: 'warning', lineNum: 1, message: 'not a failure' },
+        ...Array.from({ length: 7 }, (_, i) => ({ type: 'error', lineNum: 19 + i, linePos: 3 + i, message: 'compiler detail ' + i })),
+      ] }) };
+    },
+    async createComputePipelineAsync() { counts.pipelines++;throw Error('must not build an invalid module'); },
+  };
+  await assert.rejects(createBrickPool(device), error => {
+    assert.match(error.message, /^chemistry-pool-topology: line 19, column 3: compiler detail 0/);
+    assert.match(error.message, /line 23, column 7: compiler detail 4/);
+    assert.doesNotMatch(error.message, /compiler detail [56]|not a failure|Invalid ShaderModule/);
+    return true;
+  });
+  assert.equal(counts.modules, 1);assert.equal(counts.pipelines, 0);
+  assert.ok(counts.created > 0);assert.equal(counts.destroyed, counts.created);
+});
+
+test('module creation, compiler rejection and backend errors clean up and allow a fresh pool retry', async () => {
+  let mode = 'creation', scopeDepth = 0, popped = 0, pipelines = 0;
+  const resources = [];
+  const resource = () => {
+    const item = { destroyed: false, destroy() { assert.equal(this.destroyed, false);this.destroyed = true; } };
+    resources.push(item);return item;
+  };
+  const device = { limits: { maxTextureDimension3D: 256 },
+    createTexture() { const item = resource();item.createView = () => ({});return item; },
+    createBuffer: resource,
+    pushErrorScope(type) { assert.equal(type, 'validation');assert.equal(scopeDepth, 0);scopeDepth++; },
+    async popErrorScope() { assert.equal(scopeDepth, 1);scopeDepth--;popped++;return mode === 'creation' ? Error('WGSL creation detail') : null; },
+    createShaderModule() { return { async getCompilationInfo() {
+      if (mode === 'compiler') throw Error('compiler read failed');
+      return { messages: [] };
+    } }; },
+    async createComputePipelineAsync({ label }) {
+      pipelines++;if (mode === 'backend') throw Error('backend translation detail');
+      return { label, getBindGroupLayout: () => ({}) };
+    },
+  };
+  for (const [stage, expected] of [['creation', 'WGSL creation detail'], ['compiler', 'compiler read failed'], ['backend', 'backend translation detail']]) {
+    mode = stage;
+    await assert.rejects(createBrickPool(device), { message: 'chemistry-pool-topology: ' + expected });
+    assert.equal(scopeDepth, 0);assert.ok(resources.every(item => item.destroyed));
+  }
+  assert.equal(pipelines, 1, 'invalid modules never reach pipeline creation');
+  assert.equal(popped, 3, 'compilation rejection still pops its validation scope');
+  mode = 'valid';
+  const pool = await createBrickPool(device, { capacity: 1024 });
+  assert.equal(scopeDepth, 0);assert.equal(Object.keys(pool.pipelines).length, 10);
+  assert.equal(popped, 13);assert.equal(pipelines, 11);
+  pool.destroy();assert.ok(resources.every(item => item.destroyed));
 });

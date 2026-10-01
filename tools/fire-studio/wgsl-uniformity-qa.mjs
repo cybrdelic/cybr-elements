@@ -61,6 +61,16 @@ for(const name of ['coarseCorrect','fineCorrect'])
   add('adaptive-flow/pooled/'+name,pooledChemistryConsumer(adaptive[name],pool,{texture:'chem'}));
 addFamily('adaptive-pressure',adaptivePressureShaders());
 addFamily('lighting-work',lightingWorkShaders);addFamily('brick-pool',brickPoolKernels(pool));
+// Exercise the shipping/default plans, both brick sizes, capacity quotient
+// boundaries and rejected-memory policy branches. No GPU allocations occur.
+for(const options of [
+  ...[1,4,255,256,257,512,1024,4096].map(capacity=>({capacity})),
+  ...[1,64,256,257,512].map(capacity=>({brick:32,capacity})),
+  {capacity:1024,requestHalo:0},{capacity:1024,requestHalo:2},
+]){
+  const plan=planBrickPool(options);
+  addFamily(`brick-pool/brick-${plan.brick}/capacity-${plan.capacity}/halo-${plan.requestHalo}`,brickPoolKernels(plan));
+}
 for(const file of ['pyro-gpu/objects.js','pyro-gpu/embers.js','pyro-gpu/floor-fuel.js',
   'pyro-gpu/wood-collision.js','pyro-gpu/wood-flux.js']){
   const module=await load(file);

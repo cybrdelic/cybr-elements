@@ -1,15 +1,15 @@
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-16';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-16';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-16';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-16';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-16';
-import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-16';
-import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-16';
-import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-16';
-import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-16';
-import {createWoodStateGL,originalWoodSource,woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-16';
-import {createWoodStructureGL,createWoodMeshGL,woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-16';
-import {powerSourceGLSL,normalizePowerSettings} from './fire-powers.js?v=studio-rc-16';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-17';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-17';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-17';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-17';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-17';
+import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-17';
+import {createGroundFuelGL,groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-17';
+import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-17';
+import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-17';
+import {createWoodStateGL,originalWoodSource,woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-17';
+import {createWoodStructureGL,createWoodMeshGL,woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-17';
+import {powerSourceGLSL,normalizePowerSettings} from './fire-powers.js?v=studio-rc-17';
 export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount,onFailure=()=>{}}={}){
   const scope=runtimeScope(onFailure),on=scope.on;
   const qaParams=new URL(location.href).searchParams,qaCaptureStop=qaParams.has('qa')?Number(qaParams.get('capture'))||0:0;

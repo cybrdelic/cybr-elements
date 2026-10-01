@@ -71,6 +71,16 @@ The first cast now receives a saved look's strength and aim before source reset 
 
 All **241 CPU tests** pass, including four new shell tests for saved first casts, domain remounts, simulation remounts and counterpart mode switches. Original also checks actual first submitted aim/strength uniforms and the initial floor-fuel packet. This correction changes host state ordering, not generated shader equations, simulation resolution, GPU passes or source geometry. [RC16_STATE_PROOF.json](RC16_STATE_PROOF.json) records the final state tests, package checks and compiler-module identity with rc.15. The native field and frame evidence above remains applicable to the identical shaders.
 
+## rc.17 Sparse startup compatibility and diagnostics
+
+The reported `Invalid ShaderModule chemistry-pool-topology` is a secondary error: Sparse initialization consumed a module without first reading its compiler errors. rc.17 now captures module diagnostics and creation validation scopes before pipeline creation, retains line/column details and the failing label, and cleans up allocated resources on rejection. Compiler-info rejection, creation errors, backend pipeline failure and clean retry are covered by CPU tests.
+
+Topology barriers now execute for every lane, with allocation phases gated after capacity preflight. The shader has no collective early exits or `workgroupUniformLoad` calls. Deterministic allocation, generation counters, migration commands and sticky dense fallback remain. Neither chemistry, source equations, resolution nor simulation passes change.
+
+[RC17_SPARSE_STARTUP_PROOF.json](RC17_SPARSE_STARTUP_PROOF.json) records **243 CPU tests**, **210 strict Tint modules / 322 generated variants**, **160 native Direct3D pipeline creations** across DXC/FXC and Intel/RTX adapters, and **64 allocator comparisons with all five buffers byte-identical** to rc.16. A 60-frame production Sparse command replay plus three held views passes on the integrated GPU with finite fields and valid measured CFL.
+
+The original rc.16 shader also passed native pipeline creation here. The affected browser's first compiler message remains unavailable, so this evidence does not establish its exact root cause or certify live-browser startup. The compatibility change removes the collective-exit requirement; the diagnostic change ensures the primary failure is visible if startup still fails. Shared links to the new content fingerprint load the new module graph. Browser FPS and mobile acceptance remain open.
+
 ## Publish to GitHub Pages
 
 The local checkout `../firesim-site` points to `https://github.com/cybrdelic/cybrdelic.github.io.git`. The public path is `/firesim/`. Inspect its branch, working tree and GitHub Pages configuration before publishing. Preserve unrelated site contents and copy only a validated package into the `firesim/` subtree. Do not copy test tools, screenshots or historical experiment folders.
