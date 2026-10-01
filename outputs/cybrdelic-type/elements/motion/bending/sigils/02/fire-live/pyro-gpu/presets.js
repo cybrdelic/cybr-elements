@@ -75,11 +75,12 @@ export const FIRE_PRESETS = [
   preset(
     'hearth',
     'Hearth flame',
-    'A low continuous flame with gentle lift.',
+    'A small stack of finite wood fuel with gentle lift.',
     'wood',
-    [1, 1, 0, 1],
+    [15, .7, 0, 1],
     [0.3, 0.08, 0.5, 0.65],
     [1, 1, 1, 0.65],
+    {family:'Fire',object:'logs',source:[0,.45,0],minHeight:.45,preview:new URL('./objects/logs.jpg',import.meta.url).href},
   ),
 
   preset(
@@ -87,9 +88,10 @@ export const FIRE_PRESETS = [
     'Bonfire',
     'A broad wood flame with a compact burn and a separate rising soot plume.',
     'wood',
-    [1, 1.5, 0, 1],
+    [15, 1, 0, 1],
     [0.45, 0.12, 1.5, 0.55],
     [1.2, 1.15, 1.2, 1.6],
+    {family:'Fire',object:'logs',source:[0,.64,0],minHeight:.64,preview:new URL('./objects/logs.jpg',import.meta.url).href},
   ),
 
   preset(
@@ -237,12 +239,12 @@ export const FIRE_PRESETS = [
   preset(
     'sigil-cybr',
     'CYBR sigil',
-    'The approved CYBR artwork feeds an extruded 3D fuel source.',
+    'The approved CYBR artwork cut from finite wood. Heat dries, chars and weakens the strokes.',
     'wood',
-    [10, 1.8, 0, 1],
+    [15, 1.8, 0, 1],
     [0.16, 0.018, 0.25, 0.55],
     [1, 0.9, 0.75, 0.75],
-    { source: [0, 1, 0], minHeight: 0.85 },
+    { family:'Sigils',object:'wood-sigil',ignition:'all',source: [0, 1, 0], minHeight: 0.85,preview:new URL('./source-previews/sigil-cybr.jpg',import.meta.url).href },
   ),
   preset(
     'sigil-rune',
@@ -414,7 +416,7 @@ export const FIRE_PRESETS = [
   preset(
     'cybr-tree',
     'Forest tree · basal ignition',
-    'Reviewed forest-surface tree 538. Localized heat dries the fuel before pyrolysis; bark chars and its existing fissures open.',
+    'Reviewed forest-surface tree 538. Heat dries finite wood and leaf fuel; char insulates it and weakened branches detach.',
     'wood',
     [18, 1, 0, 1],
     [0.7, 0.018, 0.55, 0.9],
@@ -516,11 +518,13 @@ export const FIRE_PRESETS = [
     'Violet CYBR',
     'The extruded CYBR fuel source with violet flame and matching illumination.',
     'wood',
-    [10, 1.8, 0, 1],
+    [15, 1.8, 0, 1],
     [0.16, 0.018, 0.25, 0.55],
     [1, 0.9, 0.75, 0.75],
     {
       family: 'Sigils',
+      object:'wood-sigil',
+      ignition:'all',
       color: 'violet',
       source: [0, 1, 0],
       minHeight: 0.85,
@@ -532,7 +536,7 @@ export const FIRE_PRESETS = [
 // Keep older URLs and saved looks working; unreviewed blockout geometry and
 // color-only variants are explicitly separated from the main source studies.
 for (const p of FIRE_PRESETS) {
-  if (['house', 'car', 'mannequin', 'logs'].includes(p.object)) {
+  if (['house', 'car', 'mannequin', 'logs'].includes(p.object)&&!['bonfire','hearth'].includes(p.id)) {
     p.family = 'Prototypes';
     p.name += ' · blockout';
   }
@@ -816,10 +820,10 @@ const ORIGINAL_ONLY = [
 // source geometry and fuel parameters on its own grid and renderer.
 const originalDescription = (source) => {
   if (source.object === 'cybr-tree')
-    return 'Static tree fuel shape with finite surface release and advected flame and soot. Detailed moisture, bark cracks and damage studies use 3D Volume.';
+    return 'Reviewed tree geometry with finite projected wood, drying, charring and load-driven branch failure. The flame and soot use Original’s layered flow.';
   const objects = {
-    logs: 'Static stacked log fuel shape with finite surface release. Flame and soot evolve in the surrounding flow.',
-    house: 'Static cabin fuel shape with finite timber surface release and advected flame and soot.',
+    logs: 'Solid logs with bark, end grain, finite fuel and load-driven fracture. Flame and soot evolve in the surrounding layered flow.',
+    house: 'Finite timber with heat-driven conversion and structural failure. Falling pieces retain their wood grain.',
     car: 'Static vehicle fuel shape with finite release from combustible regions and advected flame and soot.',
     mannequin: 'Static human-shaped test dummy with a finite combustible surface coating and advected flame and soot.',
   };

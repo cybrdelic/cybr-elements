@@ -33,6 +33,62 @@ class ReleaseChecks(unittest.TestCase):
         self.assertEqual(package.dependency_for(root / 'pyro-gpu/index.html', '../?simulation=volume', root),
                          root.resolve() / 'index.html')
 
+    def test_deferred_wood_urls_use_manifest_directories_and_receive_cache_versions(self):
+        source = "fetch(new URL('nodes.bin',base));new URL('manifest.json', base);new URL('./local.bin',import.meta.url);"
+        self.assertEqual(package.local_references(source,'.js'),['./local.bin'])
+        text = package.packaged_bytes(package.SOURCE/'wood-structure.js','wood-test',source.encode()).decode()
+        self.assertIn("new URL('nodes.bin?v=wood-test',base)",text)
+        self.assertIn("new URL('manifest.json?v=wood-test', base)",text)
+        self.assertIn("new URL('./local.bin?v=wood-test',import.meta.url)",text)
+
+    def test_new_wood_manifests_cannot_silently_omit_a_core_asset(self):
+        selected = {p.resolve() for p in package.runtime_files()}
+        omitted = package.SOURCE/'pyro-gpu/objects/house/solid.rgba16.bin'
+        selected.remove(omitted.resolve())
+        problems = package.validate_binary_assets(selected)
+        self.assertTrue(any('house/solid.rgba16.bin' in p.replace('\\','/') for p in problems),problems)
+
+    def test_computed_wood_mesh_bark_requests_are_versioned_without_mutating_manifest_keys(self):
+        token = 'wood-cache-proof'
+        fixture = """const urls=[];const fetch=url=>urls.push(String(url));
+const base='pyro-gpu/objects/house/',asset={base},file='nodes.bin',name='vertices.bin';
+const thermalPath=base+'solid.rgba16.bin',manifest={files:{'vertices.bin':{bytes:36}}};
+const filenames=['nodes.bin','bounds.bin','voxel-owners.bin','vertices.bin','bark-color.png'];
+fetch(base+'manifest.json');fetch(base+file);fetch(asset.base+name);fetch(thermalPath);
+fetch('pyro-gpu/objects/forest-tree/'+name);
+console.log(JSON.stringify({urls,keys:Object.keys(manifest.files),bytes:manifest.files[name].bytes,filenames}));"""
+        text = package.packaged_bytes(package.SOURCE/'wood-structure-gl.js', token, fixture.encode()).decode()
+        result = subprocess.run(['node', '--input-type=module', '-e', text],
+                                capture_output=True, text=True, encoding='utf-8', check=True)
+        proof = package.json.loads(result.stdout)
+        self.assertEqual(proof['urls'], [
+            'pyro-gpu/objects/house/'+name+'?v='+token
+            for name in ['manifest.json','nodes.bin','vertices.bin','solid.rgba16.bin']
+        ] + ['pyro-gpu/objects/forest-tree/vertices.bin?v='+token])
+        self.assertEqual(proof['keys'], ['vertices.bin'])
+        self.assertEqual(proof['bytes'], 36)
+        self.assertEqual(proof['filenames'], ['nodes.bin','bounds.bin','voxel-owners.bin','vertices.bin','bark-color.png'])
+        self.assertEqual(package.packaged_bytes(package.SOURCE/'wood-structure-gl.js', token, text.encode()).decode(), text)
+
+        actual = package.packaged_bytes(package.SOURCE/'wood-structure-gl.js', token).decode()
+        for pattern in [r'''fetch\(base\+["']manifest\.json\?v=wood-cache-proof["']\)''',
+                        r'''fetch\(base\+file\s*\+\s*["']\?v=wood-cache-proof["']\)''',
+                        r'''fetch\(asset\.base\+name\s*\+\s*["']\?v=wood-cache-proof["']\)''',
+                        r'''fetch\(thermalPath\s*\+\s*["']\?v=wood-cache-proof["']\)''',
+                        r'''fetch\(["']pyro-gpu/objects/forest-tree/["']\+name\s*\+\s*["']\?v=wood-cache-proof["']\)''']:
+            self.assertRegex(actual, pattern)
+        self.assertIn('asset.manifest.files[name].bytes', actual)
+        self.assertIn("['nodes.bin','bounds.bin','voxel-owners.bin']", actual)
+        self.assertIn("['bark-color.png','bark-micro.png','bark-roughness.png']", actual)
+
+        path = package.SOURCE/'pyro-gpu/forest-mesh.js'
+        actual = package.packaged_bytes(path, token).decode()
+        self.assertIn("fetch(new URL(name + '?v="+token+"', base))", actual)
+        self.assertRegex(actual, r'''fetch\(new URL\(["']\./objects/forest-tree/["']\+name\s*\+\s*["']\?v=wood-cache-proof["'],import\.meta\.url\)\)''')
+        self.assertIn('this.manifest.files[name].bytes', actual)
+        self.assertIn("buffer('vertices.bin',GPUBufferUsage.VERTEX)", actual)
+        self.assertIn("texture('bark-roughness.png', 'rgba8unorm')", actual)
+
     def test_cache_keys_cannot_split_one_module_into_multiple_instances(self):
         source = ("import './presets.js?v=rc3'; import('./presets.js?v=rc5'); "
                   "import './fresh.js'; const legacyScripts=['helper.js']; "
@@ -49,7 +105,7 @@ class ReleaseChecks(unittest.TestCase):
             self.assertIn("fetch(new URL(name + '?v=0123456789abcdef', base))", text)
             self.assertIn("'.rgba16.bin?v=0123456789abcdef'", text)
             result = subprocess.run(['node', '--input-type=module', '--check'], input=text,
-                                    capture_output=True, text=True)
+                                    capture_output=True, text=True, encoding='utf-8')
             self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_content_fingerprint_changes_when_any_source_or_binary_changes(self):
@@ -94,7 +150,7 @@ class ReleaseChecks(unittest.TestCase):
                 continue
             text = package.packaged_bytes(path, token).decode()
             result = subprocess.run(['node', '--input-type=module', '--check'], input=text,
-                                    capture_output=True, text=True)
+                                    capture_output=True, text=True, encoding='utf-8')
             self.assertEqual(result.returncode, 0, str(path) + result.stderr)
             for ref in package.local_references(text, '.js'):
                 dependency = package.dependency_for(path, ref)

@@ -136,7 +136,7 @@ test("every authored 3D source retains its ID when switching to Original and bac
     assert.equal(matchingPreset("volume", original), preset.id);
     assert.ok(Number.isInteger(emitterKindFor(preset)), preset.id);
     if (preset.object) {
-      const asset = new URL("../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/pyro-gpu/objects/" + preset.object + ".rgba16.bin", import.meta.url);
+      const asset = new URL("../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/pyro-gpu/objects/" + (preset.object==='wood-sigil'?'wood-sigil/solid.rgba16.bin':preset.object+".rgba16.bin"), import.meta.url);
       assert.ok(existsSync(fileURLToPath(asset)), preset.id + " geometry missing");
     }
   }
@@ -146,7 +146,7 @@ test("Original selects deeper domains only for burst and object sources", () => 
   const prior = globalThis.location;
   globalThis.location = { href: "https://example.com/fire-live/" };
   try {
-    assert.deepEqual([createFireDomain("bonfire").blast, createFireDomain("bonfire").extent[2]], [false, 1.8]);
+    assert.deepEqual([createFireDomain("bonfire").blast, createFireDomain("bonfire").object,createFireDomain("bonfire").extent[2]], [false,true, 3]);
     assert.deepEqual([createFireDomain("oil-burst").blast, createFireDomain("oil-burst").extent[2]], [true, 4]);
     assert.deepEqual([createFireDomain("burning-house").object, createFireDomain("burning-house").extent[2]], [true, 3]);
   } finally {

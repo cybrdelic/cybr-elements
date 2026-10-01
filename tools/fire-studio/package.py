@@ -11,8 +11,9 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.13'
+VERSION = '0.1.0-rc.14'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
+WOOD_DIRECTORIES = ['forest-tree/structure', 'logs', 'house', 'wood-sigil']
 OPEN_GATES = [
     'Live browser motion and sustained completed-frame performance on the demo GPU',
     'Mobile GPU memory, compatibility and sustained performance',
@@ -41,7 +42,11 @@ def runtime_files():
     files += list((SOURCE / 'pyro-gpu/objects').glob('*.jpg'))
     files += [SOURCE / 'pyro-gpu/objects/manifest.json']
     tree = SOURCE / 'pyro-gpu/objects/forest-tree'
-    files += [tree / name for name in ['source-space.js', 'manifest.json', 'vertices.bin', 'indices.bin', 'bark-color.png', 'bark-micro.png', 'preview.jpg']]
+    files += [tree / name for name in ['source-space.js', 'manifest.json', 'vertices.bin', 'indices.bin', 'bark-color.png', 'bark-micro.png', 'bark-roughness.png', 'preview.jpg', 'wood-solid.rgba16.bin', 'flux-metadata.rgba32.bin', 'flux-metadata.rgba32.bin.json']]
+    for directory in WOOD_DIRECTORIES:
+        base = SOURCE / 'pyro-gpu/objects' / directory
+        files.append(base / 'manifest.json')
+        files += [path for path, _ in manifest_records(base)]
     return sorted(set(files))
 
 
@@ -53,7 +58,11 @@ def local_references(text, suffix):
     """
     refs = re.findall(r'''(?:\bfrom\s*|\bimport\s*\(\s*)['"]([^'"]+)['"]''', text)
     refs += re.findall(r'''\bimport\s*['"]([^'"]+)['"]''', text)
-    refs += re.findall(r'''(?:\bfetch\s*\(\s*|\bnew URL\s*\(\s*)['"]([^'"]+)['"]\s*[,)]''', text)
+    refs += re.findall(r'''\bfetch\s*\(\s*['"]([^'"]+)['"]\s*[,)]''', text)
+    # A deferred asset URL uses its asset-directory base, not this module's
+    # directory. Its files are strictly checked through the wood manifests.
+    refs += [ref for ref, base in re.findall(r'''\bnew URL\s*\(\s*['"]([^'"]+)['"]\s*,\s*([^)]*)\)''', text)
+             if base.strip() == 'import.meta.url' or ref.startswith('/')]
     if suffix == '.html':
         refs += re.findall(r'''(?:src|href)\s*=\s*["']([^"']+)["']''', text)
     if suffix == '.css':
@@ -89,12 +98,27 @@ def catalog_assets():
 import {fileURLToPath} from 'node:url';
 console.log(JSON.stringify(FIRE_PRESETS.flatMap(p => [
   ...(p.preview ? [fileURLToPath(p.preview)] : []),
-  ...(p.object ? [fileURLToPath(new URL('./objects/'+p.object+'.rgba16.bin', %s))] : [])
+  ...(p.object ? [fileURLToPath(new URL('./objects/'+(p.object==='cybr-tree'?'forest-tree/wood-solid.rgba16.bin':['logs','house','wood-sigil'].includes(p.object)?p.object+'/solid.rgba16.bin':p.object+'.rgba16.bin'), %s))] : [])
 ])));""" % (json.dumps((SOURCE / 'pyro-gpu/presets.js').as_uri()),
               json.dumps((SOURCE / 'pyro-gpu/presets.js').as_uri()))
     result = subprocess.run(['node', '--input-type=module', '-e', script],
                             capture_output=True, text=True, check=True)
-    return [Path(p).resolve() for p in json.loads(result.stdout)]
+    paths = [Path(p).resolve() for p in json.loads(result.stdout)]
+    for directory in WOOD_DIRECTORIES:
+        base = SOURCE / 'pyro-gpu/objects' / directory
+        paths += [path.resolve() for path, _ in manifest_records(base)]
+    return sorted(set(paths))
+
+
+def manifest_records(base):
+    manifest = json.loads((base / 'manifest.json').read_text())
+    records = []
+    for name, entry in manifest['files'].items():
+        path = (base / name).resolve()
+        if Path(name).is_absolute() or not path.is_relative_to(base.resolve()):
+            raise RuntimeError('Unsafe wood asset manifest path: ' + name)
+        records.append((path, entry))
+    return records
 
 
 def validate_binary_assets(selected):
@@ -103,16 +127,28 @@ def validate_binary_assets(selected):
     records = [(SOURCE / 'pyro-gpu/objects' / (m['id'] + '.rgba16.bin'), m)
                for m in manifest['models']]
     tree = SOURCE / 'pyro-gpu/objects/forest-tree'
-    records += [(tree / name, entry) for name, entry in
-                json.loads((tree / 'manifest.json').read_text())['files'].items()
-                if (tree / name).resolve() in selected]
+    records += manifest_records(tree)
+    for directory in WOOD_DIRECTORIES:
+        base = SOURCE / 'pyro-gpu/objects' / directory
+        records += manifest_records(base)
     for path, entry in records:
         if path.resolve() not in selected:
             problems.append('Asset manifest references omitted ' + str(path.relative_to(SOURCE)))
             continue
-        data = path.read_bytes()
+        data = runtime_bytes(path)
         if len(data) != entry['bytes'] or hashlib.sha256(data).hexdigest() != entry['sha256']:
             problems.append('Binary asset differs from its manifest: ' + str(path.relative_to(SOURCE)))
+    for directory in ['forest-tree', 'logs', 'house', 'wood-sigil']:
+        base = SOURCE / 'pyro-gpu/objects' / directory
+        metadata_path = base / 'flux-metadata.rgba32.bin'
+        stats = json.loads(metadata_path.with_suffix('.bin.json').read_text())
+        source = SOURCE / stats['sourceRuntimePath']
+        if source.resolve() not in selected:
+            problems.append('Flux metadata source omitted: ' + stats['sourceRuntimePath'])
+        elif hashlib.sha256(source.read_bytes()).hexdigest() != stats['sourceSha256']:
+            problems.append('Stale wood flux source: ' + directory)
+        if metadata_path.stat().st_size != 64**3*16 or hashlib.sha256(metadata_path.read_bytes()).hexdigest() != stats['sha256']:
+            problems.append('Invalid wood flux metadata: ' + directory)
     for name, expected in [('source-native.rgba8.bin', 896 * 504 * 4),
                            ('halfwidth-native.r8.bin', 896 * 504)]:
         path = SOURCE / 'source' / name
@@ -135,7 +171,7 @@ def version_url(ref, token):
     url = urlsplit(ref)
     if url.scheme or url.netloc or not url.path or url.path.endswith('/'):
         return ref
-    if Path(url.path).suffix not in {'.js', '.css', '.svg', '.bin', '.png', '.jpg'}:
+    if Path(url.path).suffix not in {'.js', '.css', '.svg', '.bin', '.png', '.jpg', '.json'}:
         return ref
     query = dict(parse_qsl(url.query, keep_blank_values=True))
     query['v'] = token
@@ -156,7 +192,8 @@ def packaged_bytes(path, token, data=None):
     text = re.sub(r'([?&]v=)[A-Za-z0-9_.-]+', lambda m: m[1] + token, text)
     script_list = re.search(r'\blegacyScripts\s*=\s*\[([^]]*)\]', text)
     computed_scripts = set(re.findall(r'''['"]([^'"]+\.js)['"]''', script_list[1])) if script_list else set()
-    for ref in local_references(text, path.suffix):
+    deferred = re.findall(r'''\bnew URL\s*\(\s*['"]([^'"]+)['"]\s*,\s*base\s*\)''', text)
+    for ref in list(dict.fromkeys(local_references(text, path.suffix) + deferred)):
         if ref in computed_scripts:
             continue
         revised = version_url(ref, token)
@@ -168,10 +205,27 @@ def packaged_bytes(path, token, data=None):
     # These dynamic names are restricted by the validated object catalog.
     text = text.replace("'.rgba16.bin'", "'.rgba16.bin?v=" + token + "'")
     text = text.replace("'.jpg'", "'.jpg?v=" + token + "'")
+    for fragment in ['/solid.rgba16.bin', 'forest-tree/wood-solid.rgba16.bin',
+                     'flux-metadata.rgba32.bin', '../flux-metadata.rgba32.bin']:
+        text = text.replace("'" + fragment + "'", "'" + fragment + '?v=' + token + "'")
     # ForestMesh constructs URLs through a local helper; version its dynamic
     # binary, JSON and texture requests without changing the manifest lookup key.
     text = text.replace('fetch(new URL(name, base))',
                         "fetch(new URL(name + '?v=" + token + "', base))")
+    # Original's wood loader keeps raw filenames as manifest dictionary keys.
+    # Version only the request expression, including its computed thermal path.
+    # These narrowly scoped forms refer to the manifest-validated wood assets.
+    suffix = json.dumps('?v=' + token)
+    if path.name == 'wood-structure-gl.js':
+        text = re.sub(r'''(\bfetch\s*\(\s*base\s*\+\s*)(['"])manifest\.json\2(\s*\))''',
+                      lambda m: m[1] + json.dumps(version_url('manifest.json', token)) + m[3], text)
+        text = re.sub(r'''(\bfetch\s*\(\s*)(base\s*\+\s*file|asset\.base\s*\+\s*name|thermalPath)(\s*\))''',
+                      lambda m: m[1] + m[2] + ' + ' + suffix + m[3], text)
+        text = re.sub(r'''(\bfetch\s*\(\s*(['"])pyro-gpu/objects/forest-tree/\2\s*\+\s*name)(\s*\))''',
+                      lambda m: m[1] + ' + ' + suffix + m[3], text)
+    if path.name == 'forest-mesh.js':
+        text = re.sub(r'''(\bfetch\s*\(\s*new URL\s*\(\s*(['"])\./objects/forest-tree/\2\s*\+\s*name)(\s*,\s*import\.meta\.url\s*\)\s*\))''',
+                      lambda m: m[1] + ' + ' + suffix + m[3], text)
     return text.encode('utf-8')
 
 
@@ -238,7 +292,9 @@ def validate_startup(root):
                    'adaptive-flow.test.mjs', 'adaptive-pressure.test.mjs', 'adaptive-runtime.test.mjs', 'adaptive-lifecycle.test.mjs',
                    'brick-pool.test.mjs', 'pooled-coupling.test.mjs', 'lighting-work.test.mjs',
                    'fuel-ground.test.mjs', 'floor-fuel.test.mjs', 'sigil-guide.test.mjs', 'scene-light-presets.test.mjs', 'smoke-lifecycle.test.mjs', 'original-smoke.test.mjs',
-                   'simulation-modes.test.mjs', 'simulation-look.test.mjs', 'sparse-app.test.mjs']:
+                   'simulation-modes.test.mjs', 'simulation-look.test.mjs', 'sparse-app.test.mjs',
+                   'wood-thermo.test.mjs', 'wood-flux.test.mjs', 'wood-structure.test.mjs', 'wood-state-sampling.test.mjs',
+                   'original-wood.test.mjs', 'floor-wood.test.mjs', 'volume-startup.test.mjs']:
         result = subprocess.run(
             ['node', str(Path(__file__).with_name(runner))],
             env=environment, capture_output=True, text=True, timeout=30,
@@ -265,7 +321,7 @@ def verify_artifact(destination):
                 raise RuntimeError('Release bytes do not match the manifest: ' + name)
             if path.suffix == '.js':
                 result = subprocess.run(['node', '--input-type=module', '--check'],
-                                        input=data.decode('utf-8-sig'), capture_output=True, text=True)
+                                        input=data.decode('utf-8-sig'), capture_output=True, text=True, encoding='utf-8')
                 if result.returncode:
                     raise RuntimeError(name + ': ' + result.stderr[:500])
         names = artifact.namelist()

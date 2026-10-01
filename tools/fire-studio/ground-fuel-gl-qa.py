@@ -13,14 +13,16 @@ from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(os.environ.get('FIRE_STUDIO_ROOT',ROOT/'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live')).resolve()
-ap=argparse.ArgumentParser();ap.add_argument('output',type=Path);args=ap.parse_args();out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
+ap=argparse.ArgumentParser();ap.add_argument('output',type=Path);ap.add_argument('--wood',action='store_true',help='Run current wood stock, floor and posed mesh gates after the base lifecycle gates');args=ap.parse_args();out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
 data=json.loads((out/'startup-sigil.json').read_text());assert Path(data['runtimeRoot']).resolve()==SOURCE,'Export the runtime selected by FIRE_STUDIO_ROOT first'
 report={'runtimeRoot':str(SOURCE),'scope':'Hidden native GLES actual shader assembly, cold inventory, finite ignition, burnout, persistent guide char and material pixels. No browser/mobile/frame-pacing proof.','checks':[],'pass':False}
-def compile(v,f):
+def compile(v,f,label='fixture'):
  p=GL.glCreateProgram()
  for kind,source in [(GL.GL_VERTEX_SHADER,v),(GL.GL_FRAGMENT_SHADER,f)]:
   s=GL.glCreateShader(kind);GL.glShaderSource(s,source);GL.glCompileShader(s)
-  if not GL.glGetShaderiv(s,GL.GL_COMPILE_STATUS):raise RuntimeError(GL.glGetShaderInfoLog(s).decode(errors='replace'))
+  if not GL.glGetShaderiv(s,GL.GL_COMPILE_STATUS):
+   stage='vertex' if kind==GL.GL_VERTEX_SHADER else 'fragment';path=out/(str(label)+'-'+stage+'-failed.glsl');path.write_text(source)
+   raise RuntimeError(f'{label} {stage} compile failed ({path}): '+GL.glGetShaderInfoLog(s).decode(errors='replace'))
   GL.glAttachShader(p,s);GL.glDeleteShader(s)
  GL.glLinkProgram(p)
  if not GL.glGetProgramiv(p,GL.GL_LINK_STATUS):raise RuntimeError(GL.glGetProgramInfoLog(p).decode(errors='replace'))
@@ -54,9 +56,9 @@ try:
  if not window:raise RuntimeError('Hidden GLES 3 context unavailable')
  glfw.make_context_current(window);GL.glBindVertexArray(GL.glGenVertexArrays(1))
  report['renderer']=GL.glGetString(GL.GL_RENDERER).decode();report['version']=GL.glGetString(GL.GL_VERSION).decode()
- programs=[(item,compile(item['vertex'],item['fragment'])) for item in data['programs']]
+ programs=[(item,compile(item['vertex'],item['fragment'],'sigil-program-'+str(i))) for i,item in enumerate(data['programs'])]
  burst=json.loads((out/'startup-explosion.json').read_text());assert Path(burst['runtimeRoot']).resolve()==SOURCE
- burst_programs=[compile(item['vertex'],item['fragment']) for item in burst['programs']]
+ burst_programs=[compile(item['vertex'],item['fragment'],'burst-program-'+str(i)) for i,item in enumerate(burst['programs'])]
  report['checks'].append({'gate':'actual normal/burst startup shader compile/link','pass':True,'programs':len(programs)+len(burst_programs)})
  select=lambda needle:next(p for item,p in programs if needle in item['fragment'])
  ground=select('out vec4 state;');guide=select('out vec4 damage;');render=select('bool fineDepth=');present=select('uniform sampler2D projection;');simulation=select('out vec4 outVF;')
@@ -159,7 +161,11 @@ try:
  assert np.all(legacy_visible[:,:,3][changed]<=cutoff_ceiling) and np.count_nonzero(visible[:,:,3][changed])==0
  report['checks'].append({'gate':'cold binary16 soot plateau clears; visible smoke is bit identical to native legacy shader','pass':True,'plateauInput':1.621246337890625e-5,'plateauOutputNonzero':0,'legacyPlateauPeakAfterStep':legacy_peak,'visibleSootInput':float(np.float16(.1)),'visibleSootCenterAfterStep':center_soot,'cpuF16DecayReference':expected,'freshVisibleSootBitIdentical':True,'otherChemistryBitIdentical':True,'invisibleOutletCellsCleared':int(np.count_nonzero(changed)),'largestLegacySootCleared':float(legacy_visible[:,:,3][changed].max()) if changed.any() else 0.,'binary16CutoffCeiling':cutoff_ceiling})
  del visible
- assert GL.glGetError()==GL.GL_NO_ERROR;report['pass']=True
+ assert GL.glGetError()==GL.GL_NO_ERROR
+ if args.wood:
+  import importlib.util
+  spec=importlib.util.spec_from_file_location('original_wood_gl_gates',ROOT/'tools/fire-studio/original-wood-gl-gates.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.run(globals())
+ report['pass']=True
 except Exception as e:
  import traceback
  report['error']=str(e)[:12000];(out/'error.log').write_text(traceback.format_exc())

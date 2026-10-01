@@ -13,6 +13,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('recording')
 ap.add_argument('--adapter', choices=['integrated', 'discrete'], default='integrated')
 ap.add_argument('--profile', action='store_true', help='Calibrated native timestamps per recorded submission')
+ap.add_argument('--profile-passes', action='store_true', help='Also record native GPU timestamps for each production pass')
 ap.add_argument('--save-fields', action='store_true', help='Save full snapshot RGBA16F fields as .npy evidence')
 ap.add_argument('--output', help='New output subdirectory under the recording; preserves previous evidence')
 args = ap.parse_args()
@@ -38,6 +39,7 @@ report = {'nativeOnly': True, 'recording': str(source), 'options': data.get('opt
     'textureCopySrcReadbackUsageAdded': True, 'resourceCount': len(data['resources']), 'submissions': [], 'frames': [], 'pass': False}
 location = {}
 pending_submissions = []
+pass_profile = []
 
 def snake(key): return re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', key).lower()
 def resolve(value):
@@ -75,6 +77,12 @@ def command(encoder, record, ordinal):
         encoder.copy_buffer_to_buffer(objects[record['src']],record['srcOffset'],objects[record['dst']],record['dstOffset'],record['size']);return
     if kind not in ('compute','render'): raise RuntimeError('Unsupported recorded command: ' + kind)
     desc = resolve(record['desc'])
+    if args.profile and args.profile_passes:
+        pipeline_id=next((c['id'] for c in record['commands'] if c['kind']=='pipeline'),None)
+        label=descriptions[pipeline_id]['desc'].get('label',kind) if pipeline_id else kind
+        first=2+len(pass_profile)*2
+        desc['timestamp_writes']={'query_set':query,'beginning_of_pass_write_index':first,'end_of_pass_write_index':first+1}
+        pass_profile.append({'label':label,'kind':kind,'command':ordinal})
     p = encoder.begin_compute_pass(**desc) if kind == 'compute' else encoder.begin_render_pass(**desc)
     pipeline = None
     for sub_index, sub in enumerate(record['commands']):
@@ -84,6 +92,9 @@ def command(encoder, record, ordinal):
         elif sub['kind'] == 'dispatch': p.dispatch_workgroups(*sub['work'])
         elif sub['kind'] == 'indirect': p.dispatch_workgroups_indirect(objects[sub['buffer']],sub['offset'])
         elif sub['kind'] == 'draw': p.draw(*sub['work'])
+        elif sub['kind'] == 'vertexBuffer': p.set_vertex_buffer(sub['index'],objects[sub['buffer']],sub['offset'])
+        elif sub['kind'] == 'indexBuffer': p.set_index_buffer(objects[sub['buffer']],sub['format'],sub['offset'])
+        elif sub['kind'] == 'drawIndexed': p.draw_indexed(*sub['work'])
         else: raise RuntimeError('Unsupported recorded pass operation: ' + sub['kind'])
     p.end()
 
@@ -134,9 +145,9 @@ def read_floor(texture_id, frame):
     values=np.frombuffer(raw,dtype).reshape(height,width,4).copy()
     result={'sha256':hashlib.sha256(raw).hexdigest(),'sumByChannel':values.sum(axis=(0,1),dtype=np.float64).tolist(),
             'maxByChannel':values.max(axis=(0,1)).astype(float).tolist(),'nonFinite':int(np.count_nonzero(~np.isfinite(values)))}
-    if result['nonFinite'] or np.any(values<0) or np.max(values[:,:,0])>4.01:
+    if result['nonFinite'] or np.any(values[:,:,[0,2,3]]<0) or np.min(values[:,:,1])<(293.15-300)/1200-1e-6 or np.max(values[:,:,0])>4.01:
         raise RuntimeError('Invalid floor fuel state at frame '+str(frame['index']))
-    if data.get('options',{}).get('unlit') and not data.get('options',{}).get('igniteFuel') and np.count_nonzero(values[:,:,1:]):
+    if data.get('options',{}).get('unlit') and not data.get('options',{}).get('igniteFuel') and (values[:,:,1].max()>1e-6 or values[:,:,2].max()>1e-5):
         raise RuntimeError('Cold deposits ignited without a heat source')
     if args.save_fields:
         target=folder/('floor-'+str(frame['index'])+'.npy');np.save(target,values);result['path']=str(target)
@@ -149,23 +160,32 @@ try:
     if args.profile:
         from wgpu.backends.wgpu_native._api import libf
         period=float(libf.wgpuQueueGetTimestampPeriod(queue._internal));report['timestampPeriodNs']=period
-        query=dev.create_query_set(type='timestamp',count=2)
-        resolved=dev.create_buffer(size=16,usage=wgpu.BufferUsage.QUERY_RESOLVE|wgpu.BufferUsage.COPY_SRC)
+        max_passes=max((sum(c['kind'] in ('compute','render') for c in op.get('commands',[])) for op in data['operations']),default=0)
+        query_count=2+2*max_passes if args.profile_passes else 2
+        query=dev.create_query_set(type='timestamp',count=query_count)
+        resolved=dev.create_buffer(size=query_count*8,usage=wgpu.BufferUsage.QUERY_RESOLVE|wgpu.BufferUsage.COPY_SRC)
     for operation_index, operation in enumerate(data['operations']):
         location={'operation':operation_index,'kind':operation['kind']}
         kind=operation['kind']
         if kind=='writeBuffer': queue.write_buffer(objects[operation['buffer']],operation['offset'],(source.parent/operation['file']).read_bytes())
         elif kind=='writeTexture': queue.write_texture(resolve(operation['target']),(source.parent/operation['file']).read_bytes(),resolve(operation['layout']),operation['size'])
+        elif kind=='writeImage':
+            image=Image.open(source.parent/operation['file']).convert('RGBA')
+            if operation.get('flipY'): image=image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+            queue.write_texture(resolve(operation['target']),image.tobytes(),{'bytes_per_row':image.width*4,'rows_per_image':image.height},operation['size'])
         elif kind=='submit':
             started=time.perf_counter();encoder=dev.create_command_encoder()
+            pass_profile=[]
             if args.profile:
                 p=encoder.begin_compute_pass(timestamp_writes={'query_set':query,'beginning_of_pass_write_index':0});p.end()
             for command_index, record in enumerate(operation['commands']): command(encoder,record,command_index)
             if args.profile:
-                p=encoder.begin_compute_pass(timestamp_writes={'query_set':query,'beginning_of_pass_write_index':1});p.end();encoder.resolve_query_set(query,0,2,resolved,0)
+                p=encoder.begin_compute_pass(timestamp_writes={'query_set':query,'beginning_of_pass_write_index':1});p.end();encoder.resolve_query_set(query,0,2+2*len(pass_profile),resolved,0)
             queue.submit([encoder.finish()]);timing={'operation':operation_index,'commands':len(operation['commands'])}
             if args.profile:
                 ticks=np.frombuffer(queue.read_buffer(resolved),np.uint64);timing['gpuMs']=float(ticks[1]-ticks[0])*period/1e6
+                if args.profile_passes:
+                    timing['passes']=[{**entry,'gpuMs':float(ticks[3+2*i]-ticks[2+2*i])*period/1e6} for i,entry in enumerate(pass_profile)]
                 timing['completedWallMs']=(time.perf_counter()-started)*1000
             report['submissions'].append(timing)
             pending_submissions.append(timing)
@@ -187,6 +207,23 @@ try:
                         ': measured CFL='+str(result['stats']['measuredCFL'])+'. No performance acceptance is valid beyond this point.')
             if operation.get('snapshot'):
                 result['image']=read_image(operation['output'],'frame-'+str(operation['index']))
+                if operation.get('wood'):
+                    wood=operation['wood']
+                    def material(name):
+                        raw=queue.read_texture({'texture':objects[wood[name]]},{'bytes_per_row':64*16,'rows_per_image':64},[64,64,64])
+                        return np.frombuffer(raw,np.float32).reshape(64,64,64,4).copy()
+                    stock=material('stock');wear=material('wear');mass=material('mass')[...,3]*wood['scale']**3
+                    poses=np.frombuffer(queue.read_buffer(objects[wood['poses']]),np.float32).reshape(-1,16)
+                    fractures=np.frombuffer(queue.read_buffer(objects[wood['fractures']]),np.uint32)
+                    flux_stats=np.frombuffer(queue.read_buffer(objects[wood['flux']],wood['fluxStatsOffset'],64),np.uint32)
+                    nonfinite=int(np.count_nonzero(~np.isfinite(stock))+np.count_nonzero(~np.isfinite(wear))+np.count_nonzero(~np.isfinite(poses)))
+                    result['wood']={'initialDryKg':float(mass.sum()),'virginKg':float((stock[...,0]*mass).sum()),'charKg':float((stock[...,3]*mass).sum()),
+                        'releaseKgSec':float((stock[...,2]*mass).sum()),'maxHeatK':float(293.15+500*stock[...,1].max()),
+                        'maxCrack':float(wear[...,2].max()),'brokenBonds':int(fractures[0]),'detachedNodes':int((poses[:,3]>=0).sum()),
+                        'nonFinite':nonfinite,'blockedKg':float((int(flux_stats[0])+2**32*int(flux_stats[1]))/1e8),
+                        'escapedKg':float((int(flux_stats[8])+2**32*int(flux_stats[9]))/1e8)}
+                    if operation.get('saveField'):np.savez_compressed(folder/('wood-'+str(operation['index'])+'.npz'),stock=stock,wear=wear,mass=mass,poses=poses)
+                    if nonfinite:raise RuntimeError('Nonfinite wood material or rigid pose')
                 if operation.get('floorFuel'):result['floorFuel']=read_floor(operation['floorFuel'],operation)
                 if 'dense' in operation and operation.get('saveField', True):
                     result['chemistry']=read_chemistry(operation)
@@ -202,7 +239,7 @@ try:
     report['pass']=True
 except Exception as error:
     report['error']={'location':location,'type':type(error).__name__,'message':str(error)[:12000]}
-    (folder/'error.log').write_text(traceback.format_exc())
+    (folder/'error.log').write_text(traceback.format_exc(),encoding='utf-8')
 finally:
     (folder/'report.json').write_text(json.dumps(report,indent=2));dev.destroy()
 print(json.dumps({'path':str(folder/'report.json'),'pass':report['pass'],'frames':len(report['frames']),

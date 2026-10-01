@@ -55,7 +55,7 @@ function fixture(){
   v:[texture('oldv'),texture('newv'),texture('predv')],c:[texture('oldc'),texture('newc'),texture('predc')],vort:texture('curl'),
   bricks:resource('chem-work'),indirect:resource('chem-args'),opticalMasks:[resource('optical-a'),resource('optical-b')],
   sigilSource:texture('sigil'),objectId:null,objectModels:{},emptyObject:texture('empty'),objectSettings:resource('object'),
-  surface:[texture('surface-a'),texture('surface-b')],si:0,
+  surface:[texture('surface-a'),texture('surface-b')],damage:[texture('wear-a'),texture('wear-b')],si:0,
   canvas:{width:3,height:2},stateEpoch:0,time:0,burstAge:2,maxSpeed:1,seed:2,source:[0,.58,0],active:true,fuel:0,
   effect:[0,1,.085,1],dynamics:[1,1,1,1],chemistry:[1,1,1,1],embers:true,smoke:false,color:'natural',
   view:resource('camera'),stats:resource('stats'),groupStats:resource('group-stats'),params:Array.from({length:12},()=>resource('params')),
@@ -64,12 +64,12 @@ function fixture(){
   rendererFamilies:new Map(),masks:[resource('mask-a'),resource('mask-b')],emberBuffer:resource('embers'),
   lightSeeds:resource('light-seeds'),fireLights:resource('fire-lights'),roomTargets:[texture('direct-room'),texture('bounce-room')],
   lightingReceivers:resource('receivers'),dilatePipeline:pipeline('visible-bricks'),clearPipeline:pipeline('clear-state'),
-  surfacePipeline:pipeline('surface-fuel'),surfaceResetPipeline:pipeline('surface-reset'),
+  surfacePipeline:pipeline('surface-fuel'),surfaceResetPipeline:pipeline('surface-reset'),damageResetPipeline:pipeline('wood-damage-reset'),
   emberPipeline:pipeline('embers'),emberRender:pipeline('ember-render'),present:pipeline('present'),
   output:resource('output'),outputView:resource('output-view'),context:{getCurrentTexture:()=>({createView:()=>resource('swapchain')})},
   prepareSource:async()=>{},
-  floorFuel:[texture('floor-a'),texture('floor-b')],floorDeposits:texture('floor-deposits'),floorIndex:0,hasFloorFuel:false,
-  floorClear:pipeline('floor-fuel-clear'),fuelBrush:{clear(){}},
+  floorFuel:[texture('floor-a'),texture('floor-b')],floorWear:[texture('floor-wear-a'),texture('floor-wear-b')],floorDeposits:texture('floor-deposits'),floorIndex:0,hasFloorFuel:false,
+  floorClear:pipeline('floor-fuel-clear'),floorWearClear:pipeline('floor-wood-wear-clear'),fuelBrush:{clear(){}},
  });
  s.pipelines=Object.fromEntries(['advectVelocity','curl','correctVelocity','rhs','project','reduceStats','buildBricks','advectScalar','correctScalar'].map(name=>[name,pipeline(name)]));
  s.levels=[{n:128,p:[texture('pressure-a'),texture('pressure-b')],b:texture('rhs'),current:0}];
@@ -181,11 +181,12 @@ test('the actual app snapshot caller uses captured dimensions after a resize',as
 test('dense and adaptive steps bind the current pooled field to surface, velocity and embers',async()=>{
  for(const adaptive of [false,true])for(const ci of [0,1]){
   const f=fixture(),{s,calls,encoder}=f,pool=await f.pool();
+  const previousPages=pool.pageTable;
   s.adaptive=adaptive;s.objectId='car';s.objectModels.car=f.texture('car');s.ci=ci;
   if(adaptive)await s.initAdaptive();calls.length=0;s.step(encoder,1/60,0);
   const beforeCorrection=calls.filter(x=>['surface-fuel','correctVelocity','adaptive-flow-coarseCorrect','adaptive-flow-fineCorrect'].includes(x.pipe));
   assert.equal(beforeCorrection.length,adaptive?4:2);
-  for(const call of beforeCorrection)assertCurrentField(call,pool,ci);
+  for(const call of beforeCorrection)assertCurrentField(call,call.pipe==='surface-fuel'?{...pool,pageTable:previousPages}:pool,ci);
   const ember=calls.find(x=>x.pipe==='embers');assert.ok(ember);assertCurrentField(ember,pool,1-ci);
   const predict=bindings(calls.find(x=>x.pipe==='advectScalar'));
   assert.equal(predict.get(20),pool.fields[ci].view);assert.equal(predict.get(21),pool.fields[2].view);

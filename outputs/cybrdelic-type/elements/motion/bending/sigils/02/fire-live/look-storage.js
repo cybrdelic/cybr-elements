@@ -1,5 +1,5 @@
-import { FIRE_COLORS } from './pyro-gpu/fire-colors.js?v=studio-rc-13';
-import { modeForFire } from './simulation-modes.js?v=studio-rc-13';
+import { FIRE_COLORS } from './pyro-gpu/fire-colors.js?v=studio-rc-14';
+import { modeForFire } from './simulation-modes.js?v=studio-rc-14';
 const KEY = 'cybr-pyro-library-v1';
 const bounded = (value, min, max, fallback) =>
   value !== null && value !== '' && Number.isFinite(Number(value))
@@ -44,6 +44,7 @@ export function cleanLook(value, presets) {
     fuel: ['wood', 'oil', 'gas'].includes(value.fuel) ? value.fuel : preset.fuel,
     color: FIRE_COLORS.some((c) => c.id === value.color) ? value.color : 'natural',
     embers: value.embers !== false,
+    woodTimeScale: bounded(value.woodTimeScale ?? 12, 1, 24, 12),
   };
   if (value.camera && typeof value.camera === 'object' && !Array.isArray(value.camera)) {
     const c = value.camera;

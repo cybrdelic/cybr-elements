@@ -48,7 +48,7 @@ test("inspection navigation restores the original look, including after reload",
   assert.equal(denied.leave("volume").fireLight, 18);
 });
 
-test("normal fire presets remain object-free and only the bonfire's tuned rise changes", () => {
+test("wood scenes use finite bodies while the gas torch retains its original controls", () => {
   const reference = JSON.parse(
     fs.readFileSync(
       new URL("./fixtures/original-fire-presets.json", import.meta.url),
@@ -57,8 +57,8 @@ test("normal fire presets remain object-free and only the bonfire's tuned rise c
   for (const id of ["hearth", "bonfire", "torch", "sigil-cybr"]) {
     const current = FIRE_PRESETS.find((p) => p.id === id),
       old = reference.presets.find((p) => p.id === id);
-    assert.equal(current.object, undefined);
-    for (const key of id === "bonfire" ? ["effect"] : ["effect", "dynamics", "chemistry"])
+    assert.equal(current.object,id==='torch'?undefined:id==='sigil-cybr'?'wood-sigil':'logs');
+    for (const key of id === "bonfire" ? [] : id==='torch'?["effect","dynamics","chemistry"]:["dynamics", "chemistry"])
       assert.deepEqual(current[key], old[key], id + " " + key);
     if (id === "bonfire") {
       assert.ok(current.dynamics[0] < old.dynamics[0], "source jet is lower");
@@ -166,11 +166,8 @@ test("tree allocations are lazy and released when returning to normal fire", asy
             : 12;
     return {
       ok: true,
-      arrayBuffer: async () => new ArrayBuffer(bytes),
-      json: async () => ({
-        files: { "vertices.bin": { bytes: 36 }, "indices.bin": { bytes: 12 } },
-        triangles: 1,
-      }),
+      arrayBuffer: async () => {const value=fs.readFileSync(new URL(url));return value.buffer.slice(value.byteOffset,value.byteOffset+value.byteLength);},
+      json: async () => JSON.parse(fs.readFileSync(new URL(url),'utf8')),
       blob: async () => ({}),
     };
   };
@@ -188,7 +185,7 @@ test("tree allocations are lazy and released when returning to normal fire", asy
     await solver.init();
     assert.deepEqual(requested, ["source-native.rgba8.bin"]);
     assert.equal(solver.forestMesh, null);
-    assert.equal(solver.damage, null);
+    assert.equal(solver.damage.length,2);
     assert.equal(
       owned.filter((r) => r.spec.format?.startsWith("depth")).length,
       0,
@@ -199,22 +196,21 @@ test("tree allocations are lazy and released when returning to normal fire", asy
     assert.equal(solver.forestMesh.ready, true);
     const treeOwned = [
       ...solver.forestMesh.resources,
-      ...solver.damage.map((d) => d.t),
     ];
     assert.ok(treeOwned.length > 10);
     solver.objectId = null;
     await solver.prepareSource();
     assert.equal(solver.usingTree, false);
     assert.equal(solver.forestMesh, null);
-    assert.equal(solver.damage, null);
+    assert.equal(solver.damage.length,2);
     assert.ok(treeOwned.every((r) => r.destroyed));
     assert.deepEqual(solver.meshBindings(), []);
     assert.deepEqual(solver.meshShadowBindings(), []);
     solver.objectId = "logs";
     await solver.prepareSource();
     await solver.prepareSource();
-    assert.equal(requested.filter((n) => n === "logs.rgba16.bin").length, 1);
-    assert.equal(solver.forestMesh, null);
+    assert.equal(requested.filter((n) => n === "solid.rgba16.bin").length, 1);
+    assert.equal(solver.forestMesh.ready,true);
   } finally {
     solver.destroy();
     globalThis.fetch = priorFetch;

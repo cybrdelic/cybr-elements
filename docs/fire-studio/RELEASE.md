@@ -4,7 +4,7 @@ The deployable unit is the output of `tools/fire-studio/package.py`. Historical 
 
 ## Build and validate
 
-Run the Node state/lifecycle/telemetry suites, startup/transition/reset/lighting/optical/sustained-scheduling regressions and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. Package validation runs **22 runtime runners** automatically against source, the completed build and directory verification: six original runtime checks, seven adaptive integration fixtures, six fuel/sigil/lighting/lifetime fixtures and three simulation-mode runners. `FIRE_STUDIO_ROOT` can also select a directory for manual checks. They exercise JavaScript initialization, shared shell transitions, actual reset ordering, normal/tree lighting bindings, optical mask ping-pong, finite fuel lifecycle and 10,000 display ticks with DOM/GPU fixtures; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
+Run the Node state/lifecycle/telemetry suites, startup/transition/reset/lighting/optical/sustained-scheduling regressions and query/resize gates, the Python package suite and `package.py --check` listed in the runtime README. Package validation runs **29 runtime runners** automatically against source, the completed build and directory verification: the previous 22 runners plus seven wood chemistry, transfer, structure, sampling, floor, Original and Volume checks. `FIRE_STUDIO_ROOT` can also select a directory for manual checks. They exercise JavaScript initialization, shared shell transitions, actual reset ordering, normal/tree lighting bindings, optical mask ping-pong, finite fuel lifecycle and 10,000 display ticks with DOM/GPU fixtures; live browser/device acceptance remains separate. After all runtime changes are complete, create a fresh package with `python tools/fire-studio/package.py --out releases/fire-studio-RELEASE-NAME`. The name must be new; the builder does not overwrite previous artifacts.
 
 The package records the exact shipped bytes and a content-derived build fingerprint. JavaScript imports, classic shader scripts, stylesheets and local runtime asset URLs use that fingerprint as their cache key. The artifact preserves the single-page entry and the old `pyro-gpu/` redirect. Tree binaries and source previews are validated before packaging; imported tree geometry remains a lazy source load.
 
@@ -37,13 +37,25 @@ The pool adds **96 MiB** to **384 MiB** of retained dense chemistry backing. Cap
 | Complete-frame cost | Matched native frames 6–29 have mixed costs: sparse is slower on Intel and faster in this single RTX trial. No sustained browser speedup is established; details and scope are in `RC13_SPARSE_PROOF.json`. |
 | Capacity and devices | This sigil/fuel case switches to dense at frame 32 on Intel and 30 on RTX and remains dense. Existing migration/reset/disposal fixtures pass. Browser frame pacing and physical mobile memory/device acceptance remain open. |
 
+## rc.14 wood gates
+
+[WOOD_RESEARCH.md](WOOD_RESEARCH.md) records 19 primary sources, the implemented reductions and the material/geometry provenance. [RC14_WOOD_PROOF.json](RC14_WOOD_PROOF.json) records the native checks and matched cost comparison.
+
+| Gate | rc.14 status |
+| --- | --- |
+| Shared material | Logs, timber house, native-contour wooden sigil, reviewed CYBR tree and dropped wood use finite stock, moisture, char, surface/core heat and persistent damage in both engines. Original remains a projected material solve; Volume uses 64³ material cells. |
+| Geometry and fracture | All 1,588,926 reviewed tree triangles remain, with 88,760 new cap triangles. Reduced beam failure accounts for remaining subtree mass, bending, axial and shear loads. Detached pieces fall with coherent poses and exposed grain. Controlled pre-charred and cut-joint fixtures verify breakup; they are not natural-burn predictions. |
+| Native execution | Original passes 17 gates with 48 compiled production programs. Final Volume recordings pass cold-tree, sustained post-ignition wood release, sigil, house, cut-piece and Intel sparse/floor bindings, with finite material/pose fields and valid recorded CFL. Representative frames and held views were inspected. |
+| Cost and lifecycle | Stable structure buffers and cached groups avoid per-step allocation. Fine-brick source support and remaining-mass aggregation replace expensive scans. Matched RTX cold-tree completed GPU work rises from 17.209 to 22.213 ms with the added physics and material, at fixed 768×432 and three gas substeps. This is native offscreen work, not browser FPS. |
+| Remaining scope | No specimen-fitted phase-field/FEM fracture, elastic flex, redundant-joint mechanics, fragment-to-fragment collisions, conservative firebrand ignition or mobile/browser pacing certification. The material clock defaults to 12×; rigid bodies and gas remain at real time. |
+
 ## Publish to GitHub Pages
 
 The local checkout `../firesim-site` points to `https://github.com/cybrdelic/cybrdelic.github.io.git`. The public path is `/firesim/`. Inspect its branch, working tree and GitHub Pages configuration before publishing. Preserve unrelated site contents and copy only a validated package into the `firesim/` subtree. Do not copy test tools, screenshots or historical experiment folders.
 
 Deploy the exact packaged bytes, including `release.json`, through the repository's configured Pages branch/workflow. Compare the published `release.json` and representative module/asset SHA-256 hashes against the package, then confirm that the HTML entry, stylesheets, both engine imports, source binaries, preview images and redirect alias return successful responses under `/firesim/`. Inspect a live presentation after deployment on the actual demonstration browser and GPU.
 
-The package contains a large imported tree model. A first tree selection transfers its mesh and texture assets; ordinary fire does not need those assets to start. Keep tree experiments separate from the opening demo and disclose that their physical structural simulation is incomplete.
+The package contains a large imported tree model. A first tree selection transfers its mesh and texture assets; ordinary fire does not need those assets to start. Keep tree experiments separate from the opening demo and describe their structure as a reduced beam/rigid-fragment model.
 
 ## Demonstration acceptance
 
@@ -56,7 +68,7 @@ The package contains a large imported tree model. A first tree selection transfe
 | Inspection and fuel | Use Fully lit to read cold patches and source surfaces. Toggle Show sigil at front and grazing angles. Drop unlit fuel, ignite it once, inspect burn-down/char, clear only the deposits, then Restart. Repeat in both engines. |
 | Sources and presets | Both engines expose matching source IDs and recover camera/fuel/light settings across engine switches, shared URLs and saved looks. Experimental geometry/effects retain visible status. |
 | Sparse mode | Select Sparse volume on the same page, verify its shared sources/inspection/fuel controls, and compare fields and motion with standard 3D volume. Record actual storage mode and any fallback alongside cost and memory. |
-| Objects | Inspect flame contact, finite fuel and char. Trees use the reviewed mesh; branch fracture/collapse and ember ignition are not presented as implemented. |
+| Objects | Inspect cold stock, ignition contact, char, cracks, finite burn-down and detached capped geometry. Trees use the reviewed mesh. Distinguish reduced beam breakup from specimen-validated fracture; ember ignition is not implemented. |
 | Frame pacing | Record completed FPS, frame p95, simulation seconds per wall second, GPU stages and memory over sustained interaction, with the browser renderer/adapter named. Repeated presentation of an unchanged frame does not count as simulation throughput. |
 | Device handling | Verify cold start, engine switch, restart, rapid preset selection, resize, background/foreground, back/forward restoration and recoverable device failure on the demonstration machine. |
 | Mobile | Verify memory, interaction, adapter compatibility and sustained completed frames on physical mobile hardware before declaring support. Desktop native shader checks cannot close this gate. |
@@ -68,4 +80,4 @@ If a gate fails, record the failing scene, browser adapter, build fingerprint an
 
 The AI Slop checker is a heuristic for filler, unfinished templates and repetition. Its source-tree scan also sees GLSL boilerplate and duplicated historical experiments; those are not proof of generated product copy. Review the flagged lines manually and scan the actual package after building. Input `placeholder` attributes are ordinary UI hints and should not be removed merely to reduce the score.
 
-Keep demo descriptions concrete about the source, fuel, motion, lighting and test purpose. Product copy must not imply calibrated chemistry, physical tree collapse, mobile compatibility or measured realtime performance that the implementation and evidence do not establish. The source history stays in `development-history.md`; the release README describes current use and limits.
+Keep demo descriptions concrete about the source, fuel, motion, lighting and test purpose. Product copy must not imply specimen-calibrated chemistry or collapse, mobile compatibility or measured realtime performance that the implementation and evidence do not establish. The source history stays in `development-history.md`; the release README describes current use and limits.

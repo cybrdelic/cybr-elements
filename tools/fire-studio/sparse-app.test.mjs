@@ -114,10 +114,10 @@ test('actual snapshot and look preserve mode, camera and valid interaction tools
     return elements.get(id);
   };
   const deps = { $, view: { dataset: {} }, Event, FIRE_COLORS: [{ id: 'natural' }],
-    configureFire() {}, sync() {}, setFireLight() {} };
+    configureFire() {}, sync() {}, setFireLight() {},setWoodTime(){} };
   const create = new Function(...Object.keys(deps), `
     let simulation='sparse',activeTool='pan',gesture=null,activeFire={id:'sigil-cybr'},
-      flameColor='natural',embers=true,smoke=false,fireLight=24,zoom=1.8,angle=45,
+      flameColor='natural',embers=true,smoke=false,fireLight=24,woodTimeScale=12,zoom=1.8,angle=45,
       pan=[.2,-.1],testScenario=null,testStopped=false,solver={seed:1};
     ${functionSource('tool')}
     ${look}
