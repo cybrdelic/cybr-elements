@@ -1,4 +1,4 @@
-import {WOOD_THERMO,woodThermoGLSL} from './wood-thermo.js?v=studio-rc-17';
+import {WOOD_THERMO,woodThermoGLSL} from './wood-thermo.js?v=studio-rc-18';
 
 export function groundUpdateGLSL(shared){return `#version 300 es
 ${shared}

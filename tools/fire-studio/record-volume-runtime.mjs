@@ -3,20 +3,35 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 const args=process.argv.slice(2), name=args[0];
 if(!name||!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,80}$/.test(name))
  throw Error('Provide a new recording name (letters, numbers, hyphens or underscores).');
-const option=k=>args.includes('--'+k);
-const value=(k,fallback)=>{const i=args.indexOf('--'+k);return i<0?fallback:args[i+1];};
+const option=k=>args.some(a=>a==='--'+k||a.startsWith('--'+k+'='));
+const value=(k,fallback)=>{const i=args.indexOf('--'+k),inline=args.find(a=>a.startsWith('--'+k+'='));return i>=0?args[i+1]:inline?inline.slice(k.length+3):fallback;};
+const powerScenario=value('power-scenario','single');
+if(!['single','overlap','charge'].includes(powerScenario))throw Error('--power-scenario must be single, overlap or charge.');
+const captureEvery=Number(value('capture-every',6));
+if(!Number.isInteger(captureEvery)||captureEvery<1||captureEvery>3600)throw Error('--capture-every must be an integer in [1,3600].');
+const cameraHeight=Number(value('camera-height',1.1));
+if(!Number.isFinite(cameraHeight)||cameraHeight<.1||cameraHeight>13)throw Error('--camera-height must be a finite offset in [.1,13].');
+const angles=value('camera-angles',null);
+const cameraViews=angles===null?[[-50,false],[100,false],[16,true]]:angles==='none'?[]:
+ angles.split(',').map(v=>[Number(v),false]);
+if(cameraViews.length>12||cameraViews.some(([a])=>!Number.isFinite(a)||Math.abs(a)>360))throw Error('--camera-angles needs at most 12 comma-separated angles in [-360,360], or none.');
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const source=process.env.FIRE_STUDIO_ROOT?path.resolve(process.env.FIRE_STUDIO_ROOT):path.join(root,'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live');
 const folder=path.join(root,'work/adaptive-volume-qa',name);
 if(fs.existsSync(folder))throw Error('Recording already exists; use a new name.');
-fs.mkdirSync(folder,{recursive:true});
 const resources=[],operations=[];let nextId=1,nextData=0;
+const allocations={buffers:0,textures:0,bufferBytes:0};
 const ref=v=>v?.__rid?{$ref:v.__rid}:Array.isArray(v)?v.map(ref):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,ref(x)])):v;
-function resource(kind,desc,methods={}) {const r={__rid:nextId++,...methods};resources.push({id:r.__rid,kind,desc:ref(desc)});return r;}
+function resource(kind,desc,methods={}) {
+ if(kind==='buffer'){allocations.buffers++;allocations.bufferBytes+=desc.size;}
+ if(kind==='texture')allocations.textures++;
+ const r={__rid:nextId++,...methods};resources.push({id:r.__rid,kind,desc:ref(desc)});return r;
+}
 function dataFile(data,offset=0,size) {
  const bytes=Buffer.from(data instanceof ArrayBuffer?data:data.buffer,data instanceof ArrayBuffer?offset:data.byteOffset+offset,size??(data.byteLength-offset));
  const file=`data-${nextData++}.bin`;fs.writeFileSync(path.join(folder,file),bytes);return file;
@@ -68,10 +83,14 @@ const {FIRE_PRESETS,sourceOrigin}=await import(pathToFileURL(path.join(source,'p
 const {volumeOptions}=await import(pathToFileURL(path.join(source,'simulation-modes.js')).href);
 const {powerDefinition,normalizePowerSettings,powerDirection}=await import(pathToFileURL(path.join(source,'fire-powers.js')).href);
 const preset=FIRE_PRESETS.find(p=>p.id===value('preset','bonfire'));if(!preset)throw Error('Unknown preset');
+const power=powerDefinition(preset),powers=normalizePowerSettings({strength:value('power-strength',1),heading:value('power-heading',power?.defaultHeading??0),elevation:value('power-elevation',9)});
+if(option('power-scenario')&&!power)throw Error('--power-scenario requires a power preset.');
+if(powerScenario==='charge'&&!power?.hold)throw Error('--power-scenario charge requires a hold-capable power.');
 const sandbox={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(source,'scene-lights.js'),'utf8').split('  let state=')[0]+'window.catalog=presets;})();',sandbox);
 const lighting=value('lighting','studio'),light=sandbox.window.catalog[lighting];
 if(!light)throw Error('Unknown lighting preset: '+lighting);
+fs.mkdirSync(folder,{recursive:true});
 const canvas={width:768,height:432};let back;
 const context={configure(){},getCurrentTexture(){return back;}};
 const simulation=value('simulation',null);
@@ -86,14 +105,15 @@ solver.smoke=!!preset.smokeSimulation||preset.id==='smoke-burst';solver.embers=t
 solver.ignition=preset.ignition==='crown'?2:preset.ignition==='all'?1:0;
 solver.treeMoisture=preset.moisture||'dry';
 solver.woodTimeScale=Number(value('wood-time',12));
-const power=powerDefinition(preset),powers=normalizePowerSettings({strength:value('power-strength',1),heading:value('power-heading',0),elevation:value('power-elevation',9)});
 solver.powerStrength=powers.strength;solver.powerDirection=powerDirection(powers);
 // Native replay checks command correctness. Driver telemetry is not fabricated
 // into a browser performance claim; both comparisons use this same CFL fixture.
 solver.collectTelemetry=async slot=>{slot.pending=false;};
 solver.collectPoolTelemetry=async slot=>{slot.poolPending=false;};
 await solver.reset();
-if(power)solver.castPower();
+await solver.prepareSource();
+const launchOrigin=[...solver.source],launchDirection=[...solver.powerDirection];
+if(power)solver.castPower(launchOrigin,launchDirection,powers.strength,{held:powerScenario==='charge'});
 // Controlled structural gate, deliberately separate from a natural burn.
 // Seed bounded pre-charred stock only in finite occupied donors; production
 // failure, rigid motion, collision, heat transfer and lighting run unchanged.
@@ -125,7 +145,7 @@ const normalize=v=>{const n=Math.hypot(...v);return v.map(x=>x/n);};
 const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 const color=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)/255);
 function camera(angle=Number(value('angle',16)),inspect=false){
- const targetY=Number(value('target-y',2.4));const a=angle*Math.PI/180,eye=[Math.sin(a)*13,targetY+1.1,Math.cos(a)*13],f=normalize([-eye[0],targetY-eye[1],-eye[2]]),r=normalize(cross(f,[0,1,0])),u=cross(r,f);
+ const targetY=Number(value('target-y',2.4));const a=angle*Math.PI/180,eye=[Math.sin(a)*13,targetY+cameraHeight,Math.cos(a)*13],f=normalize([-eye[0],targetY-eye[1],-eye[2]]),r=normalize(cross(f,[0,1,0])),u=cross(r,f);
  const v=[...eye,.3443276133/Number(value('zoom',1.25)),...r,+solver.hasFloorFuel,...u,0,...f,0,1,+inspect,light.bounce,24,...color(light.tint).map(x=>x*light.ambient),option('guide')&&solver.effect[0]===10?10:0];
  for(const k of ['key','rim']){const az=light[k+'Az']*Math.PI/180,pos=[Math.sin(az)*5,light[k+'Height'],1.2+Math.cos(az)*3],dir=normalize([light.aimX-pos[0],light.aimY-pos[1],-pos[2]]),cone=light[k+'Beam']*Math.PI/360;
   v.push(...pos,0,...dir,Math.cos(cone),...color(light[k+'Color']).map(x=>x*light[k]),Math.cos(cone*.7));}
@@ -133,9 +153,35 @@ function camera(angle=Number(value('angle',16)),inspect=false){
 }
 const frames=Number(value('frames',60));
 if(!Number.isInteger(frames)||frames<1||frames>3600)throw Error('--frames must be an integer in [1,3600].');
+const startupAllocations={...allocations};
+function powerEvent(frame){
+ if(!power)return null;
+ if(Number(value('stop',-1))>=0&&frame>Number(value('stop',-1)))return null;
+ if(frame===0)return {kind:powerScenario==='charge'?'hold':'cast',origin:[...launchOrigin]};
+ if(powerScenario==='overlap'&&[30,60,90].includes(frame)){
+  const n=frame/30,offsets=[[0,0,0],[-.28,0,.22],[.22,0,-.28],[.18,0,.25]],at=launchOrigin.map((v,i)=>v+offsets[n][i]);
+  const direction=powerDirection({...powers,heading:powers.heading+[-12,0,12][n-1]});
+  const cast=power.continuous?solver.movePower(at,direction):solver.castPower(at,direction,powers.strength);
+  if(!cast)throw Error('Power '+power.id+' rejected the deterministic '+powerScenario+' event at frame '+frame);
+  return {kind:power.continuous?'move':'cast',origin:at,direction};
+ }
+ if(powerScenario==='charge'&&frame<45){
+  const direction=powerDirection({...powers,heading:powers.heading+12*Math.sin(frame/44*Math.PI)});
+  const target=launchOrigin.map((v,i)=>v+direction[i]*power.range*solver.effect[1]);
+  if(power.floor||power.targetMode==='projectile')target[1]=.14;
+  if(!solver.aimPower(target,direction))throw Error('Held power rejected aim at frame '+frame);
+  return {kind:'aim',target,direction};
+ }
+ if(powerScenario==='charge'&&frame===45){
+  if(!solver.releasePower())throw Error('Held power rejected release at frame '+frame);
+  return {kind:'release'};
+ }
+ return null;
+}
 if(option('cold'))solver.active=false;
 for(let frame=0;frame<frames;frame++){
- if(frame===Number(value('stop',-1)))solver.active=false;
+ let event=powerEvent(frame);
+ if(frame===Number(value('stop',-1))){if(power)solver.stopPower();else solver.active=false;event={kind:'stop'};}
  if(option('trail-path')&&power?.id==='floor-trail'&&solver.active){
   const t=Math.min(frame/90,1);solver.movePower([-1.5+3*t,.18,.55*Math.sin(t*Math.PI*2)]);
  }
@@ -143,6 +189,8 @@ for(let frame=0;frame<frames;frame++){
  solver.maxSpeed=Number(value('max-speed',3));solver.latestTelemetry.sampleFrame=solver.frameNumber;
  camera();const frameResult=await solver.frame(1/60);await solver.drain();
  operations.push({kind:'frame',index:frame,time:solver.time,
+  ability:power?solver.powerCasts.snapshot():null,powerEvent:event,allocations:{...allocations},
+  camera:{angle:Number(value('angle',16)),targetY:Number(value('target-y',2.4)),zoom:Number(value('zoom',1.25)),height:cameraHeight},
   output:solver.output.__rid,dense:solver.c[solver.ci].t.__rid,stats:solver.stats.__rid,substeps:frameResult.substeps,dt:1/60,
   floorFuel:solver.hasFloorFuel?solver.floorFuel[solver.floorIndex].t.__rid:null,
   wood:solver.woodStructure?{stock:solver.surface[solver.si].t.__rid,wear:solver.damage[solver.si].t.__rid,
@@ -151,9 +199,12 @@ for(let frame=0;frame<frames;frame++){
     mass:solver.woodFluxMetadata.t.__rid,scale:solver.effect[1]}:null,
   pool:solver.chemistryPool?{plan:solver.chemistryPool.plan,atlas:solver.chemistryPool.fields[solver.ci].texture.__rid,
     pages:solver.chemistryPool.pageTable.__rid,metadata:solver.chemistryPool.metadata.__rid}:null,
-  snapshot:frame%6===5||frame===frames-1||frame===Math.floor(frames/2)-1,
+  snapshot:frame%captureEvery===captureEvery-1||frame===frames-1||frame===Math.floor(frames/2)-1,
   saveField:frame===frames-1||frame===Math.floor(frames/2)-1});
 }
-for(const [angle,inspect] of [[-50,false],[100,false],[16,true]]){camera(angle,inspect);await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,snapshot:true});}
-const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,preset:preset.id,powers:power?powers:null,trailPath:option('trail-path'),frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,fixedCFLFixture:true},resources,operations}));
-console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData}));
+for(const [angle,inspect] of cameraViews){camera(angle,inspect);await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,ability:power?solver.powerCasts.snapshot():null,camera:{angle,inspect},snapshot:true});}
+const resourcePoolStable=allocations.buffers===startupAllocations.buffers&&allocations.textures===startupAllocations.textures;
+if(power&&!resourcePoolStable)throw Error('A power scenario allocated GPU buffers or textures after startup.');
+const shaderFingerprint=createHash('sha256').update(resources.filter(r=>r.kind==='module').map(r=>r.desc.code).join('\n')).digest('hex');
+const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,shaderFingerprint,options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,preset:preset.id,powers:power?powers:null,powerScenario:power?powerScenario:null,captureEvery,cameraViews,cameraHeight,trailPath:option('trail-path'),frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,fixedCFLFixture:true,grid:{velocity:solver.N,chemistry:solver.D},recordedMaxSpeed:Number(value('max-speed',3)),telemetryFixture:'Per-frame recorded max speed; runtime ability speed floors preserved; native replay must verify measured CFL.'},resourcePool:{startup:startupAllocations,final:{...allocations},stable:resourcePoolStable},resources,operations}));
+console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData,resourcePoolStable,shaderFingerprint}));

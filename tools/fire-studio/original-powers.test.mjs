@@ -52,39 +52,96 @@ function fixture(params=''){
  return {gl,calls,textures,programs,elements,frames,requested,failures,async frame(now){assert.equal(frames.size,1);const [id,callback]=frames.entries().next().value;frames.delete(id);callback(now);await new Promise(ok=>setImmediate(ok));assert.deepEqual(failures,[]);},listeners:()=>document.listenerCount+events.listenerCount+[...elements.values()].reduce((sum,e)=>sum+e.listenerCount,0)};
 }
 
+function scalarGLSLHelper(source,name){
+ const match=new RegExp('float '+name+'\\(([^)]*)\\)\\{').exec(source);assert.ok(match,'production scalar helper '+name);
+ const args=match[1].split(',').map(value=>value.trim().split(/\s+/).at(-1));let depth=1,end=match.index+match[0].length,start=end;
+ while(depth){if(source[end]==='{')depth++;if(source[end]==='}')depth--;end++;}
+ return new Function(...args,source.slice(start,end-1).replace(/\b(max|min|exp|abs|pow|sqrt)\(/g,'Math.$1('));
+}
+
 test('Original powers production runtime controls and GPU allocation lifetime',async t=>{
  // Classic helper scripts intentionally remain paired with runtime-loader's
  // module cache. Removing them would make another fixture's cached load stale.
  const names=['window','document','location','HTMLElement','Option','requestAnimationFrame','cancelAnimationFrame','addEventListener','fetch','createImageBitmap','SceneLights','FireDomain','FireOptics','WoodMaterialGLSL'];
  const previous=new Map(names.map(name=>[name,Object.getOwnPropertyDescriptor(globalThis,name)]));t.after(()=>{for(const [name,d]of previous)d?Object.defineProperty(globalThis,name,d):delete globalThis[name];});globalThis.window=globalThis;
- const {createFireDomain}=await import(moduleURL('fire-domain.js')),{LEGACY_PRESETS}=await import(moduleURL('pyro-gpu/presets.js')),{loadRuntime}=await import(moduleURL('runtime-loader.js')+'?fixture=powers');
- for(const [index,id]of['radial-blast','fireball','fire-rain','fire-tornado','floor-trail','combustion-bomb'].entries())await t.test(id,async()=>{
-  const env=fixture('powerStrength=1.5&powerHeading=30&powerElevation=15'),mount=await loadRuntime('legacy');env.elements.get('#preset').replaceChildren(...LEGACY_PRESETS.map(p=>new Option(p.name,p.id.replace(/^legacy:/,''))));window.FireDomain=createFireDomain(id);window.FireOptics=window.createFireOptics();window.createFireRoom();
-  const initialPowers=['fireball','floor-trail'].includes(id)?{strength:1.25,heading:-30,elevation:20}:undefined,initial=initialPowers||{strength:1.5,heading:30,elevation:15};
+ const {createFireDomain}=await import(moduleURL('fire-domain.js')),{LEGACY_PRESETS,FIRE_PRESETS}=await import(moduleURL('pyro-gpu/presets.js')),{POWER_DEFINITIONS}=await import(moduleURL('fire-powers.js')),{loadRuntime}=await import(moduleURL('runtime-loader.js')+'?fixture=powers');
+ for(const definition of POWER_DEFINITIONS){const id=definition.id;await t.test(id,async()=>{
+  const env=fixture('powerStrength=1.5&powerElevation=15'+(definition.defaultHeading===90?'':'&powerHeading=30')),mount=await loadRuntime('legacy');env.elements.get('#preset').replaceChildren(...LEGACY_PRESETS.map(p=>new Option(p.name,p.id.replace(/^legacy:/,''))));window.FireDomain=createFireDomain(id);window.FireOptics=window.createFireOptics();window.createFireRoom();
+  const initialPowers=['fireball','floor-trail'].includes(id)?{strength:1.25,heading:-30,elevation:20}:undefined,initial=initialPowers||{strength:1.5,heading:definition.defaultHeading===90?90:30,elevation:15};
   const runtime=await mount({initialPreset:id,initialPowers,onRemount:key=>assert.fail('Unexpected remount '+key),onFailure:error=>env.failures.push(String(error))});
   assert.equal(runtime.snapshot().fire,'legacy:'+id);assert.deepEqual(runtime.snapshot().powers,initial,initialPowers?'The saved look overrides URL settings before the first projectile or trail dose':'The first cast consumes the shared URL settings');assert.ok(!env.requested.some(name=>name.includes('/objects/')),'Powers do not load wood geometry');
   const allocations=env.textures.length,programCount=env.programs.length,start=performance.now()+100;for(let frame=0;frame<6;frame++)await env.frame(start+frame*40);
   assert.equal(env.textures.length,allocations,'No per-frame GPU texture allocation');assert.equal(env.programs.length,programCount,'No per-frame shader compile');assert.equal(env.calls.woodSteps||0,0);
   const uniform=name=>env.calls.uniforms.filter(u=>u.name===name).at(-1)?.values;
+  const initialAbility=runtime.snapshot().ability;
+  assert.equal(initialAbility.capacity,4);assert.equal(initialAbility.active,1,'Startup creates one authored cast in the reusable pool');
+  const kinds=uniform('powerCastKindScale[0]')[0],launch=uniform('powerCastDirectionStrength[0]')[0];
+  assert.equal(kinds.length,16);assert.equal(kinds[0],definition.kind);assert.equal(kinds[2],1);assert.equal(launch[3],initial.strength,'The submitted cast record consumes initial saved settings');
   assert.equal(uniform('powerStrength')[0],initial.strength,'The first submitted cast uses the supplied scene settings');
+  const authored=FIRE_PRESETS.find(p=>p.id===id),fuel=runtime.snapshot().fuel,feed={wood:1,gas:.85,oil:1.15}[fuel];
+  if(id==='radial-blast'){
+    const source=env.programs.flatMap(p=>p.shaders).find(s=>s.source?.includes('temp=powerIgnition(temp,added,sourceHeat);')).source,ignite=scalarGLSLHelper(source,'powerIgnition');
+    for(const preheat of [.65,.72,.75]){
+      const target=1.8*preheat;
+      for(const heat of [0,.35,.7,1.6])for(const added of [0,.01,.3,1,10]){
+        const next=ignite(heat,added,preheat);assert.ok(next>=heat&&next<=Math.max(heat,target)+1e-12);
+        if(heat>=target)assert.equal(next,heat,'Source ignition cannot cool or reheat hotter transported gas');
+      }
+      let subdivided=0;for(let i=0;i<120;i++)subdivided=ignite(subdivided,.5/120,preheat);
+      assert.ok(Math.abs(subdivided-ignite(0,.5,preheat))<1e-12,'Ignition preserves its result across source substeps');
+      assert.ok(ignite(0,.02,preheat)>.6*target,'Thin moving gas receives ignition before leaving its source');
+    }
+  }
+  assert.equal(uniform('sourceHeat')[0],authored.chemistry[0],'Both engines consume the authored power preheat channel');
+  assert.ok(Math.abs(uniform('fuelProfile')[0]-feed*authored.chemistry[1])<1e-8,'Both engines consume the authored power fuel-dose channel');
+  assert.equal(uniform('powerConfinement')[0],authored.dynamics[2],'Powers retain their distinct authored local-flow refinement');
+  assert.equal(uniform('powerTurbulence')[0],authored.chemistry[3],'Power breakup consumes the authored gas turbulence, without display texture');
+  const optics=env.calls.uniforms.filter(u=>u.name==='powerFlame');
+  assert.ok(optics.length>=2&&optics.every(u=>u.values[0]===1),'Power light gathering and volume rendering share the same explicit optical mode');
   if(id==='floor-trail'){
     assert.equal(env.calls.fuelUploads,1,'A stationary floor source deposits only its single finite cast dose');
     const half=env.calls.fuelPacketPeaks[0],exponent=(half>>10)&31,peak=exponent?2**(exponent-15)*(1+(half&1023)/1024):(half&1023)*2**-24;
     assert.ok(peak>1&&peak<1.1,'The first actual fuel packet uses the saved 125% dose, rather than stale URL or default strength');
   }
   runtime.look({powers:{strength:1.75,heading:90,elevation:30}});await env.frame(start+260);assert.deepEqual(runtime.snapshot().powers,{strength:1.75,heading:90,elevation:30});
-  const transient=[0,1,5].includes(index),settings=transient?initial:{strength:1.75,heading:90,elevation:30};
+  const transient=!definition.continuous,settings=transient?initial:{strength:1.75,heading:90,elevation:30};
   assert.equal(uniform('powerStrength')[0],settings.strength,transient?'Strength remains fixed for the cast in flight':'Continuous source strength updates live');const direction=uniform('powerDirection'),h=settings.heading*Math.PI/180,e=settings.elevation*Math.PI/180;assert.ok(Math.abs(direction[0]-Math.cos(h)*Math.cos(e))<1e-6&&Math.abs(direction[1]-Math.sin(e))<1e-6&&Math.abs(direction[2]-Math.sin(h)*Math.cos(e))<1e-6,transient?'An airborne cast cannot teleport when the next aim changes':'Continuous source direction updates live');
-  assert.equal(env.calls.uniforms.filter(u=>u.name==='emitterKind').at(-1).values[0],22+index);assert.equal(env.elements.get('#burst').hidden,false,'Every power exposes an explicit cast control');
+  assert.equal(env.calls.uniforms.filter(u=>u.name==='emitterKind').at(-1).values[0],21+definition.kind);assert.equal(env.elements.get('#burst').hidden,false,'Every power exposes an explicit cast control');
   env.elements.get('#extinguish').click();await env.frame(start+300);assert.equal(env.calls.uniforms.filter(u=>u.name==='brushActive').at(-1).values[0],0);
   env.elements.get('#burst').click();await env.frame(start+340);assert.equal(env.calls.uniforms.filter(u=>u.name==='brushActive').at(-1).values[0],1,'Recasting restores finite or sustained emission');
   assert.ok(uniform('burstAge')[0]<.08,'Recast resets the simulation-age release window without clearing live gas');
   assert.equal(uniform('powerStrength')[0],1.75);assert.ok(Math.abs(uniform('powerDirection')[1]-.5)<1e-6,'The next cast consumes the edited launch settings');
   const view=env.elements.get('#view'),event=(type,clientX,clientY)=>({type,pointerId:7,pointerType:'mouse',button:0,buttons:1,clientX,clientY,preventDefault(){}});
-  if(id==='fireball'){
+  if(['flame-dash','eruption-chain','fire-cross'].includes(id)){
+    const prior=runtime.snapshot().ability.casts.at(-1),camera=runtime.snapshot().camera,yaw=camera.angle*Math.PI/180,eye=[camera.pan[0]+Math.sin(yaw)*13,3.5+camera.pan[1],Math.cos(yaw)*13],length=Math.hypot(13,1.1),forward=[-Math.sin(yaw)*13/length,-1.1/length,-Math.cos(yaw)*13/length],right=[Math.cos(yaw),0,-Math.sin(yaw)],up=[right[1]*forward[2]-right[2]*forward[1],right[2]*forward[0]-right[0]*forward[2],right[0]*forward[1]-right[1]*forward[0]],dot=(a,b)=>a.reduce((sum,v,i)=>sum+v*b[i],0);
+    const pickedX=prior.origin[0]+(prior.origin[0]>0?-1.2:1.2),pickedZ=0;
+    const offset=[pickedX-eye[0],.018-eye[1],pickedZ-eye[2]],depth=dot(offset,forward),tan=.3443276133/camera.zoom,x=(.5+.5*dot(offset,right)/(depth*tan*16/9))*1280,y=(.5-.5*dot(offset,up)/(depth*tan))*720;
+    view.dispatchEvent(event('pointerdown',x,y));view.dispatchEvent(event('pointerup',x,y));await env.frame(start+380);
+    const aimed=runtime.snapshot().ability.casts.at(-1);assert.deepEqual(aimed.origin,prior.origin,'A directional ground click aims from the current caster');
+    assert.ok(Math.abs(aimed.target[0]-pickedX)<.01&&Math.abs(aimed.target[2]-pickedZ)<.01,'An in-range picked floor point supplies the actual target');
+  }
+  if(definition.hold){
+    const prior=runtime.snapshot().ability.casts[0];
     view.dispatchEvent(event('pointerdown',640,360));await env.frame(start+380);const origin=uniform('brushTo');
+    assert.equal(runtime.snapshot().ability.held,true);assert.equal(runtime.snapshot().ability.phase.name,'Charging');
     view.dispatchEvent(event('pointermove',900,250));view.dispatchEvent(event('pointerup',900,250));await env.frame(start+420);
     assert.deepEqual(uniform('brushTo'),origin,'Holding or releasing a projectile cannot relocate its launch origin');
+    const released=runtime.snapshot().ability;
+    assert.equal(released.held,false);assert.equal(released.active,2,'Release overlaps the held cast with the independent earlier launch');
+    assert.deepEqual(released.casts[0].origin,prior.origin);assert.deepEqual(released.casts[0].target,prior.target,'Aiming another charge cannot retarget a prior in-flight cast');
+    view.dispatchEvent(event('pointerdown',700,300));view.dispatchEvent(event('pointercancel',700,300));await env.frame(start+460);
+    assert.equal(runtime.snapshot().ability.active,2,'Cancelling a held charge retains prior travelling casts');
+    view.dispatchEvent(event('pointerdown',700,300));env.elements.get('#pan-tool').click();
+    assert.equal(runtime.snapshot().ability.held,false,'Changing tools cancels the unfinished charge');
+    assert.equal(runtime.snapshot().ability.active,2,'Changing tools preserves completed casts');
+    env.elements.get('#fire-tool').click();view.dispatchEvent(event('pointerdown',700,300));
+    assert.equal(runtime.snapshot().ability.held,true,'Returning to Fire accepts a new pointer gesture');
+    env.elements.get('#fuel-tool').click();assert.equal(runtime.snapshot().ability.held,false,'Drop fuel also cancels the unfinished charge');env.elements.get('#fire-tool').click();
+  }
+  if(!definition.continuous){
+    for(let count=0;count<6;count++)assert.equal(runtime.castPower(),true);
+    await env.frame(start+500);assert.equal(runtime.snapshot().ability.active,4,'Repeated finite casts reuse a bounded four-slot pool');
+    assert.equal(env.textures.length,allocations,'Overlapping casts allocate no GPU textures');assert.equal(env.programs.length,programCount,'Overlapping casts compile no GPU programs');
   }
   if(id==='floor-trail'){
     const camera=runtime.snapshot().camera,yaw=camera.angle*Math.PI/180,eye=[camera.pan[0]+Math.sin(yaw)*13,3.5+camera.pan[1],Math.cos(yaw)*13],length=Math.hypot(13,1.1),forward=[-Math.sin(yaw)*13/length,-1.1/length,-Math.cos(yaw)*13/length],right=[Math.cos(yaw),0,-Math.sin(yaw)],up=[right[1]*forward[2]-right[2]*forward[1],right[2]*forward[0]-right[0]*forward[2],right[0]*forward[1]-right[1]*forward[0]],dot=(a,b)=>a.reduce((sum,v,i)=>sum+v*b[i],0);
@@ -97,5 +154,5 @@ test('Original powers production runtime controls and GPU allocation lifetime',a
   env.elements.get('#pause').click();const before=env.calls.draws;await env.frame(start+520);assert.equal(env.calls.draws,before,'Pause retains the live gas without advancing a power clock');
   if(process.env.FIRE_STUDIO_SHADER_OUTPUT){const dir=resolve(process.env.FIRE_STUDIO_SHADER_OUTPUT);mkdirSync(dir,{recursive:true});writeFileSync(resolve(dir,'startup-'+id+'.json'),JSON.stringify({preset:id,runtimeRoot:root,domain:window.FireDomain,programs:env.programs.map(p=>({id:p.id,vertex:p.shaders.find(s=>s.type===env.gl.VERTEX_SHADER)?.source,fragment:p.shaders.find(s=>s.type===env.gl.FRAGMENT_SHADER)?.source}))}));}
   await runtime.dispose();assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);assert.equal(env.calls.lost,1);
- });
+ });}
 });

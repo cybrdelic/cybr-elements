@@ -1,4 +1,4 @@
-import {WOOD_THERMO,woodThermoGLSL} from './wood-thermo.js?v=studio-rc-17';
+import {WOOD_THERMO,woodThermoGLSL} from './wood-thermo.js?v=studio-rc-18';
 
 // Original uses a projected material inventory. A column shares its thermal
 // state through depth; the gas and rendering remain three dimensional.

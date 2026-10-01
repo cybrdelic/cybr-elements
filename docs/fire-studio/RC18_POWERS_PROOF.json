@@ -1,0 +1,1253 @@
+{
+  "candidate": "0.1.0-rc.18",
+  "status": "native-execution-verified-visual-reviewed-with-limitations",
+  "template": false,
+  "readiness": {
+    "nativeExecution": "passed-final-reports",
+    "nativeVisualReview": "reviewed-with-limitations-not-cinematic-parity",
+    "verifiedPackage": "passed-directory-and-archive-verification",
+    "publicDeployment": "passed-http-exact-byte-verification",
+    "liveBrowserDemo": "unverified",
+    "physicalMobileAcceptance": "unverified"
+  },
+  "scope": {
+    "abilities": 24,
+    "finiteAbilities": 20,
+    "sustainedAbilities": 4,
+    "finiteCastCapacity": 4,
+    "sustainedSources": 1,
+    "engines": [
+      "Original",
+      "3D Volume",
+      "Sparse volume experimental"
+    ],
+    "implementation": "Live authored fuel and momentum sources in the existing GPU gas, combustion, soot and lighting paths. No prerecorded flame frames."
+  },
+  "iterations": [
+    {
+      "stage": "first-full-24-ability-native-pass",
+      "visualDecision": "rejected",
+      "reason": "Several windup and traveling sources were too dim; silhouettes and scatter paths could merge in the default view.",
+      "original": {
+        "report": "work/original-powers-visual/abilities24-final2-native/render-report.json",
+        "reportSha256": "7806e3911ee29b384fdceaa8177e010942eacd760c8e358447583e55e974aa92",
+        "recordedExecutionPass": true,
+        "recordedCases": 24,
+        "scope": "Native replay of recorded production Original commands. Execution success is retained as historical evidence; rendered visual acceptance failed."
+      }
+    },
+    {
+      "stage": "V3",
+      "visualDecision": "superseded-by-v5b-not-final-acceptance",
+      "changes": [
+        "Faster bounded ignition relaxation with its pilot heat ceiling preserved",
+        "Resolved fuel pockets and rotational source momentum",
+        "Broader hero fireball and warped porous impact fronts",
+        "Source support enlarged to contain the changed burst fields",
+        "Whip momentum follows its authored tip derivative",
+        "Speed protection covers the complete finite action window",
+        "Wall and phoenix defaults expose their width to the initial camera",
+        "Connected wall fuel sheets replace isolated columns",
+        "Noncollinear scatter destinations separate the five-way fan"
+      ],
+      "originalReports": [],
+      "volumeReports": [],
+      "sparseReports": [],
+      "visualEvidence": []
+    },
+    {
+      "stage": "V4-boundary-and-motion-refinement",
+      "visualDecision": "superseded-by-v5b-not-final-acceptance",
+      "changes": [
+        "Impact reservation includes fan spread and upper clearance, with a raised serpent impact center",
+        "Hard range and domain limits are retained jointly; only infeasible impact reservation is reduced",
+        "Directed defaults leave more space for travel before their impact",
+        "Larger orbit packets retain conservative gathering support",
+        "Three delayed serpent ribbons follow the traveling head with local tangent momentum",
+        "Two widening helical fuel strands share the tornado circulation axis",
+        "Clamping reuses constructor-owned scratch while preserving the four-slot uniform layout"
+      ],
+      "originalReports": [],
+      "volumeReports": [],
+      "sparseReports": [],
+      "visualEvidence": []
+    },
+    {
+      "stage": "V5b-body-cross-and-corrected-crescent",
+      "visualDecision": "reviewed-with-limitations",
+      "changes": [
+        "Serpent center weaves vertically as three wider delayed body ribbons follow",
+        "Cross grows four full arms outward from the center with staged perpendicular release",
+        "Crescent fuel ribbons are wider with corresponding conservative support and target reservation",
+        "One tilted crescent axis is shared by center, endpoints, velocity derivative and support, correcting rotated side-wall clipping"
+      ],
+      "sourceDomainGate": "passed-corrected-blade-axis",
+      "volumeVisualReview": {
+        "status": "accepted-targeted",
+        "scenarios": 6,
+        "limits": [
+          "compact serpent body",
+          "softer flame core"
+        ],
+        "complete27ScenarioReview": "reviewed-with-limitations"
+      },
+      "originalReports": [
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-final/render-report.json",
+          "sha256": "07c2bc17100966a9701f01b718df6f559541493a822bd609fedb01239f677e46"
+        },
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-held/render-report.json",
+          "sha256": "49f0a11532cc6742ef43b186ae1f84a026e49283c47c3de1b7bba92cab114893"
+        },
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-overlap/render-report.json",
+          "sha256": "5996633625a5c45143faabf2e076b453201ab557d08036dd48f54893651a8943"
+        },
+        {
+          "path": "work/original-powers-visual/compile-abilities24-v5b-rc18/native-powers-report.json",
+          "sha256": "21087c0242e740518768f8889ed406d8c02ca24516d41ec3e78bb7e733070c6e"
+        }
+      ],
+      "volumeReports": [
+        {
+          "path": "work/adaptive-volume-qa/powers-v5b-targeted-flame-serpent/native-discrete/report.json",
+          "sha256": "23d0e17f81daacfb2c9d2693af4d8874f34924e909613001d0a57cb862658db3",
+          "executionPass": true
+        },
+        {
+          "path": "work/adaptive-volume-qa/powers-v5b-raised-peak-flame-serpent/native-discrete/report.json",
+          "sha256": "25e7a4b03a827aafa77dd29119af1ee1294d055811f13678ba9e24c9bbd8d44b",
+          "executionPass": true
+        },
+        {
+          "path": "work/adaptive-volume-qa/powers-v5b-targeted-fire-cross/native-discrete/report.json",
+          "sha256": "b584fc324c085b485001fc40cd49473b5027b9b74ea490743087563e0e5d591c",
+          "executionPass": true
+        },
+        {
+          "path": "work/adaptive-volume-qa/powers-v5b-raised-peak-fire-cross/native-discrete/report.json",
+          "sha256": "437c6fd3e335f5f1349a4f6cfe1434fd41b05237694d4a4c033cbd86d1eb392a",
+          "executionPass": true
+        },
+        {
+          "path": "work/adaptive-volume-qa/powers-v5b-targeted-flame-crescent/native-discrete/report.json",
+          "sha256": "4cd554557806f388cd835c62838953d905accc0db6d97ed761333207673ca0dc",
+          "executionPass": true
+        },
+        {
+          "path": "work/adaptive-volume-qa/powers-v5b-raised-peak-flame-crescent/native-discrete/report.json",
+          "sha256": "50e9907cc6a66254f830503cfa2f3c71f5bb83c0ff3a03c2f111fbff371270dd",
+          "executionPass": true
+        }
+      ],
+      "sparseReports": [],
+      "visualEvidence": [],
+      "finalVisualEvidence": [
+        {
+          "path": "work/original-powers-visual/v5b-final-original-evidence.json",
+          "sha256": "b30dd161cd267af5abb27e2f182d5c4662662e0de4222358fb6a4c553a7ed746"
+        },
+        {
+          "path": "work/powers-qa/rc18-shipping-visual-proof.json",
+          "sha256": "067cf0faa3998829e96bf74db1c0fc6e8b1e7262e376c349f6b3efa1b310a58d"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "frozenRuntimeHashes": {
+      "status": "captured-editable-inputs",
+      "scope": "All package-selected editable runtime inputs, including the refreshed README. Raw host and LF-canonical hashes are recorded; packaged cache-key transforms and public bytes remain separate.",
+      "files": 155,
+      "rawBytes": 204570677,
+      "canonicalInputBytes": 204559090,
+      "canonicalInputBuild": "7dfac6909b1f2622",
+      "report": "work/powers-qa/rc18-shipping-runtime-hashes.json",
+      "reportSha256": "eb6a6379dbf91c2abe0c88c54d706b5339e3ffc4b79a189745d58cf12f09fd57"
+    },
+    "cpu": {
+      "status": "passed-shipping-suite",
+      "tests": 295,
+      "passed": 295,
+      "report": "work/powers-rc18-shipping-suite.log",
+      "reportSha256": "59c2f6d7e06863948691d207ff5f5d2d7754171a2cc5f90ba155a84abd099ed9",
+      "includesLatestCrescentRegression": true,
+      "finalOriginalCandidateRerunRequired": false
+    },
+    "targetedController": {
+      "status": "passed",
+      "tests": 23,
+      "passed": 23,
+      "scope": "CPU impact reservation and rotated crescent 6, lifecycle 7, catalog 5 and state 5. This is a targeted result, not the final complete release suite or rendered visual acceptance.",
+      "reports": [
+        "work/powers-quality-review/impact-reservation-tests.log",
+        "work/powers-quality-review/impact-lifecycle-after.log",
+        "work/powers-quality-review/impact-catalog-after.log",
+        "work/powers-quality-review/impact-state-after.log"
+      ]
+    },
+    "sourceMath": {
+      "status": "passed",
+      "scope": "CPU controller centers and copied conservative source-support equations; no GPU work or visual-quality assertion.",
+      "defaultEngineAbilityCases": 48,
+      "defaultTargetCentersPassed": 48,
+      "supportAndSpeedGuards": "conservative",
+      "correctedCounterexample": "The former Original crescent Heading -25 side-wall fuel failure is corrected by a shared tilted blade axis. All 72 default headings at 301 shape times remain within the checked horizontal field bounds; floor contact is recorded separately.",
+      "reports": [
+        {
+          "path": "work/powers-quality-review/impact-controller-audit.json",
+          "sha256": "11064b4d8a5f82298114b6cccf62fae7b74faa183cbba17a7b487bda00b5126e"
+        },
+        {
+          "path": "work/powers-quality-review/expanded-motion-audit.json",
+          "sha256": "f8786840bdd4eb27265730a1504ddc2b76f5ebf5756dc26f5a623a3b5cef7afd"
+        }
+      ]
+    },
+    "strictCompiler": {
+      "status": "passed-exact-recorded-volume-sparse-coverage",
+      "implementation": "Tint through official Dawn webgpu@0.6.1 null backend",
+      "uniqueModules": 211,
+      "generatedVariants": 1655,
+      "errors": 0,
+      "warnings": 0,
+      "physicalGPUWork": false,
+      "divergentDerivativeControlRejected": true,
+      "report": "work/dawn-qa/tint-powers-rc18-shipping-exact/report.json",
+      "reportSha256": "c916779c622d6ca1c72761a6b8f1613206b3e96418beb3fb7335bb5fdca8e225"
+    },
+    "volumeCommandRecordings": {
+      "status": "recorded-cpu-only",
+      "records": 27,
+      "uniquePowers": 24,
+      "simulatedFrames": 5532,
+      "resourcePoolsStable": true,
+      "physicalGPUWork": false,
+      "visualAcceptance": "sampled-native-reviewed-with-limitations",
+      "report": "work/powers-qa/rc18-shipping-volume-recordings.json",
+      "reportSha256": "b62241ca68f04fb2939d5c90428e298c84425b7920a57835ca45544b53fb798f",
+      "nativeExecution": "completed-27-scenarios-with-separate-native-reports"
+    },
+    "originalNative": {
+      "status": "passed-execution-visual-reviewed-with-limitations",
+      "reports": [
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-final/render-report.json",
+          "sha256": "07c2bc17100966a9701f01b718df6f559541493a822bd609fedb01239f677e46"
+        },
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-held/render-report.json",
+          "sha256": "49f0a11532cc6742ef43b186ae1f84a026e49283c47c3de1b7bba92cab114893"
+        },
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-overlap/render-report.json",
+          "sha256": "5996633625a5c45143faabf2e076b453201ab557d08036dd48f54893651a8943"
+        },
+        {
+          "path": "work/original-powers-visual/compile-abilities24-v5b-rc18/native-powers-report.json",
+          "sha256": "21087c0242e740518768f8889ed406d8c02ca24516d41ec3e78bb7e733070c6e"
+        }
+      ],
+      "abilityCases": 24,
+      "abilityCaptures": 216,
+      "heldCases": 4,
+      "heldCaptures": 32,
+      "overlapCases": 2,
+      "overlapCaptures": 16,
+      "startupCases": 29,
+      "programInstances": 696,
+      "uniquePrograms": 61,
+      "frozenSourceFilesMatched": 11,
+      "decodedRgbCaptureChecksumsMatched": 264,
+      "visualAccepted": "reviewed-with-limitations",
+      "independentSampledVisualReview": {
+        "path": "work/powers-qa/shipping-independent-original-six-visual.json",
+        "sha256": "089542f53eaed56957d93d1822a8f7ac66e916c3eb04abd6312c8fb5ab2df1f0"
+      },
+      "limits": [
+        "faint early cues",
+        "weak continuous whip curl/arc",
+        "orbit release merging in the default projection",
+        "sharp rectangular fed wall edges",
+        "coarse-depth reaction-front ridges",
+        "compact crescent blade",
+        "soft rounded terminal flashes"
+      ],
+      "timingScope": "Synchronous native GLES replay on Intel UHD Graphics includes production passes and occasional readback. It does not measure browser scheduling or establish browser FPS.",
+      "visualReview": {
+        "report": {
+          "path": "work/original-powers-visual/v5b-final-original-evidence.json",
+          "sha256": "b30dd161cd267af5abb27e2f182d5c4662662e0de4222358fb6a4c553a7ed746"
+        },
+        "decision": "Feature/control integration passed; visual fidelity is uneven and is not certified as cinematic parity.",
+        "limits": [
+          "Original cooled impacts retain fine curved depth contours.",
+          "Projectile cores remain soft and rounded; some thin cues/recovery gas are faint.",
+          "Whip arc is weak in this lighting; orbit and scatter packets overlap in the default view.",
+          "Wall panels retain rectangular feed edges.",
+          "Sparse phase captures establish sampled silhouettes and lifecycle, not continuous motion smoothness."
+        ]
+      }
+    },
+    "volumeNative": {
+      "status": "passed-numeric-visual-reviewed-with-limitations",
+      "reports": [
+        {
+          "path": "work/powers-qa/rc18-shipping-volume-numeric-proof.json",
+          "sha256": "c74c64c63f84c12c4e56d3c7f17814145876435703bf20ff76ae669cb3ee3475"
+        },
+        {
+          "path": "work/powers-qa/rc18-shipping-live-angle-numeric-proof.json",
+          "sha256": "86614d87638da899d5f444140d5342c315eacc8aca65bd959504ae793d660862"
+        }
+      ],
+      "shippingScenarios": 27,
+      "hotAngleScenarios": 4,
+      "simulationFrames": 5878,
+      "nativeFramesIncludingViews": 5971,
+      "chemistrySnapshotsChecked": 62,
+      "finiteFieldsVerified": true,
+      "cflVerified": true,
+      "maximumMeasuredCFL": 0.9671304208260997,
+      "hostPoolsStable": true,
+      "currentHostHashesAndRecordingChecksumsMatch": true,
+      "visualAccepted": "reviewed-with-limitations",
+      "independentSampledVisualReview": {
+        "path": "work/powers-qa/shipping-independent-four-visual.json",
+        "sha256": "50792cc9f05144d88a847c28355957ca3738daa41205065608920f316c5cbd22"
+      },
+      "scope": "31 shipping native replays; six earlier V5b supplemental captures remain separate. Numeric execution does not imply cinematic quality or browser/mobile performance.",
+      "visualReview": {
+        "report": {
+          "path": "work/powers-qa/rc18-shipping-visual-proof.json",
+          "sha256": "067cf0faa3998829e96bf74db1c0fc6e8b1e7262e376c349f6b3efa1b310a58d"
+        },
+        "lifecycleScenarios": 27,
+        "uniqueAbilities": 24,
+        "decisions": {
+          "readable_with_limitations": 25,
+          "partially_readable_with_limitations": 1,
+          "readable_with_limitations_after_dense_fallback": 1
+        },
+        "hotShippingReview": {
+          "path": "work/powers-qa/rc18-shipping-live-angle-visual-decisions.json",
+          "sha256": "71365e648325df8a70eacb48c582828391bce16eb48706c474f9b9c366bfee53"
+        },
+        "exactSourceSupplementalV5bScenarios": 6,
+        "limits": [
+          "Soft or saturated hot cores",
+          "Compact serpent body in wide framing",
+          "Thin smooth directed ribbons",
+          "Recognizable rain lane organization"
+        ],
+        "partialReadability": [
+          {
+            "id": "flame-serpent",
+            "limitation": "The default wide camera still emphasizes a compact round head with a short wake. A long snake silhouette is not established, and the body remains soft."
+          }
+        ],
+        "scope": "Actual native snapshots of the frozen production runtime at fixed grid/CFL. Sampled visuals do not establish browser/mobile FPS or cinematic parity."
+      },
+      "combinedNumericReports": [
+        {
+          "path": "work/powers-qa/rc18-shipping-31-native-numeric-proof.json",
+          "sha256": "a17eaf0bdbee3520110f0bb9eab7b2f71faa01afc5f9a3c5a6b3efaa349d5bb8"
+        },
+        {
+          "path": "work/powers-qa/rc18-shipping-complete-native-numeric-proof.json",
+          "sha256": "72a2f37cfb21cdaa835f9075f82103ad92ab60618a6b2b13a04ffef6ad5e6f97"
+        }
+      ],
+      "includingSixSupplemental": {
+        "scenarios": 37,
+        "nativeFramesIncludingViews": 6754,
+        "chemistrySnapshotsChecked": 74
+      }
+    },
+    "sparseNative": {
+      "status": "passed-numeric-actual-storage-recorded",
+      "reports": [
+        {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-meteor-barrage-sparse/native-discrete/report.json",
+          "sha256": "71cad5fbffaa3274ac7d41b420dcc382627c89f7dc00a3b75e971d590116a702"
+        },
+        {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-live-angles-meteor-barrage-sparse/native-discrete/report.json",
+          "sha256": "c27bc9e6c95a592b7667f49970b88a19b28dfde5fc66b8ab8c3b8a9f10ed5a2b"
+        }
+      ],
+      "scenarios": 2,
+      "actualStorageMode": [
+        "dense",
+        "sparse"
+      ],
+      "fallbackRecorded": true,
+      "scope": "Meteor barrage exercises experimental sparse selection and sticky dense fallback. Snapshot storage modes include sparse and dense; sustained pooled storage or a sparse speedup is not established.",
+      "fallbackDetails": [
+        {
+          "name": "powers-rc18-shipping-meteor-barrage-sparse",
+          "statusSamples": 264,
+          "poolFrames": 48,
+          "denseFallbackFrames": 216,
+          "firstStickyDenseFallbackFrame": 48,
+          "firstFallbackFlags": 3,
+          "lastPoolStatus": [
+            1,
+            1241,
+            961,
+            0,
+            63,
+            3,
+            291,
+            0
+          ],
+          "scope": "Sparse mode may preserve gas by migrating once to dense backing; post-fallback views do not establish sustained sparse execution."
+        }
+      ],
+      "visualReview": "Sampled continuity through sticky dense fallback; peak held views are dense, not sustained pooled chemistry."
+    },
+    "interactionScenarios": {
+      "status": "passed-cpu-contracts-and-native-subset",
+      "cpuSuite": {
+        "path": "work/powers-rc18-shipping-suite.log",
+        "sha256": "59c2f6d7e06863948691d207ff5f5d2d7754171a2cc5f90ba155a84abd099ed9"
+      },
+      "nativeOriginal": [
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-held/render-report.json",
+          "sha256": "49f0a11532cc6742ef43b186ae1f84a026e49283c47c3de1b7bba92cab114893"
+        },
+        {
+          "path": "work/original-powers-visual/abilities24-v5b-overlap/render-report.json",
+          "sha256": "5996633625a5c45143faabf2e076b453201ab557d08036dd48f54893651a8943"
+        }
+      ],
+      "nativeVolume": [
+        {
+          "path": "work/powers-qa/rc18-shipping-volume-numeric-proof.json",
+          "sha256": "c74c64c63f84c12c4e56d3c7f17814145876435703bf20ff76ae669cb3ee3475"
+        },
+        {
+          "path": "work/powers-qa/rc18-shipping-live-angle-numeric-proof.json",
+          "sha256": "86614d87638da899d5f444140d5342c315eacc8aca65bd959504ae793d660862"
+        }
+      ],
+      "nativeCoverage": [
+        "held charge and release",
+        "four overlapping casts",
+        "continuous gas and trail scenarios",
+        "alternate hot views and sparse fallback"
+      ],
+      "cpuContractCoverage": [
+        "cancelled charge",
+        "pause and recovery",
+        "counterpart mode switch and saved first cast"
+      ],
+      "scope": "Native recorded host commands and CPU shell contracts are checked. Actual live browser interaction remains unverified."
+    },
+    "package": {
+      "status": "passed",
+      "version": "0.1.0-rc.18",
+      "fingerprint": "7dfac6909b1f2622",
+      "files": 155,
+      "runtimeBytes": 204560357,
+      "releaseManifest": {
+        "path": "releases/fire-studio-0.1.0-rc.18-final/release.json",
+        "sha256": "b8ad6f0f9a9a2d264282dba680638b31a7246f180d5ba38d323ea5fbee867a13"
+      },
+      "directory": "releases/fire-studio-0.1.0-rc.18-final",
+      "archive": {
+        "path": "releases/fire-studio-0.1.0-rc.18-final.zip",
+        "sha256": "7b632b746df4c116252a5324fd44e49b9aee7c7d02edca08438bdff1d420ee19",
+        "bytes": 90854896
+      },
+      "buildReport": {
+        "path": "work/powers-qa/rc18-final-package-build.json",
+        "sha256": "c4f86bd50d7a49d26effc26965402186a242b45b2bb1fabec27c736017ddd002"
+      },
+      "verificationReports": [
+        {
+          "path": "work/powers-qa/rc18-final-package-directory-verify.json",
+          "sha256": "30a1a8027f7cbb6e207a3d9876adbc93025ed4d2611208b3c878f731cb1a7e95"
+        },
+        {
+          "path": "work/powers-qa/rc18-final-package-archive-verify.json",
+          "sha256": "deeab2ac9f1eb658ce9200f2a76436824786a322fcc1557b14b098d7b76ea701"
+        }
+      ],
+      "independentlyMatchedDirectoryFiles": 155,
+      "openGates": [
+        "Live browser motion and sustained completed-frame performance on the demo GPU",
+        "Mobile GPU memory, compatibility and sustained performance",
+        "Original/offline detail comparison and Volume smoke/flame motion review",
+        "Experimental adaptive flow, brick pool and precise receivers: complete-frame speed, quality and memory replacement gates"
+      ],
+      "scope": "Final package bytes are verified separately from source-input hashes, native visual acceptance and public delivery. The earlier 324d8ee20febb312 artifact is preliminary, not this package."
+    },
+    "deployment": {
+      "status": "passed-public-byte-delivery",
+      "url": "https://cybrdelic.github.io/firesim/",
+      "version": "0.1.0-rc.18",
+      "fingerprint": "7dfac6909b1f2622",
+      "siteCommit": "7ec5442fad209245fdc48f96c0e5b43cf9f15117",
+      "siteBranch": "master",
+      "pagesBuildCommit": "7ec5442fad209245fdc48f96c0e5b43cf9f15117",
+      "publishedManifest": {
+        "url": "https://cybrdelic.github.io/firesim/release.json",
+        "status": 200,
+        "bytes": 26415,
+        "sha256": "b8ad6f0f9a9a2d264282dba680638b31a7246f180d5ba38d323ea5fbee867a13"
+      },
+      "runtimeFilesChecked": 155,
+      "runtimeFilesHttp200": 155,
+      "runtimeFilesHashMatched": 155,
+      "byteHashesMatched": true,
+      "runtimeBytes": 204560357,
+      "manifestBytes": 26415,
+      "totalVerifiedHttpBytes": 204586772,
+      "indexedBlobsHashMatched": 156,
+      "verificationReport": {
+        "path": "work/sparse-startup-qa/public-rc18.json",
+        "sha256": "6694c84c8d365c71260513dbc85a8c8b586e933f9d14c0a0dde307f316e907c3"
+      },
+      "siteIndexProof": {
+        "path": "work/powers-qa/rc18-final-site-index-proof.json",
+        "sha256": "5541ca14254830eeed0e26aea5fe50ccf7bf1d77614654956d770a0a23d60205"
+      },
+      "independentPackageComparison": "Every report path, byte count and SHA256 matches the verified final package, including release.json.",
+      "commitAndBuildProvenance": "Root completed the site push and confirmed the latest Pages build uses this commit.",
+      "scope": "HTTP assets only; no live browser, frame pacing or mobile GPU validation"
+    },
+    "liveBrowserDemo": {
+      "status": "unverified",
+      "startup": null,
+      "interaction": null,
+      "sustainedFramePacing": null,
+      "browser": null,
+      "adapter": null,
+      "report": null
+    },
+    "physicalMobile": {
+      "status": "unverified",
+      "device": null,
+      "memoryAndCompatibility": null,
+      "interaction": null,
+      "sustainedCompletedFrames": null,
+      "report": null
+    },
+    "independentFinalEvidenceAudit": {
+      "path": "work/powers-qa/rc18-independent-final-evidence-audit.json",
+      "sha256": "4700fc7be4c880428f6c46acd58b96e417fcc30e4984854388b9bc0699fd78a9"
+    }
+  },
+  "comparativeCost": {
+    "status": "recorded-fixed-fixture-native-costs-no-speedup-claim",
+    "measure": "Completed submitted native GPU work; no browser FPS conversion",
+    "pairedFixtureFields": [
+      "engine",
+      "adapter and driver",
+      "actual storage mode",
+      "viewport",
+      "camera",
+      "source settings",
+      "timestep",
+      "flow substeps",
+      "timing instrumentation",
+      "included live frames"
+    ],
+    "timingScope": {
+      "kind": "Native offscreen timestamps; no browser FPS or mobile measurements",
+      "fixedCFLFixture": true,
+      "recordedMaxSpeed": 24,
+      "grid": {
+        "velocity": 128,
+        "chemistry": 256
+      },
+      "warmupFramesExcludedFromWarmSummary": 12,
+      "adapters": [
+        {
+          "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+          "backend_type": "Vulkan",
+          "adapter_type": "DiscreteGPU",
+          "description": "610.62"
+        }
+      ]
+    },
+    "matchingBaselineImprovementEstablished": false,
+    "records": [
+      {
+        "id": "radial-blast",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-radial-blast/native-discrete/report.json",
+          "sha256": "988b55574a9ba117cbd6c6d62aee090de0b8be07ce75940efd015397eb7b2137"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 32.484864,
+          "p95": 39.105536,
+          "min": 25.782272,
+          "max": 41.38496
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "fireball",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-fireball/native-discrete/report.json",
+          "sha256": "722aea7d8418b5b80fc1162f77a2256833e78d4d252d83e4fc9fb53227b6fb98"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 41.008128,
+          "p95": 45.775872,
+          "min": 25.767936,
+          "max": 46.403584
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "fire-rain",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-fire-rain/native-discrete/report.json",
+          "sha256": "dc86b45bb5daa5d86dd3fddefa4ec0958ce99e8da46013234b046b8f25f8c42f"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 37.033984000000004,
+          "p95": 43.720704,
+          "min": 20.532224,
+          "max": 44.981248
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "fire-tornado",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-fire-tornado/native-discrete/report.json",
+          "sha256": "09fe35ead53c9221d44d1142293e98d9cea72a63dfbaa70cef0de3660c298fad"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 35.844608,
+          "p95": 55.308288,
+          "min": 21.51424,
+          "max": 56.600576
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "floor-trail",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-floor-trail/native-discrete/report.json",
+          "sha256": "2f90d8e31d411585094e0b89b77913fa263c4d1e41fe5254f7bb8e3b7312f47b"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 39.92576,
+          "p95": 46.36672,
+          "min": 24.64256,
+          "max": 195.48672
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "combustion-bomb",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-combustion-bomb/native-discrete/report.json",
+          "sha256": "464a9488f13fe8ee4614fb69c82553bbae231cc8bba9eca892eefe7101f1a5e6"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 32.094207999999995,
+          "p95": 39.489536,
+          "min": 28.254208,
+          "max": 183.977984
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "flame-dash",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-flame-dash/native-discrete/report.json",
+          "sha256": "b9fba484a0e086e27105ca2acee57f7ae332d22b293ed77c61e151d7f24627d3"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 39.261696,
+          "p95": 43.131904,
+          "min": 31.062016,
+          "max": 81.446912
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "flame-whip",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-flame-whip/native-discrete/report.json",
+          "sha256": "26fdc4c3ed689ed2b67321c5766fda1738e75c1a6b8913ab38332fe8b8c883fa"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 42.819072000000006,
+          "p95": 49.159168,
+          "min": 29.612032,
+          "max": 168.290304
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "ember-orbit",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-ember-orbit/native-discrete/report.json",
+          "sha256": "461648ca3be1b68eb39be3f9b0ad9cdc9c0c735ddf3bec0ee6561928682cefee"
+        },
+        "warmGpuMs": {
+          "samples": 210,
+          "median": 40.019968,
+          "p95": 49.569792,
+          "min": 29.734912,
+          "max": 165.462016
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "heat-seeker",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-heat-seeker/native-discrete/report.json",
+          "sha256": "f51c6a2176a5abc6761ddc03c7671d6848a82c7b541b9a52a9e64dbc073b92d3"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 40.219648,
+          "p95": 43.723776,
+          "min": 29.570048,
+          "max": 138.438656
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "phoenix-dive",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-phoenix-dive/native-discrete/report.json",
+          "sha256": "5c1d6d18da07e5b403cc5713caf3319d035d71bf0bf9363997647e306dfe8bb5"
+        },
+        "warmGpuMs": {
+          "samples": 204,
+          "median": 40.581632,
+          "p95": 45.063168,
+          "min": 32.80384,
+          "max": 204.071936
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "dragon-breath",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-dragon-breath/native-discrete/report.json",
+          "sha256": "b02310dadec7918b172531149ba022da48076a2bd69f3d74859aec1098c0fc02"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 27.864064,
+          "p95": 34.998272,
+          "min": 23.112704,
+          "max": 66.026496
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "solar-lance",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-solar-lance/native-discrete/report.json",
+          "sha256": "abc1cff2fd1902b960857e058837e027a94f7c2156e93e1eeca700d41ebde13d"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 38.350336,
+          "p95": 44.286976,
+          "min": 26.959872,
+          "max": 89.69216
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "flame-wall",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-flame-wall/native-discrete/report.json",
+          "sha256": "b049ef4cccb5f2f8c13db4c18ccef35c33463cb38bae24bb858d9e807eebb9f3"
+        },
+        "warmGpuMs": {
+          "samples": 270,
+          "median": 42.255872,
+          "p95": 50.473984,
+          "min": 26.800128,
+          "max": 51.698688
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "inferno-ring",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-inferno-ring/native-discrete/report.json",
+          "sha256": "f52842ddfb4f04c0adba610a0ebb8f07b1be894bdecae871a2447dd1eb0fc860"
+        },
+        "warmGpuMs": {
+          "samples": 288,
+          "median": 58.966528,
+          "p95": 82.443264,
+          "min": 26.702848,
+          "max": 84.875264
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "meteor-strike",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-meteor-strike/native-discrete/report.json",
+          "sha256": "f85018b96cb8de4e0b71a1d2f5af82b52ff81d31236e8bba0c03bde4afbfa9b2"
+        },
+        "warmGpuMs": {
+          "samples": 180,
+          "median": 39.239168,
+          "p95": 45.955072,
+          "min": 27.07456,
+          "max": 58.25024
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "meteor-barrage",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-meteor-barrage/native-discrete/report.json",
+          "sha256": "97e16e03c0ce8b28dd07ec391741c2cc1a7d05c0b8dccb086d37ef4440691cf1"
+        },
+        "warmGpuMs": {
+          "samples": 252,
+          "median": 44.588032,
+          "p95": 55.424,
+          "min": 24.132608,
+          "max": 56.886272
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "eruption-chain",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-eruption-chain/native-discrete/report.json",
+          "sha256": "b24843f326d02a4636b63c25030849a2f3ccc765280ce7d921b4b8d077af992c"
+        },
+        "warmGpuMs": {
+          "samples": 207,
+          "median": 50.51904,
+          "p95": 63.414272,
+          "min": 23.885824,
+          "max": 66.116608
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "combustion-mine",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-combustion-mine/native-discrete/report.json",
+          "sha256": "cdb7777c5e0c4ee19f3b139b249571ea611337f64d4762ce272c652e34ab3540"
+        },
+        "warmGpuMs": {
+          "samples": 210,
+          "median": 29.838335999999998,
+          "p95": 43.76576,
+          "min": 25.800704,
+          "max": 61.91616
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "vortex-burst",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-vortex-burst/native-discrete/report.json",
+          "sha256": "2dc40438c3c32020f41d964916c354bd34e6345abce6352b31cb214bc51858da"
+        },
+        "warmGpuMs": {
+          "samples": 186,
+          "median": 32.704512,
+          "p95": 44.064768,
+          "min": 24.159232,
+          "max": 46.40256
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "flame-serpent",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-flame-serpent/native-discrete/report.json",
+          "sha256": "259ebb295553777e821f712f2fd245fa039ea681965acfb175e5bbfd4025fac0"
+        },
+        "warmGpuMs": {
+          "samples": 201,
+          "median": 29.195264,
+          "p95": 44.85632,
+          "min": 24.819712,
+          "max": 48.631808
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "cinder-scatter",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-cinder-scatter/native-discrete/report.json",
+          "sha256": "f7815fb93a5cb3ab87bd2b306afcbd62c6b83aef0695026c91b11224a2c3ec39"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 49.414144,
+          "p95": 56.006656,
+          "min": 24.46848,
+          "max": 57.263104
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "fire-cross",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-fire-cross/native-discrete/report.json",
+          "sha256": "369718181d8a805717bec434fa58d63de77be9ae0a0a98c60caaa1e8a8c71790"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 30.79936,
+          "p95": 40.278016,
+          "min": 24.397824,
+          "max": 94.595072
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "flame-crescent",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-flame-crescent/native-discrete/report.json",
+          "sha256": "66e9c5c60b05cf5248aa49c8fa89439b4bc2f5b2f44631fd6f512e6fe48e000c"
+        },
+        "warmGpuMs": {
+          "samples": 180,
+          "median": 28.366336,
+          "p95": 31.34976,
+          "min": 24.382464,
+          "max": 33.482752
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "fireball",
+        "scenario": "overlap",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-fireball-overlap/native-discrete/report.json",
+          "sha256": "b4f65b7c93adb6206215ad93b940b3f6f902f20a6321a987faf7e169306cc451"
+        },
+        "warmGpuMs": {
+          "samples": 216,
+          "median": 49.245695999999995,
+          "p95": 61.751296,
+          "min": 24.285184,
+          "max": 64.27648
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "solar-lance",
+        "scenario": "charge",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-solar-lance-charge/native-discrete/report.json",
+          "sha256": "ac071a061932ec032b3d0cb6479de18c75010d14e50c1f6f4f9f2d8729a2c9d5"
+        },
+        "warmGpuMs": {
+          "samples": 168,
+          "median": 31.200768,
+          "p95": 35.070976,
+          "min": 24.178688,
+          "max": 82.489344
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "meteor-barrage",
+        "scenario": "single",
+        "simulation": "sparse",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-meteor-barrage-sparse/native-discrete/report.json",
+          "sha256": "71cad5fbffaa3274ac7d41b420dcc382627c89f7dc00a3b75e971d590116a702"
+        },
+        "warmGpuMs": {
+          "samples": 252,
+          "median": 46.449664,
+          "p95": 57.972736,
+          "min": 25.341952,
+          "max": 60.314624
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "shipping-full-sequence"
+      },
+      {
+        "id": "fireball",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-live-angles-fireball/native-discrete/report.json",
+          "sha256": "aab8fc6ccf7562e17575974bef8e11af2ed6bc5d7bbc07931deb7724d667b794"
+        },
+        "warmGpuMs": {
+          "samples": 28,
+          "median": 28.441088,
+          "p95": 29.83936,
+          "min": 24.137728,
+          "max": 30.660608
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "hot-angle"
+      },
+      {
+        "id": "combustion-bomb",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-live-angles-combustion-bomb/native-discrete/report.json",
+          "sha256": "59206ca5ef908e63c0444561b8fc83386391a859dae450037468e78cb85a09bb"
+        },
+        "warmGpuMs": {
+          "samples": 84,
+          "median": 26.385408,
+          "p95": 44.99456,
+          "min": 24.209408,
+          "max": 91.759616
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "hot-angle"
+      },
+      {
+        "id": "flame-wall",
+        "scenario": "single",
+        "simulation": "volume",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-live-angles-flame-wall/native-discrete/report.json",
+          "sha256": "a408492bc8edc99fa27548b8d1a8d2a8ed9281f1572413fe98bc72b90d7e4865"
+        },
+        "warmGpuMs": {
+          "samples": 108,
+          "median": 34.339839999999995,
+          "p95": 41.320448,
+          "min": 27.29472,
+          "max": 55.812096
+        },
+        "actualSnapshotStorageModes": [
+          "dense"
+        ],
+        "fixture": "hot-angle"
+      },
+      {
+        "id": "meteor-barrage",
+        "scenario": "single",
+        "simulation": "sparse",
+        "report": {
+          "path": "work/adaptive-volume-qa/powers-rc18-shipping-live-angles-meteor-barrage-sparse/native-discrete/report.json",
+          "sha256": "c27bc9e6c95a592b7667f49970b88a19b28dfde5fc66b8ab8c3b8a9f10ed5a2b"
+        },
+        "warmGpuMs": {
+          "samples": 78,
+          "median": 31.149568000000002,
+          "p95": 48.607232,
+          "min": 25.30304,
+          "max": 97.579008
+        },
+        "actualSnapshotStorageModes": [
+          "dense",
+          "sparse"
+        ],
+        "fixture": "hot-angle"
+      }
+    ],
+    "limits": [
+      "Fixed CFL fixture records max speed 24 with six substeps; it does not represent adaptive browser timestep scheduling.",
+      "Different authored sources are not a paired before/after speedup benchmark.",
+      "Held-angle frames and first 12 simulation frames are excluded from warm summaries.",
+      "Sparse fallback means costs must be interpreted alongside actual storage mode."
+    ],
+    "shippingSummary": {
+      "path": "work/powers-qa/rc18-shipping-native-cost-summary.json",
+      "sha256": "455481588bd420fa95dac0139bdf22397cc03910b354b38b1236d2a0fe29a73c"
+    },
+    "shippingCsv": {
+      "path": "work/powers-qa/rc18-shipping-native-cost-summary.csv",
+      "sha256": "a3151bc6d10edd6209a6f5d64956d817d9b5feec39227ef448e5678f67a28560"
+    },
+    "shippingWarmMedianRangeMs": [
+      27.864064,
+      58.966528
+    ],
+    "timestampDefinition": "Per simulation frame, sum of calibrated native timestamps enclosing recorded submissions, including compute/render/copy commands. Excludes browser UI, browser scheduling and CPU wall time.",
+    "pairingConstraints": [
+      "Use the same adapter, driver/backend, grid, fixed-CFL max-speed policy, camera, actor/source path, warmup exclusions and timestamp flags.",
+      "Different abilities have different gas footprints and lifetimes; this table is a workload cost inventory, not a matched algorithm speedup.",
+      "Older traces with changed choreography/target reservations or pass profiling are not directly comparable.",
+      "Native offscreen timestamps do not establish browser/mobile FPS or frame pacing."
+    ]
+  },
+  "limits": {
+    "liveBrowserFramePacing": "unverified",
+    "physicalMobileAcceptance": "unverified",
+    "offlineVisualParity": "not established",
+    "originalLateCoolingFronts": "Coarse-depth reaction-front faceting remains, including phoenix follow-through. Higher sampling/reconstruction/reaction candidates were rejected and reverted; removal is not claimed.",
+    "volumeTargetedVisualLimits": [
+      "Soft or saturated hot cores",
+      "Compact serpent body in wide framing",
+      "Thin smooth directed ribbons",
+      "Recognizable rain lane organization",
+      "Small crescent",
+      "Historical ring/orbit angle comparisons are not current full-shader proof"
+    ],
+    "boundedDomainContainment": "A requested impact inset wider than a narrow domain saturates at its midpoint; a range-incompatible inset is reduced only as necessary. Transported plumes or edge launches can still leave the domain.",
+    "historicalSixPowerProof": "Predates the 24-ability choreography, four-cast controller and V3 source revisions.",
+    "originalSampledVisualLimits": [
+      "faint early cues",
+      "weak continuous whip curl/arc",
+      "orbit release merging in the default projection",
+      "sharp rectangular fed wall edges",
+      "coarse-depth reaction-front ridges",
+      "compact crescent blade",
+      "soft rounded terminal flashes"
+    ]
+  },
+  "completionRule": "Completed CPU/compiler/native reports and source/package hashes are recorded. Visual review is complete with explicit uneven-fidelity limits, not cinematic or offline equivalence. Package, public byte delivery, live browser demo and physical mobile readiness retain independent status and do not inherit native verification."
+}

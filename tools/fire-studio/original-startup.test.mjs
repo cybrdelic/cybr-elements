@@ -69,7 +69,7 @@ class FixtureElement extends FixtureTarget {
   releasePointerCapture() { this.pointerCapture=null; }
 }
 
-function recordingGL() {
+function recordingGL(floatLinear=true,colorBufferFloat=true) {
   const gl = {};
   const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 SRGB8_ALPHA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER ARRAY_BUFFER ELEMENT_ARRAY_BUFFER STATIC_DRAW UNSIGNED_INT DEPTH DEPTH_COMPONENT24 DEPTH_ATTACHMENT RENDERBUFFER DEPTH_TEST LESS POINTS';
   constants.split(' ').forEach((name, index) => gl[name] = index + 1);
@@ -94,7 +94,7 @@ function recordingGL() {
   gl.getExtension = name => {
     calls.extensions.push(name);
     if (name === 'WEBGL_lose_context') return { loseContext() { calls.lost++; } };
-    if (name === 'EXT_color_buffer_float' || name === 'OES_texture_float_linear') return {};
+    if ((name === 'EXT_color_buffer_float'&&colorBufferFloat) || (name === 'OES_texture_float_linear'&&floatLinear)) return {};
     return null;
   };
   gl.getParameter = parameter => parameter === gl.MAX_TEXTURE_SIZE ? 16384 : 0;
@@ -105,14 +105,14 @@ function recordingGL() {
   gl.useProgram=p=>{currentProgram=p;};
   gl.drawArrays = () => {calls.draws++;const fragment=currentProgram?.shaders?.find(s=>s.type===gl.FRAGMENT_SHADER)?.source||'';if(fragment.includes('out vec4 capacity;'))calls.woodResets=(calls.woodResets||0)+1;if(fragment.includes('out vec4 nextStock;'))calls.woodSteps=(calls.woodSteps||0)+1;if(fragment.includes('uniform float woodDelta;'))calls.woodMechanicsDraws=(calls.woodMechanicsDraws||0)+1;};
   gl.clearBufferfv=(buffer,index)=>{calls.clears++;const texture=boundFramebuffer?.attachments?.get(gl.COLOR_ATTACHMENT0+index);if(texture)calls.clearedTextures.push(texture.id);};
-  gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);if(location?.name==='woodTimeScale')(calls.woodTimeScales??=[]).push(value);};
+  gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);if(location?.name==='woodTimeScale')(calls.woodTimeScales??=[]).push(value);if(location?.name==='powerFlame')(calls.powerOptics??=[]).push(value);};
   for (const name of 'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei uniform1i uniform2f uniform3f uniform3fv uniform4fv uniform4i viewport bindRenderbuffer renderbufferStorage framebufferRenderbuffer bindBuffer bufferData enableVertexAttribArray vertexAttribPointer vertexAttribIPointer deleteBuffer deleteRenderbuffer enable disable depthFunc drawElements'.split(' ')) gl[name] = () => {};
   gl.drawElements=()=>{calls.woodMeshDraws=(calls.woodMeshDraws||0)+1;};
   return { gl, calls, textures, shaders,programs };
 }
 
-function fixture(preset, fuel = 'wood') {
-  const { gl, calls, textures, shaders,programs } = recordingGL();
+function fixture(preset, fuel = 'wood', {floatLinear=true,colorBufferFloat=true}={}) {
+  const { gl, calls, textures, shaders,programs } = recordingGL(floatLinear,colorBufferFloat);
   const ids = [...readFileSync(resolve(root, 'index.html'), 'utf8').matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   // Fire illumination is inserted by studio.js before runtime mounting.
   ids.push('fire-light', 'fire-light-value');
@@ -181,8 +181,8 @@ test('Original production startup and failure regression', async t => {
   const { createFireDomain } = await import(moduleURL('fire-domain.js'));
   const { LEGACY_PRESETS } = await import(moduleURL('pyro-gpu/presets.js'));
   const { loadRuntime } = await import(moduleURL('runtime-loader.js'));
-  async function prepare(preset, fuel) {
-    const env = fixture(preset, fuel);
+  async function prepare(preset, fuel, options) {
+    const env = fixture(preset, fuel, options);
     env.mountLegacy = await loadRuntime('legacy');
     env.elements.get('#preset').replaceChildren(...LEGACY_PRESETS.map(preset => new Option(preset.name, preset.id.replace(/^legacy:/,''))));
     window.FireDomain = createFireDomain(preset);
@@ -211,6 +211,7 @@ test('Original production startup and failure regression', async t => {
     assert.ok(simulationTargets.length >= 4, 'Simulation texture pairs were allocated');
     for (const texture of simulationTargets) assert.equal(texture.parameters.get(env.gl.TEXTURE_MIN_FILTER), env.gl.LINEAR, 'Float capability selects linear filtering for simulation targets');
     await env.frame(performance.now() + 40);
+    assert.ok(env.calls.powerOptics?.length>=2&&env.calls.powerOptics.every(value=>value===0),'Ordinary fire retains its existing optical palette in gathering and rendering');
     if(preset==='explosion')assert.equal(env.calls.woodSteps||0,0,'Gas bursts do not acquire a solid wood inventory');
     else {assert.equal(env.calls.woodResets,1);assert.ok(env.calls.woodSteps>0);}
     assert.ok(env.calls.draws > 0, 'Actual first-frame simulation and rendering submitted draw calls');
@@ -314,11 +315,37 @@ test('Original production startup and failure regression', async t => {
     await runtime.dispose();assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);
   });
 
-  await t.test('Removing the texture capability declaration reproduces the reported ReferenceError', async () => {
+  await t.test('Core half-float filtering survives absence of the optional 32-bit float extension',async()=>{
+    const env=await prepare('sigil','wood',{floatLinear:false});
+    assert.equal(env.gl.getExtension('OES_texture_float_linear'),null);
+    const runtime=await env.mountLegacy({initialPreset:'sigil',onFailure:error=>env.failures.push(String(error))});
+    const domain=window.FireDomain;
+    const targets=env.textures.filter(texture=>texture.internal===env.gl.RGBA16F&&texture.width===domain.nx*8&&texture.height===domain.ny*domain.depth/8);
+    assert.ok(targets.length>=4);
+    for(const texture of targets){
+      assert.equal(texture.parameters.get(env.gl.TEXTURE_MIN_FILTER),env.gl.LINEAR);
+      assert.equal(texture.parameters.get(env.gl.TEXTURE_MAG_FILTER),env.gl.LINEAR);
+    }
+    const correction=env.shaders.find(shader=>shader.source?.includes('vec3 value=clamp(-grad/WORLD'))?.source;
+    assert.ok(correction?.includes('outValue=vec4(value,0.0)'),'Half-float pressure correction retains signed precision without the32F extension');
+    assert.ok(env.textures.some(texture=>texture.internal===env.gl.RGBA16F&&texture.width!==domain.nx*8&&texture.parameters.get(env.gl.TEXTURE_MIN_FILTER)===env.gl.LINEAR));
+    for(const texture of env.textures.filter(texture=>texture.internal===env.gl.R32F))assert.equal(texture.parameters.get(env.gl.TEXTURE_MIN_FILTER),env.gl.NEAREST,'32F pressure solves do not require linear sampling');
+    await env.frame(performance.now()+40);await runtime.dispose();
+    assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);
+  });
+
+  await t.test('Missing float-target renderability is still rejected before GPU allocations',async()=>{
+    const env=await prepare('sigil','wood',{floatLinear:false,colorBufferFloat:false});
+    await assert.rejects(()=>env.mountLegacy({initialPreset:'sigil'}),/Floating point GPU targets are unavailable/);
+    assert.equal(env.textures.length,0);assert.equal(env.programs.length,0);
+    assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);assert.equal(env.calls.lost,1);
+  });
+
+  await t.test('Removing the half-float filtering declaration reproduces the reported ReferenceError', async () => {
     const original = readFileSync(resolve(root, 'fire.js'), 'utf8');
-    const declaration = /const\s+halfFloatLinear\s*=\s*!!gl\.getExtension\(['"]OES_texture_float_linear['"]\);/;
+    const declaration = /const\s+halfFloatLinear\s*=\s*true;/;
     assert.match(original, declaration);
-    const broken = original.replace(declaration, "gl.getExtension('OES_texture_float_linear');").replace(/from\s*(['"])(\.[^'"]+)\1/g, (match, quote, specifier) => 'from ' + quote + new URL(specifier, moduleURL('fire.js')).href + quote);
+    const broken = original.replace(declaration, '').replace(/from\s*(['"])(\.[^'"]+)\1/g, (match, quote, specifier) => 'from ' + quote + new URL(specifier, moduleURL('fire.js')).href + quote);
     const env = await prepare('sigil', 'wood');
     const { mountLegacy: brokenMount } = await import('data:text/javascript;base64,' + Buffer.from(broken).toString('base64'));
     await assert.rejects(() => brokenMount({ initialPreset: 'sigil' }), error => error instanceof ReferenceError && error.message === 'halfFloatLinear is not defined');

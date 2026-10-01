@@ -2,6 +2,8 @@
 
 // never the simulation grid or ray-march resolution.
 
+import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-18';
+
 const preset = (id, name, description, fuel, effect, dynamics, chemistry, options = {}) => ({
   id,
   name,
@@ -21,70 +23,149 @@ export const sourceOrigin = (p) => [
   ...(p.source || [0, p.effect[3] > 0.5 ? (p.effect[0] === 4 ? 1 : 0.18) : 0.58, 0]),
 ];
 
-const POWER_PRESETS = [
+const CORE_POWER_PRESETS = [
   // Powers use authored, bounded emission and momentum in the same live flow
   // as the ordinary fire sources. The shared IDs also map to Original below.
   preset(
     'radial-blast',
     'Radial blast',
-    'Cast a finite outward burst. Flame tongues separate and roll into an expanding soot cloud.',
+    'Cast a floor-level wave. Burning fuel spreads outward, rolls into separate flames and leaves drifting smoke.',
     'gas',
     [22, 1, .45, 0],
-    [.65, .05, .75, .7],
-    [1, 1, .8, .75],
-    { family: 'Powers', power: 'radial-blast', source: [0, .65, 0], minHeight: .35 },
+    [.65, .05, 1.1, .55],
+    [.72, .65, .32, 1.2],
+    { family: 'Powers', power: 'radial-blast', source: [0, .18, 0], minHeight: .12 },
   ),
   preset(
     'fireball',
     'Fireball',
-    'Launch a burning charge along an arc. Its flame wake keeps evolving after the charge burns out.',
+    'Aim and launch a compact burning charge. Its trailing wake separates into fire and smoke after the launch ends.',
     'gas',
     [23, 1, 1.15, 0],
-    [.65, .05, .75, .7],
-    [1, 1, .8, .75],
+    [.65, .018, .8, .35],
+    [.72, .70, .45, .9],
     { family: 'Powers', power: 'fireball', source: [-1.6, 1.1, 0], minHeight: .35 },
   ),
   preset(
     'fire-rain',
     'Fire rain',
-    'Burning droplets fall in staggered lanes, feeding short flames close to the floor.',
+    'Staggered falling fire packets cross the field. Their flame curls upward as the downward impulse fades.',
     'oil',
     [24, 1, 0, 1],
-    [.65, .05, .75, .7],
-    [1, 1, .8, .75],
+    [.65, .012, .7, .35],
+    [.72, .60, .95, .85],
     { family: 'Powers', power: 'fire-rain', source: [0, .2, 0], minHeight: .2 },
   ),
   preset(
     'fire-tornado',
     'Fire tornado',
-    'A rotating fuel column draws flame around its core and lifts soot into a twisting plume.',
+    'A driven rotating updraft pulls burning fuel into broken spirals and lifts smoke above the column.',
     'gas',
     [25, 1, 0, 1],
-    [.65, .05, 1.5, .7],
-    [1, 1, .8, .75],
+    [.65, .01, 1.5, .7],
+    [.65, .62, .55, 1.25],
     { family: 'Powers', power: 'fire-tornado', source: [0, .2, 0], minHeight: .2 },
   ),
   preset(
     'floor-trail',
     'Fire floor trail',
-    'A moving ignition front leaves a low winding trail. Each patch burns down as the front advances.',
+    'Drag finite burning oil along the floor. Older patches burn down while the ignition front advances.',
     'oil',
     [26, 1, 0, 1],
-    [.65, .05, .75, .7],
-    [1, 1, .8, .75],
+    [.65, .008, .75, .65],
+    [.68, .55, 1.1, .95],
     { family: 'Powers', power: 'floor-trail', source: [0, .18, 0], minHeight: .18 },
   ),
   preset(
     'combustion-bomb',
     'Combustion bomb',
-    'A charge gathers close to the floor, then erupts after a short fuse into flame and a rising smoke cloud.',
+    'Charge for 1.2 seconds, then release an outward blast with rolling flames and a heavier rising soot plume.',
     'oil',
     [27, 1, 1.55, 0],
-    [.65, .05, .75, .7],
-    [1, 1, .8, .75],
+    [.65, .075, 1.2, .85],
+    [.75, .85, 1.3, 1.1],
     { family: 'Powers', power: 'combustion-bomb', source: [0, .28, 0], minHeight: .28 },
   ),
 ];
+
+// Motion identity and timings come from the shared registry. These authored
+// fuel/flow profiles remain separate from ordinary fire source presets.
+function abilityPreset(id, description, fuel, dynamics, chemistry, group, source) {
+  const definition = POWER_DEFINITIONS.find((power) => power.id === id);
+  if (!definition) throw new Error('Missing authored power definition: ' + id);
+  return preset(id, definition.name, description, fuel,
+    [21 + definition.kind, 1, definition.duration, Number(definition.continuous)],
+    dynamics, chemistry, {
+      family: 'Powers', power: id, abilityGroup: group,
+      source: source || [0, definition.floor ? .18 : 1.1, 0],
+      minHeight: definition.floor ? .12 : .35,
+    });
+}
+
+const CHOREOGRAPHED_POWER_PRESETS = [
+  abilityPreset('flame-dash',
+    'Gather at the floor, surge forward and brake into a flare. The burning wake keeps moving after the dash ends.',
+    'oil', [.65, .018, 1.1, .45], [.72, .58, .85, 1.1], 'Movement', [-1.8, .18, 0]),
+  abilityPreset('flame-whip',
+    'Wind a burning curl, sweep it through an arc and crack the tip before it recoils into drifting flame.',
+    'gas', [.65, .012, 1.15, .4], [.72, .60, .38, 1.2], 'Sweeps'),
+  abilityPreset('ember-orbit',
+    'Gather three burning satellites, tighten their orbit and release them in a staggered fan with separate wakes.',
+    'gas', [.65, .012, 1.0, .4], [.72, .52, .35, 1.05], 'Projectiles', [-1.25, 1.1, 0]),
+  abilityPreset('heat-seeker',
+    'Charge a steering fireball, weave toward the cast aim and finish in an impact plume with a lingering wake.',
+    'gas', [.65, .02, 1.1, .35], [.74, .62, .45, 1.1], 'Projectiles', [-1.8, 1.1, 0]),
+  abilityPreset('phoenix-dive',
+    'Open paired flame wings, climb into an arc and fold into a dive that spreads a ground flare and rising smoke.',
+    'oil', [.65, .035, 1.2, .6], [.74, .65, .95, 1.15], 'Movement'),
+  abilityPreset('dragon-breath',
+    'Gather a short charge, then drive overlapping pulses through a broad flame cone. Stop casting leaves its turbulent wake.',
+    'gas', [.65, .025, 1.4, .4], [.75, .68, .45, 1.35], 'Directed', [-1.8, 1.05, 0]),
+  abilityPreset('solar-lance',
+    'Build a concentrated tip, launch a narrow fast lance and break it into a terminal flare and lingering wake.',
+    'gas', [.65, .015, .85, .25], [.80, .58, .28, .85], 'Directed', [-1.8, 1.1, 0]),
+  abilityPreset('flame-wall',
+    'Light a floor seam, raise flame panels in sequence and let the irregular crest collapse into soot.',
+    'oil', [.65, .02, 1.05, .7], [.72, .55, 1.05, 1.15], 'Terrain'),
+  abilityPreset('inferno-ring',
+    'Raise an uneven flame barrier, rotate its inward pulses and let the ring break into transported smoke.',
+    'gas', [.65, .02, 1.25, .6], [.72, .56, .55, 1.2], 'Terrain'),
+  abilityPreset('meteor-strike',
+    'Mark a floor cast, release one burning meteor above it and strike through a curved descent with a rolling flame front.',
+    'oil', [.65, .065, 1.2, .85], [.76, .75, 1.3, 1.15], 'Impacts'),
+  abilityPreset('meteor-barrage',
+    'Send a staggered set of meteors through separate arcs. Successive impacts merge their fire and soot plumes.',
+    'oil', [.65, .05, 1.15, .8], [.74, .50, 1.2, 1.1], 'Impacts'),
+  abilityPreset('eruption-chain',
+    'Advance a warning along the floor, then fire ordered geysers through a zigzag before the columns decay.',
+    'oil', [.65, .045, 1.25, 1.0], [.74, .58, 1.15, 1.25], 'Terrain', [-1.8, .18, 0]),
+  abilityPreset('combustion-mine',
+    'Plant a quiet floor charge that waits before detonating into a short flame blast and a heavy soot cloud.',
+    'oil', [.65, .065, 1.2, .8], [.74, .72, 1.3, 1.15], 'Impacts'),
+  abilityPreset('vortex-burst',
+    'Draw burning gas inward, tighten a helical gather and reverse it into an outward blast with a rolling wake.',
+    'gas', [.65, .04, 1.5, .65], [.72, .62, .65, 1.3], 'Impacts'),
+  abilityPreset('flame-serpent',
+    'Launch a moving flame head through an S-curve. The transported body follows, separates and extinguishes behind it.',
+    'gas', [.65, .018, 1.15, .4], [.73, .58, .5, 1.2], 'Projectiles', [-1.8, 1.1, 0]),
+  abilityPreset('cinder-scatter',
+    'Charge a cluster, release a diverging cone of burning packets and follow their separate local impact flares.',
+    'oil', [.65, .035, 1.05, .4], [.74, .48, .9, 1.1], 'Projectiles', [-1.8, 1.1, 0]),
+  abilityPreset('fire-cross',
+    'Sweep one burning floor line, cross it with a second and flare at the intersection before both wakes decay.',
+    'oil', [.65, .025, 1.1, .55], [.72, .58, 1.0, 1.15], 'Terrain'),
+  abilityPreset('flame-crescent',
+    'Release a curved flame blade, hook it back through the field and open the returning arc into a fading wake.',
+    'gas', [.65, .018, 1.15, .4], [.73, .58, .45, 1.2], 'Sweeps'),
+];
+
+const POWER_PRESETS = [...CORE_POWER_PRESETS, ...CHOREOGRAPHED_POWER_PRESETS].map((source) => {
+  const definition = POWER_DEFINITIONS.find((power) => power.id === source.power);
+  if (!definition) throw new Error('Missing power identity: ' + source.power);
+  const groups = { ground: 'Ground', projectile: 'Projectiles', field: 'Fields', trail: 'Terrain', aim: 'Directed' };
+  return { ...source, abilityGroup: source.abilityGroup || groups[definition.targetMode],
+    effect: [21 + definition.kind, source.effect[1], definition.duration, Number(definition.continuous)] };
+});
 
 export const FIRE_PRESETS = [
   preset(

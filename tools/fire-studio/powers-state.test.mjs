@@ -39,14 +39,14 @@ function shellFunction(name) {
 test('shared power links round-trip strength and aim without changing lighting or camera', () => {
   const powers = { strength: 1.6, heading: -72, elevation: 36 };
   const camera = { zoom: 2.1, angle: 48, pan: [.3, -.8] };
-  for (const simulation of ['legacy', 'volume', 'sparse']) {
-    const fire = simulation === 'legacy' ? 'legacy:fireball' : 'fireball';
+  for (const definition of POWER_DEFINITIONS) for (const simulation of ['legacy', 'volume', 'sparse']) {
+    const fire = simulation === 'legacy' ? 'legacy:' + definition.id : definition.id;
     const url = writeLook(new URL('https://example.com/firesim/?qa=1&lightWork=1'), {
       fire, simulation, powers, camera, fuel: 'gas', room: true,
       lights: { ambient: .8, key: 80, keyColor: '#eeddcc' }, fireLight: 12,
     });
     assert.equal(url.searchParams.get('simulation'), simulation);
-    assert.equal(url.searchParams.get(simulation === 'legacy' ? 'preset' : 'firePreset'), 'fireball');
+    assert.equal(url.searchParams.get(simulation === 'legacy' ? 'preset' : 'firePreset'), definition.id);
     assert.equal(url.searchParams.get('qa'), '1');
     assert.equal(url.searchParams.get('lightWork'), '1');
     const restored = readLook(url.searchParams, { zoom: 1, angle: 16, pan: [0, 0] });
@@ -102,10 +102,14 @@ test('production power controls show only relevant aim fields and update powers 
   };
   const sync = new Function('$', 'runtime', 'powerDefinition', 'normalizePowerSettings',
     shellFunction('syncPowerControls') + ';return syncPowerControls;')($, runtime, powerDefinition, normalizePowerSettings);
+  const floorHeading = new Set(['flame-dash', 'eruption-chain', 'fire-cross', 'flame-wall',
+    'phoenix-dive', 'meteor-strike', 'meteor-barrage']);
   for (const definition of POWER_DEFINITIONS) for (const prefix of ['', 'legacy:']) {
     $('#preset').value = prefix + definition.id;sync();
     assert.equal($('#power-controls').hidden, false);
-    assert.equal($('#power-aim-fields').hidden, definition.id !== 'fireball');
+    assert.equal($('#power-aim-fields').hidden,
+      !(['aim', 'projectile'].includes(definition.targetMode) || floorHeading.has(definition.id)), definition.id);
+    assert.equal($('#power-elevation-field').hidden, definition.floor, definition.id);
     assert.equal($('#power-description').textContent, definition.hint);
   }
   $('#power-strength').value = '175';$('#power-heading').value = '36';$('#power-elevation').value = '20';
@@ -121,17 +125,20 @@ test('production simulation transitions preserve power aim while respecting each
   const remembered = new Map(), camera = { zoom: 1.8, angle: 22, pan: [.2, -.5] };
   const volumeCamera = { zoom: 1.25, angle: 16, pan: [0, 0] };
   remembered.set('volume', { fire: 'fireball', camera: volumeCamera, embers: true });
-  const create = new Function('engine', 'remembered', 'matchingPreset', 'runtimeFamily', 'powerDefinition',
+  const create = new Function('engine', 'remembered', 'matchingPreset', 'runtimeFamily', 'powerDefinition', 'normalizePowerSettings',
     shellFunction('transitionLook') + ';return transitionLook;');
   const old = { fire: 'legacy:fireball', powers: { strength: 1.5, heading: 60, elevation: 18 },
     camera, fuel: 'gas', room: true, tool: 'pan', fireLight: 24 };
   const chosen = FIRE_PRESETS.find(p => p.id === 'fireball');
-  const cross = create('legacy', remembered, matchingPreset, runtimeFamily, powerDefinition)('volume', chosen, old, false);
+  const cross = create('legacy', remembered, matchingPreset, runtimeFamily, powerDefinition, normalizePowerSettings)('volume', chosen, old, false);
   assert.deepEqual(cross.powers, old.powers);
   assert.deepEqual(cross.camera, volumeCamera);
-  const same = create('volume', remembered, matchingPreset, runtimeFamily, powerDefinition)('sparse', chosen,
+  const same = create('volume', remembered, matchingPreset, runtimeFamily, powerDefinition, normalizePowerSettings)('sparse', chosen,
     { ...old, fire: 'fireball' }, false);
   assert.deepEqual(same.powers, old.powers);
   assert.deepEqual(same.camera, camera);
   assert.equal(same.tool, 'pan');
+  const wall = FIRE_PRESETS.find(p=>p.id==='flame-wall');
+  const next = create('volume', remembered, matchingPreset, runtimeFamily, powerDefinition, normalizePowerSettings)('volume',wall,{...old,fire:'fireball'},false);
+  assert.deepEqual(next.powers,{strength:1.5,heading:90,elevation:9});
 });

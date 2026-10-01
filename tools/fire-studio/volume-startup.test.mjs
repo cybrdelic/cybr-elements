@@ -82,7 +82,7 @@ test('actual Volume and Sparse startup work with baseline features and no eager 
     const f=fixture();await withEnvironment(f,async()=>{
       const s=await PyroSolver.create(f.canvas,volumeOptions(new URLSearchParams(),simulation));
       assert.deepEqual(f.requests,[{requiredFeatures:[]}]);
-      assert.equal(s.params.length,12);assert.ok(s.params.every(p=>p.desc.size===128));
+      assert.equal(s.params.length,12);assert.ok(s.params.every(p=>p.desc.size===384));
       for(const field of [...s.surface,...s.damage,...s.floorFuel,...s.floorWear])assert.equal(field.t.desc.format,'rgba32float');
       for(const field of [...s.surface,...s.damage])assert.equal(field.t.desc.dimension,'3d');
       assert.equal(s.woodFlux,undefined,'48MiB transfer field remains lazy for default source');
@@ -109,7 +109,8 @@ test('actual finite wooden sources load the production geometry, owners, thermal
       await s.reset();s.smoke=false;s.dropFuel([0,0]);s.igniteFuel();
       const encoder=f.encoder();s.step(encoder,1/60,0);
       const params=f.writes.filter(w=>w.buffer===s.params[0]).at(-1).data;
-      assert.equal(params.length,32);assert.equal(params[9],3);assert.equal(params[25],1);assert.equal(params[26],12);
+      assert.equal(params.length,96);assert.equal(params[9],3);assert.equal(params[25],1);assert.equal(params[26],12);
+      for(let i=0;i<4;i++)assert.equal(params[42+i*16],0,'ordinary wood leaves all ability records inactive');
       const floor=f.dispatches.filter(d=>d.pipeline.label==='floor-fuel').at(-1);
       assert.ok(floor.group.entries.find(e=>e.binding===6));assert.ok(floor.group.entries.find(e=>e.binding===7));
       assert.ok(f.dispatches.some(d=>d.pipeline.label==='wood-flux-normalize'));

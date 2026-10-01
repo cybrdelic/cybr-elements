@@ -1,8 +1,11 @@
 // Original's simulation-specific emitter IDs for the shared authored sources.
+import {powerDefinition} from './fire-powers.js?v=studio-rc-18';
 export function emitterKindFor(preset) {
   if (!preset) throw new Error('Missing Original source preset');
+  const power=powerDefinition(preset.power);
+  if(preset.power&&!power)throw new Error('Unregistered Original power '+preset.power);
+  if(power)return 21+power.kind;
   const type = preset.effect[0];
-  if (type >= 22 && type <= 27) return type;
   if (type === 0) return 6;
   if (type === 1) return preset.id === 'torch' ? 2 : 1;
   if (type === 2) return 3;

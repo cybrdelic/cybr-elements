@@ -3,24 +3,25 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-17';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-17';
-import {WoodStructure} from '../wood-structure.js?v=studio-rc-17';
-import {WoodCollision} from './wood-collision.js?v=studio-rc-17';
-import {WoodFlux} from './wood-flux.js?v=studio-rc-17';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-17';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-17';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-17';
-import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-17';
-import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-17';
-import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-17';
-import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-17';
-import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-17';
-import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-17';
-import { FuelBrush } from '../fuel-ground.js?v=studio-rc-17';
-import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-17';
-import {powerDirection as authoredPowerDirection} from '../fire-powers.js?v=studio-rc-17';
-import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-17';
+} from './objects.js?v=studio-rc-18';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-18';
+import {WoodStructure} from '../wood-structure.js?v=studio-rc-18';
+import {WoodCollision} from './wood-collision.js?v=studio-rc-18';
+import {WoodFlux} from './wood-flux.js?v=studio-rc-18';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-18';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-18';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-18';
+import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-18';
+import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-18';
+import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-18';
+import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-18';
+import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-18';
+import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-18';
+import { FuelBrush } from '../fuel-ground.js?v=studio-rc-18';
+import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-18';
+import {powerDirection as authoredPowerDirection, powerDefinition} from '../fire-powers.js?v=studio-rc-18';
+import {PowerCastPool} from '../fire-abilities.js?v=studio-rc-18';
+import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-18';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   const lag = Math.max(0, Math.min(telemetryLag, 8));
@@ -82,6 +83,8 @@ export class PyroSolver {
     this.launchPowerDirection = null;
     this.launchPowerStrength = null;
     this.powerTrailLast = null;
+    this.powerCasts = new PowerCastPool();
+    this.simulationParams = new Float32Array(96);
     this.dynamics = [1, 1, 1, 1];
     this.chemistry = [1, 1, 1, 1];
     this.objectId = null;
@@ -148,7 +151,7 @@ export class PyroSolver {
       addressModeW: 'clamp-to-edge',
     });
     this.params = Array.from({ length: 12 }, () =>
-      d.createBuffer({ size: 128, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST }),
+      d.createBuffer({ size: 384, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST }),
     );
     this.view = d.createBuffer({
       size: 192,
@@ -720,20 +723,20 @@ export class PyroSolver {
   }
   step(encoder, dt, index) {
     this.stamp(encoder, index * 6);
+    this.powerCasts?.updateContinuous({direction:this.powerDirection,strength:this.powerStrength,scale:this.effect[1]});
     // Reuse pressure only for a settled continuous source. A new burst or
     // source movement keeps the original two cycles and zero initial guess.
     const stationary =
       this.lastPressureSource &&
       this.source.every((v, i) => Math.abs(v - this.lastPressureSource[i]) < (0.25 * 6) / this.N);
     const warmPressure =
-      this.effect[3] > 0.5 && this.burstAge > 0.12 && this.previousDt && stationary;
+      this.effect[3] > 0.5 && this.burstAge > 0.12 && this.previousDt && stationary &&
+      !this.powerCasts?.crossesImpulse(dt);
     const p = this.params[index];
     const smokeDecay=advanceSmokeDecay(this.smokeDecayRemainder||0,dt);
     this.smokeDecayRemainder=smokeDecay.remainder;
-    this.device.queue.writeBuffer(
-      p,
-      0,
-      new Float32Array([
+    const data=this.simulationParams||(this.simulationParams=new Float32Array(96));
+    data.set([
         dt,
         this.time,
         this.burstAge,
@@ -749,8 +752,10 @@ export class PyroSolver {
         ...this.chemistry,
         smokeDecay.decayDt,this.floorFuelKind===.35?1:0,this.woodTimeScale||12,0,
         ...this.powerUniform(),
-      ]),
-    );
+      ]);
+    data.fill(0,32);
+    this.powerCasts?.write(data,32);
+    this.device.queue.writeBuffer(p,0,data);
     this.previousDt = dt;
     this.lastPressureSource = [...this.source];
     const base = [
@@ -941,6 +946,7 @@ export class PyroSolver {
     this.stamp(encoder, index * 6 + 5);
     this.time += dt;
     this.burstAge += dt;
+    this.powerCasts?.step(dt);
   }
   resetSurface(encoder) {
     this.updateObject();
@@ -1168,7 +1174,8 @@ export class PyroSolver {
     const encoder = this.device.createCommandEncoder();
     encoder.clearBuffer(this.stats);
     const telemetryLag = this.frameNumber - (this.latestTelemetry.sampleFrame || 0);
-    const safeSpeed = cflSafeSpeed(this.maxSpeed, telemetryLag, this.burstAge);
+    const safeSpeed = Math.max(cflSafeSpeed(this.maxSpeed, telemetryLag, this.burstAge),
+      this.active ? this.powerCasts?.speedFloor(dt)||0 : 0);
     const substeps =
       dt > 0
         ? Math.max(
@@ -1346,9 +1353,11 @@ export class PyroSolver {
     this.seed += 3.17;
     this.active = true;
   }
-  castPower(at = this.source, direction = this.powerDirection, strength = this.powerStrength) {
-    if(this.effect[0]<22||this.effect[0]>27||!at||at.length!==3||
-      !direction||direction.length!==3||![...at,...direction,strength].every(Number.isFinite))return false;
+  castPower(at = this.source, direction = this.powerDirection, strength = this.powerStrength, options = {}) {
+    const definition=this.selectedPower();
+    if(!definition||!options||typeof options!=='object'||!at||at.length!==3||
+      !direction||direction.length!==3||![...at,...direction,strength].every(Number.isFinite)||
+      (options.target&&(!Array.isArray(options.target)||options.target.length!==3||!options.target.every(Number.isFinite))))return false;
     const length=Math.hypot(...direction);if(length<1e-8)return false;
     this.powerDirection=direction.map(v=>v/length);
     this.powerStrength=Math.max(.25,Math.min(2,strength));
@@ -1356,7 +1365,10 @@ export class PyroSolver {
     this.launchPowerStrength=this.powerStrength;
     this.powerTrailLast=null;
     this.burst(at);this.previousDt=0;this.lightReady=false;
-    if(this.effect[0]===26){
+    const pool=this.powerCasts||(this.powerCasts=new PowerCastPool());
+    pool.cast(definition,{origin:at,direction:this.powerDirection,target:options.target,
+      strength:this.powerStrength,scale:this.effect[1],seed:this.seed,held:!!options.held});
+    if(this.powerUsesFloorFuel(definition)){
       // A trail spends the existing finite floor inventory. A held stationary
       // cursor does not create an infinite reservoir or a second gas emitter.
       const point=[at[0],at[2]];
@@ -1364,15 +1376,18 @@ export class PyroSolver {
     }
     return true;
   }
-  movePower(at, direction = this.powerDirection) {
+  movePower(at, direction = this.powerDirection, target = null) {
     // Projectiles and delayed bombs retain their launch origin after casting.
     // Rain, tornadoes and floor trails follow the held cursor without a reset.
-    if(this.effect[0]<24||this.effect[0]>26||!at||at.length!==3||
-      !direction||direction.length!==3||![...at,...direction].every(Number.isFinite))return false;
+    const definition=this.selectedPower();
+    if(!definition?.continuous||definition.movable===false||!at||at.length!==3||
+      !direction||direction.length!==3||![...at,...direction].every(Number.isFinite)||
+      (target&&(!Array.isArray(target)||target.length!==3||!target.every(Number.isFinite))))return false;
     const length=Math.hypot(...direction);if(length<1e-8)return false;
     this.source=[...at];this.powerDirection=direction.map(v=>v/length);
+    this.powerCasts?.move(at,target,{direction:this.powerDirection,strength:this.powerStrength,scale:this.effect[1]});
     this.previousDt=0;this.lightReady=false;
-    if(this.effect[0]===26){
+    if(this.powerUsesFloorFuel(definition)){
       const point=[at[0],at[2]];
       const changed=this.depositPowerTrail(point,this.powerTrailLast);
       if(changed){this.powerTrailLast=point;this.igniteFuel();}
@@ -1393,10 +1408,38 @@ export class PyroSolver {
   powerUniform() {
     // A projectile's launch settings are fixed. Aim controls affect the next
     // cast; ongoing rain, vortex and trail powers continue to follow controls.
-    const transient=this.effect[0]===22||this.effect[0]===23||this.effect[0]===27;
+    const definition=this.selectedPower();
+    const transient=!!definition&&!definition.continuous;
     const direction=(transient&&this.launchPowerDirection)||this.powerDirection||authoredPowerDirection();
     const strength=transient&&this.launchPowerStrength!=null?this.launchPowerStrength:(this.powerStrength||1);
     return [...direction,strength];
+  }
+  selectedPower() {
+    return powerDefinition(this.effect[0]-21);
+  }
+  powerUsesFloorFuel(definition=this.selectedPower()) {
+    return definition?.floorFuel===true;
+  }
+  releasePower(target = null, direction = this.powerDirection) {
+    if(!this.selectedPower()||!direction||direction.length!==3||!direction.every(Number.isFinite)||
+      (target&&(!Array.isArray(target)||target.length!==3||!target.every(Number.isFinite))))return false;
+    if(Math.hypot(...direction)<1e-8)return false;
+    const released=this.powerCasts?.release(target,direction);
+    if(released){this.previousDt=0;this.lightReady=false;this.maxSpeed=Math.max(this.maxSpeed,12);this.stateEpoch++;}
+    return !!released;
+  }
+  aimPower(target, direction = this.powerDirection) {
+    if(!target||target.length!==3||!target.every(Number.isFinite)||!direction||direction.length!==3||
+      !direction.every(Number.isFinite)||Math.hypot(...direction)<1e-8)return false;
+    return !!this.powerCasts?.aim(target,direction);
+  }
+  stopPower() {
+    this.active=false;this.powerCasts?.stop();this.previousDt=0;this.lightReady=false;
+  }
+  cancelPower() {
+    const cancelled=this.powerCasts?.cancelHeld();
+    if(cancelled){this.stateEpoch++;this.previousDt=0;this.lightReady=false;}
+    return !!cancelled;
   }
   async pixels() {
     const width = this.canvas.width, height = this.canvas.height;
@@ -1456,6 +1499,7 @@ export class PyroSolver {
     this.powerTrailLast = null;
     this.launchPowerDirection = null;
     this.launchPowerStrength = null;
+    this.powerCasts?.reset();
     this.maxSpeed = 12;
     this.latestTelemetry = { maxSpeed: 12, preDivergence: 0, postDivergence: 0, gpu: null, sampleFrame: this.frameNumber };
     // Reset in place; no full-volume CPU uploads or transient half-GB buffers.

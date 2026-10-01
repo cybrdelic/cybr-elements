@@ -96,6 +96,20 @@ for(const expression of [/\bcode:\s*`([^`]+)`/g,/\bthis\.pipeline\(\s*`([^`]+)`/
     add('solver/inline/'+match.index,match[1]);
   }
 }
+// Native host traces retain the exact module strings, including inline
+// modules and an earlier frozen source revision. Validate those strings too
+// when reviewing a replay; the compiler still performs no physical GPU work.
+const recording=option('recording',null),recordingInfo=[];
+if(recording){
+  for(const input of recording.split(',')){
+    const file=path.resolve(repo,input),trace=JSON.parse(fs.readFileSync(file,'utf8'));
+    let modules=0;
+    for(const resource of trace.resources||[])if(resource.kind==='module'){
+      add('recording/'+path.relative(repo,file)+'/'+(resource.desc.label||resource.id),resource.desc.code);modules++;
+    }
+    recordingInfo.push({path:file,shaderFingerprint:trace.shaderFingerprint||null,modules});
+  }
+}
 
 const packageRoot=path.resolve(repo,option('dawn','work/dawn-qa/node_modules/webgpu'));
 const packageInfo=JSON.parse(fs.readFileSync(path.join(packageRoot,'package.json'),'utf8'));
@@ -108,7 +122,8 @@ if(adapter.info?.device!=='null-backend')throw Error('Compiler gate refuses any 
 const device=await adapter.requestDevice();
 const report={kind:'Tint module validation through Dawn null backend',nativePackage:packageInfo.version,
   runtime,backend:'null',adapter:{vendor:adapter.info?.vendor,device:adapter.info?.device,
-    description:adapter.info?.description},browser:false,physicalGPUWork:false,submittedCommands:0,
+  description:adapter.info?.description},browser:false,physicalGPUWork:false,submittedCommands:0,
+  recordings:recordingInfo,
   positiveControl:null,negativeControl:null,modules:[],errors:0,warnings:0};
 const formatMessages=info=>info.messages.map(m=>({type:m.type,lineNum:m.lineNum,
   linePos:m.linePos,message:m.message}));
