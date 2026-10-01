@@ -8,6 +8,7 @@ const studioRoot = process.env.FIRE_STUDIO_ROOT
   ? path.resolve(process.env.FIRE_STUDIO_ROOT)
   : fileURLToPath(new URL('../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/', import.meta.url));
 const { FIRE_PRESETS, sourceOrigin } = await import(pathToFileURL(path.join(studioRoot, 'pyro-gpu/presets.js')).href);
+const { powerDefinition, powerDirection, normalizePowerSettings } = await import(pathToFileURL(path.join(studioRoot, 'fire-powers.js')).href);
 const app = fs.readFileSync(path.join(studioRoot, 'pyro-gpu/app.js'), 'utf8');
 
 // Execute the production closure functions. This fixture supplies delayed GPU
@@ -60,12 +61,15 @@ function fixture({ initiallyBusy = true, visible = false, waitForFrameStop = fal
     async prepareSource() { calls.push('prepare'); await prepare.promise; calls.push('prepare-complete'); },
     async reset() { calls.push('reset'); await reset.promise; calls.push('reset-complete'); },
     burst() { calls.push('burst'); },
+    castPower(position, direction, strength) {
+      calls.push('cast-power');this.lastCast={ position:[...position], direction:[...direction], strength };return true;
+    },
     camera() { calls.push('camera'); },
     async frame(dt) { assert.equal(dt, 1 / 60); calls.push('first-frame'); await firstFrame.promise; calls.push('first-frame-complete'); },
     async drain() { calls.push('drain'); await drain.promise; calls.push('drain-complete'); },
     destroy() { calls.push('destroy'); },
   };
-  const dependencies = { $, scope, solver, FIRE_PRESETS, sourceOrigin, URL,
+  const dependencies = { $, scope, solver, FIRE_PRESETS, sourceOrigin, powerDefinition, powerDirection, normalizePowerSettings, URL,
     location: { href: 'https://example.com/firesim/?simulation=volume' },
     history: { replaceState() {} },
     onFailure: (error) => failures.push(error),
@@ -79,13 +83,13 @@ function fixture({ initiallyBusy = true, visible = false, waitForFrameStop = fal
       return promise;
     },
   };
-  const functions = ['configureFire', 'releaseBusy', 'restart', 'applyFire'].map((name) => functionSource(name)).join('\n') + '\n' + functionSource('dispose', true);
+  const functions = ['configureFire', 'triggerSource', 'releaseBusy', 'restart', 'applyFire'].map((name) => functionSource(name)).join('\n') + '\n' + functionSource('dispose', true);
   const create = new Function(...Object.keys(dependencies), `
     'use strict';
     let busy=${initiallyBusy}, resetQueued=false, resetWaiters=[], resetCompletion=null, pendingOutput=null,
       benchmarkActive=false, cancelBenchmark=false, testScenario=null, testStopped=false,
       activeFire=FIRE_PRESETS.find(p=>p.id==='bonfire'), flameColor='natural', embers=true,
-      smoke=false, paused=false, trace=[], captureIndex=0, saved=false;
+      powers=normalizePowerSettings({}),smoke=false, paused=false, trace=[], captureIndex=0, saved=false;
     ${functions}
     return {
       applyFire, restart, releaseBusy, dispose,
@@ -116,6 +120,23 @@ test('Volume source selection remains pending through an active frame and its qu
   assert.equal(f.calls.filter((item) => item === 'burst').length, 1);
   assert.equal(f.runtime.state().busy, false);
   assert.equal(f.runtime.state().resetQueued, false);
+});
+
+test('a queued power source casts once after reset with its authored origin and saved aim', async () => {
+  const f = fixture();
+  const selected = f.runtime.applyFire('fireball');
+  const released = f.runtime.releaseBusy();
+  await turn();
+  assert.equal(f.calls.includes('cast-power'), false, 'a queued cast must wait for the completed reset');
+  f.reset.resolve();
+  await Promise.all([selected, released]);
+  assert.equal(f.calls.filter(value => value === 'cast-power').length, 1);
+  assert.equal(f.calls.includes('burst'), false);
+  assert.deepEqual(f.solver.lastCast, {
+    position: sourceOrigin(FIRE_PRESETS.find(value => value.id === 'fireball')),
+    direction: powerDirection({}), strength: 1,
+  });
+  assert.ok(f.calls.indexOf('cast-power') > f.calls.indexOf('reset-complete'));
 });
 
 test('a queued Volume reset failure rejects the source-selection Promise', async () => {

@@ -66,6 +66,7 @@ globalThis.createImageBitmap=async(blob,settings)=>({file:blob.file,width:blob.b
 const {PyroSolver}=await import(pathToFileURL(path.join(source,'pyro-gpu/solver.js')).href);
 const {FIRE_PRESETS,sourceOrigin}=await import(pathToFileURL(path.join(source,'pyro-gpu/presets.js')).href);
 const {volumeOptions}=await import(pathToFileURL(path.join(source,'simulation-modes.js')).href);
+const {powerDefinition,normalizePowerSettings,powerDirection}=await import(pathToFileURL(path.join(source,'fire-powers.js')).href);
 const preset=FIRE_PRESETS.find(p=>p.id===value('preset','bonfire'));if(!preset)throw Error('Unknown preset');
 const sandbox={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(source,'scene-lights.js'),'utf8').split('  let state=')[0]+'window.catalog=presets;})();',sandbox);
@@ -85,11 +86,14 @@ solver.smoke=!!preset.smokeSimulation||preset.id==='smoke-burst';solver.embers=t
 solver.ignition=preset.ignition==='crown'?2:preset.ignition==='all'?1:0;
 solver.treeMoisture=preset.moisture||'dry';
 solver.woodTimeScale=Number(value('wood-time',12));
+const power=powerDefinition(preset),powers=normalizePowerSettings({strength:value('power-strength',1),heading:value('power-heading',0),elevation:value('power-elevation',9)});
+solver.powerStrength=powers.strength;solver.powerDirection=powerDirection(powers);
 // Native replay checks command correctness. Driver telemetry is not fabricated
 // into a browser performance claim; both comparisons use this same CFL fixture.
 solver.collectTelemetry=async slot=>{slot.pending=false;};
 solver.collectPoolTelemetry=async slot=>{slot.poolPending=false;};
 await solver.reset();
+if(power)solver.castPower();
 // Controlled structural gate, deliberately separate from a natural burn.
 // Seed bounded pre-charred stock only in finite occupied donors; production
 // failure, rigid motion, collision, heat transfer and lighting run unchanged.
@@ -132,6 +136,9 @@ if(!Number.isInteger(frames)||frames<1||frames>3600)throw Error('--frames must b
 if(option('cold'))solver.active=false;
 for(let frame=0;frame<frames;frame++){
  if(frame===Number(value('stop',-1)))solver.active=false;
+ if(option('trail-path')&&power?.id==='floor-trail'&&solver.active){
+  const t=Math.min(frame/90,1);solver.movePower([-1.5+3*t,.18,.55*Math.sin(t*Math.PI*2)]);
+ }
  if(option('move')&&frame===Math.floor(frames/2))solver.burst([solver.source[0]+.45,solver.source[1]+.15,solver.source[2]-.2]);
  solver.maxSpeed=Number(value('max-speed',3));solver.latestTelemetry.sampleFrame=solver.frameNumber;
  camera();const frameResult=await solver.frame(1/60);await solver.drain();
@@ -148,5 +155,5 @@ for(let frame=0;frame<frames;frame++){
   saveField:frame===frames-1||frame===Math.floor(frames/2)-1});
 }
 for(const [angle,inspect] of [[-50,false],[100,false],[16,true]]){camera(angle,inspect);await solver.frame(0);await solver.drain();operations.push({kind:'frame',index:`view-${angle}-${inspect}`,time:solver.time,output:solver.output.__rid,snapshot:true});}
-const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,preset:preset.id,frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,fixedCFLFixture:true},resources,operations}));
+const target=path.join(folder,'commands.json');fs.writeFileSync(target,JSON.stringify({nativeOnly:true,options:{simulation,flow:solverConfig.adaptive,pool:solverConfig.brickPool,pressure:solverConfig.pressureWork,light:solverConfig.lightWork,receivers:solverConfig.lightReceivers,preset:preset.id,powers:power?powers:null,trailPath:option('trail-path'),frames,move:option('move'),lighting,guide:option('guide'),fuel:option('fuel'),unlit:option('unlit'),igniteFuel:option('ignite-fuel'),preCharredStructuralFixture:option('charred'),cutNode:option('broken-node')?Number(value('broken-node',-1)):null,fixedCFLFixture:true},resources,operations}));
 console.log(JSON.stringify({target,bytes:fs.statSync(target).size,resources:resources.length,operations:operations.length,dataFiles:nextData}));

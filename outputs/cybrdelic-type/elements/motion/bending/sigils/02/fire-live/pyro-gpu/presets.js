@@ -21,6 +21,71 @@ export const sourceOrigin = (p) => [
   ...(p.source || [0, p.effect[3] > 0.5 ? (p.effect[0] === 4 ? 1 : 0.18) : 0.58, 0]),
 ];
 
+const POWER_PRESETS = [
+  // Powers use authored, bounded emission and momentum in the same live flow
+  // as the ordinary fire sources. The shared IDs also map to Original below.
+  preset(
+    'radial-blast',
+    'Radial blast',
+    'Cast a finite outward burst. Flame tongues separate and roll into an expanding soot cloud.',
+    'gas',
+    [22, 1, .45, 0],
+    [.65, .05, .75, .7],
+    [1, 1, .8, .75],
+    { family: 'Powers', power: 'radial-blast', source: [0, .65, 0], minHeight: .35 },
+  ),
+  preset(
+    'fireball',
+    'Fireball',
+    'Launch a burning charge along an arc. Its flame wake keeps evolving after the charge burns out.',
+    'gas',
+    [23, 1, 1.15, 0],
+    [.65, .05, .75, .7],
+    [1, 1, .8, .75],
+    { family: 'Powers', power: 'fireball', source: [-1.6, 1.1, 0], minHeight: .35 },
+  ),
+  preset(
+    'fire-rain',
+    'Fire rain',
+    'Burning droplets fall in staggered lanes, feeding short flames close to the floor.',
+    'oil',
+    [24, 1, 0, 1],
+    [.65, .05, .75, .7],
+    [1, 1, .8, .75],
+    { family: 'Powers', power: 'fire-rain', source: [0, .2, 0], minHeight: .2 },
+  ),
+  preset(
+    'fire-tornado',
+    'Fire tornado',
+    'A rotating fuel column draws flame around its core and lifts soot into a twisting plume.',
+    'gas',
+    [25, 1, 0, 1],
+    [.65, .05, 1.5, .7],
+    [1, 1, .8, .75],
+    { family: 'Powers', power: 'fire-tornado', source: [0, .2, 0], minHeight: .2 },
+  ),
+  preset(
+    'floor-trail',
+    'Fire floor trail',
+    'A moving ignition front leaves a low winding trail. Each patch burns down as the front advances.',
+    'oil',
+    [26, 1, 0, 1],
+    [.65, .05, .75, .7],
+    [1, 1, .8, .75],
+    { family: 'Powers', power: 'floor-trail', source: [0, .18, 0], minHeight: .18 },
+  ),
+  preset(
+    'combustion-bomb',
+    'Combustion bomb',
+    'A charge gathers close to the floor, then erupts after a short fuse into flame and a rising smoke cloud.',
+    'oil',
+    [27, 1, 1.55, 0],
+    [.65, .05, .75, .7],
+    [1, 1, .8, .75],
+    { family: 'Powers', power: 'combustion-bomb', source: [0, .28, 0], minHeight: .28 },
+  ),
+];
+
 export const FIRE_PRESETS = [
   preset(
     'explosion',
@@ -31,6 +96,8 @@ export const FIRE_PRESETS = [
     [1, 1, 1, 1],
     [1, 1, 1, 1],
   ),
+
+  ...POWER_PRESETS,
 
   preset(
     'oil-burst',

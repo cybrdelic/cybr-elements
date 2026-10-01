@@ -8,6 +8,7 @@ const root = resolve(process.env.FIRE_STUDIO_ROOT || resolve(import.meta.dirname
   '../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'));
 const app = readFileSync(resolve(root, 'pyro-gpu/app.js'), 'utf8');
 const { volumeOptions } = await import(pathToFileURL(resolve(root, 'simulation-modes.js')).href);
+const { normalizePowerSettings } = await import(pathToFileURL(resolve(root, 'fire-powers.js')).href);
 
 // Execute the production closure functions with CPU-only dependencies. The
 // fixture cannot create a GPU device or replace the production option policy.
@@ -114,10 +115,11 @@ test('actual snapshot and look preserve mode, camera and valid interaction tools
     return elements.get(id);
   };
   const deps = { $, view: { dataset: {} }, Event, FIRE_COLORS: [{ id: 'natural' }],
+    normalizePowerSettings,
     configureFire() {}, sync() {}, setFireLight() {},setWoodTime(){} };
   const create = new Function(...Object.keys(deps), `
     let simulation='sparse',activeTool='pan',gesture=null,activeFire={id:'sigil-cybr'},
-      flameColor='natural',embers=true,smoke=false,fireLight=24,woodTimeScale=12,zoom=1.8,angle=45,
+      flameColor='natural',embers=true,smoke=false,fireLight=24,woodTimeScale=12,powers=normalizePowerSettings({}),zoom=1.8,angle=45,
       pan=[.2,-.1],testScenario=null,testStopped=false,solver={seed:1};
     ${functionSource('tool')}
     ${look}
@@ -128,6 +130,7 @@ test('actual snapshot and look preserve mode, camera and valid interaction tools
   assert.equal(state.simulation, 'sparse');
   assert.equal(state.tool, 'pan');
   assert.deepEqual(state.camera, { zoom: 1.8, angle: 45, pan: [.2, -.1] });
+  assert.deepEqual(state.powers, { strength: 1, heading: 0, elevation: 9 });
   runtime.look({ tool: 'fuel', room: false, camera: { zoom: 2, angle: 30, pan: [.3, 0] } });
   assert.equal(runtime.snapshot().tool, 'fuel');
   assert.equal($('#room').checked, true, 'restoring Fuel uses the existing floor visibility policy');
@@ -137,6 +140,10 @@ test('actual snapshot and look preserve mode, camera and valid interaction tools
   assert.equal(runtime.snapshot().tool, 'fuel', 'invalid saved tools cannot break pointer routing');
   state.camera.pan[0] = 100;
   assert.equal(runtime.snapshot().camera.pan[0], .3, 'snapshots own their camera arrays');
+  runtime.look({ powers: { strength: 1.8, heading: 70 } });
+  assert.deepEqual(runtime.snapshot().powers, { strength: 1.8, heading: 70, elevation: 9 });
+  const detached = runtime.snapshot();detached.powers.heading = -180;
+  assert.equal(runtime.snapshot().powers.heading, 70, 'snapshots own their power settings');
 });
 
 test('normal metrics and benchmark results retain runtime status and snapshot identity', () => {

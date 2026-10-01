@@ -1,0 +1,1012 @@
+{
+  "release": "0.1.0-rc.15",
+  "cpu": {
+    "tests": 237,
+    "passed": 237,
+    "runtimeRunners": 35
+  },
+  "strictCompiler": {
+    "implementation": "Official Dawn webgpu@0.6.1, null backend",
+    "uniqueModules": 145,
+    "generatedVariants": 172,
+    "errors": 0,
+    "warnings": 0,
+    "deliberatelyDivergentDerivativeRejected": true,
+    "report": "work/dawn-qa/tint-release-final/report.json",
+    "packagedReport": "work/dawn-qa/tint-package-final/report.json"
+  },
+  "originalNative": {
+    "gates": 13,
+    "startupCases": 11,
+    "uniquePrograms": 61,
+    "report": "work/original-powers-qa/final5/native-powers-report.json",
+    "reportSha256": "f95b711aad730294e6da48fa1648502804cc57308e69b54cfe750abc91f9d661",
+    "scope": "Actual production startup GLSL and isolated cold-source gas evolution; pressure/vorticity fixtures are zero. Low-feed tornado reacts on its second simulated step, other sources on their first."
+  },
+  "volumeNative": [
+    {
+      "case": "radial",
+      "report": "work/adaptive-volume-qa/rc15-final-radial/native-discrete/report.json",
+      "reportSha256": "96085f6fff40c65299312c14ab1dd4aa4c1132f12fbe4dc1d9d8b8aed1ca43ec",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "radial-blast",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": false,
+        "frames": 90,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 90,
+      "heldViews": 3,
+      "images": 19,
+      "steadyGpuMedianMs": 29.660671999999998,
+      "maxMeasuredCFL": 1.0334035915798612,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 44,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "8aab9c09943d84c06796c8979df8da3a17f428e1c510bf4a7a12b1d6522a2716",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            1215162,
+            1739810,
+            2001220,
+            1238480
+          ],
+          "sumByChannel": [
+            17279.72493928671,
+            440419.71242409945,
+            72904.38836115599,
+            131934.74244230986
+          ],
+          "maxByChannel": [
+            0.0772705078125,
+            1.7470703125,
+            0.268310546875,
+            0.60986328125
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-radial\\native-discrete\\chemistry-44.npy"
+        },
+        {
+          "index": 89,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "697e45e64ec4f2f9a605c424bb25a24d4cedcd42df65fad47895f0060a4b9c8c",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            2005545,
+            2614752,
+            2945618,
+            2066228
+          ],
+          "sumByChannel": [
+            13614.32161039114,
+            195384.52411067486,
+            36113.63364034891,
+            110475.22488433123
+          ],
+          "maxByChannel": [
+            0.047027587890625,
+            0.72607421875,
+            0.11077880859375,
+            0.394775390625
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-radial\\native-discrete\\chemistry-89.npy"
+        }
+      ]
+    },
+    {
+      "case": "fireball",
+      "report": "work/adaptive-volume-qa/rc15-final-fireball/native-discrete/report.json",
+      "reportSha256": "f82eaacbda121b8982ba2d208a67f8b49084dc0165d58d374696d2037b7e4a3f",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "fireball",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": false,
+        "frames": 100,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 100,
+      "heldViews": 3,
+      "images": 21,
+      "steadyGpuMedianMs": 21.138432,
+      "maxMeasuredCFL": 0.492916022406684,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 49,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "06ff98e5a49e0e4e3487f775e82522c8aae1df736d9a91b63d16c2d58bb44de6",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            55757,
+            165155,
+            198812,
+            57540
+          ],
+          "sumByChannel": [
+            1025.3158247470856,
+            28062.87300348282,
+            11167.730276405811,
+            5510.1931782364845
+          ],
+          "maxByChannel": [
+            0.1519775390625,
+            2.958984375,
+            2.494140625,
+            0.65234375
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-fireball\\native-discrete\\chemistry-49.npy"
+        },
+        {
+          "index": 99,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "f77243e836b0ff4af310f16213d4760bd88f291bb59b8c1bd0a17161e3a70adc",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            192228,
+            344690,
+            409367,
+            200884
+          ],
+          "sumByChannel": [
+            1984.0114032626152,
+            32542.564554572105,
+            5213.167650163174,
+            13404.236990094185
+          ],
+          "maxByChannel": [
+            0.0875244140625,
+            1.3798828125,
+            0.0853271484375,
+            0.57568359375
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-fireball\\native-discrete\\chemistry-99.npy"
+        }
+      ]
+    },
+    {
+      "case": "rain",
+      "report": "work/adaptive-volume-qa/rc15-final-rain/native-discrete/report.json",
+      "reportSha256": "33fdca7d2fb5bad64e79796a09506cb9726307f203652f4ddfe8e06bcac82ba1",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "fire-rain",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": false,
+        "frames": 150,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 150,
+      "heldViews": 3,
+      "images": 29,
+      "steadyGpuMedianMs": 32.994816,
+      "maxMeasuredCFL": 0.5214967176649306,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 74,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "619dcf05406544c46e11b8af9916dcb8f5da53813923a9caec59fec9fc25c3d4",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            1022688,
+            1794093,
+            2299955,
+            779647
+          ],
+          "sumByChannel": [
+            114399.12066191435,
+            181157.44465202093,
+            70545.9064412117,
+            44508.54256463051
+          ],
+          "maxByChannel": [
+            2.712890625,
+            3.1015625,
+            2.36328125,
+            0.8076171875
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-rain\\native-discrete\\chemistry-74.npy"
+        },
+        {
+          "index": 149,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "f8316dc85ae55dc3f592b40b08bca89c6c1fe490dbc869fa7cd32bca6909d068",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            2507587,
+            3108594,
+            3728686,
+            1993851
+          ],
+          "sumByChannel": [
+            269732.37063896656,
+            284283.9536190033,
+            96447.36806201935,
+            116336.96643614769
+          ],
+          "maxByChannel": [
+            2.59375,
+            3.099609375,
+            2.283203125,
+            0.88134765625
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-rain\\native-discrete\\chemistry-149.npy"
+        }
+      ]
+    },
+    {
+      "case": "tornado3",
+      "report": "work/adaptive-volume-qa/rc15-final-tornado3/native-discrete/report.json",
+      "reportSha256": "8379e76ed78d4f50708455226c6fb87a386f71d6d9990de320273bef8f5e1999",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "fire-tornado",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": false,
+        "frames": 150,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 150,
+      "heldViews": 3,
+      "images": 29,
+      "steadyGpuMedianMs": 31.60064,
+      "maxMeasuredCFL": 0.6701818169487846,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 74,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "75722b7ad11036a7a6de6ffc767b0ce3f962ed1d011d90b8706125c83d6a4daa",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            962945,
+            1796791,
+            1966543,
+            1000504
+          ],
+          "sumByChannel": [
+            12018.393563985825,
+            355041.7485473752,
+            201289.0929993987,
+            91399.70796662569
+          ],
+          "maxByChannel": [
+            0.10040283203125,
+            2.337890625,
+            0.89990234375,
+            0.7421875
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-tornado3\\native-discrete\\chemistry-74.npy"
+        },
+        {
+          "index": 149,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "e46926584b447051c5494aaabd8a877726b6ef142f6a0bea01769876dd27ec1f",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            2933696,
+            3758800,
+            3982960,
+            3010375
+          ],
+          "sumByChannel": [
+            30018.39712792635,
+            581280.8811557889,
+            270510.41567999125,
+            240172.47818011045
+          ],
+          "maxByChannel": [
+            0.09820556640625,
+            2.322265625,
+            1.037109375,
+            0.75146484375
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-tornado3\\native-discrete\\chemistry-149.npy"
+        }
+      ]
+    },
+    {
+      "case": "trail",
+      "report": "work/adaptive-volume-qa/rc15-final-trail/native-discrete/report.json",
+      "reportSha256": "997b47c30afecc79c362440ca5657aa3173e50725ecc105bb4890d4143bf3739",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "floor-trail",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": true,
+        "frames": 150,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 150,
+      "heldViews": 3,
+      "images": 29,
+      "steadyGpuMedianMs": 19.052031999999997,
+      "maxMeasuredCFL": 0.3907777913411458,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 74,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "f394309c0b25a5feb8118237ad8adb25dfc7c78def982ddf9c60f2fc9e374442",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            204411,
+            221171,
+            228573,
+            187206
+          ],
+          "sumByChannel": [
+            98914.70317941904,
+            279019.511233747,
+            61606.25493359566,
+            67165.52320760489
+          ],
+          "maxByChannel": [
+            1.2734375,
+            8.7890625,
+            9.6875,
+            0.93359375
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-trail\\native-discrete\\chemistry-74.npy"
+        },
+        {
+          "index": 149,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "66f21754041e2633d903d72419df6e611514c807a283cd5c535e1ed45182d053",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            810832,
+            840416,
+            841639,
+            743702
+          ],
+          "sumByChannel": [
+            242289.06358206272,
+            297671.93071359396,
+            21681.195584774017,
+            175585.46514248848
+          ],
+          "maxByChannel": [
+            1.4150390625,
+            1.986328125,
+            4.41015625,
+            0.91357421875
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-trail\\native-discrete\\chemistry-149.npy"
+        }
+      ]
+    },
+    {
+      "case": "bomb",
+      "report": "work/adaptive-volume-qa/rc15-final-bomb/native-discrete/report.json",
+      "reportSha256": "f8e43e66d6fb54ea1e57b3249c73cba5e1a35a50978f999025a4476034d4cb12",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "combustion-bomb",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": false,
+        "frames": 150,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 150,
+      "heldViews": 3,
+      "images": 29,
+      "steadyGpuMedianMs": 23.88992,
+      "maxMeasuredCFL": 0.6255203586154513,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 74,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "81257d34aca06494ded17f20002393f33300522a8ed4ff95bbb67986d9b6dc1d",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            11713,
+            41523,
+            44456,
+            10191
+          ],
+          "sumByChannel": [
+            192.48989242315292,
+            8824.541797041893,
+            13622.777131140232,
+            81.15890431404114
+          ],
+          "maxByChannel": [
+            0.07122802734375,
+            0.72265625,
+            1.1953125,
+            0.0291900634765625
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-bomb\\native-discrete\\chemistry-74.npy"
+        },
+        {
+          "index": 149,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "6347d599b75cafc81558e02de5310626572c2fe77798aafab74739e0e5922552",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            1149465,
+            1201230,
+            1243936,
+            1044572
+          ],
+          "sumByChannel": [
+            495561.7335535884,
+            528712.5292289853,
+            43049.21678388119,
+            298735.13007479906
+          ],
+          "maxByChannel": [
+            1.6220703125,
+            1.541015625,
+            0.3642578125,
+            0.96337890625
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-bomb\\native-discrete\\chemistry-149.npy"
+        }
+      ]
+    },
+    {
+      "case": "tree",
+      "report": "work/adaptive-volume-qa/rc15-final-tree/native-discrete/report.json",
+      "reportSha256": "96fabf19bce11384a62020aacddd7a93d1cda5ee1dacb27c58460b5d3d5a9d4b",
+      "adapter": {
+        "vendor": "NVIDIA",
+        "architecture": "",
+        "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "description": "610.62",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 4318,
+        "device_id": 10400,
+        "adapter_type": "DiscreteGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "volume",
+        "flow": false,
+        "pool": false,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "cybr-tree",
+        "powers": null,
+        "trailPath": false,
+        "frames": 12,
+        "move": false,
+        "lighting": "fully-lit",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 12,
+      "heldViews": 3,
+      "images": 5,
+      "steadyGpuMedianMs": 24.345088,
+      "maxMeasuredCFL": 0.0,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 5,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "254bcc3fc4f27172636df4bf32de9f107f620d559b20d760197e452b97453917",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "sumByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "maxByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "index": 11,
+          "mode": "dense",
+          "staleMappings": 0,
+          "sha256": "254bcc3fc4f27172636df4bf32de9f107f620d559b20d760197e452b97453917",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "sumByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "maxByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "case": "sparse",
+      "report": "work/adaptive-volume-qa/rc15-final-sparse/native-integrated/report.json",
+      "reportSha256": "968b4be67034e8181909fd9def27a38eca373d69364c2a28bf16bcd3988cc330",
+      "adapter": {
+        "vendor": "Intel Corporation",
+        "architecture": "",
+        "device": "Intel(R) UHD Graphics",
+        "description": "Intel driver",
+        "stackgroup_min_size": 4,
+        "stackgroup_max_size": 128,
+        "vendor_id": 32902,
+        "device_id": 42920,
+        "adapter_type": "IntegratedGPU",
+        "backend_type": "Vulkan"
+      },
+      "recordedOptions": {
+        "simulation": "sparse",
+        "flow": false,
+        "pool": true,
+        "pressure": false,
+        "light": false,
+        "receivers": false,
+        "preset": "fireball",
+        "powers": {
+          "strength": 1,
+          "heading": 0,
+          "elevation": 9
+        },
+        "trailPath": false,
+        "frames": 30,
+        "move": false,
+        "lighting": "studio",
+        "guide": false,
+        "fuel": false,
+        "unlit": false,
+        "igniteFuel": false,
+        "preCharredStructuralFixture": false,
+        "cutNode": null,
+        "fixedCFLFixture": true
+      },
+      "passed": true,
+      "simulationFrames": 30,
+      "heldViews": 3,
+      "images": 9,
+      "steadyGpuMedianMs": 135.74361647761344,
+      "maxMeasuredCFL": 0.35118197970920134,
+      "substeps": [
+        5
+      ],
+      "chemistry": [
+        {
+          "index": 14,
+          "mode": "sparse",
+          "staleMappings": 0,
+          "sha256": "82a582c144b2842b56e27014d9ab522d609809f63634d22ab1127a367d9d2954",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            5265,
+            61264,
+            69132,
+            5345
+          ],
+          "sumByChannel": [
+            70.00265163183212,
+            4902.089982688427,
+            5943.038594901562,
+            374.9731183052063
+          ],
+          "maxByChannel": [
+            0.058563232421875,
+            1.8876953125,
+            1.6884765625,
+            0.2373046875
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "poolStatus": {
+            "mode": 0,
+            "requested": 284,
+            "resident": 284,
+            "allocated": 0,
+            "free": 740,
+            "overflow": 0,
+            "epoch": 77,
+            "migration": 0
+          },
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-sparse\\native-integrated\\chemistry-14.npy"
+        },
+        {
+          "index": 29,
+          "mode": "sparse",
+          "staleMappings": 0,
+          "sha256": "d55f8e184634528ec7854e7aeaa48007099ae64821386a09716438c9f0290c1f",
+          "nonFinite": 0,
+          "nonzeroByChannel": [
+            20047,
+            100847,
+            117355,
+            20445
+          ],
+          "sumByChannel": [
+            393.4939343929291,
+            13619.960083127022,
+            8934.530983924866,
+            1996.4827552437782
+          ],
+          "maxByChannel": [
+            0.1099853515625,
+            2.62109375,
+            2.17578125,
+            0.43310546875
+          ],
+          "minByChannel": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "poolStatus": {
+            "mode": 0,
+            "requested": 368,
+            "resident": 368,
+            "allocated": 0,
+            "free": 656,
+            "overflow": 0,
+            "epoch": 152,
+            "migration": 0
+          },
+          "path": "C:\\Users\\alexf\\Documents\\ChatGPT\\cybr\\cybr-elements\\work\\adaptive-volume-qa\\rc15-final-sparse\\native-integrated\\chemistry-29.npy"
+        }
+      ]
+    }
+  ],
+  "visualReview": {
+    "method": "Temporal native contact sheets and held-state views; 768x432 output; captures retained on disk",
+    "passes": [
+      "Distinct finite radial pulse, travelling fireball, staggered rain, tall driven tornado, finite oil trail and delayed combustion bomb",
+      "Tornado source revised after overexposure: lower fuel rate, tapered source and slower basal lift",
+      "Corrected wood/forest renderer from several angles",
+      "Finite chemistry and measured CFL for every frame"
+    ],
+    "limits": [
+      "Authored supernatural gas sources; no liquid-droplet floor pools or projectile rigid-body impact model",
+      "Frames establish native rendered state, not live browser interaction or film-quality parity"
+    ]
+  },
+  "performanceScope": {
+    "nativeOnly": true,
+    "output": [
+      768,
+      432
+    ],
+    "fixedTelemetryFixture": "20 m/s conservative speed; five CFL substeps per running frame; no invented browser telemetry",
+    "changes": "16-byte uniform extension; bounded source and force equations in existing kernels; no new simulation pass or per-frame GPU resources",
+    "notEstablished": [
+      "Browser FPS and RAF pacing",
+      "Mobile compatibility, memory and sustained performance",
+      "Performance equivalence or movie-quality appearance"
+    ]
+  },
+  "package": {
+    "version": "0.1.0-rc.15",
+    "build": "0d1cf64e7f96e456",
+    "runtimeFiles": 152,
+    "directoryAndZipVerified": true,
+    "archiveBytes": 90834020
+  }
+}

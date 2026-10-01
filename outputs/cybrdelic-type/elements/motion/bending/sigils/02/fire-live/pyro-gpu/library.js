@@ -1,9 +1,9 @@
-import { ALL_FIRE_PRESETS, SCENES } from './presets.js?v=studio-rc-14';
-import { DEMO_PRESETS, isExperimental } from '../demo-presets.js?v=studio-rc-14';
-import { lookStore } from '../look-storage.js?v=studio-rc-14';
-import { modeForFire } from '../simulation-modes.js?v=studio-rc-14';
+import { ALL_FIRE_PRESETS, SCENES } from './presets.js?v=studio-rc-15';
+import { DEMO_PRESETS, isExperimental } from '../demo-presets.js?v=studio-rc-15';
+import { lookStore } from '../look-storage.js?v=studio-rc-15';
+import { modeForFire } from '../simulation-modes.js?v=studio-rc-15';
 
-const CATEGORIES = ['Demos', 'Sources', 'Lighting', 'Tests', 'Experiments', 'Saved'];
+const CATEGORIES = ['Demos', 'Powers', 'Sources', 'Lighting', 'Tests', 'Experiments', 'Saved'];
 const LIGHTING = [
   'fire',
   'studio',
@@ -74,7 +74,8 @@ export function mountLibrary(api) {
   categoryControl.append(...CATEGORIES.map((name) => new Option(name, name)));
   const descriptions = {
     Demos: 'Starting scenes for the selected simulation. Present hides the controls.',
-    Sources: 'Fire, smoke, sigils, and shapes. Switch the simulation filter to compare sources.',
+    Powers: 'Cast a blast, launch a fireball, or shape a sustained effect. These run live in both simulations.',
+    Sources: 'Fire, powers, smoke, sigils, and shapes. Switch the simulation filter to compare sources.',
     Lighting: 'Light the current scene with a key, rim, ambient fill, or room bounce.',
     Tests: 'Fixed cameras and lighting for checking smoke transport, shadows, and combustion.',
     Experiments: 'Work in progress. Geometry, effect quality, and performance vary.',
@@ -83,6 +84,7 @@ export function mountLibrary(api) {
 
   function collection() {
     if (category === 'Demos') return DEMO_PRESETS;
+    if (category === 'Powers') return ALL_FIRE_PRESETS.filter((p) => p.family === 'Powers');
     if (category === 'Sources') return ALL_FIRE_PRESETS.filter((p) => !isExperimental(p));
     if (category === 'Lighting')
       return LIGHTING.map((id) => window.SceneLights.catalog.find((p) => p.id === id))

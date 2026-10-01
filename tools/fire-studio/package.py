@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / 'outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'
-VERSION = '0.1.0-rc.14'
+VERSION = '0.1.0-rc.15'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 WOOD_DIRECTORIES = ['forest-tree/structure', 'logs', 'house', 'wood-sigil']
 OPEN_GATES = [
@@ -294,7 +294,9 @@ def validate_startup(root):
                    'fuel-ground.test.mjs', 'floor-fuel.test.mjs', 'sigil-guide.test.mjs', 'scene-light-presets.test.mjs', 'smoke-lifecycle.test.mjs', 'original-smoke.test.mjs',
                    'simulation-modes.test.mjs', 'simulation-look.test.mjs', 'sparse-app.test.mjs',
                    'wood-thermo.test.mjs', 'wood-flux.test.mjs', 'wood-structure.test.mjs', 'wood-state-sampling.test.mjs',
-                   'original-wood.test.mjs', 'floor-wood.test.mjs', 'volume-startup.test.mjs']:
+                   'original-wood.test.mjs', 'floor-wood.test.mjs', 'volume-startup.test.mjs',
+                   'powers-catalog.test.mjs', 'original-powers.test.mjs', 'volume-powers.test.mjs',
+                   'powers-state.test.mjs', 'wood-uniformity.test.mjs', 'brick-pool-uniformity.test.mjs']:
         result = subprocess.run(
             ['node', str(Path(__file__).with_name(runner))],
             env=environment, capture_output=True, text=True, timeout=30,

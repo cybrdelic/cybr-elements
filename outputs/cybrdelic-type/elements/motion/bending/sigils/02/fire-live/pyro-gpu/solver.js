@@ -3,23 +3,24 @@ import {
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-14';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-14';
-import {WoodStructure} from '../wood-structure.js?v=studio-rc-14';
-import {WoodCollision} from './wood-collision.js?v=studio-rc-14';
-import {WoodFlux} from './wood-flux.js?v=studio-rc-14';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-14';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-14';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-14';
-import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-14';
-import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-14';
-import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-14';
-import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-14';
-import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-14';
-import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-14';
-import { FuelBrush } from '../fuel-ground.js?v=studio-rc-14';
-import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-14';
-import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-14';
+} from './objects.js?v=studio-rc-15';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-15';
+import {WoodStructure} from '../wood-structure.js?v=studio-rc-15';
+import {WoodCollision} from './wood-collision.js?v=studio-rc-15';
+import {WoodFlux} from './wood-flux.js?v=studio-rc-15';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-15';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-15';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-15';
+import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-15';
+import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-15';
+import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-15';
+import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-15';
+import { createBrickPool, brickPoolScalarShaders, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-15';
+import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-15';
+import { FuelBrush } from '../fuel-ground.js?v=studio-rc-15';
+import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-15';
+import {powerDirection as authoredPowerDirection} from '../fire-powers.js?v=studio-rc-15';
+import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-15';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   const lag = Math.max(0, Math.min(telemetryLag, 8));
@@ -76,6 +77,11 @@ export class PyroSolver {
     this.active = true;
     this.fuel = 0;
     this.effect = [0, 1, 0.085, 0];
+    this.powerDirection = authoredPowerDirection();
+    this.powerStrength = 1;
+    this.launchPowerDirection = null;
+    this.launchPowerStrength = null;
+    this.powerTrailLast = null;
     this.dynamics = [1, 1, 1, 1];
     this.chemistry = [1, 1, 1, 1];
     this.objectId = null;
@@ -142,7 +148,7 @@ export class PyroSolver {
       addressModeW: 'clamp-to-edge',
     });
     this.params = Array.from({ length: 12 }, () =>
-      d.createBuffer({ size: 112, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST }),
+      d.createBuffer({ size: 128, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST }),
     );
     this.view = d.createBuffer({
       size: 192,
@@ -742,6 +748,7 @@ export class PyroSolver {
         ...this.dynamics,
         ...this.chemistry,
         smokeDecay.decayDt,this.floorFuelKind===.35?1:0,this.woodTimeScale||12,0,
+        ...this.powerUniform(),
       ]),
     );
     this.previousDt = dt;
@@ -1339,6 +1346,58 @@ export class PyroSolver {
     this.seed += 3.17;
     this.active = true;
   }
+  castPower(at = this.source, direction = this.powerDirection, strength = this.powerStrength) {
+    if(this.effect[0]<22||this.effect[0]>27||!at||at.length!==3||
+      !direction||direction.length!==3||![...at,...direction,strength].every(Number.isFinite))return false;
+    const length=Math.hypot(...direction);if(length<1e-8)return false;
+    this.powerDirection=direction.map(v=>v/length);
+    this.powerStrength=Math.max(.25,Math.min(2,strength));
+    this.launchPowerDirection=[...this.powerDirection];
+    this.launchPowerStrength=this.powerStrength;
+    this.powerTrailLast=null;
+    this.burst(at);this.previousDt=0;this.lightReady=false;
+    if(this.effect[0]===26){
+      // A trail spends the existing finite floor inventory. A held stationary
+      // cursor does not create an infinite reservoir or a second gas emitter.
+      const point=[at[0],at[2]];
+      if(this.depositPowerTrail(point)){this.powerTrailLast=point;this.igniteFuel();}
+    }
+    return true;
+  }
+  movePower(at, direction = this.powerDirection) {
+    // Projectiles and delayed bombs retain their launch origin after casting.
+    // Rain, tornadoes and floor trails follow the held cursor without a reset.
+    if(this.effect[0]<24||this.effect[0]>26||!at||at.length!==3||
+      !direction||direction.length!==3||![...at,...direction].every(Number.isFinite))return false;
+    const length=Math.hypot(...direction);if(length<1e-8)return false;
+    this.source=[...at];this.powerDirection=direction.map(v=>v/length);
+    this.previousDt=0;this.lightReady=false;
+    if(this.effect[0]===26){
+      const point=[at[0],at[2]];
+      const changed=this.depositPowerTrail(point,this.powerTrailLast);
+      if(changed){this.powerTrailLast=point;this.igniteFuel();}
+      return changed;
+    }
+    this.stateEpoch++;this.maxSpeed=Math.max(this.maxSpeed,8);
+    return true;
+  }
+  depositPowerTrail(point, previous = null) {
+    // The power's authored dose does not overwrite the ordinary fuel-brush UI.
+    const radius=this.fuelBrush.radius,amount=this.fuelBrush.amount;
+    try{
+      this.fuelBrush.radius=Math.max(.08,Math.min(.8,.26*this.effect[1]));
+      this.fuelBrush.amount=.85*this.powerStrength;
+      return this.dropFuel(point,previous);
+    }finally{this.fuelBrush.radius=radius;this.fuelBrush.amount=amount;}
+  }
+  powerUniform() {
+    // A projectile's launch settings are fixed. Aim controls affect the next
+    // cast; ongoing rain, vortex and trail powers continue to follow controls.
+    const transient=this.effect[0]===22||this.effect[0]===23||this.effect[0]===27;
+    const direction=(transient&&this.launchPowerDirection)||this.powerDirection||authoredPowerDirection();
+    const strength=transient&&this.launchPowerStrength!=null?this.launchPowerStrength:(this.powerStrength||1);
+    return [...direction,strength];
+  }
   async pixels() {
     const width = this.canvas.width, height = this.canvas.height;
     const row = width * 4;
@@ -1394,6 +1453,9 @@ export class PyroSolver {
     this.time = 0;
     this.smokeDecayRemainder = 0;
     this.burstAge = 0;
+    this.powerTrailLast = null;
+    this.launchPowerDirection = null;
+    this.launchPowerStrength = null;
     this.maxSpeed = 12;
     this.latestTelemetry = { maxSpeed: 12, preDivergence: 0, postDivergence: 0, gpu: null, sampleFrame: this.frameNumber };
     // Reset in place; no full-volume CPU uploads or transient half-GB buffers.
