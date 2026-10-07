@@ -1,4 +1,4 @@
-import { simulationShaders } from './shaders.js?v=studio-rc-37-audit';
+import { simulationShaders } from './shaders.js?v=studio-rc-37-repair';
 
 // Byte offsets in the persistent STORAGE | INDIRECT | COPY_DST command buffer.
 // The first seven dispatches and telemetry retain their existing layout.

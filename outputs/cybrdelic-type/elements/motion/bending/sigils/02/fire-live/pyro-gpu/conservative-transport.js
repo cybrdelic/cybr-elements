@@ -1,4 +1,4 @@
-import {simulationShaders} from './shaders.js?v=studio-rc-37-audit';
+import {simulationShaders} from './shaders.js?v=studio-rc-37-repair';
 
 // Conservative finite-volume MUSCL transport. The host bounds each coarse step
 // to |velocity * dt / voxelSize| <= 3. Heat and oxygen deficit are intensive;

@@ -2,7 +2,7 @@
  * flame. Burst age is simulation time, so pausing also pauses the explosion. */
 window.createFireEmitters = (maxPowerKind=6,castCapacity=4) => `
   uniform int emitterKind;
-  
+
   uniform float burstAge;
   uniform vec3 fuelProfile; // feed, soot yield, jet speed
   uniform float sourceScale;
@@ -113,7 +113,7 @@ uniform highp sampler3D objectTex;
     float r2=dot(inlet/vec2(.42,.18),inlet/vec2(.42,.18))+pow((depth-center)/(.15*sourceScale),2.);
     jet=vec3(shear*.35,2.8+shear*.30,sin(local.x*23.+local.y*19.+clock*13.)*1.1);
     float sourceDuty=1.;
-    if(emitterKind==0&&sourceEffectKind==0){ // Broad, slow source for a sooty plume.
+    if(emitterKind==0&&sourceEffectKind<=0){ // Free cursor fire and sooty plume share the broad inlet.
       float x=local.x/sourceScale,y=local.y/sourceScale,z=depth/sourceScale;
       r2=pow(x/.62,2.)+pow((y-.04)/.22,2.)+pow(z/.44,2.);
       float drift=texture(noiseTex,vec2(x*.24+z*.12+clock*.035,y*.22-clock*.025)).r;
@@ -188,7 +188,7 @@ uniform highp sampler3D objectTex;
     }
     if(r2>12.)return;
     float feed=.62+.38*sin(local.x*18.+depth*23.+clock*11.)*sin(local.x*9.-depth*17.-clock*7.3);
-    if(emitterKind==0&&sourceEffectKind==0){
+    if(emitterKind==0&&sourceEffectKind<=0){
       float plumeFeed=texture(noiseTex,local*.12+depth*vec2(.08,-.06)+clock*vec2(.025,-.018)).b;
       feed=mix(.90,1.0,smoothstep(.08,.92,plumeFeed));
     } else if(emitterKind==1||emitterKind==2||emitterKind==5){

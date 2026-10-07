@@ -1,4 +1,4 @@
-import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-audit';
+import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-repair';
 // Both renderers display the same HDR units. Keep exposure, highlight hue
 // and the sRGB transfer in one place; the volume port used 1.92x exposure.
 export const firePresentationWGSL=`

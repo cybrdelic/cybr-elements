@@ -1,4 +1,4 @@
-import {conservativeFluxShader} from './conservative-transport.js?v=studio-rc-37-audit';
+import {conservativeFluxShader} from './conservative-transport.js?v=studio-rc-37-repair';
 
 // Fuse the final z sweep with chemistry. Preserve the half-float intermediate
 // exactly; this removes a volume write/read without changing the equations.

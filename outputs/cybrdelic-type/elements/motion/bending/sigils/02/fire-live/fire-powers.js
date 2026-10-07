@@ -1,9 +1,9 @@
 // Authored supernatural sources feed the existing gas solve. These functions
 // never draw a flame, lower resolution or allocate particle/texture resources.
-import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-audit';
-import {POWER_DEFINITIONS} from './fire-power-definitions.js?v=studio-rc-37-audit';
-import {abilityMotionWGSL} from './fire-ability-motions.js?v=studio-rc-37-audit';
-import {specializePowerSource} from './shader-specialization.js?v=studio-rc-37-audit';
+import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-repair';
+import {POWER_DEFINITIONS} from './fire-power-definitions.js?v=studio-rc-37-repair';
+import {abilityMotionWGSL} from './fire-ability-motions.js?v=studio-rc-37-repair';
+import {specializePowerSource} from './shader-specialization.js?v=studio-rc-37-repair';
 export {POWER_DEFINITIONS};
 
 export function powerDefinition(value) {

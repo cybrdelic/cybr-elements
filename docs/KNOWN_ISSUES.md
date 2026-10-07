@@ -8,6 +8,10 @@ It does not close existing numerical, appearance or performance findings.
 - **Thermal and source behavior:** gas and wood use reduced, accelerated visual
   models. Preset ignition, exposure and burnout can vary. Recent owner repairs
   are included, but they do not certify all fuel/color/power combinations.
+  Original free fire deliberately shares the plume's broad inlet, cold-vapor
+  ignition, slower buoyancy and stronger confinement. Its height, readability
+  and wider visual acceptance remain open; CPU checks do not establish its
+  rendered appearance.
 - **Power appearance:** smooth or overbright packet heads and limited fine flame
   breakup remain visual concerns. Original and Volume use their own flow and
   optical models; matching controls do not imply matching pixels.

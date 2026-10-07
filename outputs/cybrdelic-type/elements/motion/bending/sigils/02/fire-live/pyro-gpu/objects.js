@@ -1,8 +1,8 @@
 // Geometry and surface state are shared by combustion and ray tracing.
 // Static signed-distance assets contain no rendered fire or temporal frames.
-import { woodThermoWGSL, WOOD_THERMO } from '../wood-thermo.js?v=studio-rc-37-audit';
-import {woodPoseWGSL} from '../wood-structure.js?v=studio-rc-37-audit';
-import {woodCollisionSampleWGSL} from './wood-collision.js?v=studio-rc-37-audit';
+import { woodThermoWGSL, WOOD_THERMO } from '../wood-thermo.js?v=studio-rc-37-repair';
+import {woodPoseWGSL} from '../wood-structure.js?v=studio-rc-37-repair';
+import {woodCollisionSampleWGSL} from './wood-collision.js?v=studio-rc-37-repair';
 
 // F32 stocks never use hardware filtering. Empty thermal cells are zeroed by
 // the update kernel: averaging them into solid stock would invent conversion.
@@ -201,4 +201,4 @@ struct ObjectSettings{origin:vec4f,options:vec4f,tint:vec4f};
  textureStore(nextDamage,vec3i(id),vec4f(moisture,0,0,1));
 }`;
 
-export { FIRE_COLORS } from './fire-colors.js?v=studio-rc-37-audit';
+export { FIRE_COLORS } from './fire-colors.js?v=studio-rc-37-repair';

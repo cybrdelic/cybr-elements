@@ -1,5 +1,5 @@
-import {pressureShaders} from './shaders.js?v=studio-rc-37-audit';
-import {PyroSolver} from './solver.js?v=studio-rc-37-audit';
+import {pressureShaders} from './shaders.js?v=studio-rc-37-repair';
+import {PyroSolver} from './solver.js?v=studio-rc-37-repair';
 // Manufactured solution checks the actual GPU kernels and mixed boundaries.
 export async function pressureCheck(device){
  const n=32,count=n**3,index=(x,y,z)=>x+n*(y+n*z);

@@ -1,5 +1,5 @@
-import {GAS_CHEMISTRY} from '../reduced-chemistry.js?v=studio-rc-37-audit';
-import {WOOD_THERMO} from '../wood-thermo.js?v=studio-rc-37-audit';
+import {GAS_CHEMISTRY} from '../reduced-chemistry.js?v=studio-rc-37-repair';
+import {WOOD_THERMO} from '../wood-thermo.js?v=studio-rc-37-repair';
 export const WOOD_GAS_HEAT_RELEASE=WOOD_THERMO.volatileHeatJkg*WOOD_THERMO.gasSensibleFraction/(WOOD_THERMO.gasHeatCapacityJkgK*WOOD_THERMO.gasHeatScaleK);
 // Scalar layout: soot, temperature, fuel, oxygen deficit (zero is fresh air).
 // Shared by transport, expansion and emission so they use the same reaction.

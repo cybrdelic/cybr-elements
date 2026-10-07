@@ -232,6 +232,33 @@ test('Original production startup and failure regression', async t => {
     assert.equal(env.calls.lost, 1, 'Disposed runtime releases the WebGL context');
   });
 
+  for (const source of [
+    {id:'free',scale:1.1,effect:-1,emitter:0},
+    {id:'sooty-plume',scale:1.1,effect:0,emitter:0},
+    {id:'campfire',scale:1,effect:15,emitter:16},
+  ]) await t.test(source.id + ' sends the intended Original inlet contract to the production shader',async()=>{
+    const env=await prepare(source.id,'oil');
+    const uniforms=new Map();
+    for(const name of ['uniform1i','uniform1f']){
+      const record=env.gl[name];
+      env.gl[name]=(location,value)=>{
+        if(location?.name)uniforms.set(location.name,value);
+        record(location,value);
+      };
+    }
+    const runtime=await env.mountLegacy({initialPreset:source.id,onRemount:key=>assert.fail('Unexpected remount: '+key),onFailure:error=>env.failures.push(String(error))});
+    try{
+      await env.frame(performance.now()+40);
+      assert.equal(uniforms.get('sourceScale'),source.scale,'Free fire and plume share the 1.1 inlet scale; the campfire scale stays independent');
+      assert.equal(uniforms.get('sourceEffectKind'),source.effect,'The free-fire sentinel and shared preset effect reach the actual runtime shader');
+      assert.equal(uniforms.get('emitterKind'),source.emitter,'Free/plume use the broad inlet while campfire keeps its finite-wood source');
+      assert.equal(runtime.snapshot().fire,'legacy:'+source.id);
+      assert.ok(env.calls.draws>0,'The production first frame submitted its draws');
+    }finally{await runtime.dispose();}
+    assert.equal(env.frames.size,0);
+    assert.equal(env.listeners(),0);
+  });
+
   await t.test('Finite sigil stock survives the old animation loop and wood time is independent of gas time',async()=>{
     const env=await prepare('sigil','wood');
     const runtime=await env.mountLegacy({initialPreset:'sigil',onFailure:error=>env.failures.push(String(error))});

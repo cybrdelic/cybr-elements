@@ -1,18 +1,18 @@
-import {occupancyReductionWGSL} from './occupancy-reduction.js?v=studio-rc-37-audit';
-import {solverParamsWGSL} from './solver-params.js?v=studio-rc-37-audit';
-import {gasThermoWGSL,GAS_THERMO,PLUME_THERMAL} from '../gas-thermodynamics.js?v=studio-rc-37-audit';
-import {reactionLedgerWGSL} from '../reaction-ledger.js?v=studio-rc-37-audit';
-import {pressureSourceProducerWGSL} from '../pressure-source-cache.js?v=studio-rc-37-audit';
-import {GAS_DIFFUSIVITY,PRODUCT_DIFFUSIVITY} from '../gas-transport.js?v=studio-rc-37-audit';
-import {objectWGSL} from './objects.js?v=studio-rc-37-audit';
-import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-37-audit';
-import {floorFuelWGSL} from './floor-fuel.js?v=studio-rc-37-audit';
-import {SMOKE_CLEAR_DENSITY} from '../smoke-lifecycle.js?v=studio-rc-37-audit';
-import {woodFluxWGSL} from './wood-flux.js?v=studio-rc-37-audit';
-import {powerSourceWGSL, powerSourceFor, POWER_DEFINITIONS} from '../fire-powers.js?v=studio-rc-37-audit';
-import {GAS_CHEMISTRY,sourceMixingWGSL} from '../reduced-chemistry.js?v=studio-rc-37-audit';
-import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-audit';
-import {shockProjectWGSL} from './shock-euler.js?v=studio-rc-37-audit';
+import {occupancyReductionWGSL} from './occupancy-reduction.js?v=studio-rc-37-repair';
+import {solverParamsWGSL} from './solver-params.js?v=studio-rc-37-repair';
+import {gasThermoWGSL,GAS_THERMO,PLUME_THERMAL} from '../gas-thermodynamics.js?v=studio-rc-37-repair';
+import {reactionLedgerWGSL} from '../reaction-ledger.js?v=studio-rc-37-repair';
+import {pressureSourceProducerWGSL} from '../pressure-source-cache.js?v=studio-rc-37-repair';
+import {GAS_DIFFUSIVITY,PRODUCT_DIFFUSIVITY} from '../gas-transport.js?v=studio-rc-37-repair';
+import {objectWGSL} from './objects.js?v=studio-rc-37-repair';
+import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-37-repair';
+import {floorFuelWGSL} from './floor-fuel.js?v=studio-rc-37-repair';
+import {SMOKE_CLEAR_DENSITY} from '../smoke-lifecycle.js?v=studio-rc-37-repair';
+import {woodFluxWGSL} from './wood-flux.js?v=studio-rc-37-repair';
+import {powerSourceWGSL, powerSourceFor, POWER_DEFINITIONS} from '../fire-powers.js?v=studio-rc-37-repair';
+import {GAS_CHEMISTRY,sourceMixingWGSL} from '../reduced-chemistry.js?v=studio-rc-37-repair';
+import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-repair';
+import {shockProjectWGSL} from './shock-euler.js?v=studio-rc-37-repair';
 // MAC velocity components live on their own faces in one (N+1)^3 texture.
 // Scalars live at cell centers. All distances and velocities use world units.
 export function simulationShaders(N=128,D=256,{flowSupport=false,directVorticity=true,hasPowers=true,powerKind=null,woodCadence=false,subgroups=false,prune=true,pressureCache=false}={}){

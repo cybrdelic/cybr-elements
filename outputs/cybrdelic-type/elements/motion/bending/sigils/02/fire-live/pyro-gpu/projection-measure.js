@@ -1,4 +1,4 @@
-import {pressureStencilWGSL} from './pressure-geometry.js?v=studio-rc-37-audit';
+import {pressureStencilWGSL} from './pressure-geometry.js?v=studio-rc-37-repair';
 export function projectionMeasureShader(n,{weighted=false}={}){return `
 const N:u32=${n}u;const H:f32=6./${n}.;
 @group(0) @binding(2) var velocity:texture_3d<f32>;
