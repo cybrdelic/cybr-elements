@@ -24,6 +24,15 @@ It does not close existing numerical, appearance or performance findings.
   produced a smaller motion change for fireball than for free fire.
   The peak-force mitigation retains the smooth packet head and authored travel;
   it does not replace the optical model or promise fine breakup in every scene.
+- **Original fine pressure and transport:** compatible coarse pressure boundaries
+  and fine-grid sampling are corrected, but point restriction still misses fine
+  velocity modes. A same-stage torch measurement reduces coarse mean residual
+  from 0.042674 to 0.007294 per second, while fine active-interior mean residual
+  stays near 2.75 per second. This is not an all-preset or fine-flow fix.
+  Semi-Lagrangian scalar transport plus a universal divergence factor is not
+  demonstrated conservative: isolated same-input replays add fuel/soot/reaction
+  below numerical ceilings. Universal dilution is therefore not enabled.
+  [Measured scope and provenance](VALIDATION.md#original-compatible-pressure-boundary-and-sampling).
 - **Refined/adaptive flow:** the coarse/fine path is experimental and can fall
   back to dense flow immediately. It has not established a general speed gain.
 - **Sparse:** pooled chemistry retains dense fallback resources. Sparse adds

@@ -17,7 +17,7 @@ function loadScript(file) {
       file,
       new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = new URL(file + '?v=studio-rc-37-repair', import.meta.url).href;
+        script.src = new URL(file + '?v=studio-rc-40-compatible-projection', import.meta.url).href;
         script.onload = resolve;
         script.onerror = () => {
           scripts.delete(file);
