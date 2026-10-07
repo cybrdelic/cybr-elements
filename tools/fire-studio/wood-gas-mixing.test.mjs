@@ -13,6 +13,13 @@ const {surfaceWGSL}=await load('pyro-gpu/objects.js');
 const {planBrickPool,brickPoolScalarShaders}=await load('pyro-gpu/brick-pool.js');
 const close=(a,b)=>assert.ok(Math.abs(a-b)<=1e-11*Math.max(1,Math.abs(a),Math.abs(b)),`${a} != ${b}`);
 
+test('the unchanged scale-four Sigil pilot budget does not imply fresh gas ignition',()=>{
+  const placement={origin:[0,1.9,0],scale:4},[site]=woodGasPilotSites(placement),dose=woodGasPilotHeat(site.center,{...placement,active:true,age:0,dt:4,fuel:0});
+  close(WOOD_GAS_PILOT.powerW*WOOD_GAS_PILOT.durationS,480000);close(dose,.19714970139198407);assert(dose<.35);
+  close(.35/dose*480000,852144.3289735094);
+  assert.equal(woodGasPilotHeat(site.center,{...placement,active:false,age:0,dt:4,fuel:0}),0);
+});
+
 test('wood flux enthalpy uses the same intensive temperature units as floor fuel',()=>{
   const mass=.75,sourceK=689,sourceHeat=(sourceK-WOOD_FLUX.gasAmbientK)/WOOD_FLUX.gasHeatScaleK;
   const energyJ=mass*WOOD_FLUX.gasHeatCapacityJkgK*(sourceK-WOOD_FLUX.gasAmbientK);

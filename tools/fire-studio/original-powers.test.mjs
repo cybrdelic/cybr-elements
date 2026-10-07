@@ -43,7 +43,7 @@ function fixture(params=''){
  gl.getShaderParameter=gl.getProgramParameter=()=>true;gl.getShaderInfoLog=gl.getProgramInfoLog=()=>'';gl.getUniformLocation=(p,name)=>({p,name});gl.useProgram=p=>{currentProgram=p;};
  for(const method of['uniform1f','uniform1i','uniform2f','uniform3f','uniform3fv','uniform4fv','uniform4i'])gl[method]=(location,...values)=>calls.uniforms.push({name:location?.name,values:values.map(value=>ArrayBuffer.isView(value)?Array.from(value):value)});
  gl.drawArrays=()=>{calls.draws++;const fragment=currentProgram?.shaders?.find(s=>s.type===gl.FRAGMENT_SHADER)?.source||'';if(fragment.includes('out vec4 nextStock;'))calls.woodSteps=(calls.woodSteps||0)+1;};
- gl.readBuffer=()=>{};
+ gl.readBuffer=()=>{};gl.copyTexSubImage2D=()=>{};
  // Call-recording mock only; these values do not certify native GPU residuals.
  gl.readPixels=(x,y,width,height,format,type,values)=>values.fill(0);
   for(const name of'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei viewport bindRenderbuffer renderbufferStorage framebufferRenderbuffer bindBuffer bufferData enableVertexAttribArray vertexAttribPointer vertexAttribIPointer deleteBuffer deleteRenderbuffer enable disable depthFunc drawElements clearBufferfv texSubImage2D'.split(' '))gl[name]=()=>{};
