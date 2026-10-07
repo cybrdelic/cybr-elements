@@ -33,9 +33,6 @@
         throw new Error('Invalid volume atlas or pressure shader');
       }
       this.gl = gl;
-      this.conservativeTransport = options.conservativeTransport === true;
-      this.faceReconstructionGLSL = options.faceReconstructionGLSL;
-      if(this.conservativeTransport&&typeof this.faceReconstructionGLSL!=='string')throw new Error('Conservative scalar transport requires shared normal-face reconstruction');
       this.nx = nx;
       this.nz = nz;
       this.depth = depth;
@@ -92,21 +89,19 @@
       uniform sampler2D vfTex;
       uniform sampler2D chemTex;
       uniform float delta;
-      ${this.conservativeTransport?this.faceReconstructionGLSL:''}
-      ${this.conservativeTransport?'uniform sampler2D conservativeFuelHeat,conservativeSoot;':''}
       layout(location=0) out vec4 outScalars;
       void main() {
         ivec2 ip=ivec2(gl_FragCoord.xy);
         int slice=ip.x/${nx}+${tilesX}*(ip.y/${nz});
         vec2 xy=(vec2(ip.x%${nx},ip.y%${nz})+.5)/vec2(MC_NXf,MC_NZf);
         vec3 at=vec3(xy,float(slice)/float(${depth - 1}));
-        vec3 velocity=${this.conservativeTransport?'originalFaceVelocity(vfTex,at,false)':'texelFetch(vfTex,ip,0).xyz+samplePressureCorrection(at)'};
+        vec3 velocity=texelFetch(vfTex,ip,0).xyz+samplePressureCorrection(at);
         vec3 mid=at-.5*velocity*delta;
-        vec3 midVelocity=${this.conservativeTransport?'originalFaceVelocity(vfTex,mid,false)':'mcField(vfTex,mid).xyz+samplePressureCorrection(mid)'};
+        vec3 midVelocity=mcField(vfTex,mid).xyz+samplePressureCorrection(mid);
         vec3 back=at-midVelocity*delta;
         // Fuel, oxygen, temperature and soot are co-located. Velocity is only
         // needed at the arrival cell to construct the backtrace.
-        ${this.conservativeTransport?'vec2 q=texelFetch(conservativeFuelHeat,ip,0).rg;float soot=texelFetch(conservativeSoot,ip,0).r;outScalars=vec4(q.r,mcField(chemTex,back).g,q.g/(1.+q.r),soot);':'outScalars=mcField(chemTex,back);'}
+        outScalars=mcField(chemTex,back);
       }`;
     }
 
@@ -130,7 +125,6 @@
         return mix(texture(tex,mcAtlasUV(p.xy,lo)),
                    texture(tex,mcAtlasUV(p.xy,hi)),fract(z));
       }
-      ${this.conservativeTransport?this.faceReconstructionGLSL:''}
       ivec2 mcAtlasCell(ivec3 c) {
         return ivec2((c.z%MC_TILES_X)*MC_NX+c.x,(c.z/MC_TILES_X)*MC_NZ+c.y);
       }
@@ -147,9 +141,8 @@
             old.r<=0.0 && old.b<=0.0 && old.a<=0.0 && old.g>=1.0) {
           return vec4(0.0,1.0,0.0,0.0);
         }
-        ${this.conservativeTransport?'correctedVelocity=originalFaceVelocity(vfTex,at,false);vec3 scalarMid=at-.5*correctedVelocity*delta;back=at-originalFaceVelocity(vfTex,scalarMid,false)*delta;':''}
         vec3 mid=at+.5*correctedVelocity*delta;
-        vec3 midVelocity=${this.conservativeTransport?'originalFaceVelocity(vfTex,mid,false)':'mcField(vfTex,mid).xyz+samplePressureCorrection(mid)'};
+        vec3 midVelocity=mcField(vfTex,mid).xyz+samplePressureCorrection(mid);
         vec4 reverse=mcField(mcPredictorTex,at+midVelocity*delta);
         vec4 corrected=predicted+.5*(old-reverse);
 
@@ -172,9 +165,7 @@
           corrected=mix(corrected,predicted,notEqual(clamp(corrected,lower,upper),corrected));
         }else corrected=clamp(corrected,lower,upper);
         // Fuel, O2, temperature, and soot are physical nonnegative scalars.
-        // F, heat proxy and soot come from conservative Hancock face fluxes.
-        // Only oxygen remains an intensive limited availability scalar.
-        return vec4(predicted.r,clamp(corrected.g,0.,1.),predicted.b,predicted.a);
+        return clamp(corrected,vec4(0.0),vec4(1.0,1.0,3.0,8.0));
       }
       vec4 maccormackScalars(vec3 at,vec3 back,vec3 correctedVelocity){
         return maccormackScalars(at,back,correctedVelocity,false);
@@ -215,9 +206,7 @@
         vf: gl.getUniformLocation(program, 'vfTex'),
         chem: gl.getUniformLocation(program, 'chemTex'),
         pressure: gl.getUniformLocation(program, 'pressureCorrectionTex'),
-        delta: gl.getUniformLocation(program, 'delta'),
-        fuelHeat: gl.getUniformLocation(program, 'conservativeFuelHeat'),
-        soot: gl.getUniformLocation(program, 'conservativeSoot')
+        delta: gl.getUniformLocation(program, 'delta')
       };
       this.predictor = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, this.predictor);
@@ -236,7 +225,7 @@
       this.vao = gl.createVertexArray();
     }
 
-    step(vfTexture, chemTexture, pressureCorrectionTexture, delta, conserved) {
+    step(vfTexture, chemTexture, pressureCorrectionTexture, delta) {
       const gl = this.gl;
       if (!vfTexture || !chemTexture || !pressureCorrectionTexture || !(delta > 0)) {
         throw new Error('MacCormack step requires state textures, pressure correction, and positive delta');
@@ -247,7 +236,6 @@
       gl.viewport(0, 0, this.width, this.height);
       const values = [vfTexture, chemTexture, pressureCorrectionTexture];
       const locations = [this.uniforms.vf, this.uniforms.chem, this.uniforms.pressure];
-      if(this.conservativeTransport){if(!conserved?.fuelHeat||!conserved?.soot)throw Error('Conservative predictor requires both transport planes');values.push(conserved.fuelHeat,conserved.soot);locations.push(this.uniforms.fuelHeat,this.uniforms.soot);}
       for (let i = 0; i < values.length; i++) {
         gl.activeTexture(gl.TEXTURE0 + i);
         gl.bindTexture(gl.TEXTURE_2D, values[i]);

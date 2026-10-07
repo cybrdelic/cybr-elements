@@ -1,6 +1,6 @@
 import {advanceSmokeDecay} from './smoke-lifecycle.js?v=studio-rc-37-repair';
 import {SimulationClock} from './simulation-clock.js?v=studio-rc-37-repair';
-import {createOriginalShaders} from './original-shaders.js?v=studio-rc-41-experimental-face';
+import {createOriginalShaders} from './original-shaders-v5.js?v=studio-v5-rollback';
 import {runtimeScope} from './runtime-scope.js?v=studio-rc-37-repair';
 import {createGLFrameQueue} from './gl-frame-queue.js?v=studio-rc-37-repair';
 import {legacyProbe} from './legacy-qa.js?v=studio-rc-37-repair';
@@ -36,7 +36,6 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
   const AW = NX * TILES_X, AH = NZ * TILES_Y;
   const STEP = 1 / 30, DURATION = 9.8;
   let stateRevision=0, roomLightRevision=-1, smokeLightRevision=-1, propLightRevision=-1;
-  let lastStepFailure=null;
   let lightingRevision=-1;
   let turbulenceTexture;
   let objectTexture,emptyObjectTexture;
@@ -214,8 +213,6 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(location, unit);
   }
   function reset() {
-    fineFlow?.resetProjectionHistory();
-    if(lastStepFailure){lastStepFailure=null;document.querySelector('#pause').disabled=false;scope.setVisible(true);const status=document.querySelector('#session-status');status.dataset.state='ready';status.textContent='Ready';}
     stateRevision++;
     elapsed = 0; accumulator = 0;smokeDecayRemainder=0; physicalClock.reset(performance.now());
     needsDraw = true;
@@ -236,12 +233,13 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
   function runStep(dt=STEP) {
     const from = targets[current], to = targets[1 - current];
     const profile=sharedPresets.get(activePreset);
-    const acceptedChem=from.chem,chemistryBefore=targets.map(target=>target.chem);
-    let transportVF,conserved,predictor,candidateStage='fine projection';
-    try{
-    // Solve the fine defect of the actual coarse-corrected flow before diffusion.
-    transportVF=fineFlow.project(from.vf,from.chem,pressure.getCorrection(),dt);
-    candidateStage='transport schedule';fineFlow.prepareTransport(dt);
+    configureWood(profile);
+    woodState.step(from.chem,sourceTexture,objectTexture,dt,{clock:elapsed,age:elapsed-burstStart,starter:!freeMode||brush.active,timeScale:woodTimeScale,mechanics:woodMechanics});
+    if(woodState.enabled)woodMechanics.step(woodState,dt);
+    if(profile?.kindling&&brush.active&&elapsed-burstStart>=0&&elapsed-burstStart<WOOD_THERMO.starterDurationS)groundFuel.ignite();
+    groundFuel.step(from.chem,dt,fuelBrush.consume(),!profile?.smokeSimulation&&activePreset!=='smoke-burst',{wood:fuelControl.value==='wood',timeScale:woodTimeScale});
+    if(!freeMode&&!woodState.enabled)groundFuel.updateGuide(from.chem,sourceTexture,dt);
+    vorticity.update(from.vf,from.chem,brush,freeMode && emitterKind<3,freeMode && emitterKind===6);
     // Reuse the inactive chemistry target; no new full-resolution allocation.
     gl.bindFramebuffer(gl.FRAMEBUFFER,to.fbo);gl.drawBuffers([gl.NONE,gl.COLOR_ATTACHMENT1]);
     gl.viewport(0,0,AW,AH);gl.useProgram(diffuseProgram);
@@ -249,32 +247,14 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     gl.drawArrays(gl.TRIANGLES,0,3);
     [from.chem,to.chem]=[to.chem,from.chem];
     for(const target of [from,to]){gl.bindFramebuffer(gl.FRAMEBUFFER,target.fbo);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT1,gl.TEXTURE_2D,target.chem,0);gl.drawBuffers([gl.COLOR_ATTACHMENT0,gl.COLOR_ATTACHMENT1]);}
-    candidateStage='conservative transport';conserved=fineFlow.transport(transportVF,from.chem,dt);
-    candidateStage='oxygen predictor';predictor=advection.step(transportVF,from.chem,fineFlow.neutral.texture,dt,conserved);
-    fineFlow.lastTransport.packed=predictor;
-    }catch(error){
-      fineFlow.discardCandidateHistory();
-      // Candidate passes have not written acceptedChem or advanced auxiliaries.
-      // Diffusion may swap aliases; restore both original attachments on failure.
-      targets.forEach((target,index)=>{target.chem=chemistryBefore[index];gl.bindFramebuffer(gl.FRAMEBUFFER,target.fbo);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT1,gl.TEXTURE_2D,target.chem,0);gl.drawBuffers([gl.COLOR_ATTACHMENT0,gl.COLOR_ATTACHMENT1]);});
-      error.acceptedStatePreserved=true;error.failedCandidateStage=candidateStage;throw error;
-    }
-    // These independent passes read the same accepted fields as before. Defer
-    // their updates until every candidate pass succeeds, making rejection atomic.
-    configureWood(profile);
-    woodState.step(acceptedChem,sourceTexture,objectTexture,dt,{clock:elapsed,age:elapsed-burstStart,starter:!freeMode||brush.active,timeScale:woodTimeScale,mechanics:woodMechanics});
-    if(woodState.enabled)woodMechanics.step(woodState,dt);
-    if(profile?.kindling&&brush.active&&elapsed-burstStart>=0&&elapsed-burstStart<WOOD_THERMO.starterDurationS)groundFuel.ignite();
-    groundFuel.step(acceptedChem,dt,fuelBrush.consume(),!profile?.smokeSimulation&&activePreset!=='smoke-burst',{wood:fuelControl.value==='wood',timeScale:woodTimeScale});
-    if(!freeMode&&!woodState.enabled)groundFuel.updateGuide(acceptedChem,sourceTexture,dt);
-    vorticity.update(from.vf,acceptedChem,brush,freeMode && emitterKind<3,freeMode && emitterKind===6);
+    const predictor = advection.step(from.vf, from.chem, pressure.getCorrection(), dt);
     gl.useProgram(simProgram); gl.bindFramebuffer(gl.FRAMEBUFFER, to.fbo); gl.viewport(0, 0, AW, AH);
-    bind(transportVF, 0, uniform(simProgram, 'vfTex'));
+    bind(from.vf, 0, uniform(simProgram, 'vfTex'));
     bind(from.chem, 1, uniform(simProgram, 'chemTex'));
     bind(sourceTexture, 2, uniform(simProgram, 'sourceTex'));
     bind(noiseTexture, 3, uniform(simProgram, 'noiseTex'));
     bind(widthTexture, 4, uniform(simProgram, 'widthTex'));
-    bind(fineFlow.neutral.texture, 5, uniform(simProgram, 'pressureCorrectionTex'));
+    bind(pressure.getCorrection(), 5, uniform(simProgram, 'pressureCorrectionTex'));
     bind(predictor, 6, uniform(simProgram, 'mcPredictorTex'));
     bind(vorticity.texture, 7, uniform(simProgram, 'vortexTex'));
     groundFuel.bind(simProgram);
@@ -753,7 +733,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     updateLightLabel();
   };
   orbitControl.oninput=()=>{viewAngle=Number(orbitControl.value);updateView();};
-  document.querySelector('#pause').onclick = () => { if(lastStepFailure)return;paused = !paused;if(!paused){captureAt=0;lastFrame=performance.now();} document.querySelector('#pause').textContent = paused ? 'Resume' : 'Pause'; };
+  document.querySelector('#pause').onclick = () => { paused = !paused;if(!paused){captureAt=0;lastFrame=performance.now();} document.querySelector('#pause').textContent = paused ? 'Resume' : 'Pause'; };
   extinguishButton.onclick = () => {
     brush.active = false;
     powerPool.stop();
@@ -779,9 +759,8 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     else if(key==='escape'){setTool(false);pointer.down=false;pointer.id=null;}
   });
   const powerPrograms=new Map();
-  let simProgram, renderProgram, presentProgram, diffuseProgram, targets, projected, sourceTexture, widthTexture, noiseTexture, pressure, advection, fineFlow, vorticity, smokeLight, room, current = 0;
+  let simProgram, renderProgram, presentProgram, diffuseProgram, targets, projected, sourceTexture, widthTexture, noiseTexture, pressure, advection, vorticity, smokeLight, room, current = 0;
   function frame(now) {
-    if(lastStepFailure)return;
     probe.poll(paused);
     physicalClock.tick(now,scope.visible&&!paused);
     if(!scope.visible){lastFrame=now;scope.schedule(frame);return;}
@@ -794,19 +773,9 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
       while (steps < 2) {
         const step=powerKind()?powerPool.temporalStep(STEP):STEP;
         if(accumulator+1e-10<step)break;
-        let acceptedTime=elapsed;elapsed += step;
-        if (!freeMode && elapsed > DURATION && !manualFuelSession && !woodState.enabled) { reset(); accumulator = STEP;acceptedTime=0; }
-        try{runStep(step);}catch(error){
-          fineFlow.discardCandidateHistory();
-          if(!error.acceptedStatePreserved)throw error;
-          const {sourceVF,sourceChem,coarseCorrection,rhs,pressure:failedPressure,output,...projection}=fineFlow.lastProjection||{};
-          lastStepFailure=Object.freeze({message:error.message,stage:error.failedCandidateStage,acceptedTime,attemptedTime:elapsed,delta:step,projection,stack:error.stack});
-          elapsed=acceptedTime;accumulator=0;physicalClock.reset(now);paused=true;
-          const pause=document.querySelector('#pause');pause.textContent='Resume';pause.disabled=true;
-          const status=document.querySelector('#session-status');status.dataset.state='error';status.textContent='Paused after rejected step';
-          message.textContent=`Simulation paused at ${acceptedTime.toFixed(4)} s: ${error.message}. Restart to reset; the last accepted state is preserved.`;
-          probe.end({time:elapsed,steps:0,drawn:false});scope.setVisible(false);return;
-        }advanced+=step; accumulator=Math.max(0,accumulator-step); steps++;
+        elapsed += step;
+        if (!freeMode && elapsed > DURATION && !manualFuelSession && !woodState.enabled) { reset(); accumulator = STEP; }
+        runStep(step); advanced+=step; accumulator=Math.max(0,accumulator-step); steps++;
         observedSteps++;
         if (captureAt > 0 && elapsed >= captureAt) { paused = true; document.querySelector('#pause').textContent = 'Resume'; break; }
       }
@@ -849,11 +818,9 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
         throw new Error('This GPU cannot fit the live fire volume');
       }
       pressure = CoarsePressure.setup(gl, { nx: NX, nz: NZ, depth: DEPTH, tilesX: TILES_X, tilesY: TILES_Y, worldX:WX,worldZ:WY,worldY:WZ,coarseX:domain.blast?96:128,coarseZ:domain.blast?96:72,coarseDepth:domain.blast?32:8,iterations:domain.blast?24:18 });
-      fineFlow=OriginalFineFlow.setup(gl,{nx:NX,ny:NZ,depth:DEPTH,extent:[WX,WY,WZ],minimum:[MINX,MINY,-WZ*.5],pressureGLSL:pressure.samplingGLSL});
       advection = MacCormackAdvection.setup(gl, {
         nx: NX, nz: NZ, depth: DEPTH, tilesX: TILES_X, tilesY: TILES_Y,
-        pressureSamplingGLSL: pressure.samplingGLSL, conservativeTransport: true,
-        faceReconstructionGLSL:fineFlow.faceReconstructionGLSL
+        pressureSamplingGLSL: pressure.samplingGLSL
       });
       vorticity = FireVorticity.setup(gl, {nx: NX, nz: NZ, depth: DEPTH, tilesX: TILES_X});
       smokeLight = SmokeLight.setup(gl, {nx: NX, nz: NZ, depth: DEPTH, tilesX: TILES_X});
@@ -955,7 +922,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
   on(canvas,'webglcontextrestored', () => location.reload());
   await start();
   return {
-    async dispose(){await scope.stop();fineFlow?.dispose();frameQueue.dispose();groundFuel.destroy();woodState.destroy();woodMechanics.destroy();woodMesh.destroy();gl.getExtension('WEBGL_lose_context')?.loseContext();},
+    async dispose(){await scope.stop();frameQueue.dispose();groundFuel.destroy();woodState.destroy();woodMechanics.destroy();woodMesh.destroy();gl.getExtension('WEBGL_lose_context')?.loseContext();},
     setVisible(value){if(!value)cancelMeasurement();scope.setVisible(value);},
     fire:selectPreset,
     castPower,
@@ -964,7 +931,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     aimPower:(target,direction)=>powerPool.aim(target,direction),
     releasePower:(target,direction)=>powerPool.release(target,direction),
     cancelPower:()=>powerPool.cancelHeld(),
-    snapshot:()=>({fire:'legacy:'+activePreset,fuel:fuelControl.value,smoke:inspectSmoke,color:flameColor,fireLight,woodTimeScale,powers:{...powers},ability:powerPool.snapshot(),room:roomEnabled,sourceGuide,tool:fuelTool?'fuel':panTool?'pan':'fire',camera:{zoom:viewZoom,angle:viewAngle,pan:[panX,panY]},...(lastStepFailure?{failure:lastStepFailure}:{})}),
+    snapshot:()=>({fire:'legacy:'+activePreset,fuel:fuelControl.value,smoke:inspectSmoke,color:flameColor,fireLight,woodTimeScale,powers:{...powers},ability:powerPool.snapshot(),room:roomEnabled,sourceGuide,tool:fuelTool?'fuel':panTool?'pan':'fire',camera:{zoom:viewZoom,angle:viewAngle,pan:[panX,panY]}}),
     look(item){
       if(item.powers){powers=normalizePowerSettings({...powers,...item.powers});powerPool.updateContinuous({direction:powerDirection(powers),strength:powers.strength});}
       if(typeof item.sourceGuide==='boolean'){sourceGuide=item.sourceGuide;guideControl.checked=sourceGuide;needsDraw=true;}

@@ -1,5 +1,33 @@
 # CYBR ELEMENTS
 
+
+## Experimental Original snapshot — 2026-10-07
+
+The default Original engine contains the frozen normal-face reconstruction
+candidate `cb2fc8d2395a8b10851ba1ed4464414cdb0d2c36`. This is an experimental
+publication requested with the known defects accepted, not a completed solver.
+The previous v5 Original remains selectable through the version notice or
+`?runtime=v5`; this reloads the page with the prior runtime and retains other URL
+settings. Volume and Sparse keep their existing implementations.
+
+The bounded native check compiled the candidate and validated its shared shader
+diagnostics, but Sigil stopped after the last accepted 7.76667 seconds. Its next
+7.8-second step failed the midpoint residual limit (0.100805 against 0.1), so
+the safeguard retained the accepted state. It remains enabled. Captured Sigil
+frames showed no visible flame; the saved gas field had zero burn/soot and
+temperature below ignition thresholds. Fireball and Sooty were not reached in
+this candidate's native check; their earlier passes do not certify this version.
+
+Short instrumented Sigil observations were about 98 ms per feed frame and 177 ms
+per coast-prefix frame on the test laptop (roughly 10 and 6 frames per second).
+These are device-dependent observations, not sustained performance claims.
+Thermal/source behavior, smooth or overbright power heads, refined-flow limits,
+smoke-heavy performance and mobile acceptance remain open. No untested boundary
+completion or relaxed residual safeguard is included.
+
+An archive-backed copy of the prior Site v5 is preserved for whole-site rollback.
+See [experimental snapshot validation](docs/EXPERIMENTAL_ORIGINAL.md) for scope and checks.
+
 Offline elemental rendering and interactive graphics for Cybrdelic. The current
 interactive workspace is **Fire Studio**. The long-term multi-element workspace
 is **Element Studio**; it is a roadmap, not a renamed or completed application.
