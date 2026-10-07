@@ -10,11 +10,14 @@ It does not close existing numerical, appearance or performance findings.
   are included, but they do not certify all fuel/color/power combinations.
   Original free fire deliberately shares the plume's broad inlet, cold-vapor
   ignition, slower buoyancy and stronger confinement. Its height, readability
-  and wider visual acceptance remain open; CPU checks do not establish its
-  rendered appearance.
+  and wider visual acceptance remain open. A scoped ambient-force unit correction
+  has passed bounded actual browser motion/control checks for Original free fire
+  and fireball; those checks do not certify every fuel or appearance combination.
 - **Power appearance:** smooth or overbright packet heads and limited fine flame
   breakup remain visual concerns. Original and Volume use their own flow and
-  optical models; matching controls do not imply matching pixels.
+  optical models; matching controls do not imply matching pixels. Fireball's
+  authored packet spin and warm-gas turbulence remain active; the unit correction
+  produced a smaller motion change for fireball than for free fire.
 - **Refined/adaptive flow:** the coarse/fine path is experimental and can fall
   back to dense flow immediately. It has not established a general speed gain.
 - **Sparse:** pooled chemistry retains dense fallback resources. Sparse adds
@@ -55,8 +58,10 @@ inspect inputs and use a new output revision before executing them.
 Source/asset identity, real media decoding, CPU source preparation and package
 dependency checks can verify preservation without occupying a GPU. Live
 Original/Volume/Sparse startup, controls, pixel inspection and current performance
-must be checked separately. The consolidated browser/GPU run is pending its
-coordinated slot; no current live-visual or performance pass is claimed here.
+must be checked separately. Bounded desktop source/control preservation checks
+and the Original motion correction have completed; see [validation](VALIDATION.md).
+Actual Android hardware, whole-volume stability and sustained performance remain
+unverified. Desktop Chrome touch input is not Android hardware certification.
 
 Any new regression found in that run blocks promotion. Existing accepted defects
 are documented rather than silently rewritten. See [validation](VALIDATION.md).

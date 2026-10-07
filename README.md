@@ -48,6 +48,10 @@ saved looks and shared settings. Each engine retains its existing equations and
 rendering. Original free fire now shares the established plume inlet and flow
 treatment. This intentional owner change and its captured source boundary are
 recorded in [validation](docs/VALIDATION.md). Experiments remain explicitly labeled.
+Original free fire and fireball now convert ambient curl and planar swirl into
+the same world units as their source momentum. The scoped correction retains
+the inlet, heat, fuel, damping and cast timing; [actual before/after evidence](docs/VALIDATION.md#original-motion-unit-correction)
+records its effect and validation limits.
 [Fire Studio guide](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/README.md).
 
 Offline renderers remain first-class authoring workflows under `work/`, with the
