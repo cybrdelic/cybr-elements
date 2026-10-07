@@ -174,8 +174,9 @@
       const fullSample = `
       uniform sampler2D uVf;
       vec2 fullAtlasUV(vec2 p,float layer) {
-        p=clamp(p,vec2(0),vec2(1));
-        vec2 pixel=vec2(.5)+p*vec2(float(FNX-1),float(FNZ-1));
+        // Fine xy values live at cell centers, exactly as scalar advection.
+        p=clamp(p,vec2(.5/float(FNX),.5/float(FNZ)),vec2(1.-.5/float(FNX),1.-.5/float(FNZ)));
+        vec2 pixel=p*vec2(float(FNX),float(FNZ));
         float tileX=mod(layer,float(FTX)),tileY=floor(layer/float(FTX));
         return (vec2(tileX*float(FNX),tileY*float(FNZ))+pixel)/vec2(float(FNX*${this.tilesX}),float(FNZ*${this.tilesY}));
       }
@@ -237,7 +238,9 @@
       float pressure(ivec3 c){return inside(c)?texelFetch(uP,atlasCell(c),0).r:0.0;}
       void main(){
         ivec3 c=cell();
-        if(edge(c)){outValue=${packed ? 'vec4(vec3(128.0/255.0),1.0)' : 'vec4(0)'};return;}
+        // With zero pressure on the outer node shell, the upper normal face
+        // still needs its backward gradient. Forward divergence consumes it.
+        // Retain that face so the applied D*G equals the solved Laplacian.
         vec3 grad=vec3((pressure(c)-pressure(c-ivec3(1,0,0)))/HX,
                        (pressure(c)-pressure(c-ivec3(0,1,0)))/HZ,
                        (pressure(c)-pressure(c-ivec3(0,0,1)))/HY);
