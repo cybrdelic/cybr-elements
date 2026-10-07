@@ -1,107 +1,85 @@
-# Pipelines and rebuilding
+# Authoring and rebuilding
 
-This is a working graphics research archive, not a packaged cross-platform
-simulation application. The static player runs immediately; production render
-scripts expect their inputs, output folders, dependencies and renderer settings.
-Earlier experiments are retained so decisions and failures can be inspected.
+The delivered films, typeface specimen and Fire Studio can be served directly
+with the root README command. Offline authoring is a separate workflow: source
+preparation, a native simulation or authored motion, rendering, then encoding.
+The published tree retains adopted authoring source and inputs, rather than the
+large accumulated frame caches and diagnostic receipts.
 
-## Current delivery
+## Tools
 
-The current output lives in
-`outputs/cybrdelic-type/elements/motion/bending/sigils/02/`.
-`work/element-motion/sigil-02-active-elements/README.md` contains the detailed
-delivery notes, limitations and validation receipts for the latest four films.
-
-| Material | Main sources | Method |
-| --- | --- | --- |
-| Fire | `sigil_02_source.py`, `sigil_02_build_v2.py`, `sigil_02_fire_v2.py` | Original sigil source fields, fuel transport, reaction, cooling, buoyancy and custom volume rendering |
-| Air | `sigil_02_air_v2.py` | 3D gas transport and turbulent smoke rendering |
-| Earth | `sigil_02_ground_earth_build.py`, `sigil_02_ground_earth_render.py`, later arrival revisions | Guided fragments followed by native rigid collisions and floor settling |
-| Water | `sigil_02_active_water.mjs`, `sigil_02_active_mesh.py`, `sigil_02_active_water_render.py` | Native APIC/FLIP, pressure projection, reconstructed liquid surface, Cycles optics |
-| Ice / lava | `sigil_02_new_materials.py`, `sigil_02_atmosphere.py` | Fractured solids, Bullet release, advected gas, material-specific surface rendering |
-| Lightning | `sigil_02_electric_tree_export.py`, `sigil_02_atmosphere.py`, `sigil_02_new_materials.py` | Retained Laplacian-growth trees, pulse timing, channel lights and volumetric clouds |
-
-All filenames in the table are relative to `work/element-motion/`.
-
-## What is simulated and what is authored
-
-**Water.** The latest forward segment evolves 138,022 parcels for 240 frames.
-Gravity stays active; bounded external forces recover sagging water toward the
-mark. A deterministic subset of parcels is exempted from upward recovery so
-small droplets can fall. Reconstruction accounts for both the main surface
-and isolated liquid clusters. The final edit reuses the previous 3.4-second
-opening and overlaps the new segment by 0.2 seconds. It is not one uninterrupted
-forward solve.
-
-**Earth, ice and lava.** Assembly and suspension use authored rigid trajectories.
-Released fragments collide with each other and the floor. Ice and lava each
-use 174 fragments; their gas emission follows the fragment transforms. Ice has
-transmission, absorption and surface detail. Lava uses displaced basalt crust
-and emissive interior seams. These do not solve latent heat, freezing, melting,
-viscous liquid lava or a coupled phase-changing MPM system.
-
-**Atmosphere.** The current gas pipeline uses semi-Lagrangian advection,
-buoyancy, dissipation and FFT pressure projection with absorbing edges.
-Density is stored in atlases and sampled as a 3D volume. Emission and small-scale
-forcing remain authored. The atlas is a storage representation, not a flat smoke overlay.
-
-**Electricity.** The current channels are branching 3D growth trees with trunk,
-fork and fine-branch widths. Irregular pulses illuminate the accompanying gas.
-This is a visual discharge model, without a calibrated electromagnetic/plasma solve.
-
-## Environment
-
-The final production machine used Windows, Python 3.12, Node.js 20+, Blender
-4.5.3 LTS and an NVIDIA RTX 4060 Laptop GPU. Full-resolution renders use OptiX
-where configured. Rendering has not been validated on every operating system.
-
-Typical Python packages vary by pipeline:
+The production scripts were developed on Windows with Python 3.12, Blender 4.5.3
+LTS, Node.js and FFmpeg/ffprobe. Full Cycles renders use OptiX where configured.
+Cross-platform full renders have not been established. Source preparation uses:
 
 ```sh
-python -m pip install numpy scipy pillow opencv-python scikit-image shapely fonttools brotli
+python -m pip install numpy scipy numba pillow opencv-python scikit-image shapely fonttools brotli
 ```
 
-Fire/gas scripts additionally require a compatible PyTorch installation.
-Historical research includes Mitsuba, Warp and MPM experiments with separate
-environment requirements; these are not needed to play the delivered movies.
-Install FFmpeg/ffprobe on PATH. Blender scripts use Blender's Python environment.
+Gas/fire authoring additionally needs a compatible PyTorch installation. Install
+FFmpeg and ffprobe on PATH. Run Blender scripts in Blender's Python environment;
+the plain Python interpreter does not provide `bpy`. Some authoring scripts
+retain machine-specific Blender paths and output revisions. Inspect and adapt
+those paths before running a full production queue. Never run every script in
+the directory as an installation step.
 
-Several historical scripts retain absolute Windows executable paths and local
-cache references. Set these for your machine before running them. Do not run
-the whole directory indiscriminately: some builders rewrite generated scripts,
-some experiments were rejected, and some queues wait for review receipts.
+## Entry points
 
-## Rebuilding the active materials
+Names below are relative to `work/element-motion/`.
 
-1. Restore all retained inputs with `python scripts/fetch_assets.py --all`.
-2. Read the active-elements README and inspect the relevant script's input paths.
-3. Select a fresh output revision. Existing simulation and render receipts are
-   deliberately protected against accidental replacement or cache reuse.
-4. Run the CPU preparation and small representative frames first. Check finite
-   state, volume, containment, silhouettes and contact before a full render.
-5. Run one GPU render at a time. The laptop production queue became slower with
-   concurrent jobs. Full simulations need substantially more storage than the
-   published checkout.
-6. Encode, fully decode, inspect motion and verify playback before changing the
-   player. A numerical audit alone does not establish visual quality.
+| Workflow | Source and renderer | Scope |
+| --- | --- | --- |
+| Approved source fields | `sigil_02_source.py` | Full artwork cross-section, topology and ignition order |
+| Fire | `sigil_02_build_v2.py`, `sigil_02_fire_v2.py` | Fuel/heat transport, reaction and offline volume rendering |
+| Air | `sigil_02_air_v2.py` | Advected gas and turbulent smoke |
+| Water | `sigil_02_active_water_run.py`, `sigil_02_active_water.mjs`, `sigil_02_active_mesh.py`, `sigil_02_active_water_render.py` | Native APIC/FLIP, reconstructed liquid and Cycles optics |
+| Earth | `sigil_02_ground_earth_build.py`, `sigil_02_ground_earth_render.py`, `sigil_02_return_finish.py` | Rigid source family and r6 editorial reversed entrance |
+| Ice / lava | `sigil_02_new_materials.py`, `sigil_02_atmosphere.py` | Authored fractured solids, optical materials and gas |
+| Lightning | `sigil_02_electric_tree_export.py`, `sigil_02_atmosphere.py`, `sigil_02_new_materials.py` | Branching channels, authored pulses and local volumetric lighting |
+| Telekinesis | `sigil_02_coherent_earth_build.py`, `sigil_02_telekinetic_contours.py`, `telekinesis_02_render_v2.py` | Current approved fractured mark, authored field and directional cast |
 
-`sigil_02_active_water_run.py` orchestrates the native water solve, mesh
-reconstruction and Cycles render. `sigil_02_active_material_queue.py` consumes
-review gates and queues ice/lava/lightning rendering. The final gas caches and
-frames are rebuildable and intentionally absent from the publication. Retained
-inputs and source code do not mean the full render can resume without rebuilding
-those caches.
+The films do not imply a general ice/freezing, molten lava, electromagnetic or
+force-field solver. Water's current edit joins its prior opening to a new forward
+hold/release calculation. [Known issues](KNOWN_ISSUES.md) records these limits.
+The existing browser water viewer plays cached reconstructed meshes.
 
-The earlier `sigil_02_native_volume_experiment.py` and
-`sigil_02_electric_paths.py` are retained experiments, not the adopted final
-electricity pipeline.
+## A bounded CPU preparation example
+
+This runs the actual source-field builder without initializing a GPU:
+
+```sh
+python work/element-motion/sigil_02_source.py sigil-02
+```
+
+It writes `work/element-motion/sigil-02/source.npz`, `source-report.json` and
+`source-review.jpg`. It overwrites that revision's generated source outputs:
+use a separate working copy for reproducibility checks. `sigil-02-v2` is the
+other accepted argument and matches the wider source domain used by later work.
+The report checks artwork topology and silhouette intersection over union.
+Those checks establish source preparation, not final fire appearance.
+
+## Rebuilding a film
+
+1. Inspect the selected script's inputs, dependencies, renderer path and output
+   revision. Use a fresh working copy/output revision.
+2. Restore missing historical inputs with `python scripts/fetch_assets.py --all`
+   if required. The current player and Fire Studio need no restore.
+3. Run source preparation and a small representative native case. Inspect actual
+   source/render output along with finite-state, volume and contact checks.
+4. Coordinate one GPU job at a time. Full simulation caches can require much
+   more storage than this checkout. The ice/material queues are optional
+   production orchestration, not part of local app startup.
+5. Encode, fully decode and inspect motion before selecting a film in the player.
+   The encoded films in this consolidation retain their original bytes.
+
+Native water/FLIP implementation and license are under
+`work/flip-lettering/vendor/`. Historical pack restoration verifies checksums and
+refuses differing-file overwrites. Retaining authoring code does not mean a full
+render resumes without rebuilding the omitted state/frame caches.
 
 ## Fonts and showcase
 
-Font rebuild instructions are in
-`outputs/cybrdelic-type/typefaces/README.md`. The source includes outline JSON,
-OpenType features and the Python builders.
-
-`python scripts/build_showcase.py` builds the README GIF from the seven existing
-MP4s using CPU FFmpeg and Pillow. It writes a source/timing receipt alongside
-the GIF. It does not change the films or invoke a simulation.
+`outputs/cybrdelic-type/typefaces/README.md` describes the retained outline JSON,
+OpenType features and font builders. `python scripts/build_showcase.py` rebuilds
+the seven-film README GIF using CPU FFmpeg and Pillow; it does not run a simulation
+or change the films. Telekinesis is the eighth element in the current player.

@@ -1,0 +1,428 @@
+{
+  "sourceBoundary": "2026-10-07T00:01:32Z\u201300:01:41Z",
+  "sourceGitHead": "960470167ec18968a3b53ca2026286cc5310f4a5",
+  "scope": "Static source closure, not full pipeline reproduction or arbitrary computed-path validation. External tools, absent historical inputs and optional legacy gesture aliases are documented separately.",
+  "selection": {
+    "coreWorkFiles": 2660,
+    "coreWorkCode": 978,
+    "stagedWorkFiles": 655,
+    "stagedWorkCode": 486,
+    "coreWorkRetained": 639,
+    "coreWorkExcluded": 2021,
+    "supplementalOrFreshWorkAdded": 16
+  },
+  "workflows": {
+    "Fire": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_source.py",
+        "work/element-motion/sigil_02_build_v2.py",
+        "work/element-motion/sigil_02_fire_v2.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/bending-fire.py",
+          "sha256": "eea78215c2c5402cadc4976fb8918a24cb682282c81fa976cb5d57d7a3f66634"
+        },
+        {
+          "path": "work/element-motion/shared_motion.py",
+          "sha256": "9e5ae8ada69d85de352fa063fc154753ca922cff688e5621ce46ebbe994a7ead"
+        },
+        {
+          "path": "work/element-motion/sigil_02_build_v2.py",
+          "sha256": "06a45d5e52feb58b410588c958d117462a9c93e6a144c15edaa724c7416a386b"
+        },
+        {
+          "path": "work/element-motion/sigil_02_fire.py",
+          "sha256": "7db2f196993816724b11a6d9bb0d9e95662eab2f94a792d422ce77a15e558cce"
+        },
+        {
+          "path": "work/element-motion/sigil_02_fire_v2.py",
+          "sha256": "99b19f9725a755244f623433bdc8beb128bc1535d02f83d12b094dc204104005"
+        },
+        {
+          "path": "work/element-motion/sigil_02_source.py",
+          "sha256": "8e5a380d5405a56babb4a58e2de2e42a9a1f89bff040d30d35b50daff502d178"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "argparse",
+        "ast",
+        "cv2",
+        "functools",
+        "gzip",
+        "hashlib",
+        "json",
+        "math",
+        "numpy",
+        "os",
+        "pathlib",
+        "scipy",
+        "shutil",
+        "skimage",
+        "subprocess",
+        "sys",
+        "time",
+        "torch"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": [
+        "bending_fire_cast_v23",
+        "bending_fire_choreography_v21",
+        "bending_fire_choreography_v21b",
+        "bending_fire_moves_v20",
+        "bending_fire_moves_v22",
+        "bending_fire_moves_v22b"
+      ]
+    },
+    "Air": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_air_v2.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/sigil_02_air_v2.py",
+          "sha256": "eeb20a00aa788379dcfbd3ede4d2e41eb29ff7c2a429b78c04aa024cfdce7f02"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "argparse",
+        "functools",
+        "gzip",
+        "json",
+        "math",
+        "numpy",
+        "os",
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "sys",
+        "time",
+        "torch"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": [
+        "bending_fire_cast_v23",
+        "bending_fire_choreography_v21",
+        "bending_fire_choreography_v21b",
+        "bending_fire_moves_v20",
+        "bending_fire_moves_v22",
+        "bending_fire_moves_v22b"
+      ]
+    },
+    "Water": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_active_prepare.py",
+        "work/element-motion/sigil_02_active_water_run.py",
+        "work/element-motion/sigil_02_active_water.mjs",
+        "work/element-motion/sigil_02_active_mesh.py",
+        "work/element-motion/sigil_02_active_water_render.py",
+        "work/element-motion/sigil_02_active_finish.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/bending_surface.py",
+          "sha256": "b106b3feac8d88ee804ffe20f271dc251372440a55414e44afa9fa6430ccce64"
+        },
+        {
+          "path": "work/element-motion/sigil_02_active_finish.py",
+          "sha256": "d7ea25fb62cc6b48262c02c7747a791eab9259e6c19eb47b6afa06c3dd9483d1"
+        },
+        {
+          "path": "work/element-motion/sigil_02_active_mesh.py",
+          "sha256": "6669ef70b09f1f90c95348aee79a9b62db58aed7c4f736ad1ac55a789e9659b4"
+        },
+        {
+          "path": "work/element-motion/sigil_02_active_prepare.py",
+          "sha256": "e9e6e9a3af6950282418de618a57474d81027ef7503b19b07c985479ae291305"
+        },
+        {
+          "path": "work/element-motion/sigil_02_active_water.mjs",
+          "sha256": "e6616e398cabdabb9d51859186913415bfc0bee5408ebd6c4eb588c7da691ede"
+        },
+        {
+          "path": "work/element-motion/sigil_02_active_water_render.py",
+          "sha256": "1c2eaa783da06a4574fec2a7cdb93a28aa60d51e528ba1cb79c37625799a9f2a"
+        },
+        {
+          "path": "work/element-motion/sigil_02_active_water_run.py",
+          "sha256": "661732ba16d96817d6bdbe702932f81f108f153a93d927a67d7e93247338eaaf"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/checkpoint.js",
+          "sha256": "898590270f88fbc9a461fe3ab3ac90178d6a7f429038d1a2f97ddb88c4729100"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/flip-base.js",
+          "sha256": "5516529d37d62f835075d61a6c3950c55d76e151386c70325f00c8b5a1864aa9"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/flip-reference.js",
+          "sha256": "7b1fbaeb1cebd020c50ba0e8b856154b004473ad81e54df10633d6161cdb8dd2"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/flip.js",
+          "sha256": "6e7b154885fdb48fcc7088eb6970f0ee0b87e527d90d114d24a8549386622309"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/main.js",
+          "sha256": "260f25d5b31577fe3e19d04b0899a0d878cb194dc621464db6ebbd5597ef7d6c"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/numerics/multigrid.js",
+          "sha256": "7cc91262f7f8181cc1793e94407a45f2fec4f6f5f83f4a9402c3a16cfd0e5b7a"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/numerics/stress.js",
+          "sha256": "3d6718f30e3aa958274ea10a093b8b8d81ba71372742d123e4e11364783d836b"
+        },
+        {
+          "path": "work/flip-lettering/vendor/src/quality-profile.js",
+          "sha256": "99bed8819cae4c995d40c2ca146a8c6f0587adb57a8bbf2ef38071c8a66b842e"
+        },
+        {
+          "path": "work/flip-lettering/vendor/tools/mesh_cache.py",
+          "sha256": "e7be42dad58aa2651b84572273f1987af4c1867bf340535eccea23ff9d5bc6bc"
+        },
+        {
+          "path": "work/flip-lettering/vendor/tools/mesh_ii.py",
+          "sha256": "ba98f6a7f3c62b70c4aa2fa9b7e1e4b6fb01ad1fa8b0fdacfc1fdb0bc17ba06b"
+        },
+        {
+          "path": "work/flip-lettering/vendor/tools/mesh_iii.py",
+          "sha256": "297939a90ce584a2ca5ba5dc1fb2f8fe1c170c474167f7a0e13fa43bb8e50861"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "__future__",
+        "argparse",
+        "bpy",
+        "cv2",
+        "gc",
+        "gzip",
+        "hashlib",
+        "json",
+        "mathutils",
+        "node:fs",
+        "node:zlib",
+        "numba",
+        "numpy",
+        "os",
+        "pathlib",
+        "scipy",
+        "shutil",
+        "skimage",
+        "struct",
+        "subprocess",
+        "sys",
+        "time"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": []
+    },
+    "Earth": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_ground_earth_build.py",
+        "work/element-motion/sigil_02_ground_earth_render.py",
+        "work/element-motion/sigil_02_coherent_earth_build.py",
+        "work/element-motion/sigil_02_return_finish.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/sigil_02_alive_earth_render.py",
+          "sha256": "6ac21766f439c008c9ea6bb5dd2e8ed62fdd2046fb287aaab0c783bdf40c964d"
+        },
+        {
+          "path": "work/element-motion/sigil_02_coherent_earth_build.py",
+          "sha256": "84639de0808315189f0ae133b6049380a807eab4cde6c53e693d3d72bff521ce"
+        },
+        {
+          "path": "work/element-motion/sigil_02_ground_earth_build.py",
+          "sha256": "c381edf07767b9e97e5c1a7b3f4c52ff46b5105ed06195b100059cd9522a8743"
+        },
+        {
+          "path": "work/element-motion/sigil_02_ground_earth_render.py",
+          "sha256": "dd73f255de922f4bbd2b4b519f5fe9648745afe00e4b5b8446f44666323026ce"
+        },
+        {
+          "path": "work/element-motion/sigil_02_return_finish.py",
+          "sha256": "cd4cc7a41672a09ce8af780b16c438467b5da0ed34866a195eaecdc1137b587b"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "bpy",
+        "cv2",
+        "hashlib",
+        "json",
+        "math",
+        "mathutils",
+        "numpy",
+        "pathlib",
+        "random",
+        "scipy",
+        "shapely",
+        "shutil",
+        "subprocess",
+        "sys",
+        "time"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": []
+    },
+    "Ice": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_new_materials.py",
+        "work/element-motion/sigil_02_atmosphere.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/sigil_02_atmosphere.py",
+          "sha256": "405a47ac3e4bebec84150b11b4369a29612b654f1489c6b0a98cc212e296929a"
+        },
+        {
+          "path": "work/element-motion/sigil_02_new_materials.py",
+          "sha256": "c62481285286cd57b0b83da6ae6a2d632327b27452627085b239dba7a3b2e30b"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "bisect",
+        "bpy",
+        "json",
+        "math",
+        "mathutils",
+        "numpy",
+        "os",
+        "pathlib",
+        "random",
+        "scipy",
+        "shutil",
+        "sys",
+        "time"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": []
+    },
+    "Lava": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_new_materials.py",
+        "work/element-motion/sigil_02_atmosphere.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/sigil_02_atmosphere.py",
+          "sha256": "405a47ac3e4bebec84150b11b4369a29612b654f1489c6b0a98cc212e296929a"
+        },
+        {
+          "path": "work/element-motion/sigil_02_new_materials.py",
+          "sha256": "c62481285286cd57b0b83da6ae6a2d632327b27452627085b239dba7a3b2e30b"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "bisect",
+        "bpy",
+        "json",
+        "math",
+        "mathutils",
+        "numpy",
+        "os",
+        "pathlib",
+        "random",
+        "scipy",
+        "shutil",
+        "sys",
+        "time"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": []
+    },
+    "Lightning": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_electric_tree_export.py",
+        "work/element-motion/sigil_02_atmosphere.py",
+        "work/element-motion/sigil_02_new_materials.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/sigil_02_atmosphere.py",
+          "sha256": "405a47ac3e4bebec84150b11b4369a29612b654f1489c6b0a98cc212e296929a"
+        },
+        {
+          "path": "work/element-motion/sigil_02_electric_tree_export.py",
+          "sha256": "e442cc1a70586727561986f75094fbe2192c3c1bc9f2cb118a037339b670d3ff"
+        },
+        {
+          "path": "work/element-motion/sigil_02_new_materials.py",
+          "sha256": "c62481285286cd57b0b83da6ae6a2d632327b27452627085b239dba7a3b2e30b"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "PIL",
+        "bisect",
+        "bpy",
+        "json",
+        "math",
+        "mathutils",
+        "numpy",
+        "os",
+        "pathlib",
+        "random",
+        "scipy",
+        "shutil",
+        "sys",
+        "time"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": []
+    },
+    "Telekinesis": {
+      "entrypoints": [
+        "work/element-motion/sigil_02_coherent_earth_build.py",
+        "work/element-motion/sigil_02_telekinetic_contours.py",
+        "work/element-motion/telekinesis_02_render_v2.py"
+      ],
+      "sourceClosure": [
+        {
+          "path": "work/element-motion/sigil_02_coherent_earth_build.py",
+          "sha256": "84639de0808315189f0ae133b6049380a807eab4cde6c53e693d3d72bff521ce"
+        },
+        {
+          "path": "work/element-motion/sigil_02_telekinetic_contours.py",
+          "sha256": "570e35f85f99a1591cbea141657468dda242729421f51d0c919a28db3d96bad8"
+        },
+        {
+          "path": "work/element-motion/telekinesis_02_render_v2.py",
+          "sha256": "640deb827306033db98a1d794836fe124a5fcbee3a552cddeb5fa19da9e7788e"
+        }
+      ],
+      "missingCode": [],
+      "imports": [
+        "bpy",
+        "cv2",
+        "json",
+        "math",
+        "mathutils",
+        "numpy",
+        "pathlib",
+        "random",
+        "scipy",
+        "shapely",
+        "skimage",
+        "sys"
+      ],
+      "scope": "Static local import/literal-helper closure; data caches and external tools require separate checks.",
+      "optionalLegacyHelperAliases": []
+    }
+  }
+}

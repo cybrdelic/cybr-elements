@@ -1,35 +1,41 @@
-# Working simulation data is inventoried explicitly for publication.
-/work/*
-/output/
-**/__pycache__/
-**/node_modules/
+# Local environments, credentials and temporary build output.
+.env
+.env.*
+!.env.example
 **/.venv/
+**/node_modules/
+**/__pycache__/
 **/*.pyc
 **/*.log
 **/*.log.gz
 **/.DS_Store
 **/Thumbs.db
-.env
-.env.*
-!.env.example
 /.asset-downloads/
-/outputs/**/*.mp4
+/output/
+/releases/fire-studio-*/
+/releases/fire-studio-*.zip
+
+# Authoring caches and diagnostics are preserved separately, not published.
+/work/adaptive-volume-qa/
+/work/studio-regression-fixtures/
+/work/fire-browser/
+/work/**/*frames*/
+/work/**/particles/
+/work/**/mesh/
+/work/**/gas/
+/work/**/cache/
+/work/**/*.npz
+/work/**/*.npy
+/work/**/*.f32
+/work/**/*.bin
+/work/**/*.mp4
+/work/**/*.exr
+!/work/element-motion/sigil-02-v2/source.npz
+
+# Historical bulk asset packs are restored through scripts/fetch_assets.py.
+/outputs/**/*.zip
+!/outputs/cybrdelic-type/typefaces/Cybrdelic-Fonts-v1.zip
+/outputs/**/*.gz
 /outputs/**/*.webm
 /outputs/**/*.mov
-/outputs/**/*.zip
-/outputs/**/*.gz
-/outputs/**/*.f32
-/outputs/**/*.bin
-/outputs/**/*.npz
-/outputs/**/*.npy
-# These are the self-contained current player and its comparison clips.
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-02.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/air-02.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r8.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r7.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r6.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r5.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/ice-02.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/lava-02.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r5.mp4
-!/outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r4.mp4
+# Required films, native Fire Studio binaries and source assets remain tracked.
