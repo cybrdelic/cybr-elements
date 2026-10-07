@@ -185,6 +185,7 @@
   }
   setupUpperBoundary(fine){
    const gl=this.gl,[nx,ny,nz]=fine.n,floor=fine.floor;
+   const glslFloat=value=>Number.isInteger(value)?value.toFixed(1):String(value);
    this.upperLevels=OriginalFineFlow.upperBoundaryHierarchy(fine,this.extent).map(g=>({...g,p:[this.target(g,gl.R32F),this.target(g,gl.R32F)],rhs:this.target(g,gl.R32F),residual:this.target(g,gl.R32F),current:0}));
    this.upperVelocity=this.target({width:nx,height:ny},gl.RGBA16F);
    const finest=this.upperLevels[0],base=OriginalFineFlow.upperBoundaryGLSL(finest);
@@ -200,8 +201,8 @@
     float xPhi(ivec2 c){return c.x<0||c.x>=M?0.:texelFetch(uP,c,0).r;}
     float yPhi(ivec2 c){return c.y<0||c.y>=R?0.:texelFetch(uP,c,0).r;}
     void main(){ivec2 xy=ivec2(gl_FragCoord.xy);vec4 v=upper(uProjected,xy);if(xy.y<FLOOR){result=v;return;}
-     ivec2 c=xy-ivec2(0,FLOOR);v.x+=${nx/(this.extent[0]**2)}*(xPhi(c-ivec2(1,0))-xPhi(c));
-     if(c.y>0)v.y+=${ny/(this.extent[1]**2)}*(yPhi(c-ivec2(0,1))-yPhi(c));result=v;
+     ivec2 c=xy-ivec2(0,FLOOR);v.x+=${glslFloat(nx/(this.extent[0]**2))}*(xPhi(c-ivec2(1,0))-xPhi(c));
+     if(c.y>0)v.y+=${glslFloat(ny/(this.extent[1]**2))}*(yPhi(c-ivec2(0,1))-yPhi(c));result=v;
     }`);
    for(let i=0;i<this.upperLevels.length;i++){
     const l=this.upperLevels[i],g=OriginalFineFlow.upperBoundaryGLSL(l);
