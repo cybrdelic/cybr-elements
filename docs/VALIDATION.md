@@ -1,5 +1,60 @@
 # Validation of the consolidated tree
 
+## Original motion unit correction
+
+The preserved public baseline is merge `5cd55fee659afff3368f844045f3ba1541040b62`.
+The tested correction is `9a008c23d97c93a2a517092f01cb3cabd7b6391f`. Source jets and
+confinement already enter normalized velocity after division by the world-space
+domain extent. Ambient horizontal curl and planar swirl skipped that conversion,
+scaling their implied world acceleration with the domain width/height. The
+correction applies the same conversion only to Original free fire and fireball.
+It leaves the inlet, heat, fuel, damping, cast timing and other Original force
+units intact. Every Volume/Sparse runtime file retains its baseline bytes.
+
+Actual Chrome runs completed on 2026-10-07, 03:26:38-03:27:44 UTC, using the
+production clock, native grids and unchanged rendering quality on NVIDIA ANGLE.
+Before and after use identical camera, lighting, fuel and source inputs. The
+following matched paused observations are descriptive, with no invented
+acceptance threshold:
+
+| Source | Native simulation age | Before sampled peak world speed | After sampled peak world speed |
+| --- | ---: | ---: | ---: |
+| Free fire | 0.433333 s | 1.497573 | 0.868453 |
+| Free fire | 1.033333 s | 2.673362 | 1.732667 |
+| Free fire | 2.200000 s | 4.929841 | 3.565864 |
+| Fireball | 0.415000 s | 1.481318 | 1.543691 |
+| Fireball | 1.005000 s | 2.830031 | 2.736791 |
+| Fireball | 2.215000 s | 2.989606 | 2.861951 |
+
+Free fire is visibly more upright and less spread in the matched late capture.
+Fireball's change is smaller; its aimed travel, burning wake and authored breakup
+remain. This fixes inconsistent force units, without claiming that the prior
+solver diverged or that every artistic motion concern is closed.
+
+Both versions passed pause, reset, persistent free-source drag/release and stop,
+four-slot repeated casts, and actual Chrome touch charge/aim/release/cancel.
+Candidate sooty-plume, finite-wood campfire and smoke-column runs also completed.
+No page or failed HTTP responses occurred. Three full depth slices of both
+velocity and chemistry were read at each paused observation: all sampled values
+were finite, including after controls. These are sampled-field checks, not a
+whole-volume or long-duration stability proof. Courant observations exceed one
+in both versions; they are recorded diagnostics, not a stability pass criterion
+for the existing semi-Lagrangian transport.
+
+All 61 CPU suite files pass: 428 node:test cases plus the retained custom assertion
+suites. Package tests pass 9/9; dependency/asset closure is valid for 180 runtime
+files, build `69ed2381c88953e8`. Original-only cache tokens carry the corrected
+module through the loader chain. The owned browser and server closed before
+video encoding; a separate read-only check reported NVIDIA 0% / 0 MiB.
+
+- [Free fire before at 2.2 s](media/original-free-before.png) and [after](media/original-free-after.png).
+- [Fireball before at 1.005 s](media/original-fireball-before.png) and [after](media/original-fireball-after.png).
+- [Actual before/after recording](media/original-motion-before-after.mp4): baseline left, correction right, normal wall-time playback. The video is not aligned by simulation age; the paused captures and field observations above are.
+
+Actual Android hardware, sustained performance, conservation and all fuel/power
+combinations remain outside this bounded check. No adaptive-flow, renderer,
+geometry or resolution changes were made.
+
 The first consolidation was merged in [PR #7](https://github.com/cybrdelic/cybr-elements/pull/7)
 at `9519beb11276a2a35dbfad417b87137dba5c8a61`. Its tree exactly matches the
 reviewed head `7526d31ab8798e6d26afd43ad0b2679330d79b40`.
@@ -41,9 +96,9 @@ scan finds no recognized secret patterns or environment/auth files.
 
 The owner's prior shader, timing and live-control results are supporting
 historical evidence; they have not been rerun as current follow-up validation.
-Actual browser controls, pixels and motion plus the staged progress video still
-await the coordinated Elements GPU/browser slot. No new GPU performance claim,
-solver tuning, release or deployment accompanies this follow-up.
+Subsequent bounded browser controls, source preservation captures and staged
+progress recording completed; the motion correction above records its own
+matched before/after validation. These checks make no sustained-performance claim.
 
 ## Earlier consolidation preservation checks
 
