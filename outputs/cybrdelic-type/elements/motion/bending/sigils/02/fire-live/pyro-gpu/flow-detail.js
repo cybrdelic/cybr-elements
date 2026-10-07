@@ -1,7 +1,7 @@
 // Material coordinates travel with the resolved MAC flow. A two-second
 // exponential relaxation bounds distortion without periodic reset seams.
 // This is advected curl detail, not a wavelet turbulence implementation.
-import {reactionRoundingWGSL} from './reaction-precision.js?v=studio-rc-37-audit';
+import {reactionRoundingWGSL} from './reaction-precision.js?v=studio-rc-37-repair';
 export function flowDetailShader(N=128,M=64){
  if(!Number.isInteger(N)||N<4||!Number.isInteger(M)||M<4)throw Error('Invalid flow detail grid');
  return `

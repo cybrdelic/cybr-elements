@@ -8,7 +8,7 @@ const root=resolve(import.meta.dirname,'../../outputs/cybrdelic-type/elements/mo
 const {FIRE_PRESETS}=await import(pathToFileURL(resolve(root,'pyro-gpu/presets.js')).href);
 const {emitterKindFor}=await import(pathToFileURL(resolve(root,'original-source-profile.js')).href);
 
-test('sooty plume selects a dedicated broad source in both solvers',async()=>{
+test('free fire and sooty plume share the broad Original inlet; Volume retains its continuous plume',async()=>{
  const plume=FIRE_PRESETS.find(p=>p.id==='sooty-plume');
  assert.ok(plume);
  assert.equal(plume.effect[0],0,'Effect zero selects the generic plume profile in the volume solver');
@@ -18,8 +18,8 @@ test('sooty plume selects a dedicated broad source in both solvers',async()=>{
  const emitters=await readFile(resolve(root,'fire-emitters.js'),'utf8');
  const legacy=(await readFile(resolve(root,'fire.js'),'utf8')+'\n'+await readFile(resolve(root,'original-shaders.js'),'utf8'));
  const volume=await readFile(resolve(root,'pyro-gpu/shaders.js'),'utf8');
- assert.match(emitters,/emitterKind==0&&sourceEffectKind==0/);
- assert.match(legacy,/emitterKind==0&&sourceEffectKind==0\?3\.5/,'The plume receives stronger large-scale roll-up confinement');
+ assert.match(emitters,/emitterKind==0&&sourceEffectKind<=0/);
+ assert.match(legacy,/emitterKind==0&&sourceEffectKind<=0\?3\.5/,'Free fire and the plume receive the same large-scale roll-up confinement');
  assert.match(legacy,/sourceMomentumFraction\(fuelBeforeRelease,added\)/,'Source momentum follows the finite fuel dose');
  assert.match(volume,/p\.effect\.x<\.5&&p\.effect\.w>\.5/,'The volume solver keeps this continuous plume distinct from finite bursts');
  assert.match(volume,/vec3f\(\.62,\.20,\.44\)/,'The volume source uses a broad shallow footprint');

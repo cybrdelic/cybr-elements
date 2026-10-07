@@ -1,7 +1,7 @@
-import {solverParamsWGSL} from './solver-params.js?v=studio-rc-37-audit';
-import {powerSourceFor} from '../fire-powers.js?v=studio-rc-37-audit';
-import {objectWGSL} from './objects.js?v=studio-rc-37-audit';
-import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-audit';
+import {solverParamsWGSL} from './solver-params.js?v=studio-rc-37-repair';
+import {powerSourceFor} from '../fire-powers.js?v=studio-rc-37-repair';
+import {objectWGSL} from './objects.js?v=studio-rc-37-repair';
+import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-repair';
 
 export function powerContactShader(kind=null){
  // Collision assembly owns dependencies used by its entry point. Preserve

@@ -1,37 +1,37 @@
-import {PowerContacts} from './power-contacts.js?v=studio-rc-37-audit';
-import {projectionMeasureShader} from './projection-measure.js?v=studio-rc-37-audit';
-import {GeometryPressure} from './pressure-geometry.js?v=studio-rc-37-audit';
-import {gpuCosts} from './gpu-costs.js?v=studio-rc-37-audit';
-import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-audit';
-import {conservativeFluxShader} from './conservative-transport.js?v=studio-rc-37-audit';
-import {flowDetailShader,flowDetailVelocity} from './flow-detail.js?v=studio-rc-37-audit';
-import {reactionPrecisionShader} from './reaction-precision.js?v=studio-rc-37-audit';
-import {fusedFluxReactionShader} from './fused-transport.js?v=studio-rc-37-audit';
+import {PowerContacts} from './power-contacts.js?v=studio-rc-37-repair';
+import {projectionMeasureShader} from './projection-measure.js?v=studio-rc-37-repair';
+import {GeometryPressure} from './pressure-geometry.js?v=studio-rc-37-repair';
+import {gpuCosts} from './gpu-costs.js?v=studio-rc-37-repair';
+import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-repair';
+import {conservativeFluxShader} from './conservative-transport.js?v=studio-rc-37-repair';
+import {flowDetailShader,flowDetailVelocity} from './flow-detail.js?v=studio-rc-37-repair';
+import {reactionPrecisionShader} from './reaction-precision.js?v=studio-rc-37-repair';
+import {fusedFluxReactionShader} from './fused-transport.js?v=studio-rc-37-repair';
 import {
   surfaceWGSL,
   basicSurfaceWGSL,
   damageResetWGSL,
   FIRE_COLORS,
-} from './objects.js?v=studio-rc-37-audit';
-import { ForestMesh } from './forest-mesh.js?v=studio-rc-37-audit';
-import {WoodStructure} from '../wood-structure.js?v=studio-rc-37-audit';
-import {WoodCollision} from './wood-collision.js?v=studio-rc-37-audit';
-import {WoodFlux,WOOD_GAS_PILOT,woodPacketFraction} from './wood-flux.js?v=studio-rc-37-audit';
-import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-37-audit';
-import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-37-audit';
-import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-37-audit';
-import {CompressibleShockStage,shockFlowTransferWeight} from './shock-euler.js?v=studio-rc-37-audit';
-import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-37-audit';
-import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-37-audit';
-import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-37-audit';
-import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-37-audit';
-import { createBrickPool, brickPoolScalarShaders,brickPoolVelocityShader, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-37-audit';
-import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-37-audit';
-import { FuelBrush } from '../fuel-ground.js?v=studio-rc-37-audit';
-import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-37-audit';
-import {powerDirection as authoredPowerDirection, powerDefinition, POWER_DEFINITIONS} from '../fire-powers.js?v=studio-rc-37-audit';
-import {PowerCastPool} from '../fire-abilities.js?v=studio-rc-37-audit';
-import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-37-audit';
+} from './objects.js?v=studio-rc-37-repair';
+import { ForestMesh } from './forest-mesh.js?v=studio-rc-37-repair';
+import {WoodStructure} from '../wood-structure.js?v=studio-rc-37-repair';
+import {WoodCollision} from './wood-collision.js?v=studio-rc-37-repair';
+import {WoodFlux,WOOD_GAS_PILOT,woodPacketFraction} from './wood-flux.js?v=studio-rc-37-repair';
+import { emberComputeWGSL, emberRenderWGSL } from './embers.js?v=studio-rc-37-repair';
+import { probeGPU, gpuSessionTimeout } from './gpu-session.js?v=studio-rc-37-repair';
+import { simulationShaders, pressureShaders } from './shaders.js?v=studio-rc-37-repair';
+import {CompressibleShockStage,shockFlowTransferWeight} from './shock-euler.js?v=studio-rc-37-repair';
+import { rendererShaders, dilateWGSL, dilateReceiversWGSL, ROOM_SIZE } from './renderer.js?v=studio-rc-37-repair';
+import { adaptiveFlowShaders, initialAdaptiveFlowCommands, ADAPTIVE_FLOW_COMMAND_BYTES, ADAPTIVE_FLOW_OFFSETS } from './adaptive-flow.js?v=studio-rc-37-repair';
+import { AdaptivePressure } from './adaptive-pressure.js?v=studio-rc-37-repair';
+import { createLightingWork, lightingWorkShaders, recordLightingWork, createLightingReceivers } from './lighting-work.js?v=studio-rc-37-repair';
+import { createBrickPool, brickPoolScalarShaders,brickPoolVelocityShader, POOL_INDIRECT } from './brick-pool.js?v=studio-rc-37-repair';
+import { pooledChemistryConsumer } from './pooled-coupling.js?v=studio-rc-37-repair';
+import { FuelBrush } from '../fuel-ground.js?v=studio-rc-37-repair';
+import { advanceSmokeDecay } from '../smoke-lifecycle.js?v=studio-rc-37-repair';
+import {powerDirection as authoredPowerDirection, powerDefinition, POWER_DEFINITIONS} from '../fire-powers.js?v=studio-rc-37-repair';
+import {PowerCastPool} from '../fire-abilities.js?v=studio-rc-37-repair';
+import { FLOOR_FUEL_SIZE, floorFuelUpdateWGSL, floorFuelClearWGSL, floorWoodWearClearWGSL, floorDepositsClearWGSL, expandFuelDeposits } from './floor-fuel.js?v=studio-rc-37-repair';
 export function cflSafeSpeed(maxSpeed, telemetryLag, burstAge) {
   if (burstAge < 0.12) return Math.max(maxSpeed, 12);
   // Even a current readback describes the completed interval. Reserve one

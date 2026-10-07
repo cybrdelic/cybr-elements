@@ -1,6 +1,6 @@
 // One packed word per fine cell: consumed fuel/s and completed gas-volume
 // source/s. Chemistry owns these records; rendering and pressure only read.
-import {pressureSourceReaderWGSL} from './pressure-source-cache.js?v=studio-rc-37-audit';
+import {pressureSourceReaderWGSL} from './pressure-source-cache.js?v=studio-rc-37-repair';
 export function reactionLedgerWGSL(D=256,{write=false,binding=61,pressureCache=false}={}){
  const headerWords=(D/8)**3*4;
  if(write)return `

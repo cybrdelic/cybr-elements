@@ -1,13 +1,13 @@
-import {extendedFireLightWGSL} from './extended-fire-light.js?v=studio-rc-37-audit';
-import {firePresentationWGSL} from '../fire-presentation.js?v=studio-rc-37-audit';
-import {reactionLedgerWGSL} from '../reaction-ledger.js?v=studio-rc-37-audit';
-import {objectWGSL} from './objects.js?v=studio-rc-37-audit';
-import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-37-audit';
-import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-37-audit';
-import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-37-audit';
-import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-37-audit';
-import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-37-audit';
-import {woodMaterialWGSL} from '../wood-material.js?v=studio-rc-37-audit';
+import {extendedFireLightWGSL} from './extended-fire-light.js?v=studio-rc-37-repair';
+import {firePresentationWGSL} from '../fire-presentation.js?v=studio-rc-37-repair';
+import {reactionLedgerWGSL} from '../reaction-ledger.js?v=studio-rc-37-repair';
+import {objectWGSL} from './objects.js?v=studio-rc-37-repair';
+import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-37-repair';
+import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-37-repair';
+import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-37-repair';
+import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-37-repair';
+import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-37-repair';
+import {woodMaterialWGSL} from '../wood-material.js?v=studio-rc-37-repair';
 // Five room faces share this irradiance resolution. Keep atlas allocation,
 // compute dispatch and sampling coordinates in sync with this value.
 export const ROOM_SIZE=64;

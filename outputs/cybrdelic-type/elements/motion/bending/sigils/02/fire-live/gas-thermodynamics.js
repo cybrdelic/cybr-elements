@@ -1,4 +1,4 @@
-import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-audit';
+import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-repair';
 // Reduced gas units match the wood sensible-energy conversion. A world-unit
 // scene remains an authored scale; this is not detailed species chemistry.
 export const GAS_THERMO=Object.freeze({ambientK:300,temperatureScaleK:1200,heatCapacityJkgK:1200,referenceDensityKgM3:1,stefanBoltzmann:5.670374419e-8,ambientMixingRate:.35});

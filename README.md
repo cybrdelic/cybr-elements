@@ -45,7 +45,10 @@ these commands run the local consolidated version.
 Fire Studio includes source/preset selection, 24 authored fire abilities, finite
 floor fuel, wood sources, lighting, camera controls, pause/restart, presentation,
 saved looks and shared settings. Each engine retains its existing equations and
-rendering. Experiments remain explicitly labeled. [Fire Studio guide](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/README.md).
+rendering. Original free fire now shares the established plume inlet and flow
+treatment. This intentional owner change and its captured source boundary are
+recorded in [validation](docs/VALIDATION.md). Experiments remain explicitly labeled.
+[Fire Studio guide](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/README.md).
 
 Offline renderers remain first-class authoring workflows under `work/`, with the
 native FLIP source and its license retained. [Supported workflows and source scope](docs/OFFLINE_WORKFLOWS.md).

@@ -1,5 +1,5 @@
-import {powerDefinition,powerDirection} from './fire-powers.js?v=studio-rc-37-audit';
-import {POWER_CAST_CAPACITY,powerPhase,powerSpeedFloor,powerExpansion} from './fire-power-definitions.js?v=studio-rc-37-audit';
+import {powerDefinition,powerDirection} from './fire-powers.js?v=studio-rc-37-repair';
+import {POWER_CAST_CAPACITY,powerPhase,powerSpeedFloor,powerExpansion} from './fire-power-definitions.js?v=studio-rc-37-repair';
 const finite3=v=>Array.isArray(v)||ArrayBuffer.isView(v)?v.length===3&&Array.from(v).every(Number.isFinite):false;
 const set3=(to,v)=>{for(let i=0;i<3;i++)to[i]=v[i];};
 // Reserve the source body. Advected aftermath may leave the open simulation

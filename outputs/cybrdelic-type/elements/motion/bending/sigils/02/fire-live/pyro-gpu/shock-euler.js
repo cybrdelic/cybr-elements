@@ -1,6 +1,6 @@
-import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-audit';
-import {solverParamsWGSL} from './solver-params.js?v=studio-rc-37-audit';
-import {shockClockLayout,shockClockShaders} from './shock-gpu-clock.js?v=studio-rc-37-audit';
+import {pruneShaderFunctions} from '../shader-specialization.js?v=studio-rc-37-repair';
+import {solverParamsWGSL} from './solver-params.js?v=studio-rc-37-repair';
+import {shockClockLayout,shockClockShaders} from './shock-gpu-clock.js?v=studio-rc-37-repair';
 // Short-lived, conservative ideal-gas Euler stage for authored explosion powers.
 // State is U=(rho, rho*u, rho*v, rho*w, E); no rendered particles or fake ring
 // forces are involved. A dimensionally-split MUSCL/HLLE update keeps the work

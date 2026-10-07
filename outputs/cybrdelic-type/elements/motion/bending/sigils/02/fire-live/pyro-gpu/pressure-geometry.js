@@ -1,5 +1,5 @@
-import {objectWGSL} from './objects.js?v=studio-rc-37-audit';
-import {pressureShaders} from './shaders.js?v=studio-rc-37-audit';
+import {objectWGSL} from './objects.js?v=studio-rc-37-repair';
+import {pressureShaders} from './shaders.js?v=studio-rc-37-repair';
 
 export function triangleOpenFraction(a,b,c){
  const p=[a,b,c].filter(x=>x>0),n=[a,b,c].filter(x=>x<=0);

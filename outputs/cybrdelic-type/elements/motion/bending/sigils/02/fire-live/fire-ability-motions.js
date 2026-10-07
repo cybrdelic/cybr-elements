@@ -2,7 +2,7 @@
 // soot and lighting; these routines only release fuel and momentum.
 // The source choreography is shared by both solvers. Packets carry weighted
 // momentum and react in the gas; these functions never render fire geometry.
-import {powerExpansionWGSL} from './fire-power-definitions.js?v=studio-rc-37-audit';
+import {powerExpansionWGSL} from './fire-power-definitions.js?v=studio-rc-37-repair';
 // Swept kernels use exp(-1.2 |d|²), not the standard exp(-|d|²/2).
 // Keep payload rates and flight inventories in that kernel's actual units.
 export const POWER_GAUSSIAN_VOLUME=Math.pow(Math.PI/1.2,1.5);

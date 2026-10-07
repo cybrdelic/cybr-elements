@@ -1,4 +1,4 @@
-import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-audit';
+import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-repair';
 // Shared reduced gas units. Finite wood retains its measured material heat
 // release and hot-product ignition memory. These are not species chemistry.
 export const GAS_CHEMISTRY=Object.freeze({oxygenPerFuel:.7,rate:5.8,heatRelease:5.5,ignitionLow:.35,ignitionHigh:.75,cooling:.9,hotCooling:.7});

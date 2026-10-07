@@ -6,7 +6,7 @@
 // chemistry=[pilotHeat,fuelRate,sootYield,turbulence].
 // Power choreography specifies where gas is released, not another flame model.
 
-import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-37-audit';
+import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-37-repair';
 
 const preset = (id, name, description, fuel, effect, dynamics, chemistry, options = {}) => ({
   id,

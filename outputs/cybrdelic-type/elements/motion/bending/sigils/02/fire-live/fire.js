@@ -1,20 +1,20 @@
-import {advanceSmokeDecay} from './smoke-lifecycle.js?v=studio-rc-37-audit';
-import {SimulationClock} from './simulation-clock.js?v=studio-rc-37-audit';
-import {createOriginalShaders} from './original-shaders.js?v=studio-rc-37-audit';
-import {runtimeScope} from './runtime-scope.js?v=studio-rc-37-audit';
-import {createGLFrameQueue} from './gl-frame-queue.js?v=studio-rc-37-audit';
-import {legacyProbe} from './legacy-qa.js?v=studio-rc-37-audit';
-import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-37-audit';
-import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-37-audit';
-import {emitterKindFor} from './original-source-profile.js?v=studio-rc-37-audit';
-import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-37-audit';
-import {createGroundFuelGL} from './ground-fuel-gl.js?v=studio-rc-37-audit';
-import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-37-audit';
-import {createWoodStateGL,originalWoodSource} from './wood-state-gl.js?v=studio-rc-37-audit';
-import {createWoodStructureGL,createWoodMeshGL} from './wood-structure-gl.js?v=studio-rc-37-audit';
-import {POWER_DEFINITIONS,powerDefinition,powerDirection,normalizePowerSettings} from './fire-powers.js?v=studio-rc-37-audit';
-import {PowerCastPool} from './fire-abilities.js?v=studio-rc-37-audit';
-import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-37-audit';
+import {advanceSmokeDecay} from './smoke-lifecycle.js?v=studio-rc-37-repair';
+import {SimulationClock} from './simulation-clock.js?v=studio-rc-37-repair';
+import {createOriginalShaders} from './original-shaders.js?v=studio-rc-37-repair';
+import {runtimeScope} from './runtime-scope.js?v=studio-rc-37-repair';
+import {createGLFrameQueue} from './gl-frame-queue.js?v=studio-rc-37-repair';
+import {legacyProbe} from './legacy-qa.js?v=studio-rc-37-repair';
+import {FIRE_PRESETS} from './pyro-gpu/presets.js?v=studio-rc-37-repair';
+import {FIRE_COLORS} from './pyro-gpu/fire-colors.js?v=studio-rc-37-repair';
+import {emitterKindFor} from './original-source-profile.js?v=studio-rc-37-repair';
+import {FuelBrush,floorHit} from './fuel-ground.js?v=studio-rc-37-repair';
+import {createGroundFuelGL} from './ground-fuel-gl.js?v=studio-rc-37-repair';
+import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-37-repair';
+import {createWoodStateGL,originalWoodSource} from './wood-state-gl.js?v=studio-rc-37-repair';
+import {createWoodStructureGL,createWoodMeshGL} from './wood-structure-gl.js?v=studio-rc-37-repair';
+import {POWER_DEFINITIONS,powerDefinition,powerDirection,normalizePowerSettings} from './fire-powers.js?v=studio-rc-37-repair';
+import {PowerCastPool} from './fire-abilities.js?v=studio-rc-37-repair';
+import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-37-repair';
 
 const MAX_POWER_EMITTER=21+Math.max(...POWER_DEFINITIONS.map(power=>power.kind));
 const DIRECTIONAL_GROUND_POWERS=new Set(['flame-dash','eruption-chain','fire-cross']);
@@ -384,7 +384,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
   sharedPresets.set('campfire',{...sharedPresets.get('bonfire'),id:'campfire'});
   // Three distinct wood beds share the same coupled fluid and combustion.
   // Scale the fuel footprint, log receiver and lift together.
-  const sourceShapes={free:[1.5,1,1],campfire:[1,1,1],bonfire:[1.48,.82,1.12],hearth:[.68,.64,.78]};
+  const sourceShapes={free:[1.1,1,1],campfire:[1,1,1],bonfire:[1.48,.82,1.12],hearth:[.68,.64,.78]};
   function configureWood(profile){
     let descriptor=originalWoodSource(activePreset,profile);
     if(descriptor.kind===1&&freeMode)descriptor={kind:0,bark:0};

@@ -1,5 +1,5 @@
-import {WOOD_GAS_PILOT,woodGasPilotSites} from './pyro-gpu/wood-flux.js?v=studio-rc-37-audit';
-import {WOOD_THERMO,woodThermoGLSL} from './wood-thermo.js?v=studio-rc-37-audit';
+import {WOOD_GAS_PILOT,woodGasPilotSites} from './pyro-gpu/wood-flux.js?v=studio-rc-37-repair';
+import {WOOD_THERMO,woodThermoGLSL} from './wood-thermo.js?v=studio-rc-37-repair';
 
 // The projected stock may span front and back surfaces. Route its release to
 // actual exterior geometry, not a Gaussian at their empty midpoint. Capacity

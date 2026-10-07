@@ -1,16 +1,16 @@
-import {gasThermoGLSL,GAS_THERMO,PLUME_THERMAL} from './gas-thermodynamics.js?v=studio-rc-37-audit';
-import {firePresentationGLSL} from './fire-presentation.js?v=studio-rc-37-audit';
+import {gasThermoGLSL,GAS_THERMO,PLUME_THERMAL} from './gas-thermodynamics.js?v=studio-rc-37-repair';
+import {firePresentationGLSL} from './fire-presentation.js?v=studio-rc-37-repair';
 // Pure shader assembly. Source motion supplies gas; every source uses the
 // same combustion and optical paths. This module owns no GPU or DOM state.
-import {GAS_DIFFUSIVITY,PRODUCT_DIFFUSIVITY} from './gas-transport.js?v=studio-rc-37-audit';
-import {groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-37-audit';
-import {woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-37-audit';
-import {woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-37-audit';
-import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-37-audit';
-import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-37-audit';
-import {GAS_CHEMISTRY,sourceMixingGLSL} from './reduced-chemistry.js?v=studio-rc-37-audit';
-import {powerSourceFor} from './fire-powers.js?v=studio-rc-37-audit';
-import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-37-audit';
+import {GAS_DIFFUSIVITY,PRODUCT_DIFFUSIVITY} from './gas-transport.js?v=studio-rc-37-repair';
+import {groundInjectionGLSL,groundSurfaceGLSL} from './ground-fuel-gl.js?v=studio-rc-37-repair';
+import {woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-37-repair';
+import {woodMechanicsGLSL} from './wood-structure-gl.js?v=studio-rc-37-repair';
+import {SMOKE_CLEAR_DENSITY} from './smoke-lifecycle.js?v=studio-rc-37-repair';
+import {WOOD_THERMO} from './wood-thermo.js?v=studio-rc-37-repair';
+import {GAS_CHEMISTRY,sourceMixingGLSL} from './reduced-chemistry.js?v=studio-rc-37-repair';
+import {powerSourceFor} from './fire-powers.js?v=studio-rc-37-repair';
+import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-37-repair';
 
 export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind,MAX_POWER_EMITTER,renderSize,emittersGLSL,propsGLSL,woodMaterialGLSL}){
  const NX=domain.nx,NZ=domain.ny,DEPTH=domain.depth,TILES_X=8,TILES_Y=DEPTH/8,AW=NX*TILES_X,AH=NZ*TILES_Y;
@@ -123,7 +123,7 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     float fuel=scalars.r;
     float oxygen=scalars.g;
     float temp=scalars.b, soot=scalars.a;
-    if(temp+soot>.00001) vf.xyz+=vortexForce(at)*delta*(sourceEnabled<.5&&emitterKind==6?2.2:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind==0?3.5:emitterKind>=22&&emitterKind<=${MAX_POWER_EMITTER}?powerConfinement:1.);
+    if(temp+soot>.00001) vf.xyz+=vortexForce(at)*delta*(sourceEnabled<.5&&emitterKind==6?2.2:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind<=0?3.5:emitterKind>=22&&emitterKind<=${MAX_POWER_EMITTER}?powerConfinement:1.);
     // The source field enters as fresh gas. It never clips existing fire to glyph edges.
     float worldX=simMin.x+p.x*simExtent.x, worldZ=simMin.y+p.y*simExtent.y, worldY=(depth-.5)*simExtent.z;
     woodFuelGas(vec3(worldX,worldZ,worldY),delta,fuel,oxygen,temp);
@@ -204,14 +204,14 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     }else{
     float pulse=.72+.28*sin(clock*47.0);
     if(emitterKind==1||emitterKind==2||emitterKind==5)pulse=mix(.72,1.08,texture(noiseTex,vec2(clock*.27+.13,clock*.07+.7)).r);
-    if(emitterKind==0&&sourceEffectKind==0)pulse=.94+.06*sin(clock*2.3+.7);
+    if(emitterKind==0&&sourceEffectKind<=0)pulse=.94+.06*sin(clock*2.3+.7);
     float fuelBeforeRelease=fuel;
     float added=brush*delta*ordinaryFuelRate(float(sourceEffectKind),1.)*pulse*fuelProfile.x;
     if(smokeOnly>.5)soot+=added*.8*fuelProfile.y;
     else{
      float incomingOxygen=emitterKind==2?.8:0.;
      oxygen=1.-sourceMixtureDeficit(1.-oxygen,added,incomingOxygen);
-     if(emitterKind==0&&sourceEffectKind==0){
+     if(emitterKind==0&&sourceEffectKind<=0){
       temp=sourceSensibleHeat(temp,fuel,added,${((PLUME_THERMAL.fuelTemperatureK-GAS_THERMO.ambientK)/GAS_THERMO.temperatureScaleK).toFixed(8)});
       vec3 q=vec3(local.x,local.y,worldY)/sourceScale;
       vec3 pilotQ=(q-vec3(${PLUME_THERMAL.pilotOffset.join(',')}))/vec3(${PLUME_THERMAL.pilotWidth.join(',')});
@@ -270,7 +270,7 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     float n2=texture(noiseTex,p*vec2(4.2,3.0)+vec2(-clock*.08,depth*.83)).g;
     float curl=(n1-n2)*(.035+.13*temp);
     vf.x+=curl*delta*(sourceEnabled<.5&&emitterKind==2?.8:5.0);
-    float buoyancy=sourceEnabled>.5?6.5:emitterKind==1?3.2*sourceLift:emitterKind==2?3.:emitterKind==3||emitterKind==4?.35:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind==0?2.1:emitterKind>=7?presetBuoyancy:6.5;
+    float buoyancy=sourceEnabled>.5?6.5:emitterKind==1?3.2*sourceLift:emitterKind==2?3.:emitterKind==3||emitterKind==4?.35:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind<=0?2.1:emitterKind>=7?presetBuoyancy:6.5;
     if(sourceEnabled<.5 && emitterKind==6)buoyancy=mix(.3,3.6,smoothstep(.2,1.2,burstAge));
     vf.y+=(densityBuoyancy(temp,buoyancy)-smokeWeight(soot,temp))*delta/simExtent.y;
     #if FIRE_HAS_POWERS

@@ -1,13 +1,51 @@
 # Validation of the consolidated tree
 
-The baseline is a fresh, hash-verified canonical source capture at HEAD
-`960470167ec18968a3b53ca2026286cc5310f4a5`, with current uncommitted owner changes.
-All 1,446 selected files matched the live capture, and all 110 files changed
-since the earlier checkpoint have separately verified rollback copies. The
-capture was checked on 2026-10-07 at 00:03:51 UTC. Later live edits do not silently
-replace this boundary.
+The first consolidation was merged in [PR #7](https://github.com/cybrdelic/cybr-elements/pull/7)
+at `9519beb11276a2a35dbfad417b87137dba5c8a61`. Its tree exactly matches the
+reviewed head `7526d31ab8798e6d26afd43ad0b2679330d79b40`.
 
-## Completed local checks
+The follow-up incorporates the owner's final coherent 49-file batch, captured
+on 2026-10-07 at 01:12:34–01:12:40 UTC from the canonical working source on
+`codex/fire-studio-release-rc6`, Git HEAD
+`960470167ec18968a3b53ca2026286cc5310f4a5`. All 1,446 selected source files have
+equal before/after hashes and match the prior verified owner boundary. All 85
+runtime hashes in the owner's final `studio-rc-37-repair` register match.
+The active task's last completed turn was at 00:20:33 UTC; no later source
+movement was observed during selection. Original checkout and rollback copies
+remain intact.
+
+Three runtime files deliberately change Original free fire: its scale is 1.1
+instead of 1.5, and it shares the plume's broad inlet/feed, cold-vapor ignition,
+slower buoyancy and stronger confinement. The matching source-profile test,
+44 cache-token updates and one cache/formatting update complete the batch.
+Volume/Sparse formulas and all native assets, films, fonts and offline numerical
+authoring code retain their merged-master bytes.
+
+## Final owner batch checks
+
+All 60 Node suite files pass: 426 `node:test` cases plus two custom assertion
+suites. Three added startup checks record actual production Original uniforms
+for free fire, sooty plume and campfire using the existing fake WebGL fixture.
+Free fire and plume send scale 1.1; campfire retains its separate finite-wood
+contract. Running the same new checks against the merged baseline detects its
+old free-fire scale of 1.5, demonstrating the intended behavior difference.
+These fixtures do not compile native shaders or establish rendered appearance.
+
+Package tests pass 9/9; asset-restoration tests pass 4/4. Package validation
+passes for rc.37, build `0bbc2a90b45f8c7a`, with 180 runtime files
+(204,721,288 bytes). Actual local HTTP GET/hash checks pass for all 235
+launcher/player/typeface/runtime routes. The imported batch matches the owner's
+canonical LF hashes; all remaining source/assets match merged master except
+the three documentation files and the extended startup test. A public-payload
+scan finds no recognized secret patterns or environment/auth files.
+
+The owner's prior shader, timing and live-control results are supporting
+historical evidence; they have not been rerun as current follow-up validation.
+Actual browser controls, pixels and motion plus the staged progress video still
+await the coordinated Elements GPU/browser slot. No new GPU performance claim,
+solver tuning, release or deployment accompanies this follow-up.
+
+## Earlier consolidation preservation checks
 
 On 2026-10-07, all 60 retained Node suite files completed successfully: 423
 `node:test` cases plus two custom assertion suites. The Python package tests
@@ -24,7 +62,7 @@ IoU was 0.9945017763491795, with five components and one hole preserved. This
 checks native source preparation; it is not a new fire simulation render.
 
 A small actual APIC/FLIP CPU component run also matches the baseline exactly:
-27 controlled parcels, a 12³ grid, 12 steps at 1/120 s and seed 20261007. Its
+27 controlled parcels, a 12 x 12 x 12 grid, 12 steps at 1/120 s and seed 20261007. Its
 positions/velocities state SHA-256 is
 `c696dcb0a17238365e4b6bad84352538585b3444dbc9dd4d2599d0a61d9233e2`.
 This validates a retained numerical component, not the complete 02 water pipeline.
@@ -74,10 +112,7 @@ path, scene/settings and exercised controls recorded alongside it. Label any old
 baseline comparison explicitly. Save the resulting video to Library for chat.
 No prior recording is described as newly consolidated output.
 
-The review branch uses this frozen capture. A later live-source check at 00:19
-UTC found 49 changed paths: 45 cache-token updates and four other changes in
-`fire-emitters.js`, `fire.js`, `original-shaders.js` and
-`original-source-profile.test.mjs`. Those versions are preserved separately and
-have not been overlaid. Select and verify the final owner boundary before merge;
-do not describe this capture as including subsequent work. Deployment is outside
-the consolidation scope.
+The follow-up selects the stable final owner batch described above. Any further
+owner movement must be captured and reviewed separately. Deployment remains
+outside this source-publication scope; the new PR remains subject to parent
+review and the pending actual browser checks.

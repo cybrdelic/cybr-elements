@@ -1,13 +1,13 @@
-import {SimulationClock} from '../simulation-clock.js?v=studio-rc-37-audit';
-import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-37-audit';
-import { PyroSolver } from './solver.js?v=studio-rc-37-audit';
-import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-37-audit';
-import { runtimeScope } from '../runtime-scope.js?v=studio-rc-37-audit';
-import { outputSize } from './output-size.js?v=studio-rc-37-audit';
-import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-37-audit';
-import { floorHit } from '../fuel-ground.js?v=studio-rc-37-audit';
-import { volumeOptions } from '../simulation-modes.js?v=studio-rc-37-audit';
-import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-37-audit';
+import {SimulationClock} from '../simulation-clock.js?v=studio-rc-37-repair';
+import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-37-repair';
+import { PyroSolver } from './solver.js?v=studio-rc-37-repair';
+import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-37-repair';
+import { runtimeScope } from '../runtime-scope.js?v=studio-rc-37-repair';
+import { outputSize } from './output-size.js?v=studio-rc-37-repair';
+import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-37-repair';
+import { floorHit } from '../fuel-ground.js?v=studio-rc-37-repair';
+import { volumeOptions } from '../simulation-modes.js?v=studio-rc-37-repair';
+import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-37-repair';
 export async function mountVolume({
   initialPreset = 'explosion',
   initialPowers,
@@ -348,12 +348,14 @@ export async function mountVolume({
         completed = true;
       } finally {
         try {
-        if (!resetQueued) {
-          resetPending = false;
-          const actions = pendingSourceActions.splice(0);
-          if (completed && !scope.disposed) for (const action of actions) action();
+          if (!resetQueued) {
+            resetPending = false;
+            const actions = pendingSourceActions.splice(0);
+            if (completed && !scope.disposed) for (const action of actions) action();
+          }
+        } finally {
+          releaseBusy();
         }
-        } finally { releaseBusy(); }
       }
     })();
     resetCompletion = task;
@@ -899,7 +901,7 @@ export async function mountVolume({
     solver = await PyroSolver.create(canvas, {...volumeOptions(params, simulation),hasPowers:!!powerDefinition(activeFire),powerKind:powerDefinition(activeFire)?.kind??null});
     solver.woodTimeScale = woodTimeScale;
     if (params.has('validate')) {
-      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-37-audit');
+      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-37-repair');
       const report = await pressureCheck(solver.device);
       await save(params.get('qa') + '-pressure', report);
       if (!report.pass) throw Error('GPU pressure reference failed: ' + JSON.stringify(report));
