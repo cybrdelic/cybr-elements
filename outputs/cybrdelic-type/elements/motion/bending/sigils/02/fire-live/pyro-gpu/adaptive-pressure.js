@@ -1,4 +1,4 @@
-import {pressureShaders} from './shaders.js?v=studio-rc-20';
+import {pressureShaders} from './shaders.js?v=studio-rc-37-audit';
 
 // Exact work-list refinement around a globally connected pressure hierarchy.
 // This changes only the N fine-grid smoothing segment. Restriction, the global
@@ -14,7 +14,7 @@ export function adaptivePressureShaders(N=128,{tile=8,sweeps=3,denseThreshold=.5
  if(!Number.isFinite(denseThreshold)||denseThreshold<0||denseThreshold>1)
   throw Error('Adaptive pressure dense threshold must be in [0,1].');
  const B=N/tile,total=B**3,halo=Math.ceil(sweeps/tile);
- const denseSmooth=pressureShaders(N).smooth;
+ const denseSmooth=pressureShaders(N,{cache:false}).smooth;
  const common=denseSmooth.slice(0,denseSmooth.indexOf('@compute'));
  const update='mix(at(i),(sum(i)+textureLoad(b,i,0).x)/6.,.6666667)';
  if(!denseSmooth.includes(update))throw Error('Reference pressure smoother changed.');

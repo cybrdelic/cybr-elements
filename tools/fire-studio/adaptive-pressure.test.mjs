@@ -8,7 +8,7 @@ const {adaptivePressureShaders,AdaptivePressure}=await import(pathToFileURL(path
 const {pressureShaders}=await import(pathToFileURL(path.join(root,'pyro-gpu/shaders.js')).href);
 
 test('fine kernels inherit the reference operator, mixed boundaries and exact update',()=>{
- const baseline=pressureShaders(128).smooth;
+ const baseline=pressureShaders(128,{cache:false}).smooth;
  const actual=adaptivePressureShaders();
  assert.equal(actual.denseSmooth,baseline);
  const update='mix(at(i),(sum(i)+textureLoad(b,i,0).x)/6.,.6666667)';

@@ -140,7 +140,7 @@ test("tree allocations are lazy and released when returning to normal fire", asy
       return pipeline(spec);
     },
     createBindGroup: () => ({}),
-    createCommandEncoder: () => ({
+    createCommandEncoder: () => ({ clearBuffer() {},
       beginComputePass: pass,
       finish: () => ({}),
     }),

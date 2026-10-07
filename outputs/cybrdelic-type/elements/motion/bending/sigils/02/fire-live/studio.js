@@ -1,15 +1,16 @@
-import { readLook, writeLook } from './studio-location.js?v=studio-rc-20';
-import { createFireDomain } from './fire-domain.js?v=studio-rc-20';
-import { inspectionState } from './inspection-state.js?v=studio-rc-20';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-20';
-import { studioUI } from './studio-ui.js?v=studio-rc-20';
-import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-20';
-import { matchingPreset } from './preset-pairs.js?v=studio-rc-20';
-import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-20';
-import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-20';
-import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-20';
-import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-20';
-import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=studio-rc-20';
+import { readLook, writeLook } from './studio-location.js?v=studio-rc-37-audit';
+import { createFireDomain } from './fire-domain.js?v=studio-rc-37-audit';
+import { inspectionState } from './inspection-state.js?v=studio-rc-37-audit';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-37-audit';
+import { studioUI } from './studio-ui.js?v=studio-rc-37-audit';
+import { createSimulationSession } from './simulation-session.js?v=studio-rc-37-audit';
+import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-37-audit';
+import { matchingPreset } from './preset-pairs.js?v=studio-rc-37-audit';
+import { sourceGroups, sourceSelection } from './source-picker.js?v=studio-rc-37-audit';
+import { modeForFire, readSimulation, runtimeFamily } from './simulation-modes.js?v=studio-rc-37-audit';
+import { mountLibrary } from './pyro-gpu/library.js?v=studio-rc-37-audit';
+import { LEGACY_PRESETS, FIRE_PRESETS, SCENES } from './pyro-gpu/presets.js?v=studio-rc-37-audit';
+import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=studio-rc-37-audit';
 
 const $ = (selector) => document.querySelector(selector);
 const params = new URL(location.href).searchParams;
@@ -25,6 +26,7 @@ try {
   inspectionStorage = sessionStorage;
 } catch {}
 const inspection = inspectionState(inspectionStorage);
+const simulationSession = createSimulationSession();
 const ui = studioUI((visible) => runtime?.setVisible(visible));
 
 $('#lighting-controls').insertAdjacentHTML(
@@ -205,13 +207,14 @@ async function mount(kind, chosen, plain, old, look) {
       initialPreset: plain,
       initialPowers: look?.powers,
       simulation: kind,
-      onRemount: (key) => requestActivate('legacy', key),
+      onRemount: (key) => requestActivate(kind, key, undefined, true),
       onFailure: (error) => fail(error, kind),
     });
     if (!runtime) throw new Error('The simulation could not start in this browser.');
     engine = kind;
     if (look) runtime.look(look);
     healthy = true;
+    if(params.has('audit'))window.FireAudit={state:()=>runtime?.inspectState?.(),telemetry:()=>runtime?.telemetry?.(),snapshot:()=>runtime?.snapshot?.()};
     ui.ready();
   } finally {
     refreshSources(kind, plain);
@@ -225,6 +228,10 @@ function activate(kind, key, look, force = false) {
     .then(async () => {
       setApplying(true);
       try {
+        if (!(await simulationSession.acquire())) {
+          ui.sessionBlocked();
+          return;
+        }
         const original = kind === 'legacy',
           plain = key.replace(/^legacy:/, '');
         const catalog = original ? LEGACY_PRESETS : FIRE_PRESETS;
@@ -264,7 +271,7 @@ function activate(kind, key, look, force = false) {
           force ||
           !healthy ||
           engine !== kind ||
-          (original && (window.FireDomain?.blast !== (chosen.effect?.[0] === 0 || !!chosen.power) ||
+          (original && (window.FireDomain?.blast !== ((chosen.effect?.[0] === 0 && chosen.effect?.[3] < .5) || !!chosen.power) ||
             window.FireDomain?.object !== !!chosen.object));
         if (remount) await mount(kind, chosen, plain, old, look);
         else {

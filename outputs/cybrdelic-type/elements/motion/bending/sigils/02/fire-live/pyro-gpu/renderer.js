@@ -1,16 +1,21 @@
-import {objectWGSL} from './objects.js?v=studio-rc-20';
-import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-20';
-import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-20';
-import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-20';
-import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-20';
-import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-20';
-import {woodMaterialWGSL} from '../wood-material.js?v=studio-rc-20';
+import {extendedFireLightWGSL} from './extended-fire-light.js?v=studio-rc-37-audit';
+import {firePresentationWGSL} from '../fire-presentation.js?v=studio-rc-37-audit';
+import {reactionLedgerWGSL} from '../reaction-ledger.js?v=studio-rc-37-audit';
+import {objectWGSL} from './objects.js?v=studio-rc-37-audit';
+import {combustionWGSL,objectCombustionWGSL} from './combustion.js?v=studio-rc-37-audit';
+import {sparseSamplerWGSL} from './sparse-field.js?v=studio-rc-37-audit';
+import {lightWorkEntryWGSL,lightReceiverEntryWGSL,withLightingReceiverSupport} from './lighting-work.js?v=studio-rc-37-audit';
+import {sigilGuideWGSL} from './sigil-guide.js?v=studio-rc-37-audit';
+import {floorFuelRenderWGSL} from './floor-fuel.js?v=studio-rc-37-audit';
+import {woodMaterialWGSL} from '../wood-material.js?v=studio-rc-37-audit';
 // Five room faces share this irradiance resolution. Keep atlas allocation,
 // compute dispatch and sampling coordinates in sync with this value.
 export const ROOM_SIZE=64;
 // Volumetric integration in world units. No animated render noise or flipbooks.
-function renderSource(tree,sparse,fastSeams){return `
+function renderSource(tree,sparse,fastSeams,phase=false,D=256){return `
+${firePresentationWGSL}
 ${combustionWGSL}
+${reactionLedgerWGSL(D)}
 ${objectWGSL}
 ${objectCombustionWGSL}
 ${woodMaterialWGSL}
@@ -29,6 +34,11 @@ ${tree?`@group(0) @binding(18) var meshPosition:texture_2d<f32>;
 @group(0) @binding(23) var meshShadows:texture_depth_2d_array;
 @group(0) @binding(24) var meshCompare:sampler_comparison;
 `:''}
+${phase?`@group(0) @binding(48) var phaseAtlas:texture_3d<f32>;
+var<private> phaseX:vec3f;var<private> phaseY:vec3f;var<private> phaseZ:vec3f;
+fn addPhase(energy:vec3f,direction:vec3f){phaseX+=energy*direction.x;phaseY+=energy*direction.y;phaseZ+=energy*direction.z;}
+fn phaseSample(at:vec3f,layer:f32)->vec3f{let uv=clamp((at-LO)/EXT,vec3f(.5/64.),vec3f(1.-.5/64.));return textureSampleLevel(phaseAtlas,smp,vec3f(uv.xy,(uv.z+layer)/3.),0).xyz;}
+`:''}
 struct FireLight{position:vec4f,power:vec4f,lower:vec4f,upper:vec4f};
 @group(0) @binding(5) var<storage,read> lights:array<FireLight>;
 const LO=vec3f(-3,0,-3);const EXT=vec3f(6);
@@ -38,14 +48,38 @@ ${sigilGuideWGSL}
 ${floorFuelRenderWGSL}
 @group(0) @binding(45) var floorWoodWear:texture_2d<f32>;
 fn floorWearAt(xz:vec2f)->vec4f{let size=vec2i(textureDimensions(floorWoodWear));return textureLoad(floorWoodWear,clamp(vec2i((xz+3.)/6.*vec2f(size)),vec2i(0),size-1),0);}
-fn extinction(c:vec4f)->f32{return c.x*3.0;}
-fn emission(c:vec4f)->vec3f{
- let reaction=sceneFlameActivity(c);
+
+fn fixtureSphere(eye:vec3f,ray:vec3f,center:vec3f,radius:f32)->f32{
+ let q=eye-center;let b=dot(q,ray);let h=b*b-dot(q,q)+radius*radius;
+ if(h<=0.){return 1e20;}return max(-b-sqrt(h),0.);
+}
+fn fixtureCapsule(eye:vec3f,ray:vec3f,a:vec3f,b:vec3f,radius:f32,nearest:vec4f)->vec4f{
+ let axis=b-a;let q=eye-a;let aa=dot(axis,axis);let ar=dot(axis,ray);let aq=dot(axis,q);
+ let k2=aa-ar*ar;let k1=aa*dot(q,ray)-aq*ar;let k0=aa*dot(q,q)-aq*aq-radius*radius*aa;
+ let h=k1*k1-k2*k0;var t=1e20;
+ if(h>0.&&k2>.00001){let hit=(-k1-sqrt(h))/k2;let y=aq+hit*ar;if(hit>0.&&y>0.&&y<aa){t=hit;}}
+ t=min(t,min(fixtureSphere(eye,ray,a,radius),fixtureSphere(eye,ray,b,radius)));
+ if(t>0.&&t<nearest.w){let at=eye+ray*t;return vec4f(normalize(at-(a+axis*clamp(dot(at-a,axis)/aa,0.,1.))),t);}return nearest;
+}
+fn torchFixture(eye:vec3f,ray:vec3f,limit:f32)->vec4f{
+ var hit=vec4f(0,0,0,limit);
+ if(object.options.x>.5||object.options.w<.5||object.options.w>1.5||object.options.z>=0.){return hit;}
+ let c=object.origin.xyz;
+ hit=fixtureCapsule(eye,ray,c+vec3f(0,-.85,0),c+vec3f(0,-.18,0),.095,hit);
+ return fixtureCapsule(eye,ray,c+vec3f(0,-.24,0),c+vec3f(0,-.06,0),.19,hit);
+}
+fn extinction(c:vec4f)->f32{return c.x*4.4;}
+fn emission(c:vec4f,reaction:f32)->vec3f{
  if(c.y<=.2||(reaction==0.&&c.x==0.)){return vec3f(0);}
- let kelvin=clamp(300.+1200.*c.y,700.,2800.);
- let wavelength=vec3f(.61,.55,.46);
- let spectrum=pow(vec3f(.61)/wavelength,vec3f(5.))*(exp(14388./(.61*kelvin))-1.)/(exp(vec3f(14388.)/(wavelength*kelvin))-vec3f(1.));
- return colorEmission(spectrum)*(reaction*3.2*pow(max(c.y-.2,0.),2.)+c.x*pow(max(c.y-.55,0.),4.)*.12);
+ // Match Original's calibrated artistic palette and emissive ledger.
+ // Temperature sets color; only the reacted fuel rate supplies gas emission.
+ let hot=clamp((c.y-.28)/1.8,0.,1.);
+ let spectrum=vec3f(1.,.035+.93*pow(hot,1.3),.002+.72*pow(hot,3.));
+ let reacting=pow(max(reaction,0.),.95)*6.5;
+ let incandescent=c.x*pow(max(c.y-.65,0.),2.)*.30;
+ let gasSpectrum=select(spectrum,mix(vec3f(.035,.20,1.),vec3f(.38,.70,1.),hot),object.options.z<0.);
+ let gasColor=select(gasSpectrum,mix(object.tint.xyz,vec3f(1),hot*.45),object.options.y>.5);
+ return gasColor*reacting+vec3f(1.,.12,.015)*incandescent;
 }
 fn transmission(x:vec3f,l:vec3f,solidShadow:bool)->f32{
  let d=l-x;let distance=length(d);let ray=d/max(distance,.001);
@@ -81,13 +115,18 @@ fn spot(at:vec3f,normal:vec3f,pos:vec4f,dir:vec4f,power:vec4f,surface:bool,layer
  return power.xyz*cone*cosine/(r2+.2)*${tree?'transmission(at,pos.xyz,abs(object.tint.w)<.5)*meshVisibility(at,pos,dir,layer)':'transmission(at,pos.xyz,true)'};
 }
 fn directIncoming(at:vec3f,normal:vec3f,surface:bool)->vec3f{
+ ${phase?'phaseX=vec3f(0);phaseY=vec3f(0);phaseZ=vec3f(0);':''}
  var light=cam.ambient.xyz*select(1.,.25+.75*max(normal.y,0.),surface);
- light+=spot(at,normal,cam.spotPos0,cam.spotDir0,cam.spotPower0,surface,0);
- light+=spot(at,normal,cam.spotPos1,cam.spotDir1,cam.spotPower1,surface,1);
+ ${phase?`let s0=spot(at,normal,cam.spotPos0,cam.spotDir0,cam.spotPower0,surface,0);
+ let s1=spot(at,normal,cam.spotPos1,cam.spotDir1,cam.spotPower1,surface,1);light+=s0;light+=s1;
+ let d0=cam.spotPos0.xyz-at;let d1=cam.spotPos1.xyz-at;
+ addPhase(s0,d0*inverseSqrt(max(dot(d0,d0),.001)));addPhase(s1,d1*inverseSqrt(max(dot(d1,d1),.001)));`:
+ `light+=spot(at,normal,cam.spotPos0,cam.spotDir0,cam.spotPower0,surface,0);
+ light+=spot(at,normal,cam.spotPos1,cam.spotDir1,cam.spotPower1,surface,1);`}
  for(var i=0u;i<8u;i++){
   let power=lights[i].power.xyz;if(dot(power,power)<.00001){continue;}
   let d=lights[i].position.xyz-at;let r2=max(dot(d,d),.001);let cosine=select(1.,max(dot(normal,d*inverseSqrt(r2)),0.),surface);
-  if(cosine>.001){light+=power*cosine/(r2+max(.08,lights[i].position.w))*shadow(at,lights[i].position.xyz);}
+  if(cosine>.001){let energy=clusterIncident(at,normal,surface,i).xyz;light+=energy;${phase?'addPhase(energy,d*inverseSqrt(r2));':''}}
  }
  return light;
 }
@@ -103,10 +142,11 @@ fn bounceIncoming(at:vec3f,normal:vec3f,surface:bool)->vec3f{
   let uv=vec2f(.3+.4*f32(j),.4);let source=roomPatch(f,uv);let n=patchNormal(f);let d=source.xyz-at;let r2=max(dot(d,d),.001);let l=d*inverseSqrt(r2);
   let cosine=max(dot(n,-l),0.)*select(1.,max(dot(normal,l),0.),surface);if(cosine<.00001){continue;}
   let incident=textureSampleLevel(directRoom,smp,vec2f((f32(f)+uv.x)/5.,uv.y),0).xyz;
-  let area=source.w*.5;sum+=incident*vec3f(.115,.12,.125)/3.14159*cosine*area/(r2+area/3.14159)*shadow(at,source.xyz+n*.01);
+  let area=source.w*.5;${phase?'let energy=incident*vec3f(.115,.12,.125)/3.14159*cosine*area/(r2+area/3.14159)*shadow(at,source.xyz+n*.01);sum+=energy;addPhase(energy*cam.options.z,l);':'sum+=incident*vec3f(.115,.12,.125)/3.14159*cosine*area/(r2+area/3.14159)*shadow(at,source.xyz+n*.01);'}
  }}return sum*cam.options.z;
 }
-fn incoming(at:vec3f,n:vec3f,surface:bool)->vec3f{return directIncoming(at,n,surface)+bounceIncoming(at,n,surface);}
+${extendedFireLightWGSL}
+fn incoming(at:vec3f,n:vec3f,surface:bool)->vec3f{let direct=directIncoming(at,n,surface);let bounce=bounceIncoming(at,n,surface);return direct+bounce;}
 fn woodLit(at:vec3f,n:vec3f,albedo:vec3f,roughness:f32,grain:vec3f)->vec3f{
  let view=normalize(cam.eye.xyz-at);let diffuse=albedo/3.14159265;
  var result=diffuse*(cam.ambient.xyz*(.25+.75*max(n.y,0.))+bounceIncoming(at,n,true));
@@ -117,7 +157,7 @@ fn woodLit(at:vec3f,n:vec3f,albedo:vec3f,roughness:f32,grain:vec3f)->vec3f{
  for(var i=0u;i<8u;i++){
   let power=lights[i].power.xyz;if(dot(power,power)<.00001){continue;}
   let d=lights[i].position.xyz-at;let r2=max(dot(d,d),.001);let l=d*inverseSqrt(r2);let cosine=max(dot(n,l),0.);
-  if(cosine>.001){let incident=power*cosine/(r2+max(.08,lights[i].position.w))*shadow(at,lights[i].position.xyz);
+  if(cosine>.001){let incident=clusterIncident(at,n,true,i).xyz;
    result+=incident*(diffuse+vec3f(woodSpecular(n,l,view,grain,roughness)));}
  }return result;
 }
@@ -189,6 +229,8 @@ struct Vert{@builtin(position) pos:vec4f,@location(0) uv:vec2f};
   surface=albedo*roomIrradiance(at,hit.xyz)/3.14159;
   surface+=colorEmission(vec3f(1,.14,.012))*pow(max(bed.y-.5,0.),3.)*min(1.,bed.x+bed.w)*.12;
  }
+ let fixture=torchFixture(eye,ray,limit);
+ if(fixture.w<limit){limit=fixture.w;let at=eye+ray*limit;surface=vec3f(.23,.24,.26)*incoming(at+fixture.xyz*.018,fixture.xyz,true)/3.14159;}
  let safe=select(vec3f(.000001),ray,abs(ray)>vec3f(.000001));let a=(LO-eye)/safe;let b=(LO+EXT-eye)/safe;
  let near=min(a,b);let far=max(a,b);let start=max(0.,max(near.x,max(near.y,near.z)));
 ${tree?` let mesh=textureLoad(meshPosition,vec2i(v.pos.xy),0);
@@ -239,19 +281,22 @@ ${tree?` let mesh=textureLoad(meshPosition,vec2i(v.pos.xy),0);
     let distance=min(crossing.x,min(crossing.y,crossing.z));
     i+=u32(max(0.,floor(distance/step)));continue;
    }
-   let c=field(at);let sigma=extinction(c);
-   if(sigma<.0001&&sceneFlameActivity(c)<.0001){continue;}
+   let c=field(at);let consumed=consumedReactionAt(at);let sigma=extinction(c)+select(consumed*.025,0.,cam.options.y>.5);
+   if(sigma<.0001&&consumed<.0001){continue;}
    let opacity=1.-exp(-sigma*step);
    let incident=textureSampleLevel(illumination,smp,(at-LO)/EXT,0).xyz;
    // Normalized isotropic scattering; physically separate from extinction.
    // Smoke inspection hides emission along the camera ray only.
    // The same live flame still illuminates the smoke and room.
-   let source=select(emission(c),vec3f(0),cam.options.y>.5)+sigma*.18*incident/12.56637;
+   ${phase?`// Positive normalized linear phase function, g=1/4. RGB first
+   // moments integrate each colored light independently; ambient is isotropic.
+   let scattered=max(incident+.75*(phaseSample(at,0.)*ray.x+phaseSample(at,1.)*ray.y+phaseSample(at,2.)*ray.z),vec3f(0));`:'let scattered=incident;'}
+   let source=select(emission(c,consumed),vec3f(0),cam.options.y>.5)+sigma*mix(.14,.025,smoothstep(.3,.95,c.y))*scattered/12.56637;
    sum+=T*source*select(step,opacity/max(sigma,.00001),sigma>.0001);T*=1.-opacity;
   }
  }
- let hdr=sum+T*surface;let x=hdr*1.15;let mapped=clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14),vec3f(0),vec3f(1));
- return vec4f(pow(mapped,vec3f(1./2.2)),1);
+ let hdr=sum+T*surface;
+ return vec4f(presentFire(hdr),1);
 }`;}
 
 const lightSource=base=>base+`
@@ -267,7 +312,7 @@ var<workgroup> energy:array<vec4f,64>;var<workgroup> moment:array<vec4f,64>;var<
 @compute @workgroup_size(64) fn main(@builtin(workgroup_id) group:vec3u,@builtin(local_invocation_index) lane:u32){
  let tile=vec3u(group.x%2u,(group.x/2u)%2u,group.x/4u)*16u;var e=vec3f(0);var m=vec3f(0);var w=0.;var second=0.;var lo=vec3f(1e4);var hi=vec3f(-1e4);
  let origin=LO;let extent=EXT;
- for(var q=lane;q<4096u;q+=64u){let cell=tile+vec3u(q%16u,(q/16u)%16u,q/256u);let at=origin+(vec3f(cell)+.5)*extent/32.;let value=emission(field(at));let weight=dot(value,vec3f(.2126,.7152,.0722));e+=value;m+=at*weight;w+=weight;second+=dot(at,at)*weight;if(weight>.00001){lo=min(lo,at);hi=max(hi,at);}}
+ for(var q=lane;q<4096u;q+=64u){let cell=tile+vec3u(q%16u,(q/16u)%16u,q/256u);let at=origin+(vec3f(cell)+.5)*extent/32.;let value=emission(field(at),consumedReactionAt(at));let weight=dot(value,vec3f(.2126,.7152,.0722));e+=value;m+=at*weight;w+=weight;second+=dot(at,at)*weight;if(weight>.00001){lo=min(lo,at);hi=max(hi,at);}}
  energy[lane]=vec4f(e,w);moment[lane]=vec4f(m,second);boundsLo[lane]=lo;boundsHi[lane]=hi;workgroupBarrier();
  for(var stride=32u;stride>0u;stride/=2u){if(lane<stride){energy[lane]+=energy[lane+stride];moment[lane]+=moment[lane+stride];boundsLo[lane]=min(boundsLo[lane],boundsLo[lane+stride]);boundsHi[lane]=max(boundsHi[lane],boundsHi[lane+stride]);}workgroupBarrier();}
  if(lane==0u){let center=moment[0].xyz/max(energy[0].w,.00001);
@@ -280,7 +325,7 @@ var<workgroup> energy:array<vec4f,64>;var<workgroup> moment:array<vec4f,64>;var<
 // First pass locates emission in the full domain. The second partitions its
 // padded bounds into eight clusters, retaining the existing eight shadow rays.
 // Bounds need only conservative emission support, not spectral power.
-const coarseSource=base=>gatherSource(base).replace('let value=emission(field(at));','let c=field(at);let value=vec3f(select(0.,max(sceneFlameActivity(c),c.x*max(c.y-.55,0.)),c.y>.2));');
+const coarseSource=base=>gatherSource(base).replace('let value=emission(field(at),consumedReactionAt(at));','let c=field(at);let value=vec3f(select(0.,max(consumedReactionAt(at),c.x*max(c.y-.55,0.)),c.y>.2));');
 const adaptiveSource=base=>gatherSource(base).replace('var<workgroup> energy:', '@group(0) @binding(10) var<storage,read> seeds:array<FireLight>;\nvar<workgroup> energy:').replace('let origin=LO;let extent=EXT;', `
  var lower=vec3f(1e4);var upper=vec3f(-1e4);
  for(var j=0u;j<8u;j++){lower=min(lower,seeds[j].lower.xyz);upper=max(upper,seeds[j].upper.xyz);}
@@ -317,10 +362,15 @@ export const dilateReceiversWGSL=withLightingReceiverSupport(dilateWGSL);
 
 // Build separate GPU pipelines. Ordinary fire never declares mesh targets,
 // mesh shadow textures, or the tree's voxel traversal branch.
+const phaseOutputWGSL=`
+@group(0) @binding(49) var phaseOut:texture_storage_3d<rgba16float,write>;
+fn writePhase(id:vec3u){textureStore(phaseOut,vec3i(id),vec4f(phaseX,0));textureStore(phaseOut,vec3i(id)+vec3i(0,0,64),vec4f(phaseY,0));textureStore(phaseOut,vec3i(id)+vec3i(0,0,128),vec4f(phaseZ,0));}
+`;
+function phaseOutput(code){return phaseOutputWGSL+code.replace('textureStore(lightOut,vec3i(id),vec4f(light,1));','textureStore(lightOut,vec3i(id),vec4f(light,1));writePhase(id);');}
 const families=new Map();
-export function rendererShaders(tree=false,sparse=false,fastSeams=false){
- const key=`${tree}:${sparse}:${fastSeams}`;
- if(!families.has(key)){const render=renderSource(tree,sparse,fastSeams);families.set(key,{render,light:lightSource(render),lightWork:render+lightWorkEntryWGSL,lightReceivers:render+lightReceiverEntryWGSL,room:roomSource(render),gather:coarseSource(render),gatherAdaptive:adaptiveSource(render)});}
+export function rendererShaders(tree=false,sparse=false,fastSeams=false,phase=false,D=256){
+ const key=`${tree}:${sparse}:${fastSeams}:${phase}:${D}`;
+ if(!families.has(key)){const render=renderSource(tree,sparse,fastSeams,phase,D),light=lightSource(render),work=render+lightWorkEntryWGSL,receivers=render+lightReceiverEntryWGSL;families.set(key,{render,light:phase?phaseOutput(light):light,lightWork:phase?phaseOutput(work):work,lightReceivers:phase?phaseOutput(receivers):receivers,room:roomSource(render),gather:coarseSource(render),gatherAdaptive:adaptiveSource(render)});}
  return families.get(key);
 }
 export const {render:renderWGSL,light:lightWGSL,room:roomWGSL,gather:gatherWGSL,gatherAdaptive:gatherAdaptiveWGSL}=rendererShaders(true);

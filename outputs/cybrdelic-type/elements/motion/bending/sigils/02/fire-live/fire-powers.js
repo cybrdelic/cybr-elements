@@ -1,7 +1,9 @@
 // Authored supernatural sources feed the existing gas solve. These functions
 // never draw a flame, lower resolution or allocate particle/texture resources.
-import {POWER_DEFINITIONS} from './fire-power-definitions.js?v=studio-rc-20';
-import {abilityMotionWGSL} from './fire-ability-motions.js?v=studio-rc-20';
+import {shaderFunctionsToGLSL} from './shader-language.js?v=studio-rc-37-audit';
+import {POWER_DEFINITIONS} from './fire-power-definitions.js?v=studio-rc-37-audit';
+import {abilityMotionWGSL} from './fire-ability-motions.js?v=studio-rc-37-audit';
+import {specializePowerSource} from './shader-specialization.js?v=studio-rc-37-audit';
 export {POWER_DEFINITIONS};
 
 export function powerDefinition(value) {
@@ -21,6 +23,24 @@ export function powerDirection(settings={}) {
 // Common analytic support and forces, translated to GLSL for Original. Scale
 // affects spatial support; age remains simulation seconds (Pause pauses it).
 export const powerSourceWGSL = `
+fn powerRecording()->bool{return false;}
+fn powerRecordProjectile(index:f32,a:vec3f,b:vec3f,duration:f32,arc:f32,radius:f32,t:f32)->bool{return false;}
+fn powerResolvedContact(index:f32)->vec4f{return vec4f(-1,0,1,0);}
+
+// Average a Gaussian release along one step of the carrier trajectory.
+// This changes source integration, not gas resolution or rendered detail.
+fn abilityErf(x:f32)->f32{
+ let a:f32=abs(x);let t:f32=1./(1.+.3275911*a);
+ let polynomial:f32=(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t;
+ return sign(x)*(1.-polynomial*exp(-a*a));
+}
+fn abilitySweptGaussian(d:vec3f,travel:vec3f)->f32{
+ let distance:f32=length(travel);
+ if(distance<.12){return exp(-dot(d,d)*1.2);}
+ let along:f32=dot(d,travel)/distance;let perpendicular:f32=max(0.,dot(d,d)-along*along);
+ let halfTravel:f32=.5*distance;
+ return max(0.,exp(-1.2*perpendicular)*.8090107969*(abilityErf(1.095445115*(along+halfTravel))-abilityErf(1.095445115*(along-halfTravel)))/distance);
+}
 fn powerHash(p:vec3f)->f32{return fract(sin(dot(p,vec3f(127.1,311.7,74.7)))*43758.5453);}
 // Four-corner tetrahedral gradient noise (simplex construction described by
 // Gustavson, Simplex noise demystified). One octave, no noise texture or extra
@@ -45,12 +65,6 @@ fn powerVortexOffset(height:f32,clock:f32)->vec2f{
  return vec2f(sin(height*1.7-clock*2.1),cos(height*2.3-clock*1.6))*clamp(height,0.,3.)*.075;
 }
 fn powerTornadoRadius(height:f32)->f32{return .18+.24*clamp(height,0.,3.);}
-fn powerFireballCenter(origin:vec3f,scale:f32,age:f32,direction:vec3f)->vec3f{
- let t:f32=clamp(age,0.,1.15);let dir:vec3f=direction/max(length(direction),.001);
- var center:vec3f=dir*(2.8*t)+vec3f(0,-1.65*t*t,0);
- center.y=max(center.y,.16-origin.y/max(scale,.05));
- return origin+center*scale;
-}
 fn powerRainCenter(cell:vec2f,age:f32)->vec3f{
  let seed:f32=powerHash(vec3f(cell,3.71));
  let period:f32=1.1+.32*seed;let cycle:f32=age/period+seed;let phase:f32=fract(cycle);let batch:f32=floor(cycle);
@@ -62,12 +76,13 @@ fn powerRainPacket(q:vec3f,cell:vec2f,age:f32)->vec4f{
  if(cell.x<0.||cell.x>2.||cell.y<0.||cell.y>2.){return vec4f(0);}
  let center:vec3f=powerRainCenter(cell,age);let delta:vec3f=q-center;
  if(abs(delta.x)>.65||abs(delta.z)>.65){return vec4f(0);}
- if((delta.y<-.65||delta.y>.8)&&q.y>.4){return vec4f(0);}
+ if((delta.y<-.65-12.*powerTimeStep()||delta.y>.8+12.*powerTimeStep())&&q.y>.4){return vec4f(0);}
  let seed:f32=powerHash(vec3f(cell,3.71));let period:f32=1.1+.32*seed;
  let cycle:f32=age/period+seed;let phase:f32=fract(cycle);
  let speed:f32=5.535*pow(max(phase,.04),.35)/period;
  let lateralSpeed:vec2f=vec2f(cos(phase*6.2831853+seed*13.),-sin(phase*6.2831853+seed*7.))*(1.1309734/period);
- let head:f32=exp(-dot(delta/vec3f(.145,.23,.145),delta/vec3f(.145,.23,.145))*1.5);
+ let radius:vec3f=vec3f(.145,.23,.145);let carrier:vec3f=vec3f(lateralSpeed.x,-speed,lateralSpeed.y);
+ let head:f32=abilitySweptGaussian(delta/radius*1.118033989,carrier*powerTimeStep()/radius*1.118033989);
  let wake:f32=exp(-dot(delta.xz,delta.xz)/.012)*smoothstep(0.,.13,delta.y)*(1.-smoothstep(.38,.75,delta.y))*.24;
  let impact:f32=smoothstep(.85,.97,phase);
  let disk:f32=exp(-dot(delta.xz,delta.xz)/.06)*exp(-pow((q.y+.08)/.12,2.))*impact*.55;
@@ -106,24 +121,9 @@ fn powerSource(kind:f32,x:vec3f,origin:vec3f,scale:f32,age:f32,clock:f32,directi
   let roll:f32=clamp((q.y-height)/.17,-1.,1.);
   let lift:f32=1.0+2.5*clamp((r-ring)/.16,-1.,1.);
   let spin:f32=.7*sin(theta*7.);
-  return vec4f(vec3f(axis.x*(5.2+roll*2.)-axis.y*spin,lift,axis.y*(5.2+roll*2.)+axis.x*spin)*sqrt(drive),1.35*exp(-v)*envelope*pockets*drive);
+  return vec4f(vec3f(axis.x*(5.2+roll*2.)-axis.y*spin,lift,axis.y*(5.2+roll*2.)+axis.x*spin),1.35*exp(-v)*envelope*pockets*drive);
  }
- if(kind<2.5){
-  let t:f32=min(age,1.15);
-  let dir:vec3f=direction/max(length(direction),.001);
-  let center:vec3f=(powerFireballCenter(origin,scale,age,direction)-origin)/max(scale,.05);
-  let delta:vec3f=q-center;let along:f32=dot(delta,dir);let lateral:vec3f=delta-dir*along;
-  if(along<-.95||along>.68||length(lateral)>.68){return vec4f(0);}
-  let fold:f32=powerFold(delta,t);
-  let radius:f32=.44+.085*fold;
-  let body:f32=exp(-dot(delta,delta)/(radius*radius)*1.3)*(1.-smoothstep(.52,.67,length(delta)));
-  let tailRadius:f32=mix(.12,.30,clamp((along+.95)/.95,0.,1.));
-  let wake:f32=exp(-dot(lateral,lateral)/(tailRadius*tailRadius))*smoothstep(-.95,-.7,along)*(1.-smoothstep(-.18,.05,along))*.38;
-  let mask:f32=(body+wake)*(.3+.7*smoothstep(-.25,.5,fold));
-  let fade:f32=1.-smoothstep(.92,1.15,age);
-  let spin:vec3f=cross(dir,lateral)*11.;
-  return vec4f((dir*3.2+vec3f(0,-3.3*t,0)+spin+lateral*1.4)*sqrt(drive),1.25*mask*fade*drive);
- }
+ // Fireball uses abilityProjectile in powerCastSource; no second trajectory.
  if(kind<3.5){
   // The four adjacent lanes cover overlaps across cell boundaries. Every
   // packet rejects empty support before evaluating its fuel folds; no full
@@ -132,7 +132,7 @@ fn powerSource(kind:f32,x:vec3f,origin:vec3f,scale:f32,age:f32,clock:f32,directi
   let a:vec4f=powerRainPacket(q,cell,age);let b:vec4f=powerRainPacket(q,cell+vec2f(1,0),age);
   let c:vec4f=powerRainPacket(q,cell+vec2f(0,1),age);let d:vec4f=powerRainPacket(q,cell+vec2f(1),age);
   let sum:vec4f=a+b+c+d;
-  return vec4f(sum.xyz/max(sum.w,.00001)*sqrt(drive),sum.w*drive);
+  return vec4f(sum.xyz/max(sum.w,.00001),sum.w*drive);
  }
  if(kind<4.5){
   // A gathering foot feeds two rotating, widening fuel strands. These sheets
@@ -152,7 +152,7 @@ fn powerSource(kind:f32,x:vec3f,origin:vec3f,scale:f32,age:f32,clock:f32,directi
   let pockets:f32=.65+.35*powerFold(vec3f(radial.x,q.y,radial.y),clock);
   var shell:f32=0.;if(v<=12.){shell=exp(-v);}
   let fuel:f32=(.85*shell*feed+.45*foot)*ends*taper*pockets;
-  return vec4f((tangent*(3.+.8*height)+vec3f(0,lift,0))*sqrt(drive),fuel*drive);
+  return vec4f((tangent*(3.+.8*height)+vec3f(0,lift,0)),fuel*drive);
  }
  if(kind<5.5){return vec4f(0);}
  if(age<1.2){
@@ -169,7 +169,7 @@ fn powerSource(kind:f32,x:vec3f,origin:vec3f,scale:f32,age:f32,clock:f32,directi
  if(body<=.001){return vec4f(0);}
  let axis:vec3f=q/max(r,.04);
  let swirl:vec3f=cross(vec3f(.3,.8,.5),q)*3.5;
- return vec4f((axis*(5.5+fold*1.5)+swirl+vec3f(0,1.8,0))*sqrt(drive),1.6*body*drive);
+ return vec4f((axis*(5.5+fold*1.5)+swirl+vec3f(0,1.8,0)),1.6*body*drive);
 }
 fn powerAcceleration(kind:f32,x:vec3f,origin:vec3f,scale:f32,age:f32,clock:f32,direction:vec3f,strength:f32)->vec3f{
  if(kind<3.5||kind>4.5||age<0.){return vec3f(0);}
@@ -186,10 +186,13 @@ fn powerAcceleration(kind:f32,x:vec3f,origin:vec3f,scale:f32,age:f32,clock:f32,d
 ${abilityMotionWGSL}
 `;
 
-export const powerSourceGLSL = powerSourceWGSL
- .replace(/fn (\w+)\(([^)]*)\)->(vec[234]f|f32|bool)\{/g,(_,name,args,type)=>
-  (type==='f32'?'float':type.replace('f',''))+' '+name+'('+args.split(',').map(a=>a.trim().replace(/(\w+):(vec[234]f|f32)/,(_,n,t)=>(t==='f32'?'float':t.replace('f',''))+' '+n)).join(',')+'){')
- .replace(/\b(?:let|var) (\w+):(vec[234]f|f32)=/g,(_,name,type)=>(type==='f32'?'float':type.replace('f',''))+' '+name+'=')
- .replace(/\bvec([234])f\b/g,'vec$1')
- .replace(/all\(abs\(q\)<vec3\(([^)]+)\)\)/g,'all(lessThan(abs(q),vec3($1)))')
- .replace(/atan2\(/g,'atan(');
+const sourceCache=new Map();
+export function powerSourceFor(kind,language='wgsl',additionalRoots=[]){
+ if(language!=='wgsl'&&language!=='glsl')throw Error('Unknown shader language '+language);
+ const key=String(kind)+':'+language+':'+[...additionalRoots].sort().join(',');
+ if(!sourceCache.has(key)){
+  const source=kind==null?powerSourceWGSL:specializePowerSource(powerSourceWGSL,kind,additionalRoots);
+  sourceCache.set(key,language==='glsl'?shaderFunctionsToGLSL(source):source);
+ }
+ return sourceCache.get(key);
+}

@@ -1,7 +1,7 @@
-import { ALL_FIRE_PRESETS, SCENES } from './presets.js?v=studio-rc-20';
-import { DEMO_PRESETS, isExperimental } from '../demo-presets.js?v=studio-rc-20';
-import { lookStore } from '../look-storage.js?v=studio-rc-20';
-import { modeForFire } from '../simulation-modes.js?v=studio-rc-20';
+import { ALL_FIRE_PRESETS, SCENES } from './presets.js?v=studio-rc-37-audit';
+import { DEMO_PRESETS, isExperimental } from '../demo-presets.js?v=studio-rc-37-audit';
+import { lookStore } from '../look-storage.js?v=studio-rc-37-audit';
+import { modeForFire } from '../simulation-modes.js?v=studio-rc-37-audit';
 
 const CATEGORIES = ['Demos', 'Powers', 'Sources', 'Lighting', 'Tests', 'Experiments', 'Saved'];
 const LIGHTING = [
@@ -26,6 +26,8 @@ export function libraryItemSimulation(item, simulation = 'current', currentFire 
   const preferred = item.simulation || (simulation === 'all'
     ? modeForFire(currentFire, currentSimulation)
     : selectedSimulation(simulation, currentFire, currentSimulation));
+  // Authored diagnostic scenes describe a source, not a solver.
+  if(item.fire && !item.simulation && !item.fire.startsWith('legacy:'))return preferred;
   return modeForFire(item.fire || item.id || '', preferred);
 }
 
@@ -37,7 +39,8 @@ export function filterLibrary(items, term = '', simulation = 'all', currentFire 
     const explicitMode = item.simulation ? modeForFire(item.fire || item.id || '', item.simulation) : null;
     const searchableMode = original ? 'original' : explicitMode === 'sparse' ? 'sparse voxels' : explicitMode === 'volume' ? '3d volume' : '3d volume sparse voxels';
     return (item.kind === 'lighting' || selected === 'all' ||
-      (original === (selected === 'legacy') && (!explicitMode || explicitMode === selected))) &&
+      ((item.fire && !original && !explicitMode) ||
+       (original === (selected === 'legacy') && (!explicitMode || explicitMode === selected)))) &&
       [item.name, item.description, item.family, item.abilityGroup, searchableMode]
         .filter(Boolean).join(' ').toLowerCase().includes(query);
   });
@@ -115,7 +118,7 @@ export function mountLibrary(api) {
       const snapshot = api.snapshot();
       const simulation = libraryItemSimulation(item, simulationControl.value, snapshot.fire, snapshot.simulation);
       if (item.kind === 'lighting') window.SceneLights.apply(item.id);
-      else if (item.fire) await api.look({ ...item, simulation, lights: item.lights || item.lighting });
+      else if (item.fire) await api.look({ ...item, fire: simulation==='legacy'&&!item.fire.startsWith('legacy:')?'legacy:'+item.fire:item.fire, simulation, lights: item.lights || item.lighting });
       else await api.fire(item.id, simulation);
       activeScene = appliedCategory + item.id;
       status.textContent = item.name + ' applied';

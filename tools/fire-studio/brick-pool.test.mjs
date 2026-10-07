@@ -9,7 +9,7 @@ const { planBrickPool, brickPoolWGSL, brickPoolFieldWGSL, brickPoolScalarShaders
   brickPoolKernels, createBrickPool, POOL_INDIRECT } = await import(pathToFileURL(path.join(root, 'pyro-gpu/brick-pool.js')).href);
 const { simulationShaders } = await import(pathToFileURL(path.join(root, 'pyro-gpu/shaders.js')).href);
 
-test('fixed interior atlases preserve 256³ spacing and reject oversized policies', () => {
+test('fixed interior atlases preserve 256Â³ spacing and reject oversized policies', () => {
   const plan = planBrickPool();
   assert.equal(plan.atlasBytes, 48 * 1024 ** 2);
   assert.equal(plan.denseBytes, 384 * 1024 ** 2);
@@ -112,12 +112,21 @@ test('logical trilinear support crosses page faces, edges/corners and clamps dom
   assert.ok(brickPoolWGSL(plan).includes(`page.generation==bpMeta[${plan.offsets.generation}u+slot]`));
 });
 
+test('coarse chemistry interpolation donors remain in one fine page for every supported ratio',()=>{
+  for(const ratio of [2,4,8,16])for(let i=0;i<256/ratio;i++){
+    const center=(i+.5)*ratio,lo=Math.floor(center-.5),hi=lo+1;
+    assert.equal(Math.floor(lo/16),Math.floor(hi/16));
+    assert.equal(Math.floor(lo/16),Math.floor(i*ratio/16));
+    assert.equal((lo+hi)/2,center-.5);
+  }
+});
+
 test('direct production chemistry keeps reaction/source/cleanup and fine mask indexing', () => {
   const plan = planBrickPool(), production = simulationShaders(128, 256), adapted = brickPoolScalarShaders(plan, { shaders: production });
   const reactionStart = production.correctScalar.indexOf(' let goal='), reactionEnd = production.correctScalar.indexOf(' textureStore(dst');
   assert.ok(reactionStart > 0 && reactionEnd > reactionStart);
-  assert.ok(adapted.correctScalar.includes(production.correctScalar.slice(reactionStart, reactionEnd)), 'all authored reaction/source equations remain byte-identical');
-  assert.match(adapted.correctScalar, /let brick=bricks\[group.x\].xyz;let i=brick\*8u/);
+  assert.ok(adapted.correctScalar.includes(production.correctScalar.slice(reactionStart, reactionEnd).replaceAll('scalar(old,','oldChemSample(')), 'all authored reaction/source equations remain byte-identical');
+  assert.match(adapted.correctScalar, /let brick=brickCoordinate\(group.x\);let i=brick\*8u/);
   assert.match(adapted.correctScalar, /newChemStore\(vec3i\(i\),max\(c,vec4f\(0\)\)\)/);
   assert.match(adapted.correctScalar, /oldChemCell\(i\)/);
   assert.match(adapted.advectScalar, /oldChemSample\(trace\(v,x,p.step.x\)\)/);

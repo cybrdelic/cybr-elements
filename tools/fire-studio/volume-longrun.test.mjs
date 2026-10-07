@@ -91,6 +91,7 @@ test('10,000 active display ticks keep quality fixed and queue/readback/cache gr
   });
   const preset = FIRE_PRESETS.find((v) => v.id === 'bonfire');
   const s = Object.assign(Object.create(PyroSolver.prototype), {
+ emptyShockRM:{},shockRemaining:0,measureProjection:{name:"measure-final-velocity",label:"measure-final-velocity",getBindGroupLayout(){return{};}},reactionLedger:{},reactionOffset:0,
     device, adapter: { description: 'Recording CPU contract' }, N: 128, D: 256, canvas: { width: 1280, height: 720 },
     time: 1, burstAge: 1, maxSpeed: 6, frameNumber: 0, completedFrames: 0,
     active: true, seed: 2, stateEpoch: 0, destroyed: false, errors: [], inFlight: [],
@@ -131,21 +132,23 @@ test('10,000 active display ticks keep quality fixed and queue/readback/cache gr
     return elements.get(name);
   };
   const scope = { visible: true, disposed: false, schedule() { scheduled++; } };
-  const dependencies = { solver: s, scope, $, params: new URLSearchParams(), metrics: {}, message: {}, sync() {},
+  const dependencies = { solver: s, scope, $, params: new URLSearchParams(), metrics: {dataset:{}}, message: {}, sync() {},
     canvas: s.canvas, activeFire: preset, simulation: 'volume', flameColor: 'natural', embers: true, fireLight: 24,
     smoke: false, zoom: 1.25, angle: 16, lightState: () => ({}), viewUniform: () => viewData,
     advanceTest() {}, releaseBusy: null, onFailure(error) { throw error; },
   };
   const create = new Function(...Object.keys(dependencies), `
     'use strict';
+    const physicalClock={debt:1/60,tick(){this.debt=1/60;},consume(){}};
+    const benchmarkActive=false;
     let busy=false, resetQueued=false, benchmarkQueued=false, dirty=true, revision=0,
-      pendingOutput=null, paused=false, trace=[], frameCount=0, queueLimitedRafs=0,
+      pendingOutput=null, paused=false, traceRunning=false, trace=[], frameCount=0, queueLimitedRafs=0,
       captureIndex=0, saved=false;
     releaseBusy=()=>{busy=false;};
     ${functionSource('summary')}
     ${functionSource('runtimeStatus')}
     ${functionSource('frame')}
-    return {frame,state:()=>({busy,paused,traceLength:trace.length})};
+    return {frame,setPaused:value=>{paused=value;},state:()=>({busy,paused,traceLength:trace.length})};
   `);
   const runtime = create(...Object.values(dependencies));
   const quality = () => ({ N: s.N, D: s.D, output: [s.canvas.width, s.canvas.height], source: [...s.source],
@@ -163,9 +166,14 @@ test('10,000 active display ticks keep quality fixed and queue/readback/cache gr
   };
   let skipped = 0;
   for (tick = 0; tick < 10_000; tick++) {
+    if(tick===3000)runtime.setPaused(true);
+    if(tick===3001)runtime.setPaused(false);
+    if(tick===5000)scope.visible=false;
+    if(tick===5001)scope.visible=true;
     await completeDue();
     const count = submitted;
     await runtime.frame();
+    if(tick===3001||tick===5001)assert.ok(runtime.state().traceLength<=1,'resume excludes the paused/hidden gap from live frame timing');
     if (count === submitted) skipped++;
     maxInFlight = Math.max(maxInFlight, s.inFlight.length);
     maxMappings = Math.max(maxMappings, mappings.length);

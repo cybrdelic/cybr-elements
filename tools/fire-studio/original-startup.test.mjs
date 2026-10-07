@@ -73,6 +73,8 @@ function recordingGL(floatLinear=true,colorBufferFloat=true) {
   const gl = {};
   const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 SRGB8_ALPHA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER ARRAY_BUFFER ELEMENT_ARRAY_BUFFER STATIC_DRAW UNSIGNED_INT DEPTH DEPTH_COMPONENT24 DEPTH_ATTACHMENT RENDERBUFFER DEPTH_TEST LESS POINTS';
   constants.split(' ').forEach((name, index) => gl[name] = index + 1);
+  gl.SYNC_GPU_COMMANDS_COMPLETE=10001;gl.TIMEOUT_EXPIRED=10002;gl.WAIT_FAILED=10003;gl.ALREADY_SIGNALED=10004;
+  gl.fenceSync=()=>({});gl.clientWaitSync=()=>gl.ALREADY_SIGNALED;gl.deleteSync=()=>{};gl.flush=()=>{};
   let serial = 0;
   const textures = [], shaders = [],programs=[];
   const bound = new Map();
@@ -211,7 +213,8 @@ test('Original production startup and failure regression', async t => {
     assert.ok(simulationTargets.length >= 4, 'Simulation texture pairs were allocated');
     for (const texture of simulationTargets) assert.equal(texture.parameters.get(env.gl.TEXTURE_MIN_FILTER), env.gl.LINEAR, 'Float capability selects linear filtering for simulation targets');
     await env.frame(performance.now() + 40);
-    assert.ok(env.calls.powerOptics?.length>=2&&env.calls.powerOptics.every(value=>value===0),'Ordinary fire retains its existing optical palette in gathering and rendering');
+    assert.ok(!env.calls.powerOptics,'No source selects a second optical model');
+    assert.ok(env.shaders.some(s=>s.source?.includes('pow(max(reaction,0.),.95)*6.5')),'The established ordinary optical curve remains linked');
     if(preset==='explosion')assert.equal(env.calls.woodSteps||0,0,'Gas bursts do not acquire a solid wood inventory');
     else {assert.equal(env.calls.woodResets,1);assert.ok(env.calls.woodSteps>0);}
     assert.ok(env.calls.draws > 0, 'Actual first-frame simulation and rendering submitted draw calls');
@@ -242,13 +245,13 @@ test('Original production startup and failure regression', async t => {
   });
 
   await t.test('Original fuel tool preserves the running source and clears only finite inventory',async()=>{
-    let env=await prepare('bonfire','wood');
-    let runtime=await env.mountLegacy({initialPreset:'bonfire',onFailure:error=>env.failures.push(String(error))});
-    assert.equal(env.elements.get('#fuel-actions').hidden,true,'Fuel actions do not crowd the camera before placement');
+    let env=await prepare('torch','gas');
+    let runtime=await env.mountLegacy({initialPreset:'torch',onFailure:error=>env.failures.push(String(error))});
+    assert.equal(env.elements.get('#fuel-actions').hidden,true,'An unseeded source hides fuel actions before placement');
     assert.equal(env.elements.get('#sigil-guide-control').hidden,true,'Non-sigil presets hide the sigil control');
-    env.elements.get('#fuel-tool').click();assert.equal(runtime.snapshot().tool,'fuel');assert.equal(runtime.snapshot().fire,'legacy:bonfire');
+    env.elements.get('#fuel-tool').click();assert.equal(runtime.snapshot().tool,'fuel');assert.equal(runtime.snapshot().fire,'legacy:torch');
     assert.equal(env.elements.get('#fuel-actions').hidden,false);
-    assert.equal(env.elements.get('#ignite-fuel').disabled,true,'Ignition is unavailable until fuel is placed');
+    assert.equal(env.elements.get('#ignite-fuel').disabled,true,'Ignition requires placed finite fuel');
     assert.equal(env.elements.get('#fire-tool').attributes.get('aria-pressed'),'false');
     const camera=runtime.snapshot().camera,yaw=camera.angle*Math.PI/180,eye=[camera.pan[0]+Math.sin(yaw)*13,3.5+camera.pan[1],Math.cos(yaw)*13],length=Math.hypot(13,1.1);
     const f=[-Math.sin(yaw)*13/length,-1.1/length,-Math.cos(yaw)*13/length],right=[Math.cos(yaw),0,-Math.sin(yaw)];
@@ -259,7 +262,7 @@ test('Original production startup and failure regression', async t => {
     let view=env.elements.get('#view');view.dispatchEvent(event('pointerdown',x,y));view.dispatchEvent(event('pointerup',x,y));
     await env.frame(performance.now()+80);assert.equal(env.calls.fuelUploads,1,'One bounded R16F packet uploads the click mass');
     assert.equal(env.elements.get('#ignite-fuel').disabled,false);
-    assert.equal(runtime.snapshot().fire,'legacy:bonfire','Dropping fuel does not reset or replace the source');
+    assert.equal(runtime.snapshot().fire,'legacy:torch','Dropping fuel does not reset or replace the source');
     assert.equal(env.calls.ignitionPasses||0,0,'Dropping fuel does not inject ignition');
     const inspect=env.elements.get('#smoke-only');inspect.checked=true;inspect.dispatchEvent(new Event('change'));
     assert.equal(runtime.snapshot().smoke,true);assert.equal(env.elements.get('#ignite-fuel').disabled,false,'Hiding visible flame does not disable real combustion ignition');
@@ -267,7 +270,7 @@ test('Original production startup and failure regression', async t => {
     assert.equal(env.calls.ignitionPasses,1,'Explicit ignition adds one thermal pulse');
     await env.frame(performance.now()+160);assert.equal(env.calls.ignitionPasses,1,'The pulse is consumed after one physics step');
     const clears=env.calls.clears;env.elements.get('#clear-fuel').click();assert.equal(env.calls.clears-clears,4,'Only the two finite mass and two wood wear targets clear');
-    assert.equal(runtime.snapshot().fire,'legacy:bonfire');
+    assert.equal(runtime.snapshot().fire,'legacy:torch');
     view.dispatchEvent(event('pointerdown',x,0));view.dispatchEvent(event('pointerup',x,0));await env.frame(performance.now()+200);
     assert.equal(env.calls.fuelUploads,1,'Invalid floor picks are refused without clamping or uploading');
     runtime.look({sourceGuide:false,tool:'fire'});assert.equal(runtime.snapshot().sourceGuide,false);assert.equal(runtime.snapshot().tool,'fire');
@@ -326,7 +329,7 @@ test('Original production startup and failure regression', async t => {
       assert.equal(texture.parameters.get(env.gl.TEXTURE_MIN_FILTER),env.gl.LINEAR);
       assert.equal(texture.parameters.get(env.gl.TEXTURE_MAG_FILTER),env.gl.LINEAR);
     }
-    const correction=env.shaders.find(shader=>shader.source?.includes('vec3 value=clamp(-grad/WORLD'))?.source;
+    const correction=env.shaders.find(shader=>shader.source?.includes('vec3 value=-grad/WORLD'))?.source;
     assert.ok(correction?.includes('outValue=vec4(value,0.0)'),'Half-float pressure correction retains signed precision without the32F extension');
     assert.ok(env.textures.some(texture=>texture.internal===env.gl.RGBA16F&&texture.width!==domain.nx*8&&texture.parameters.get(env.gl.TEXTURE_MIN_FILTER)===env.gl.LINEAR));
     for(const texture of env.textures.filter(texture=>texture.internal===env.gl.R32F))assert.equal(texture.parameters.get(env.gl.TEXTURE_MIN_FILTER),env.gl.NEAREST,'32F pressure solves do not require linear sampling');

@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url';
 const root=resolve(process.env.FIRE_STUDIO_ROOT||resolve(import.meta.dirname,
   '../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'));
 const load=file=>import(pathToFileURL(resolve(root,file)).href);
-const {woodCombustionActivation,woodReactionRate,combustionWGSL,objectCombustionWGSL}=await load('pyro-gpu/combustion.js');
+const {WOOD_GAS_HEAT_RELEASE,woodCombustionActivation,woodReactionRate,combustionWGSL,objectCombustionWGSL}=await load('pyro-gpu/combustion.js');
 const {simulationShaders}=await load('pyro-gpu/shaders.js');
 const {rendererShaders}=await load('pyro-gpu/renderer.js');
 const {planBrickPool,brickPoolScalarShaders}=await load('pyro-gpu/brick-pool.js');
@@ -18,7 +18,7 @@ test('fresh wood gas retains the original ignition barrier without hot products'
   }
   assert.equal(woodReactionRate([0,.3,1,0]),0);
   assert.ok(woodReactionRate([0,.8,1,0])>0);
-  assert.match(combustionWGSL,/return min\(max\(c\.z,0\.\),oxygen\/\.7\)\*4\.\*smoothstep\(\.35,\.75,c\.y\)/);
+  assert.match(combustionWGSL,/return min\(max\(c\.z,0\.\),oxygen\/0.7\)\*5.8\*smoothstep\(0.35,0.75,c\.y\)/);
 });
 test('real soot or oxygen consumption sustains warm ignition but cold smoke always quenches',()=>{
   for(const products of [[.05,0],[0,.05],[.05,.1]]){
@@ -46,7 +46,7 @@ test('closed reactive packets conserve fuel and stoichiometric oxygen across tim
     for(let step=0;step<180*partitions;step++){
       const burned=Math.min(c[2],woodReactionRate(c)*(1-Math.exp(-4*dt))/4);
       burnedTotal+=burned;c[2]-=burned;c[3]=Math.min(c[3]+.7*burned,1);
-      c[1]=(c[1]+burned*3.2/(1+c[2]))*Math.exp(-dt*(.9+.7*Math.max(c[1]-1.4,0)));
+      c[1]=(c[1]+burned*WOOD_GAS_HEAT_RELEASE/(1+c[2]))*Math.exp(-dt*(.9+.7*Math.max(c[1]-1.4,0)));
       c[0]+=burned*1.8;
       assert.ok(c.every(Number.isFinite));
       close(c[2]+burnedTotal,4);close(c[3],.7*burnedTotal);
@@ -58,23 +58,23 @@ test('closed reactive packets conserve fuel and stoichiometric oxygen across tim
 });
 test('dense and pooled scalar transport and thermal expansion use identical wood routing',()=>{
   const shaders=simulationShaders(128,256),pooled=brickPoolScalarShaders(planBrickPool({D:256,capacity:1024}),{N:128,shaders});
-  for(const code of [shaders.correctScalar,pooled.correctScalar])assert.match(code,/let burned=min\(c\.z,sceneReactionRate\(c\)/);
-  assert.match(shaders.correctVelocity,/sceneFlameActivity\(c\)\*1\.2/);
+  for(const code of [shaders.correctScalar,pooled.correctScalar])assert.match(code,/let reaction=select\(sceneReactionLedger\(c,p\.step\.x/);
+  assert.match(shaders.correctVelocity,/completedVolumeSourceAt\(x,N\)/);
   assert.match(objectCombustionWGSL,/if\(abs\(object\.tint\.w\)>\.5\)\{return woodReactionRate\(c\);\}return reactionRate\(c\)/);
   assert.match(objectCombustionWGSL,/if\(abs\(object\.tint\.w\)>\.5\)\{return woodFlameActivity\(c\);\}return flameActivity\(c\)/);
 });
 test('camera rays and both lighting gathers evaluate the same physical wood activity',()=>{
   for(const tree of [false,true])for(const sparse of [false,true]){
     const family=rendererShaders(tree,sparse);
-    assert.match(family.render,/let reaction=sceneFlameActivity\(c\)/);
-    assert.match(family.render,/if\(sigma<\.0001&&sceneFlameActivity\(c\)<\.0001\)/);
-    assert.match(family.gather,/max\(sceneFlameActivity\(c\),c\.x\*max\(c\.y-\.55,0\.\)\)/);
-    assert.match(family.gatherAdaptive,/let value=emission\(field\(at\)\)/);
+    assert.match(family.render,/fn emission\(c:vec4f,reaction:f32\)/);
+    assert.match(family.render,/if\(sigma<\.0001&&consumed<\.0001\)/);
+    assert.match(family.gather,/max\(consumedReactionAt\(at\),c\.x\*max\(c\.y-\.55,0\.\)\)/);
+    assert.match(family.gatherAdaptive,/let value=emission\(field\(at\),consumedReactionAt\(at\)\)/);
   }
 });
 test('wood source timestep margin is finite, requires active structured wood and survives Relight',()=>{
   for(const tree of [false,true]){
-    const end=tree?3:1.7;
+    const end=tree?3:4.5;
     assert.equal(woodIgnitionSpeedFloor(true,true,0,tree),12);
     assert.equal(woodIgnitionSpeedFloor(true,true,end-1e-6,tree),12);
     assert.equal(woodIgnitionSpeedFloor(true,true,end,tree),0);
@@ -91,7 +91,7 @@ test('production frame binds the newly live object uniform in coarse light gathe
   const pass={setPipeline(){},setBindGroup(){},dispatchWorkgroups(){},end(){}};
   Object.assign(solver,{lost:false,errors:[],N:128,maxSpeed:0,burstAge:.5,active:true,
     woodStructure:{},objectId:'logs',frameNumber:0,completedFrames:0,inFlight:[],latestTelemetry:{sampleFrame:0},
-    lightReady:false,roomVisible:false,usingTree:false,useLightWork:false,useLightReceivers:false,
+    lightReady:false,roomVisible:false,usingTree:false,useLightWork:false,useLightReceivers:false,source:[0,1,0],D:256,reactionLedger:{},reactionOffset:0,
     c:[{}],ci:0,sampler:{},view:{},lightSeeds:{},fireLights:{},objectSettings,
     roomTargets:[{}],opticalMasks:[{}],telemetrySlots:[],stats:{},gatherPipeline:gather,gatherAdaptivePipeline:refine,
     prepareSource:async()=>{},updateObject(){},stamp(){},render(){},dispatch(){},
@@ -101,7 +101,15 @@ test('production frame binds the newly live object uniform in coarse light gathe
       queue:{submit(){},onSubmittedWorkDone:()=>Promise.resolve()}}});
   await solver.frame(1/60);
   const entries=calls.find(call=>call.pipeline===gather).entries;
-  assert.deepEqual(entries.map(([binding])=>binding),[0,1,2,5,13]);
-  assert.equal(entries.find(([binding])=>binding===13)[1].buffer,objectSettings);
+  assert.deepEqual(entries.map(([binding])=>binding),[61,0,1,2,5]);
+  assert.ok(entries.some(([binding])=>binding===61),"gather reads the actual consumed-fuel ledger");
   assert.equal(dts.length,3);assert.ok(dts.every(dt=>dt===1/180));
+});
+
+test('wood vapor reaction heat converts joules to the gas temperature coordinate',()=>{
+ close(WOOD_GAS_HEAT_RELEASE*1200*1200,19200000*.7);
+ for(const fuel of [.01,.5,2]){
+   const burned=Math.min(fuel,.2),heat=burned*WOOD_GAS_HEAT_RELEASE/(1+fuel);
+   close(heat*(1+fuel)*1200*1200/(burned*19200000*.7),1);
+ }
 });

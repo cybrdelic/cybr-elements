@@ -11,6 +11,7 @@ export async function probeGPU(canvas){
  if(!navigator.gpu)throw Error('WebGPU is unavailable in this browser. '+recovery);
  let adapter;try{adapter=await gpuSessionTimeout(navigator.gpu.requestAdapter({powerPreference:'high-performance'}),'adapter request');}catch(e){throw Error(e.message.includes('did not finish')?e.message:'The browser could not request a WebGPU adapter. '+recovery);}
  if(!adapter)throw Error('The browser exposes WebGPU but has no available adapter in this session. '+recovery);
+ if(adapter.isFallbackAdapter || /swiftshader|llvmpipe|software/i.test(adapter.info?.description || ''))throw Error('The browser selected software rendering. Enable hardware acceleration and restart the browser.');
  let context,format;
  try{context=canvas.getContext('webgpu');format=navigator.gpu.getPreferredCanvasFormat();}catch(e){throw Error('The WebGPU canvas provider is unavailable in this session. '+recovery);}
  if(!context)throw Error('The WebGPU canvas provider is unavailable in this session. '+recovery);

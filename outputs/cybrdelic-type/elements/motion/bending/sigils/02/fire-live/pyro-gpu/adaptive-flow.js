@@ -1,4 +1,4 @@
-import { simulationShaders } from './shaders.js?v=studio-rc-20';
+import { simulationShaders } from './shaders.js?v=studio-rc-37-audit';
 
 // Byte offsets in the persistent STORAGE | INDIRECT | COPY_DST command buffer.
 // The first seven dispatches and telemetry retain their existing layout.
@@ -49,9 +49,9 @@ export function initialAdaptiveFlowCommands(N = 128, D = 256) {
 // chemistry, projection and embers. Coarse faces are area-averaged from it;
 // active fine tiles override coarse evolution before the global projection.
 // This is an approximation in unrefined air, not bit-identical dense flow.
-export function adaptiveFlowShaders(N = 128, D = 256, tile = 8) {
+export function adaptiveFlowShaders(N = 128, D = 256, tile = 8, {hasPowers=true,powerKind=null,pressureCache=false}={}) {
   const { C, B, T } = hierarchy(N, D, tile);
-  const fine = simulationShaders(N, D), coarse = simulationShaders(C, D);
+  const fine = simulationShaders(N, D,{hasPowers,powerKind,pressureCache}), coarse = simulationShaders(C, D,{hasPowers,powerKind,pressureCache});
   const transfer = `const N:i32=${N};const C:i32=${C};
 fn faceIndex(i:vec3i,k:u32,n:i32)->vec3i{
  var j=clamp(i,vec3i(0),vec3i(n-1));j[k]=clamp(i[k],0,n);return j;

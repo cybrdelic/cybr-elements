@@ -11,6 +11,12 @@ const { surfaceWGSL, basicSurfaceWGSL, damageResetWGSL, woodStateWGSL, objectWGS
   await import(pathToFileURL(resolve(root, 'pyro-gpu/objects.js')).href);
 
 const fresh = moisture => ({stock: [1, 0, 0, 0], wear: [moisture ?? WOOD_THERMO.dryMoistureFraction, 0, 0, 1]});
+test('char shields externally imposed starter heat instead of amplifying it',()=>{
+ const common={wear:[0,0,0,1],incomingHeat:0,dt:1/60,ignite:280000,oxygen:0,cellSize:.15,timeScale:12};
+ const bare=advanceWood({...common,stock:[1,0,0,0]}),charred=advanceWood({...common,stock:[.8,0,0,.2]});
+ assert.ok(charred.stock[1]<bare.stock[1]);
+ assert.ok(charred.stock[1]<.1);
+});
 function run({seconds = 2, partitions = 1, moisture, gasHeat = 1, starterSeconds = 1,
   oxygen = .8, timeScale = 12, initial} = {}) {
   let state = initial ?? fresh(moisture), vapor = 0, oxidation = 0, water = 0;

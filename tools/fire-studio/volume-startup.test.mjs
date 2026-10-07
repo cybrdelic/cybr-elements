@@ -82,7 +82,7 @@ test('actual Volume and Sparse startup work with baseline features and no eager 
     const f=fixture();await withEnvironment(f,async()=>{
       const s=await PyroSolver.create(f.canvas,volumeOptions(new URLSearchParams(),simulation));
       assert.deepEqual(f.requests,[{requiredFeatures:[]}]);
-      assert.equal(s.params.length,12);assert.ok(s.params.every(p=>p.desc.size===384));
+      assert.equal(s.params.length,12);assert.ok(s.params.every(p=>p.desc.size===1536));
       for(const field of [...s.surface,...s.damage,...s.floorFuel,...s.floorWear])assert.equal(field.t.desc.format,'rgba32float');
       for(const field of [...s.surface,...s.damage])assert.equal(field.t.desc.dimension,'3d');
       assert.equal(s.woodFlux,undefined,'48MiB transfer field remains lazy for default source');
@@ -93,6 +93,73 @@ test('actual Volume and Sparse startup work with baseline features and no eager 
       s.destroy();assert.equal(f.destroyCount(),1);
     });
   }
+});
+
+test('shared chemistry owns one field set and migrates without read/write aliasing or new allocations',async()=>{
+  const f=fixture();await withEnvironment(f,async()=>{
+    const s=await PyroSolver.create(f.canvas,{brickPool:true,sharedChemistry:true});
+    assert.equal(s.chemistryPool.plan.separateDenseBytes,0);
+    assert.equal(s.chemistryPool.plan.atlasBytes,384*1024**2);
+    assert.equal(f.resources.filter(r=>r.kind==='texture'&&r.desc.dimension==='3d'&&r.desc.size.every(n=>n===256)).length,3);
+    for(let i=0;i<3;i++)assert.equal(s.c[i].t,s.chemistryPool.fields[i].texture);
+    const frozen=f.resources.length;
+    for(const ci of [0,1]){
+      const before=f.dispatches.length;
+      s.chemistryPool.encodeMigrationToDense(f.encoder(),ci,s.c[ci].view);
+      const passes=f.dispatches.slice(before);
+      assert.deepEqual(passes.map(d=>d.pipeline.label),['chemistry-pool-migrate','chemistry-pool-publishMigration','chemistry-pool-clearMigrationScratch','chemistry-pool-ackMigration']);
+      for(const d of passes){
+        const views=d.group.entries.map(e=>e.resource).filter(r=>r.kind==='view');
+        assert.equal(new Set(views.map(v=>v.desc.texture)).size,views.length,'each migration pass uses distinct physical textures');
+      }
+    }
+    assert.equal(f.resources.length,frozen);
+    assert.throws(()=>s.chemistryPool.encodeImportDense(f.encoder(),0,s.c[0].view),/aliased/);
+    s.destroy();
+    for(const field of s.c)assert.equal(field.t.destroyCount,1,'pool fields have one owner');
+  });
+});
+
+test('advected detail is reset explicitly, advances once per flow step and retains its state between frames',async()=>{
+  const f=fixture();await withEnvironment(f,async()=>{
+    const s=await PyroSolver.create(f.canvas,{flowDetail:true});
+    await s.reset();
+    const clearCount=()=>f.dispatches.filter(d=>d.pipeline.label==='clear-material-flow').length;
+    assert.equal(clearCount(),2);
+    const frozen=f.resources.filter(r=>r.kind==='texture').length;
+    s.step(f.encoder(),1/60,0);s.step(f.encoder(),1/60,1);
+    assert.equal(clearCount(),2,'ordinary advancement must not erase transported coordinates');
+    const advances=f.dispatches.filter(d=>d.pipeline.label==='advected-material-flow');
+    assert.equal(advances.length,2);
+    for(const pass of advances){
+      assert.notEqual(pass.group.entries.find(e=>e.binding===3).resource,pass.group.entries.find(e=>e.binding===4).resource);
+    }
+    assert.equal(f.resources.filter(r=>r.kind==='texture').length,frozen);
+    assert.equal(s.materialIndex,0);
+    await s.reset();assert.equal(clearCount(),4);
+    s.destroy();
+  });
+});
+
+test('fused final transport keeps distinct inputs/outputs for both live field indices',async()=>{
+  const f=fixture();await withEnvironment(f,async()=>{
+    const s=await PyroSolver.create(f.canvas,{transport:'flux',fuseFinalFlux:true,brickPool:true,sharedChemistry:true});
+    await s.reset();const original=[...s.c],field=e=>e.resource;
+    for(const ci of [0,1]){
+      assert.equal(s.ci,ci);
+      const before=f.dispatches.length;s.step(f.encoder(),1/60,ci);
+      const passes=f.dispatches.slice(before),advects=passes.filter(d=>/^advectScalar[012]$/.test(d.pipeline.label));
+      assert.deepEqual(advects.map(d=>d.pipeline.label),['advectScalar0','advectScalar1']);
+      const reaction=passes.find(d=>d.pipeline.label==='correctScalar');
+      const value=slot=>field(reaction.group.entries.find(e=>e.binding===slot));
+      assert.equal(value(3),s.c[2].view);assert.equal(value(5),s.c[1-ci].view);
+      assert.notEqual(value(3),value(5));
+      assert.ok(value(2));assert.ok(value(46));assert.ok(value(47));
+      assert.deepEqual(new Set(s.c),new Set(original),'mixing reuses the same three storage allocations');
+      assert.equal(s.ci,1-ci);
+    }
+    s.destroy();
+  });
 });
 
 test('actual finite wooden sources load the production geometry, owners, thermal metadata and mesh',async()=>{

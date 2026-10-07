@@ -12,12 +12,21 @@ export const WOOD_THERMO = Object.freeze({
   gasAmbientK: 300,
   gasHeatScaleK: 1200,
   gasFuelDensityKgM3: 1,
+  // Pine pyrolysis products: NIST TN2161 Appendix A, 19.2 MJ/kg.
+  // https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2161.pdf
+  // The 0.7 sensible fraction is a reduced-model gas/radiation partition,
+  // not a calibrated spectral radiation or oxygen-species model.
+  volatileHeatJkg: 19200000,
+  gasSensibleFraction: 0.7,
+  gasHeatCapacityJkgK: 1200,
   dryDensityKgM3: 495,
   dryMoistureFraction: 30 / 495,
   dampMoistureFraction: 0.45,
   gasConstant: 8.314462618,
   demoTimeScale: 12,
   starterFluxWm2: 280000,
+  starterDurationS: 4,
+  treeStarterDurationS: 2.5,
   surfaceDepthM: 0.0015,
   foliageDepthM: 0.0002,
   transverseConductivityWmK: 0.15,
@@ -96,7 +105,11 @@ export function advanceWood({ stock, wear, incomingHeat = 0, dt = 0, ignite = 0,
   // Char adds thermal resistance; a cold char layer cannot manufacture heat.
   const charDepth = Math.min(h * s[3] * 2.25, h * 0.8);
   const transfer = 1 / (1 / hc + charDepth / Math.max(k, 0.01));
-  const equilibrium = gasT + Math.max(ignite, 0) / Math.max(transfer, 0.001);
+  // The torch heats the exterior char surface. Its heat crosses the same
+  // resistance as gas heating; insulation cannot amplify the imposed flux.
+  // Using ignite/transfer cancelled that resistance for the starter and
+  // raised the target temperature as char accumulated.
+  const equilibrium = gasT + Math.max(ignite, 0) / Math.max(hc, 0.001);
   Ts += (equilibrium - Ts) * -Math.expm1(-transfer * duration / Cs);
   const g = k / Math.max(h * 0.5, 0.00005), reciprocal = 1 / Cs + 1 / Cc;
   const exchanged = (Ts - Tc) * -Math.expm1(-g * reciprocal * duration) / reciprocal;
@@ -192,7 +205,7 @@ const stepBody = `
  let conductivity:f32=woodK((Ts+Tc)*.5,s.w);
  let charDepth:f32=min(h*s.w*2.25,h*.8);
  let transfer:f32=1./(1./hc+charDepth/max(conductivity,.01));
- let equilibrium:f32=gasT+max(ignite,0.)/max(transfer,.001);
+ let equilibrium:f32=gasT+max(ignite,0.)/max(hc,.001);
  Ts+=(equilibrium-Ts)*woodFraction(transfer*duration/Cs);
  let g:f32=conductivity/max(h*.5,.00005);let reciprocal:f32=1./Cs+1./Cc;
  let exchanged:f32=(Ts-Tc)*woodFraction(g*reciprocal*duration)/reciprocal;

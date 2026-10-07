@@ -190,22 +190,26 @@
       const divergence = `#version 300 es
       ${common}${fullSample}
       uniform float uExpansion;
+      uniform sampler2D uChem;
+      uniform float uThermal;
       layout(location=0) out vec4 outValue;
       void main() {
         ivec3 c=cell();
         if(edge(c)){outValue=vec4(0);return;}
         vec3 p=vec3(c)/vec3(float(CX-1),float(CZ-1),float(CY-1));
         vec3 stepP=1.0/vec3(float(CX-1),float(CZ-1),float(CY-1));
-        float div=(fullVelocity(p+vec3(stepP.x,0,0)).x-fullVelocity(p-vec3(stepP.x,0,0)).x)/(2.0*HX)
-                 +(fullVelocity(p+vec3(0,stepP.y,0)).y-fullVelocity(p-vec3(0,stepP.y,0)).y)/(2.0*HZ)
-                 +(fullVelocity(p+vec3(0,0,stepP.z)).z-fullVelocity(p-vec3(0,0,stepP.z)).z)/(2.0*HY);
+        float div=(fullVelocity(p+vec3(stepP.x,0,0)).x-fullVelocity(p).x)/HX
+                 +(fullVelocity(p+vec3(0,stepP.y,0)).y-fullVelocity(p).y)/HZ
+                 +(fullVelocity(p+vec3(0,0,stepP.z)).z-fullVelocity(p).z)/HY;
         // Combustion can prescribe positive divergence. Project toward that
         // expanding flow instead of cancelling a blast back to zero divergence.
         float expansion=0.;
-        if(uExpansion>0.){
+        if(uExpansion>0.||uThermal>.5){
           float z=p.z*float(FD-1),lo=floor(z),hi=min(lo+1.,float(FD-1));
           float reaction=mix(texture(uVf,fullAtlasUV(p.xy,lo)).a,texture(uVf,fullAtlasUV(p.xy,hi)).a,fract(z));
-          expansion=min(max(reaction,0.)*uExpansion,64.);
+          vec4 chemistry=mix(texture(uChem,fullAtlasUV(p.xy,lo)),texture(uChem,fullAtlasUV(p.xy,hi)),fract(z));
+          float coefficient=uThermal>.5?5.5/(max(1.+chemistry.r,1.)*max(.25+chemistry.b,.25)):uExpansion;
+          expansion=min(max(reaction,0.)*coefficient,64.);
         }
         outValue=vec4(div-expansion,0,0,1);
       }`;
@@ -234,10 +238,10 @@
       void main(){
         ivec3 c=cell();
         if(edge(c)){outValue=${packed ? 'vec4(vec3(128.0/255.0),1.0)' : 'vec4(0)'};return;}
-        vec3 grad=vec3((pressure(c+ivec3(1,0,0))-pressure(c-ivec3(1,0,0)))/(2.0*HX),
-                       (pressure(c+ivec3(0,1,0))-pressure(c-ivec3(0,1,0)))/(2.0*HZ),
-                       (pressure(c+ivec3(0,0,1))-pressure(c-ivec3(0,0,1)))/(2.0*HY));
-        vec3 value=clamp(-grad/WORLD,vec3(-1),vec3(1));
+        vec3 grad=vec3((pressure(c)-pressure(c-ivec3(1,0,0)))/HX,
+                       (pressure(c)-pressure(c-ivec3(0,1,0)))/HZ,
+                       (pressure(c)-pressure(c-ivec3(0,0,1)))/HY);
+        vec3 value=-grad/WORLD;
         outValue=${packed ? 'vec4((value*127.0+128.0)/255.0,1.0)' : 'vec4(value,0.0)'};
       }`;
       this.divergenceProgram = this.program(divergence);
@@ -245,6 +249,7 @@
       this.correctionProgram = this.program(correction);
       this.divergenceUniform = gl.getUniformLocation(this.divergenceProgram, 'uVf');
       this.expansionUniform = gl.getUniformLocation(this.divergenceProgram, 'uExpansion');
+      this.chemistryUniform=gl.getUniformLocation(this.divergenceProgram,'uChem');this.thermalUniform=gl.getUniformLocation(this.divergenceProgram,'uThermal');
       this.jacobiUniforms = {
         pressure: gl.getUniformLocation(this.jacobiProgram, 'uP'),
         divergence: gl.getUniformLocation(this.jacobiProgram, 'uDiv')
@@ -294,7 +299,7 @@
       gl.clearBufferfv(gl.COLOR, 0, this.neutral);
     }
 
-    update(velocityTexture, expansion=0) {
+    update(velocityTexture, expansion=0, chemistryTexture=null) {
       const gl = this.gl;
       if (!velocityTexture) throw new Error('Coarse pressure update needs a velocity texture');
       gl.bindVertexArray(this.vao);
@@ -304,6 +309,7 @@
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.divergence.fbo);
       this.bind(velocityTexture, 0, this.divergenceUniform);
       gl.uniform1f(this.expansionUniform,expansion);
+      this.bind(chemistryTexture||velocityTexture,1,this.chemistryUniform);gl.uniform1f(this.thermalUniform,chemistryTexture?1:0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.pressures[0].fbo);

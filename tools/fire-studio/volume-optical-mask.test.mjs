@@ -14,6 +14,7 @@ function fixture(){
  const calls=[];
  const encoder={clearBuffer(buffer){calls.push({label:'clear',buffer});},beginComputePass(){return {setPipeline(){},setBindGroup(){},dispatchWorkgroups(){},end(){}};},finish(){return {};}};
  const s=Object.assign(Object.create(PyroSolver.prototype),{
+ emptyShockRM:{},shockRemaining:0,measureProjection:{name:"measure-final-velocity",label:"measure-final-velocity",getBindGroupLayout(){return{};}},
   device:{queue:{writeBuffer(){},submit(){},onSubmittedWorkDone:()=>Promise.resolve()},createCommandEncoder:()=>encoder},
   query:null,N:128,D:256,source:[0,.58,0],effect:[1,1,.1,1],dynamics:[1,1,1,1],chemistry:[1,1,1,1],
   time:0,burstAge:1,previousDt:0,active:true,smoke:false,seed:2,fuel:0,embers:false,
@@ -34,7 +35,7 @@ function fixture(){
   vcycle(){calls.push({label:'pressure-cycle'});},
   resetSurface(){calls.push({label:'surface-reset'});},
  });
- s.pipelines=Object.fromEntries(['advectVelocity','curl','correctVelocity','rhs','project','reduceStats','buildBricks','advectScalar','correctScalar'].map(name=>[name,resource(name)]));
+ s.pipelines=Object.fromEntries(['diffuseScalar','advectVelocity','curl','correctVelocity','rhs','project','reduceStats','buildBricks','advectScalar','correctScalar'].map(name=>[name,resource(name)]));
  return {s,calls,encoder};
 }
 
@@ -68,7 +69,7 @@ test('actual reset clears both optical buffers with transport and chemical state
 test('actual WGSL camera and shadow predicates preserve separate visible and faint-soot support',()=>{
  const shader=simulationShaders(128,256).correctScalar;
  const predicate=bit=>{
-  const condition=shader.match(new RegExp(`if\\(([^\\n;]+)\\)\\{atomicOr\\(&opticalAlive,${bit}u\\);\\}`))?.[1];
+  const condition=shader.match(new RegExp(`if\\(([^\\n;]+)\\)\\{flags\\|=${bit<<1}u;\\}`))?.[1];
   assert.ok(condition,'extract the production predicate for bit '+bit);
   return new Function('c',`return ${condition.replace(/c\.([xyzw])/g,(_,component)=>`c[${'xyzw'.indexOf(component)}]`)};`);
  };
@@ -97,7 +98,7 @@ test('actual WGSL camera and shadow predicates preserve separate visible and fai
 
 test('shared mask unions independent workgroup bits and all renderer stages select their intended support',()=>{
  const scalar=simulationShaders(128,256).correctScalar;
- assert.match(scalar,/atomicOr\(&opticalOccupied\[index\],atomicLoad\(&opticalAlive\)\)/,'eight scalar chunks union their independent bits');
+ assert.match(scalar,/atomicOr\(&opticalOccupied\[index\],combined>>1u\)/,'eight scalar chunks union their independent bits');
  assert.match(dilateWGSL,/alive\|=source\[/,'dilation preserves camera and shadow bits across neighbors');
  for(const tree of [false,true]){
   const shaders=rendererShaders(tree);

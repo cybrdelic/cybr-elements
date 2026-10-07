@@ -14,7 +14,8 @@ const { filterLibrary, libraryItemSimulation } = await load('pyro-gpu/library.js
 const { cleanLook } = await load('look-storage.js');
 const { emitterKindFor } = await load('original-source-profile.js');
 const { POWER_DEFINITIONS, powerExpansion } = await load('fire-power-definitions.js');
-const { powerSourceWGSL, powerSourceGLSL } = await load('fire-powers.js');
+const { powerSourceWGSL, powerSourceFor } = await load('fire-powers.js');
+const powerSourceGLSL=powerSourceFor(null,'glsl');
 const { PowerCastPool } = await load('fire-abilities.js');
 
 const ids = ['radial-blast', 'fireball', 'fire-rain', 'fire-tornado', 'floor-trail', 'combustion-bomb',

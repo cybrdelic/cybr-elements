@@ -45,13 +45,13 @@ test('source work uses the shared phase and trajectory support for all bounded c
   assert.ok(support.includes('i<4u'),'work is bounded to four cast records');
   assert.ok(support.includes('actor.kindScale.z<.5'),'inactive sources cannot allocate chemistry work');
   assert.ok(support.includes('halfBrick*1.733'),'support includes a conservative brick sphere padding');
-  assert.ok(support.includes('powerCastSupport(actor.kindScale.x,at,actor.originAge.xyz,actor.kindScale.y,actor.originAge.w'));
+  assert.ok(support.includes('powerCastSupport(actor.kindScale.x,at,actor.originAge.xyz,actor.kindScale.y,sourceSampleAge('));
   assert.ok(support.includes('actor.targetCharge.xyz,actor.directionStrength.xyz,actor.targetCharge.w'),'aim and charge use the same source support');
  }
 });
 
 test('power ignition is bounded, preserves hot gas and is independent of source substeps',()=>{
-  const ignite=scalarHelper('powerIgnition');
+  const ignite=scalarHelper('sourceIgnition');
   for(const preheat of [.65,.72,.75]){
     const target=preheat*1.8;
     for(const heat of [0,.35,.7,1.6])for(const added of [0,.01,.3,1,10]){
@@ -68,7 +68,7 @@ test('power ignition is bounded, preserves hot gas and is independent of source 
 });
 
 test('fuel injection dilutes available oxygen while preserving its existing mass',()=>{
-  const oxygen=scalarHelper('powerOxygen');
+  const oxygen=scalarHelper('sourceOxygenDeficit');
   for(const deficit of [0,.1,.5,1])for(const added of [0,.001,.1,1,10]){
     const next=oxygen(deficit,added);
     assert.ok(next>=deficit&&next<=1);
@@ -215,21 +215,23 @@ test('all generated gas paths use the same power source before the legacy jet br
     assert.ok(code.includes('powerSample(x)'),name);
   }
   assert.ok(fine.correctScalar.includes('let added=s*p.step.x*6.*p.chemistry.y;'));
-  assert.ok(fine.correctScalar.includes('c.y=powerIgnition(c.y,added,p.chemistry.x);c.z+=added;c.w=powerOxygen(c.w,added);'));
-  assert.ok(fine.correctScalar.includes('burned*select(3.2,2.0,isPower())'));
-  assert.ok(fine.correctScalar.includes('if(isPower()){c.w=powerOxygen(c.w,floorAdded);}'),'finite power floor vapor conserves existing oxygen mass too');
+  assert.ok(fine.correctScalar.includes('c.y=powerIgnitionHeat(c.y,c.z,added,p.chemistry.x,1.-c.w);c.z+=added;'));
+  assert.ok(fine.correctScalar.includes('sceneReactionLedger(c,p.step.x,sceneHeatRelease(5.5),mix(.12,1.8,p.shape.z)*p.chemistry.z)'));
+  assert.ok(fine.correctScalar.includes('c.w=sourceOxygenDeficit(c.w,floorAdded);'),'finite power floor vapor conserves existing oxygen mass too');
   assert.ok(fine.correctVelocity.includes('powerForce(x)'));
   for(const code of [fine.correctVelocity,adaptive.coarseCorrect,adaptive.fineCorrect]){
-    assert.ok(code.includes('select(1.,p.dynamics.z,isPower())*cross('),'all flow paths use authored power confinement');
+    assert.ok(code.includes('p.dynamics.z*cross('),'all flow paths use authored confinement');
     const main=code.slice(code.lastIndexOf('@compute'));
     assert.equal((main.match(/powerInjection\(x\)/g)||[]).length,1,'velocity samples each power packet only once');
     assert.ok(main.includes('abs(object.tint.w)<=.5&&p.source.w>=.5'));
-    assert.ok(main.includes('}else{s=charge(x);if(s>0.){out=mix(out,sourceVelocity(x),1.-exp(-s*p.step.x*65.));}}'),'ordinary source momentum keeps its existing path');
+    assert.ok(main.includes('out=mix(out,sourceVelocity(x),sourceMomentumFraction(c.z,added))'),'ordinary source momentum follows the fuel dose');
   }
   const injection=fine.correctVelocity.slice(fine.correctVelocity.indexOf('fn powerInjection('),fine.correctVelocity.indexOf('fn powerSample('));
   assert.equal((injection.match(/powerCastSource\(/g)||[]).length,1,'each bounded actor is sampled once');
-  assert.ok(injection.includes('expansion+=value.w*powerCastExpansion(actor.kindScale.x,actor.originAge.w)'),'expansion follows each actor phase using its existing gas weight');
-  assert.ok(fine.correctVelocity.includes('var s=0.;var sourceExpansion=45.;'),'ordinary source expansion remains unchanged');
+  assert.ok(!injection.includes('localExpansion'),'packet sampling only owns fuel and momentum; pressure reads completed chemistry');
+  assert.ok(!injection.includes('powerBlastExpansion'),'no analytic blast shell remains in the low-Mach source shader');
+  assert.ok(fine.correctVelocity.includes('shockMac('),'compressible Euler momentum couples to the projected MAC flow');
+  assert.ok(fine.correctVelocity.includes('completedVolumeSourceAt(x,N)'),'all sources use completed chemistry volume changes');
   for(const code of [fine.buildBricks,adaptive.sourceWork]){
     assert.ok(code.includes('sourceLive=powerBrickLive(at,halfBrick)'));
     assert.ok(code.includes('powerCastSupport(actor.kindScale.x,at,actor.originAge.xyz'),'all cast trajectories use canonical support');

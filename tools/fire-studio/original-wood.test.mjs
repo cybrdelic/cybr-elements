@@ -55,7 +55,7 @@ test('Projected stock persists when a wood source moves and resets only on a del
 });
 
 test('Wood release, charring, and Original rendering use the persistent shared material fields',async()=>{
- const fire=await readFile(resolve(root,'fire.js'),'utf8'),props=await readFile(resolve(root,'fire-props.js'),'utf8'),emitters=await readFile(resolve(root,'fire-emitters.js'),'utf8'),ground=await readFile(resolve(root,'ground-fuel-gl.js'),'utf8');
+ const fire=(await readFile(resolve(root,'fire.js'),'utf8')+'\n'+await readFile(resolve(root,'original-shaders.js'),'utf8')),props=await readFile(resolve(root,'fire-props.js'),'utf8'),emitters=await readFile(resolve(root,'fire-emitters.js'),'utf8'),ground=await readFile(resolve(root,'ground-fuel-gl.js'),'utf8');
  assert.match(fire,/woodFuelGas\(vec3\(worldX,worldZ,worldY\),delta,fuel,oxygen,temp\)/);
  assert.match(fire,/sourceEnabled>\.5&&woodEnabled<\.5/);
  assert.match(fire,/woodEnabled<\.5\s*&&\s*brushActive/);
@@ -63,11 +63,13 @@ test('Wood release, charring, and Original rendering use the persistent shared m
  assert.match(props,/woodMaterial\(materialPoint,materialNormal,stock.g,stock.r,stock.a,wear.z/);
  assert.match(ground,/woodMaterial\(at,n,stock.g,stock.r,stock.a,wear.z/);
  assert.match(emitters,/if\(emitterKind==16\|\|emitterKind==17\|\|emitterKind==20\)return/);
+ assert.match(emitters,/float roots=pow\(x\/\.78,2\.\).*float tongues=min\(left,min\(center,right\)\)/s,'Hearth uses a connected fuel bed that blends into overlapping flame tongues');
+ assert.match(emitters,/feed=mix\(\.54,1\.02,smoothstep\(\.12,\.88,variation\)\)/,'Hearth, torch and wall flames retain a connected fuel sheet');
  assert.doesNotMatch(emitters,/finiteFuel/);
  const {programs}=fixture();
  assert.match(programs[1].fragment,/gasHeatToWoodHeat\(gas.b\)/);
  assert.match(programs[1].fragment,/woodThermoStep\(old,wear,heat,delta,starter,oxygen,1\./);
- assert.match(programs[0].fragment,/normalizer\+=w\*exp/,'Depth emission normalizes against the actual discrete gas grid');
+ assert.match(programs[0].fragment,/normalizer\+=w\*woodReleaseShape/,'Depth emission normalizes exterior geometry on the actual discrete gas grid');
 });
 
 test('Current projected subtree mass has bounded donors and Euler ranges, independent of bond-local depletion',async()=>{

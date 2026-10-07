@@ -1,5 +1,5 @@
-import {powerDefinition,powerDirection} from './fire-powers.js?v=studio-rc-20';
-import {POWER_CAST_CAPACITY,powerPhase,powerSpeedFloor,powerExpansion} from './fire-power-definitions.js?v=studio-rc-20';
+import {powerDefinition,powerDirection} from './fire-powers.js?v=studio-rc-37-audit';
+import {POWER_CAST_CAPACITY,powerPhase,powerSpeedFloor,powerExpansion} from './fire-power-definitions.js?v=studio-rc-37-audit';
 const finite3=v=>Array.isArray(v)||ArrayBuffer.isView(v)?v.length===3&&Array.from(v).every(Number.isFinite):false;
 const set3=(to,v)=>{for(let i=0;i<3;i++)to[i]=v[i];};
 // Reserve the source body. Advected aftermath may leave the open simulation
@@ -116,7 +116,17 @@ export class PowerCastPool{
    out[o+12]=s.target[0];out[o+13]=s.target[1];out[o+14]=s.target[2];out[o+15]=s.charge;
   }return out;
  }
- speedFloor(dt=0){let speed=0;for(const s of this.slots)if(s.active)speed=Math.max(speed,powerSpeedFloor(s.definition,s.age,dt)*Math.sqrt(s.strength)*Math.max(1,s.scale));return speed;}
+ speedFloor(dt=0){let speed=0;for(const s of this.slots)if(s.active)speed=Math.max(speed,powerSpeedFloor(s.definition,s.age,dt)*Math.max(1,Math.sqrt(s.strength))*Math.max(1,s.scale));return speed;}
+ temporalStep(maxDt=1/30){
+  let dt=maxDt;
+  for(const s of this.slots){if(!s.active)continue;
+   const speed=powerSpeedFloor(s.definition,s.age,maxDt)*Math.max(1,s.scale);
+   const feature=Math.max(.10,Math.min(.24,(s.definition.bodyMargin||.45)*.4))*s.scale;
+   if(speed>0)dt=Math.min(dt,feature/speed);
+   if(!s.held)for(const phase of s.definition.phases){const until=phase.until-s.age;if(until>1e-7)dt=Math.min(dt,until);}
+  }
+  return Math.max(1e-7,dt);
+ }
  crossesImpulse(dt){return this.slots.some(s=>s.active&&!s.held&&s.definition.impulses.some(w=>s.age<w.at&&s.age+dt>=w.at));}
  expansion(){let value=0;for(const s of this.slots)if(s.active&&!s.held&&powerExpansion(s.definition,s.age)===18)value=Math.max(value,12*s.strength*s.charge);return value;}
  snapshot(){const s=this.latest?.active?this.latest:this.slots.filter(v=>v.active).sort((a,b)=>b.serial-a.serial)[0];return {active:this.slots.filter(v=>v.active).length,capacity:POWER_CAST_CAPACITY,held:!!s?.held,

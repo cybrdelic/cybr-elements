@@ -57,6 +57,7 @@ function fixture({ initiallyBusy = true, visible = false, waitForFrameStop = fal
     if (waitForFrameStop) await frameStop.promise;
   } };
   const solver = {
+    async selectPowerKind() {},
     source: [0, .58, 0],
     async prepareSource() { calls.push('prepare'); await prepare.promise; calls.push('prepare-complete'); },
     async reset() { calls.push('reset'); await reset.promise; calls.push('reset-complete'); },
@@ -69,7 +70,7 @@ function fixture({ initiallyBusy = true, visible = false, waitForFrameStop = fal
     async drain() { calls.push('drain'); await drain.promise; calls.push('drain-complete'); },
     destroy() { calls.push('destroy'); },
   };
-  const dependencies = { $, scope, solver, FIRE_PRESETS, sourceOrigin, powerDefinition, powerDirection, normalizePowerSettings, URL,
+  const dependencies = { placeKindling() {}, $, scope, solver, FIRE_PRESETS, sourceOrigin, powerDefinition, powerDirection, normalizePowerSettings, URL,
     location: { href: 'https://example.com/firesim/?simulation=volume' },
     history: { replaceState() {} },
     onFailure: (error) => failures.push(error),
@@ -83,16 +84,16 @@ function fixture({ initiallyBusy = true, visible = false, waitForFrameStop = fal
       return promise;
     },
   };
-  const functions = ['configureFire', 'triggerSource', 'releaseBusy', 'restart', 'applyFire'].map((name) => functionSource(name)).join('\n') + '\n' + functionSource('dispose', true);
+  const functions = ['configureFire', 'triggerSource', 'releaseBusy', 'restart', 'applyFire','sourceAction','cast','burst'].map((name) => functionSource(name)).join('\n') + '\n' + functionSource('dispose', true);
   const create = new Function(...Object.keys(dependencies), `
     'use strict';
-    let busy=${initiallyBusy}, resetQueued=false, resetWaiters=[], resetCompletion=null, pendingOutput=null,
+    let busy=${initiallyBusy}, resetQueued=false, resetWaiters=[], resetCompletion=null, resetPending=false,pendingSourceActions=[],pendingOutput=null,
       benchmarkActive=false, cancelBenchmark=false, testScenario=null, testStopped=false,
       activeFire=FIRE_PRESETS.find(p=>p.id==='bonfire'), flameColor='natural', embers=true,
       powers=normalizePowerSettings({}),smoke=false, paused=false, trace=[], captureIndex=0, saved=false;
     ${functions}
     return {
-      applyFire, restart, releaseBusy, dispose,
+      applyFire, restart, releaseBusy, dispose,castPower:burst,queueAction:sourceAction,
       state:()=>({busy,resetQueued,paused}),
     };
   `);
@@ -150,6 +151,20 @@ test('a queued Volume reset failure rejects the source-selection Promise', async
   await Promise.all([rejected, released]);
   assert.equal(f.calls.includes('burst'), false);
   assert.equal(f.runtime.state().busy, false);
+});
+
+test('a cast requested during reset survives after the automatic starting cast',async()=>{
+ const f=fixture();const selected=f.runtime.applyFire('fireball');
+ f.runtime.castPower();assert.equal(f.calls.filter(v=>v==='cast-power').length,0);
+ f.runtime.releaseBusy();await turn();f.reset.resolve();await selected;
+ assert.equal(f.calls.filter(v=>v==='cast-power').length,2);
+ assert.ok(f.calls.lastIndexOf('cast-power')>f.calls.indexOf('drain-complete'));
+});
+
+test('a failed reset discards queued source input instead of touching invalid GPU state',async()=>{
+ const f=fixture();const selected=f.runtime.applyFire('fireball');
+ const rejection=assert.rejects(selected,/reset rejected/);f.runtime.castPower();f.runtime.releaseBusy();await turn();f.reset.reject(Error('reset rejected'));
+ await rejection;await turn();assert.equal(f.calls.filter(v=>v==='cast-power').length,0);
 });
 
 test('an immediate Volume source selection awaits reset completion and propagates rejection', async () => {
@@ -306,3 +321,16 @@ for (const stage of ['prepare', 'firstFrame', 'drain']) {
     }
   });
 }
+
+test('source input queued for a replaced preset is discarded',async()=>{
+ const f=fixture();const first=f.runtime.applyFire('fireball');let oldAction=false;
+ f.runtime.queueAction(()=>{oldAction=true;});const second=f.runtime.applyFire('fire-rain');
+ f.runtime.releaseBusy();await turn();f.reset.resolve();await Promise.all([first,second]);
+ assert.equal(oldAction,false,'input belongs to the source selected when it was recorded');
+});
+
+test('a failed queued source action still releases the reset lock',async()=>{
+ const f=fixture();const selected=f.runtime.applyFire('fireball');const rejected=assert.rejects(selected,/queued input failed/);
+ f.runtime.queueAction(()=>{throw Error('queued input failed');});f.runtime.releaseBusy();await turn();f.reset.resolve();await rejected;
+ assert.equal(f.runtime.state().busy,false);
+});

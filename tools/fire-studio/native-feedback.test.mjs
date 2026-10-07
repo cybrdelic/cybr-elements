@@ -88,7 +88,7 @@ test('late older native completion cannot replace a newer production velocity sa
 });
 test('actual production sparse pool collector receives the full32-byte native status',async()=>{
   const scheduler=new NativeFeedbackReadbacks(4),solver=host();
-  solver.chemistryPool={plan:{capacity:64,atlasBytes:123456}};scheduler.frame=1;
+  solver.chemistryPool={plan:{capacity:64,atlasBytes:123456,separateDenseBytes:1000000}};scheduler.frame=1;
   const slot={poolStatus:scheduler.attach({__rid:99},32),poolPending:true};
   const collecting=solver.collectPoolTelemetry(slot,1,1);
   const [request]=scheduler.requests();scheduler.accept(request.request,new Uint32Array([0,40,32,8,24,0,7,1]));
@@ -96,7 +96,7 @@ test('actual production sparse pool collector receives the full32-byte native st
   await scheduler.deliver(5);await collecting;
   assert.equal(slot.poolPending,false);assert.equal(solver.latestTelemetry.poolSampleFrame,1);
   assert.deepEqual(solver.latestTelemetry.brickPool,{mode:'sparse',requested:40,resident:32,allocated:8,free:24,
-    overflow:0,epoch:7,migrationPending:true,capacity:64,additionalAtlasBytes:123456});
+    overflow:0,epoch:7,migrationPending:true,capacity:64,additionalAtlasBytes:123456,chemistryStorageBytes:1123456});
 });
 test('missing/short payloads cannot produce a fabricated mapped readback',async()=>{
   const scheduler=new NativeFeedbackReadbacks(),buffer=scheduler.attach({__rid:1},16);

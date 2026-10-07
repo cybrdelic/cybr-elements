@@ -9,7 +9,10 @@ window.FireProps = `
   uniform vec2 sourcePosition;
   uniform float sourceScale;
   #if FIRE_OBJECT_SOURCE
-  uniform highp sampler3D objectTex;
+  #ifndef FIRE_OBJECT_TEXTURE
+#define FIRE_OBJECT_TEXTURE
+uniform highp sampler3D objectTex;
+#endif
   float objectDistanceAt(vec3 world,vec3 center){
     vec3 uv=((world-center)/sourceScale+vec3(1.5))/3.;
     if(any(lessThan(uv,vec3(0)))||any(greaterThan(uv,vec3(1))))
@@ -48,14 +51,22 @@ window.FireProps = `
     vec3 n=vec3(0);float hit=distance;
     #if FIRE_OBJECT_SOURCE
     if(visibleEmitter>=16&&visibleEmitter<=20){
-      float t=sphereHit(eye,ray,c,2.65*sourceScale);
-      if(t>=distance)return false;
+      // Intersect the sampled domain before testing its SDF. The outside
+      // box distance is only a traversal bound, never an object surface.
+      vec3 invRay=1./mix(vec3(.000001),ray,greaterThan(abs(ray),vec3(.000001)));
+      vec3 a=(c-vec3(1.5*sourceScale)-eye)*invRay;
+      vec3 b=(c+vec3(1.5*sourceScale)-eye)*invRay;
+      vec3 lo=min(a,b),hi=max(a,b);
+      float t=max(max(lo.x,lo.y),max(lo.z,0.));
+      float exit=min(min(hi.x,hi.y),min(hi.z,distance));
+      if(t>=exit)return false;
+      t+=.00001*sourceScale;
       for(int i=0;i<52;i++){
         vec3 p=eye+ray*t;
         float sdf=objectDistanceAt(p,c);
         if(abs(sdf)<.042*sourceScale){hit=t;n=objectNormalAt(p,c);break;}
         t+=max(abs(sdf)*.78,.028*sourceScale);
-        if(t>=distance||t>20.)break;
+        if(t>=exit||t>20.)break;
       }
     } else
     #endif

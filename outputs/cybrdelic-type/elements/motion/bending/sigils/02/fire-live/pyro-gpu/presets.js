@@ -1,8 +1,12 @@
 // Fixed-resolution simulation presets. Values change the source and physics,
 
 // never the simulation grid or ray-march resolution.
+// GPU packing: effect=[kind,scale,releaseDuration,continuous];
+// dynamics=[sourceSpeed,expansion,confinement,buoyancy];
+// chemistry=[pilotHeat,fuelRate,sootYield,turbulence].
+// Power choreography specifies where gas is released, not another flame model.
 
-import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-20';
+import { POWER_DEFINITIONS } from '../fire-power-definitions.js?v=studio-rc-37-audit';
 
 const preset = (id, name, description, fuel, effect, dynamics, chemistry, options = {}) => ({
   id,
@@ -223,23 +227,23 @@ export const FIRE_PRESETS = [
   preset(
     'hearth',
     'Hearth flame',
-    'A small stack of finite wood fuel with gentle lift.',
+    'Finite kindling starts a small wood hearth; the logs dry, char and release fuel.',
     'wood',
     [15, .7, 0, 1],
     [0.3, 0.08, 0.5, 0.65],
     [1, 1, 1, 0.65],
-    {family:'Fire',object:'logs',source:[0,.45,0],minHeight:.45,preview:new URL('./objects/logs.jpg',import.meta.url).href},
+    {family:'Fire',object:'logs',kindling:{radius:.24,amount:.4,offset:[-.45,.15]},source:[0,.45,0],minHeight:.45,preview:new URL('./objects/logs.jpg',import.meta.url).href},
   ),
 
   preset(
     'bonfire',
     'Bonfire',
-    'A broad wood flame with a compact burn and a separate rising soot plume.',
+    'Finite kindling starts a broad log fire; flame and soot evolve in the coupled flow.',
     'wood',
     [15, 1, 0, 1],
     [0.45, 0.12, 1.5, 0.55],
     [1.2, 1.15, 1.2, 1.6],
-    {family:'Fire',object:'logs',source:[0,.64,0],minHeight:.64,preview:new URL('./objects/logs.jpg',import.meta.url).href},
+    {family:'Fire',object:'logs',kindling:{radius:.36,amount:.4,offset:[-.45,.15]},source:[0,.64,0],minHeight:.64,preview:new URL('./objects/logs.jpg',import.meta.url).href},
   ),
 
   preset(
@@ -284,15 +288,16 @@ export const FIRE_PRESETS = [
     [1, 0.45, 0, 1],
     [1.5, 0.04, 0.4, 0.6],
     [1.35, 0.65, 0.15, 1],
+    {source:[0,1.1,0],minHeight:.12},
   ),
 
   preset(
     'sooty-plume',
     'Sooty plume',
-    'Slow heavy combustion and thick persistent smoke.',
+    'A sustained flame with a rising, rolling smoke plume.',
     'oil',
-    [1, 1.1, 0, 1],
-    [0.35, 0.05, 0.6, 0.8],
+    [0, 1.1, 0, 1],
+    [0.35, 0.05, 1.0, 0.8],
     [0.9, 1.2, 1.7, 0.6],
   ),
 
@@ -831,8 +836,8 @@ export const SCENES = [
     id: 'test-emission',
     name: '08 \u00b7 Fire light only',
     description:
-      'All external light and bounce are disabled. The flame supplies room illumination. Hot char remains visible while it cools; a cold scene must become dark.',
-    fire: 'cybr-tree',
+      'All external light and bounce are disabled. The flame supplies room illumination. Stop the source and let the plume cool; the scene must become dark.',
+    fire: 'sooty-plume',
     lighting: 'fire',
     fireLight: 24,
     room: true,
@@ -843,7 +848,7 @@ export const SCENES = [
     },
     test: {
       instruction:
-        'All external light and bounce are disabled. The flame supplies room illumination. Hot char remains visible while it cools; a cold scene must become dark.',
+        'All external light and bounce are disabled. The flame supplies room illumination. Stop the source and let the plume cool; the scene must become dark.',
     },
   },
   {
@@ -851,7 +856,7 @@ export const SCENES = [
     name: '09 \u00b7 Room bounce',
     description:
       'Compare with Fire light only. Direct lighting is identical; only approximate room bounce is enabled. Watch for illumination crossing opaque walls or filling every cavity equally.',
-    fire: 'cybr-tree',
+    fire: 'sooty-plume',
     lighting: 'bounce-check',
     fireLight: 24,
     room: true,

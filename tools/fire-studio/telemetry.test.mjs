@@ -47,6 +47,8 @@ test('a delayed readback does not hold frame submission and updates speed when r
   assert.equal(solver.maxSpeed, 4);
   assert.equal(solver.latestTelemetry.preDivergence, 2);
   assert.equal(solver.latestTelemetry.postDivergence, 0.5);
+  assert.equal(solver.latestTelemetry.projectionDt,1/60);
+  assert.equal(solver.latestTelemetry.projectionSampleFrame,1);
   assert.equal(slot.pending, false);
   assert.equal(buffer.mapState, 'unmapped');
 });

@@ -2,17 +2,18 @@
  * flame. Burst age is simulation time, so pausing also pauses the explosion. */
 window.createFireEmitters = (maxPowerKind=6,castCapacity=4) => `
   uniform int emitterKind;
+  
   uniform float burstAge;
   uniform vec3 fuelProfile; // feed, soot yield, jet speed
   uniform float sourceScale;
   uniform float sourceLift;
   uniform int sourceEffectKind;
-  uniform highp sampler3D objectTex;
+  #ifndef FIRE_OBJECT_TEXTURE
+#define FIRE_OBJECT_TEXTURE
+uniform highp sampler3D objectTex;
+#endif
   uniform float objectVariation;
   uniform float burstDuration;
-  uniform vec3 powerDirection;
-  uniform float powerStrength;
-  uniform float powerOriginZ;
   uniform vec4 powerCastOriginAge[${castCapacity}];
   uniform vec4 powerCastDirectionStrength[${castCapacity}];
   uniform vec4 powerCastKindScale[${castCapacity}];
@@ -47,6 +48,7 @@ window.createFireEmitters = (maxPowerKind=6,castCapacity=4) => `
   }
   void emitter(vec2 local,float depth,out float density,out vec3 jet){
     density=0.;jet=vec3(0);
+    #if FIRE_HAS_POWERS
     if(emitterKind>=22&&emitterKind<=${21+maxPowerKind}){
       // Both engines sample the same world-space release and trajectory. These
       // sources enter live gas; the display shader never draws a power shape.
@@ -54,11 +56,12 @@ window.createFireEmitters = (maxPowerKind=6,castCapacity=4) => `
       for(int actor=0;actor<${castCapacity};actor++){
         vec4 kindScale=powerCastKindScale[actor];if(kindScale.z<.5)continue;
         vec4 originAge=powerCastOriginAge[actor],directionStrength=powerCastDirectionStrength[actor],targetCharge=powerCastTargetCharge[actor];
-        vec4 release=powerCastSource(kindScale.x,world,originAge.xyz,kindScale.y,originAge.w,clock+kindScale.w*11.37,directionStrength.xyz,directionStrength.w,targetCharge.xyz,targetCharge.w);
+        vec4 release=powerCastSource(kindScale.x,world,originAge.xyz,kindScale.y,sourceSampleAge(originAge.w,kindScale.z,delta),sourceClock(clock-delta,kindScale.w,delta),directionStrength.xyz,directionStrength.w,targetCharge.xyz,targetCharge.w);
         density+=release.w;jet+=release.xyz*release.w;
       }
       jet/=max(density,.00001);return;
     }
+    #endif
     if(emitterKind==6){
       // One irregular finite charge. Expansion is solved from combustion in
       // the pressure pass; there are no moving spherical emission pockets.
@@ -106,24 +109,37 @@ window.createFireEmitters = (maxPowerKind=6,castCapacity=4) => `
     if(any(greaterThan(abs(local),bounds)))return;
     float shear=4.8*sin(depth*19.+clock*13.)*cos((local.x+local.y)*12.-clock*11.);
     float center=.16*sin(clock*7.3)+local.x*.48*sin(clock*9.1);
-    float r2=dot(local/vec2(.42,.18),local/vec2(.42,.18))+pow((depth-center)/.15,2.);
+    vec2 inlet=local/sourceScale;
+    float r2=dot(inlet/vec2(.42,.18),inlet/vec2(.42,.18))+pow((depth-center)/(.15*sourceScale),2.);
     jet=vec3(shear*.35,2.8+shear*.30,sin(local.x*23.+local.y*19.+clock*13.)*1.1);
     float sourceDuty=1.;
-    if(emitterKind==1){ // Three resolved tongues above the crossed logs.
+    if(emitterKind==0&&sourceEffectKind==0){ // Broad, slow source for a sooty plume.
+      float x=local.x/sourceScale,y=local.y/sourceScale,z=depth/sourceScale;
+      r2=pow(x/.62,2.)+pow((y-.04)/.22,2.)+pow(z/.44,2.);
+      float drift=texture(noiseTex,vec2(x*.24+z*.12+clock*.035,y*.22-clock*.025)).r;
+      jet=vec3((drift-.5)*1.10,.42+(drift-.5)*.18,(sin(z*3.+clock*.6)-.5)*.72);
+    } else if(emitterKind==1){ // Three resolved tongues above the crossed logs.
       vec2 bed=local/sourceScale;
-      float pocket=floor(clamp(bed.x/.60+1.5,0.,2.99))-1.;
-      r2=pow((bed.x-pocket*.60)/.27,2.)+pow((bed.y-.18)/.13,2.)
-        +pow((depth/sourceScale-pocket*.18)/.26,2.);
-      jet=vec3(shear*.19,(.8+shear*.15)*sourceLift,
-        sin(local.x*12.+clock*8.)*.45);
+      // A connected, broad fuel bed feeds three overlapping flame tongues.
+      // The old hard pocket selection pinched the source at each boundary;
+      // advection then stretched those pinches into long, parallel streams.
+      float x=bed.x,y=bed.y,z=depth/sourceScale;
+      float roots=pow(x/.78,2.)+pow((y-.035)/.19,2.)+pow(z/.39,2.);
+      float left=pow((x+.47)/.39,2.)+pow((y-.30)/.43,2.)+pow((z+.08)/.34,2.);
+      float center=pow(x/.39,2.)+pow((y-.34)/.46,2.)+pow(z/.34,2.);
+      float right=pow((x-.47)/.39,2.)+pow((y-.30)/.43,2.)+pow((z-.08)/.34,2.);
+      float tongues=min(left,min(center,right));
+      r2=mix(roots,tongues,smoothstep(.08,.60,y));
+      jet=vec3(shear*.25,.92*sourceLift+shear*.08,
+        sin(local.x*8.+clock*5.)*.30);
     } else if(emitterKind==2){ // A narrow, fast torch jet.
       // Gas exits a thin opening instead of a spherical glowing reservoir.
       r2=pow(local.x/.16,2.)+pow((local.y-.06)/.045,2.)+pow(depth/.15,2.);
       vec2 eddy=texture(noiseTex,vec2(local.x*1.7+depth*.8+clock*.13,local.y*.8-clock*.22)).rg;
       float speed=fuelProfile.y<.5?5.8:2.8;
       jet=vec3((eddy.r-.5)*9.,speed*(.7+.6*eddy.g),(eddy.g-.5)*4.);
-    } else if(emitterKind==3){ // Upright ring with real depth.
-      r2=pow((length(local)-1.30)/.11,2.)+pow((depth-.08*sin(clock*3.+local.y*5.))/.16,2.);
+    } else if(emitterKind==3){ // Horizontal ring with a finite vertical fuel layer.
+      r2=pow((length(vec2(local.x,depth))-.65*sourceScale)/(.12*sourceScale),2.)+pow(local.y/(.10*sourceScale),2.);
       vec2 radial=normalize(local+vec2(.0001));
       jet=vec3(-radial.y*1.8+radial.x*.55+shear*.08,radial.x*1.8+radial.y*.55,sin(clock*9.+local.x*8.)*.4);
     } else if(emitterKind==4){ // Spherical shell, not a disk facing the camera.
@@ -172,9 +188,14 @@ window.createFireEmitters = (maxPowerKind=6,castCapacity=4) => `
     }
     if(r2>12.)return;
     float feed=.62+.38*sin(local.x*18.+depth*23.+clock*11.)*sin(local.x*9.-depth*17.-clock*7.3);
-    if(emitterKind==1||emitterKind==2||emitterKind==5){
-      float variation=texture(noiseTex,local*vec2(.8,1.3)+depth*vec2(.5,-.3)+clock*vec2(.14,-.19)).b;
-      feed=mix(.35,1.1,smoothstep(.2,.8,variation));
+    if(emitterKind==0&&sourceEffectKind==0){
+      float plumeFeed=texture(noiseTex,local*.12+depth*vec2(.08,-.06)+clock*vec2(.025,-.018)).b;
+      feed=mix(.90,1.0,smoothstep(.08,.92,plumeFeed));
+    } else if(emitterKind==1||emitterKind==2||emitterKind==5){
+      float variation=texture(noiseTex,local*vec2(.58,.86)+depth*vec2(.36,-.24)+clock*vec2(.10,-.14)).b;
+      // Keep coherent fuel coverage; high contrast holes become frozen source
+      // masks that advection stretches into parallel filaments.
+      feed=mix(.54,1.02,smoothstep(.12,.88,variation));
     }
     density=exp(-1.5*r2)*feed*sourceDuty;
     if(emitterKind==1)density*=.85;

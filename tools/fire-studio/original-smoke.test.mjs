@@ -33,9 +33,9 @@ test('visible smoke retains the existing decay trajectory until the invisible cu
   assert.ok(unchanged>3000,'Fresh smoke is not shortened by the storage cleanup');
 });
 test('production cleanup is after absorbing boundaries and before chemistry storage',()=>{
-  const source=readFileSync(resolve(root,'fire.js'),'utf8');
+  const source=(readFileSync(resolve(root,'fire.js'),'utf8')+'\n'+readFileSync(resolve(root,'original-shaders.js'),'utf8'));
   assert.match(source,/import\s*\{SMOKE_CLEAR_DENSITY\}\s*from\s*['"]\.\/smoke-lifecycle\.js\?v=[a-z0-9-]+['"]/);
-  assert.match(source,/soot=clamp\(\(soot-oxidized\)\*exp\(-\.055\*delta\)/);
+  assert.match(source,/soot=clamp\(\(soot-oxidized\)\*exp\(-smokeLossRate\(temp\)\*smokeDecayDt\)/);
   const boundary=source.indexOf('fuel*=edge; temp*=edge; soot*=edge;'),cleanup=source.indexOf('if(soot<${SMOKE_CLEAR_DENSITY})soot=0.;'),store=source.indexOf('outChem=vec4(fuel,oxygen,temp,soot);');
   assert.ok(boundary>=0&&cleanup>boundary&&store>cleanup);
 });

@@ -7,8 +7,8 @@ const {adaptiveFlowShaders,initialAdaptiveFlowCommands,ADAPTIVE_FLOW_OFFSETS:off
 const {simulationShaders}=await import(pathToFileURL(path.join(root,'pyro-gpu/shaders.js')).href);
 
 test('fine flow mask work is compiled only for the opted-in solver',()=>{
- assert.doesNotMatch(simulationShaders().correctScalar,/atomicOr\(&opticalAlive,4u\)/);
- assert.match(simulationShaders(128,256,{flowSupport:true}).correctScalar,/atomicOr\(&opticalAlive,4u\)/);
+ assert.doesNotMatch(simulationShaders().correctScalar,/flags\|=8u/);
+ assert.match(simulationShaders(128,256,{flowSupport:true}).correctScalar,/flags\|=8u/);
 });
 
 // Execute the production finish command writes. Only the scalar WGSL dialect
@@ -50,7 +50,7 @@ test('queued fine kernels use a full eight-cell tile and keep original fine tran
   assert.doesNotMatch(s[key],/global_invocation_id/);
  }
  assert.match(s.fineCorrect,/Brinkman/);
- assert.match(s.fineCorrect,/flameActivity\(c\)/);
+ assert.match(s.fineCorrect,/completedVolumeSourceAt\(x,N\)/);
  assert.match(s.fineAdvect,/Near-integer|tolerance=8\./);
  assert.match(s.coarseAdvect,/@workgroup_size\(4,4,4\)/);
  assert.match(s.fillCell,/textureSampleLevel/);

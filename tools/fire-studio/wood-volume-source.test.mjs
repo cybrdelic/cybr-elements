@@ -74,16 +74,15 @@ test('existing full scalar footprint conservatively covers the source pressure c
     }
   }
 });
-test('dense and adaptive velocity kernels use the same blocked-aware raw volume helper',()=>{
-  const adaptive=adaptiveFlowShaders(128,256);
-  for(const code of [simulationShaders(128,256).correctVelocity,adaptive.coarseCorrect,adaptive.fineCorrect]){
-    assert.match(code,/if\(abs\(object\.tint\.w\)>\.5\)\{[\s\S]*?expansion\+=woodFluxVolumeSource\(i,N,p\.step\.x\)/);
-    assert.match(code,/let span=128u\/gridN;let base=cell\*span;var mass=0\./);
-    assert.match(code,/mass\+=woodFluxRawMass\(base\+vec3u\(x,y,z\)\)/);
-    assert.match(code,/textureStore\(dst,vec3i\(i\),vec4f\(out,expansion\)\)/);
-  }
-  const raw=woodFluxWGSL.slice(woodFluxWGSL.indexOf('fn woodFluxRawMass('),woodFluxWGSL.indexOf('fn woodFluxVolumeSource('));
-  assert.match(raw,/woodFluxWords\[index\+5u\]!=0u/);
-  assert.doesNotMatch(raw,/woodFluxWords\[index\+4u\]/);
-  assert.match(woodFluxWGSL,/any\(cell>=vec3u\(gridN\)\)/);
+test('dense and adaptive pressure consume the completed fine wood release',()=>{
+ const adaptive=adaptiveFlowShaders(128,256);
+ for(const code of [simulationShaders(128,256).correctVelocity,adaptive.coarseCorrect,adaptive.fineCorrect]){
+  assert.match(code,/completedVolumeSourceAt\(x,N\)/);
+  assert.doesNotMatch(code,/expansion\+=woodFluxVolumeSource/,'no second count of the same wood dose');
+  assert.match(code,/textureStore\(dst,vec3i\(i\),vec4f\(out,expansion\)\)/);
+ }
+ const scalar=simulationShaders(128,256).correctScalar;
+ assert.match(scalar,/let vapor=woodFluxFineDensity/);
+ assert.ok(scalar.indexOf('c.z+=vapor.x')<scalar.indexOf('let fuelAfterSources=c.z'));
+ assert.match(scalar,/thermalVolumeChange\(temperatureBeforeReaction,c.y,fuelBeforeSources,fuelAfterSources/);
 });

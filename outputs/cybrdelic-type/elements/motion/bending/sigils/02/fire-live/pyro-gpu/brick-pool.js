@@ -1,4 +1,4 @@
-import { simulationShaders } from './shaders.js?v=studio-rc-20';
+import { simulationShaders } from './shaders.js?v=studio-rc-37-audit';
 
 // Chemistry is always RGBA16F at the authored 256^3 voxel spacing. The pool
 // changes storage, not the soot/temperature/fuel/oxygen-deficit equations.
@@ -9,7 +9,7 @@ export const POOL_INDIRECT = Object.freeze({ clearNew: 0, pool: 12, migrate: 24,
   dense: 36, importDense: 48, topology: 60, scalar: 72, bytes: 84 });
 
 export function planBrickPool({ D = 256, brick = 16, capacity = 512,
-  denseOccupancy = .5, maxSparseMemory = .65, maxTextureDimension3D = 256, requestHalo = 1 } = {}) {
+  denseOccupancy = .5, maxSparseMemory = .65, maxTextureDimension3D = 256, requestHalo = 1, sharedStorage = false } = {}) {
   if (D !== 256 || ![16, 32].includes(brick) || !Number.isInteger(capacity) || capacity < 1)
     throw Error('Brick pools preserve D=256 and use 16 or 32 voxel bricks with a fixed positive capacity.');
   if (!(denseOccupancy > 0 && denseOccupancy <= 1) || !(maxSparseMemory > 0 && maxSparseMemory <= 1))
@@ -27,6 +27,7 @@ export function planBrickPool({ D = 256, brick = 16, capacity = 512,
       (span < tiles.span || (span === tiles.span && aspect < tiles.aspect)))) tiles = { x, y, z, volume, span, aspect };
   }
   if (!tiles) throw Error('Fixed pool does not fit the adapter 3D texture limit.');
+  if(sharedStorage&&(capacity!==pageCount||brick!==16))throw Error('Shared storage needs the complete 16-cell pool reservation');
   const atlasSize = [tiles.x * brick, tiles.y * brick, tiles.z * brick];
   const atlasBytes = atlasSize.reduce((a, b) => a * b, 1) * 8 * 3;
   const denseBytes = D ** 3 * 8 * 3;
@@ -35,7 +36,7 @@ export function planBrickPool({ D = 256, brick = 16, capacity = 512,
   const fallbackPages = Math.min(capacity, Math.floor(pageCount * denseOccupancy));
   return Object.freeze({ D, brick, capacity, pagesAxis, pageCount, tiles: [tiles.x, tiles.y, tiles.z],
     atlasSize, atlasBytes, denseBytes, memoryRatio: atlasBytes / denseBytes,
-    viable: atlasBytes < denseBytes * maxSparseMemory, fallbackPages,
+    viable: sharedStorage ? atlasBytes===denseBytes : atlasBytes < denseBytes * maxSparseMemory, sharedStorage, separateDenseBytes:sharedStorage?0:denseBytes, fallbackPages,
     denseOccupancy, maxSparseMemory, offsets: Object.freeze(offsets), metadataBytes: (16 + capacity * 6) * 4,
     pageTableBytes: pageCount * 8, voxelSize: 6 / D, halo: 0, requestHalo,
     sampling: 'hardware filtering inside a page; eight logical clamped voxels at page seams' });
@@ -81,6 +82,14 @@ export function brickPoolFieldWGSL(plan, { prefix = 'bp', name = 'poolChem', atl
   [prefix, name, samplerName].forEach(ident);
   if (denseTexture) ident(denseTexture);
   const atlas = `${name}Atlas`, size = `vec3f(${plan.atlasSize.map((n) => `${n}.`).join(',')})`;
+  if(write&&plan.sharedStorage&&denseTexture)return `
+fn ${name}Store(i:vec3i,value:vec4f){
+ if(any(i<vec3i(0))||any(i>=vec3i(${plan.D}))){return;}
+ if(${prefix}Mode()==1u){textureStore(${denseTexture},i,value);return;}
+ let index=${prefix}PageIndex(vec3u(i)/${plan.brick}u);let page=${prefix}Pages[index];
+ if(${prefix}Resident(index,page)){textureStore(${denseTexture},${prefix}AtlasCell(vec3u(i)),value);}
+}
+`;
   if (write) return `
 @group(${group}) @binding(${atlasBinding}) var ${atlas}:texture_storage_3d<rgba16float,write>;
 fn ${name}Store(i:vec3i,value:vec4f){
@@ -90,6 +99,12 @@ fn ${name}Store(i:vec3i,value:vec4f){
  if(${prefix}Resident(index,page)){textureStore(${atlas},${prefix}AtlasCell(vec3u(i)),value);}
 }
 `;
+  if(plan.sharedStorage&&denseTexture){
+    // The atlas and dense layout share one physical texture. Use one read
+    // binding as well as one write binding to avoid redundant declarations.
+    const reader=brickPoolFieldWGSL({...plan,sharedStorage:false},{prefix,name,atlasBinding,group,samplerName,denseTexture});
+    return reader.replace(`@group(${group}) @binding(${atlasBinding}) var ${atlas}:texture_3d<f32>;`,'').replaceAll(atlas,denseTexture);
+  }
   return `
 @group(${group}) @binding(${atlasBinding}) var ${atlas}:texture_3d<f32>;
 fn ${name}PoolClampedCell(raw:vec3i)->vec4f{
@@ -147,17 +162,38 @@ function rewriteCalls(source, call, replace) {
 // addressing is the only edit to production WGSL. Both storage modes execute
 // the canonical fine8 worklist; allocation support pages are not execution.
 // The source, limiter, reaction, extinction, flags and channel cleanup remain.
+// A MAC cell center samples the middle of an even, page-aligned fine block.
+// Its eight trilinear donors cannot cross a 16-voxel page seam. Specialize this
+// hot reader instead of carrying the general seam sampler into velocity code.
+export function brickPoolVelocityShader(plan,{N=128,source}={}){
+ const ratio=plan.D/N;
+ if(![2,4,8,16].includes(ratio)||plan.brick%ratio)throw Error('Unaligned coarse chemistry sampling');
+ const marker='let c=scalar(chem,x);';if(!source.includes(marker))throw Error('Velocity chemistry site changed');
+ const atlas=plan.sharedStorage?'chem':'flowChemAtlas';
+ return source.replace(marker,'let c=alignedFlowChem(i);')+brickPoolWGSL(plan)+`
+ ${plan.sharedStorage?'':`@group(0) @binding(20) var flowChemAtlas:texture_3d<f32>;`}
+ fn alignedFlowChem(i:vec3u)->vec4f{
+  if(any(i>=vec3u(${N}u))){return vec4f(0);}
+  if(bpMode()==1u){return textureSampleLevel(chem,smp,(vec3f(i)+.5)/${N}.,0);}
+  let base=i*${ratio}u;let b=base/${plan.brick}u;let index=bpPageIndex(b);let page=bpPages[index];
+  if(!bpResident(index,page)){return vec4f(0);}
+  let texel=vec3f(bpTile(page.slot-1u)*${plan.brick}u+base-b*${plan.brick}u)+${ratio/2}.;
+  return textureSampleLevel(${atlas},smp,texel/vec3f(${plan.atlasSize.map(n=>n+'.').join(',')}),0);
+ }
+ `;
+}
+
 export function brickPoolScalarShaders(plan, { N = 128, shaders = simulationShaders(N, plan.D),
   prefix = 'bp', pagesBinding = 23, metadataBinding = 24,
   oldAtlasBinding = 20, predictorAtlasBinding = 21, destinationAtlasBinding = 22 } = {}) {
   const shared = brickPoolWGSL(plan, { prefix, pagesBinding, metadataBinding });
   const result = {};
-  for (const key of ['advectScalar', 'correctScalar']) {
+  for (const key of ['diffuseScalar','advectScalar', 'correctScalar']) {
     let code = shaders[key];
     if (typeof code !== 'string') throw Error('Missing production scalar shader: ' + key);
     const oldInvocation = key === 'advectScalar'
       ? 'let i=bricks[group.x].xyz*8u+vec3u(group.y,group.z%2u,group.z/2u)*4u+local;'
-      : 'let brick=bricks[group.x].xyz;let i=brick*8u+vec3u(group.y,group.z%2u,group.z/2u)*4u+local;';
+      : (key==='correctScalar'?'let brick=brickCoordinate(group.x);let i=brick*8u+vec3u(group.y,group.z%2u,group.z/2u)*4u+local;':'let brick=bricks[group.x].xyz;let i=brick*8u+vec3u(group.y,group.z%2u,group.z/2u)*4u+local;');
     if (!code.includes(oldInvocation)) throw Error('Production scalar invocation changed; pool adapter needs review.');
     code = rewriteCalls(code, 'scalar', ([texture, position]) =>
       texture === 'old' ? `oldChemSample(${position})` : texture === 'pred' ? `predChemSample(${position})` : null);
@@ -166,7 +202,7 @@ export function brickPoolScalarShaders(plan, { N = 128, shaders = simulationShad
     code = rewriteCalls(code, 'textureStore', ([texture, position, value]) =>
       texture === 'dst' ? `newChemStore(${position},${value})` : null);
     code += shared + brickPoolFieldWGSL(plan, { prefix, name: 'oldChem', atlasBinding: oldAtlasBinding, denseTexture: 'old' });
-    if (key === 'correctScalar') code += brickPoolFieldWGSL(plan, { prefix, name: 'predChem', atlasBinding: predictorAtlasBinding, denseTexture: 'pred' });
+    if (key === 'correctScalar' && code.includes('var pred:texture_3d<f32>')) code += brickPoolFieldWGSL(plan, { prefix, name: 'predChem', atlasBinding: predictorAtlasBinding, denseTexture: 'pred' });
     code += brickPoolFieldWGSL(plan, { prefix, name: 'newChem', atlasBinding: key === 'advectScalar' ? predictorAtlasBinding : destinationAtlasBinding, denseTexture: 'dst', write: true });
     result[key] = code;
   }
@@ -286,6 +322,17 @@ struct Page {slot:u32,generation:u32};
   // A sampler declaration is required by the shared sampling function even
   // when this entry point uses only textureLoad. Auto layout prunes it.
   const migrateWithSampler = '@group(0) @binding(4) var smp:sampler;\n' + migrate;
+  const publishMigration=`
+@group(0) @binding(0) var src:texture_3d<f32>;
+@group(0) @binding(1) var dst:texture_storage_3d<rgba16float,write>;
+@group(0) @binding(2) var spare:texture_storage_3d<rgba16float,write>;
+@compute @workgroup_size(4,4,4) fn main(@builtin(global_invocation_id) i:vec3u){
+ if(any(i>=vec3u(256u))){return;}textureStore(dst,vec3i(i),textureLoad(src,vec3i(i),0));textureStore(spare,vec3i(i),vec4f(0));}
+`;
+  const clearMigrationScratch=`
+@group(0) @binding(0) var dst:texture_storage_3d<rgba16float,write>;
+@compute @workgroup_size(4,4,4) fn main(@builtin(global_invocation_id) i:vec3u){if(any(i>=vec3u(256u))){return;}textureStore(dst,vec3i(i),vec4f(0));}
+`;
   const importDense = brickPoolWGSL(plan, { pagesBinding: 0, metadataBinding: 1 }) + `
 @group(0) @binding(2) var src:texture_3d<f32>;
 @group(0) @binding(3) var dst:texture_storage_3d<rgba16float,write>;
@@ -301,7 +348,7 @@ struct Page {slot:u32,generation:u32};
   // `meta` is reserved by WGSL. Keep the descriptive JS layout names while
   // giving the generated GPU state identifier a valid spelling.
   return Object.fromEntries(Object.entries({ topology, reset, clearNew, requestClear, requestScatter, requestExpand,
-    migrate: migrateWithSampler, importDense, ackMigration, routeScalar }).map(([name, code]) => [name, code.replace(/\bmeta\b/g, 'poolState')]));
+    migrate: migrateWithSampler, ...(plan.sharedStorage?{publishMigration,clearMigrationScratch}:{}), importDense, ackMigration, routeScalar }).map(([name, code]) => [name, code.replace(/\bmeta\b/g, 'poolState')]));
 }
 
 export async function createBrickPool(device, options = {}) {
@@ -404,10 +451,16 @@ export class ChemistryBrickPool {
     this.pageIndex = 1 - this.pageIndex;
   }
   encodeMigrationToDense(encoder, fieldIndex, denseView) {
-    this.pass(encoder, 'migrate', [[0, this.pageTable, true], [1, this.metadata, true], [2, this.fields[fieldIndex].view, false], [3, denseView, false]], POOL_INDIRECT.migrate);
+    const shared=this.plan.sharedStorage;
+    this.pass(encoder, 'migrate', [[0, this.pageTable, true], [1, this.metadata, true], [2, this.fields[fieldIndex].view, false], [3, shared?this.fields[2].view:denseView, false]], POOL_INDIRECT.migrate);
+    if(shared){
+      this.pass(encoder,'publishMigration',[[0,this.fields[2].view,false],[1,denseView,false],[2,this.fields[1-fieldIndex].view,false]],POOL_INDIRECT.migrate);
+      this.pass(encoder,'clearMigrationScratch',[[0,this.fields[2].view,false]],POOL_INDIRECT.migrate);
+    }
     this.pass(encoder, 'ackMigration', [[0, this.metadata, true], [1, this.commands, true]], undefined, [1]);
   }
   encodeImportDense(encoder, fieldIndex, denseView) {
+    if(this.plan.sharedStorage)throw Error('Shared chemistry cannot import an aliased dense field');
     this.pass(encoder, 'importDense', [[0, this.pageTable, true], [1, this.metadata, true], [2, denseView, false], [3, this.fields[fieldIndex].view, false]], POOL_INDIRECT.importDense);
   }
   encodeRouteScalarDispatch(encoder, legacyIndirect) {

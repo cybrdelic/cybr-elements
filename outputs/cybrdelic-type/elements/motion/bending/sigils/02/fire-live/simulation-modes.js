@@ -15,15 +15,20 @@ export function readSimulation(params) {
 }
 
 export function volumeOptions(params, mode) {
+  const transport = params.get('transport') === 'conservative' ? 'flux' : 'maccormack';
   if (mode === 'sparse') return {
+    ...(params.get('pressureCache')==='1'?{pressureCache:true}:{}),
     adaptive: false, pressureWork: false, brickPool: true,
-    lightWork: false, lightReceivers: false,
+    lightWork: false, lightReceivers: false, transport,
   };
   return {
+    pressureCache:params.get('pressureCache')!=='0',
+    ...(params.get('woodCadence')==='frame'?{multirateWood:true}:{}),
     adaptive: params.get('solver') === 'adaptive',
     pressureWork: params.get('pressureWork') === '1',
     brickPool: false,
     lightWork: params.get('lightWork') === '1',
     lightReceivers: params.get('receivers') === '1',
+    transport,
   };
 }

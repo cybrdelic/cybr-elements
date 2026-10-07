@@ -61,7 +61,8 @@ function fixture(definition){
   };
   const setup=new Function('solver','activeFire','view','window','$','on',
     'powerDefinition','powerDirection','normalizePowerSettings',`
-      let gesture=null,activeTool='fire',paused=false,pan=[0,0];
+      let gesture=null,activeTool='fire',paused=false,pan=[0,0],resetPending=false,pendingSourceActions=[];
+      const scope={disposed:false};
       let powers=normalizePowerSettings({heading:0,elevation:0,strength:1});
       const worldPoint=e=>e.point.slice(0,2),powerPoint=e=>e.point,
         powerAim=e=>e.point,locationPoint=e=>e.point;
@@ -69,6 +70,8 @@ function fixture(definition){
       const message={textContent:''};
       const burst=()=>solver.castPower(solver.source,powerDirection(powers),powers.strength);
       ${functionSource('aimDirection')}
+      ${functionSource('sourceAction')}
+      ${functionSource('cast')}
       ${functionSource('tool')}
       ${pointerSource}
       return {tool,state:()=>({gesture,activeTool,paused})};

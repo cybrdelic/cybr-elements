@@ -1,17 +1,19 @@
-import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-20';
-import { PyroSolver } from './solver.js?v=studio-rc-20';
-import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-20';
-import { runtimeScope } from '../runtime-scope.js?v=studio-rc-20';
-import { outputSize } from './output-size.js?v=studio-rc-20';
-import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-20';
-import { floorHit } from '../fuel-ground.js?v=studio-rc-20';
-import { volumeOptions } from '../simulation-modes.js?v=studio-rc-20';
-import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-20';
+import {SimulationClock} from '../simulation-clock.js?v=studio-rc-37-audit';
+import { FIRE_COLORS } from './fire-colors.js?v=studio-rc-37-audit';
+import { PyroSolver } from './solver.js?v=studio-rc-37-audit';
+import { FIRE_PRESETS, sourceOrigin } from './presets.js?v=studio-rc-37-audit';
+import { runtimeScope } from '../runtime-scope.js?v=studio-rc-37-audit';
+import { outputSize } from './output-size.js?v=studio-rc-37-audit';
+import { gpuSessionTimeout } from './gpu-session.js?v=studio-rc-37-audit';
+import { floorHit } from '../fuel-ground.js?v=studio-rc-37-audit';
+import { volumeOptions } from '../simulation-modes.js?v=studio-rc-37-audit';
+import { powerDefinition, normalizePowerSettings, powerDirection } from '../fire-powers.js?v=studio-rc-37-audit';
 export async function mountVolume({
   initialPreset = 'explosion',
   initialPowers,
   simulation = 'volume',
   onFailure = () => {},
+  onRemount = (id) => {const url=new URL(location.href);url.searchParams.set('firePreset',id);location.assign(url.href);},
 } = {}) {
   const scope = runtimeScope(onFailure),
     on = scope.on;
@@ -50,6 +52,8 @@ export async function mountVolume({
     resetQueued = false,
     resetWaiters = [],
     resetCompletion = null,
+    resetPending = false,
+    pendingSourceActions = [],
     benchmarkQueued = false,
     benchmarkActive = false,
     cancelBenchmark = false;
@@ -100,9 +104,9 @@ export async function mountVolume({
   $('#fuel').value = ['gas', 'wood', 'oil'].includes(params.get('fuel'))
     ? params.get('fuel')
     : activeFire.fuel;
-  let woodTimeScale = Math.max(1, Math.min(24, Number(params.get('woodTimeScale')) || 12));
+  let woodTimeScale = Math.max(1, Math.min(24, Number(params.get('woodTimeScale')) || 1));
   function setWoodTime(value) {
-    woodTimeScale = Math.max(1, Math.min(24, Number(value) || 12));
+    woodTimeScale = Math.max(1, Math.min(24, Number(value) || 1));
     $('#wood-speed').value = woodTimeScale;
     $('#wood-speed-value').textContent = woodTimeScale + '×';
     if (solver) { solver.woodTimeScale = woodTimeScale; solver.lightReady = false; }
@@ -266,7 +270,8 @@ export async function mountVolume({
   function placeFuel(e) {
     const at=floorPoint(e);
     if(!at){if(gesture)gesture.fuelAt=null;message.textContent='Place fuel on the floor inside the simulation area.';return;}
-    solver.dropFuel(at,gesture?.fuelAt);if(gesture)gesture.fuelAt=at;
+    const position=[...at],previous=gesture?.fuelAt?[...gesture.fuelAt]:undefined;
+    sourceAction(()=>solver.dropFuel(position,previous));if(gesture)gesture.fuelAt=at;
     paused=false;sync();
     message.textContent='Unlit fuel placed · nearby flame or Ignite fuel starts combustion';
   }
@@ -303,6 +308,7 @@ export async function mountVolume({
   }
   function restart() {
     if (!solver || scope.disposed) return Promise.resolve();
+    resetPending = true;
     if (busy) {
       resetQueued = true;
       return new Promise((resolve, reject) => resetWaiters.push({ resolve, reject }));
@@ -311,11 +317,14 @@ export async function mountVolume({
     busy = true;
     const waiters = resetWaiters.splice(0);
     const task = (async () => {
+      let completed = false;
       try {
+        await solver.selectPowerKind(powerDefinition(activeFire)?.kind??null);
         await solver.prepareSource();
         if (scope.disposed) return;
         await solver.reset();
         if (scope.disposed) return;
+        placeKindling();
         triggerSource();
         if (testScenario) {
           solver.seed = 2;
@@ -336,8 +345,15 @@ export async function mountVolume({
         await solver.frame(1 / 60);
         await gpuSessionTimeout(solver.drain(), 'source presentation', 8000);
         presentationStatus();
+        completed = true;
       } finally {
-        releaseBusy();
+        try {
+        if (!resetQueued) {
+          resetPending = false;
+          const actions = pendingSourceActions.splice(0);
+          if (completed && !scope.disposed) for (const action of actions) action();
+        }
+        } finally { releaseBusy(); }
       }
     })();
     resetCompletion = task;
@@ -351,11 +367,21 @@ export async function mountVolume({
     if(powerDefinition(activeFire))return solver.castPower(solver.source,powerDirection(powers),powers.strength);
     solver.burst();return true;
   }
+  function sourceAction(action) {
+    if (!solver || scope.disposed) return;
+    if (resetPending) { const sourceId=activeFire.id; pendingSourceActions.push(()=>{if(activeFire.id===sourceId)action();}); return; }
+    action();
+  }
+  function cast(at,direction,strength,options) {
+    options=options||{};
+    // Capture input values now: a reset must not erase a later user cast.
+    const origin=[...at],aim=[...direction],settings={...options,target:options.target?[...options.target]:undefined};
+    sourceAction(()=>{solver.castPower(origin,aim,strength,settings);paused=false;sync();});
+  }
   function burst() {
     if (!solver) return;
-    triggerSource();
-    paused = false;
-    sync();
+    if(powerDefinition(activeFire))cast(solver.source,powerDirection(powers),powers.strength);
+    else sourceAction(()=>{solver.burst();paused=false;sync();});
   }
   $('#pause').onclick = () => {
     if (benchmarkActive) {
@@ -368,7 +394,7 @@ export async function mountVolume({
   $('#restart').onclick = () => restart().catch(onFailure);
   $('#burst').onclick = burst;
   $('#extinguish').onclick = () => {
-    if (solver) {if(activeFire.power)solver.stopPower();else solver.active = false;}
+    sourceAction(()=>{if(activeFire.power)solver.stopPower();else solver.active = false;});
     message.textContent = activeFire.object ? 'Ignition stopped · hot material can keep burning' : activeFire.power ? 'Power stopped · released fire and smoke continue' : 'Source stopped · smoke continues to drift';
   };
   $('#smoke-only').onchange = () => {
@@ -383,7 +409,7 @@ export async function mountVolume({
   };
   $('#room').onchange = markDirty;
   $('#source-guide').onchange = markDirty;
-  $('#ignite-fuel').onclick=()=>{if(solver?.igniteFuel()){paused=false;sync();message.textContent='Fuel ignited · the finite patches burn down through normal combustion';}else message.textContent=solver?.smoke?'Choose a fire source to ignite fuel.':'Drop fuel on the floor first.';};
+  $('#ignite-fuel').onclick=()=>sourceAction(()=>{if(solver?.igniteFuel()){paused=false;sync();message.textContent='Fuel ignited · the finite patches burn down through normal combustion';}else message.textContent=solver?.smoke?'Choose a fire source to ignite fuel.':'Drop fuel on the floor first.';});
   $('#clear-fuel').onclick = () => {solver?.clearFuel();sync();message.textContent='Placed fuel and burn marks cleared · existing smoke keeps drifting';};
   on(window, 'scene-light-change', markDirty);
   $('#orbit').oninput = () => {
@@ -420,7 +446,7 @@ export async function mountVolume({
     sync();
   };
   function tool(next) {
-    if(gesture?.held)solver?.cancelPower();
+    if(gesture?.held)sourceAction(()=>solver?.cancelPower());
     if(gesture&&view.hasPointerCapture?.(gesture.id))view.releasePointerCapture(gesture.id);
     gesture=null;
     activeTool=next;
@@ -452,10 +478,10 @@ export async function mountVolume({
         }
         if(definition.hold){
           gesture.held=true;gesture.target=aim;gesture.direction=aimDirection(aim);
-          solver.castPower(solver.source,gesture.direction,powers.strength,{target:aim,held:true});paused=false;sync();
+          cast(solver.source,gesture.direction,powers.strength,{target:aim,held:true});
         }else if(at){
           if(['flame-dash','eruption-chain','fire-cross'].includes(definition.id)&&aim){
-            solver.castPower(solver.source,aimDirection(aim),powers.strength,{target:aim});paused=false;sync();
+            cast(solver.source,aimDirection(aim),powers.strength,{target:aim});
           }else{solver.source=at;burst();}
         }
         else message.textContent='Choose a floor point inside the simulation to cast this power.';
@@ -471,16 +497,16 @@ export async function mountVolume({
       sync();
     } else if(activeTool==='fuel')placeFuel(e);
     else if(activeFire.power) {
-      if(gesture.held){const target=powerAim(e);if(target){gesture.target=target;gesture.direction=aimDirection(target);solver.aimPower(target,gesture.direction);}markDirty();return;}
+      if(gesture.held){const target=powerAim(e);if(target){gesture.target=target;gesture.direction=aimDirection(target);const direction=[...gesture.direction];sourceAction(()=>solver.aimPower(target,direction));}markDirty();return;}
       const at=powerPoint(e);
       if(!at&&activeFire.power==='floor-trail')solver.powerTrailLast=null;
       if(at&&solver.active)solver.movePower(at,powerDirection(powers));
       markDirty();
     } else solver.source = locationPoint(e);
   });
-  on(view,'pointerup',e=>{if(!gesture||gesture.id!==e.pointerId)return;if(gesture.held)solver.releasePower(gesture.target,gesture.direction);gesture=null;sync();});
-  for(const name of ['pointercancel','lostpointercapture'])on(view,name,e=>{if(!gesture||gesture.id!==e.pointerId)return;if(gesture.held)solver?.cancelPower();gesture=null;});
-  on(window,'blur',()=>{if(gesture?.held)solver?.cancelPower();gesture=null;});
+  on(view,'pointerup',e=>{if(!gesture||gesture.id!==e.pointerId)return;if(gesture.held){const target=[...gesture.target],direction=[...gesture.direction];sourceAction(()=>solver.releasePower(target,direction));}gesture=null;sync();});
+  for(const name of ['pointercancel','lostpointercapture'])on(view,name,e=>{if(!gesture||gesture.id!==e.pointerId)return;if(gesture.held)sourceAction(()=>solver?.cancelPower());gesture=null;});
+  on(window,'blur',()=>{if(gesture?.held)sourceAction(()=>solver?.cancelPower());gesture=null;});
   on(view, 'contextmenu', (e) => e.preventDefault());
   on(
     view,
@@ -527,6 +553,7 @@ export async function mountVolume({
     if (e.key.toLowerCase() === 'f') $('#fullscreen').click();
     if (e.key === 'Escape') tool('fire');
   });
+  const timingText=value=>Number.isFinite(value)?value.toFixed(1):'—';
   function summary(samples) {
     // A mapped GPU timing can span several submitted frames. Count that
     // timing once rather than biasing the profile toward slow readbacks.
@@ -548,7 +575,7 @@ export async function mountVolume({
           }
         : null;
     return {
-      build: 'fire-studio-rc-20',
+      build: 'fire-studio-rc-36',
       adapter: solver.adapter,
       grid: { velocity: solver.N, scalar: solver.D },
       settings: {
@@ -588,6 +615,14 @@ export async function mountVolume({
       errors: solver.errors,
     };
   }
+  function placeKindling(){
+    if(!solver||!activeFire.kindling)return;
+    const radius=solver.fuelBrush.radius,amount=solver.fuelBrush.amount;
+    solver.fuelBrush.radius=activeFire.kindling.radius;solver.fuelBrush.amount=activeFire.kindling.amount;
+    const offset=activeFire.kindling.offset||[0,0],scale=activeFire.effect[1];
+    solver.dropFuel([solver.source[0]+offset[0]*scale,solver.source[2]+offset[1]*scale]);solver.igniteFuel();
+    solver.fuelBrush.radius=radius;solver.fuelBrush.amount=amount;
+  }
   function configureFire() {
     if (!solver) return;
     solver.effect = [...activeFire.effect];
@@ -596,6 +631,7 @@ export async function mountVolume({
     solver.fuel = { gas: 0, wood: 0.35, oil: 1 }[$('#fuel').value];
     solver.smoke = !!activeFire.smokeSimulation || activeFire.id === 'smoke-burst';
     solver.objectId = activeFire.object || null;
+    solver.kindlingEnabled=!!activeFire.kindling;
     solver.ignition = activeFire.ignition === 'crown' ? 2 : activeFire.ignition === 'all' ? 1 : 0;
     solver.treeMoisture = activeFire.moisture || 'dry';
     solver.color = flameColor;
@@ -638,6 +674,7 @@ export async function mountVolume({
   function applyFire(id) {
     const preset = FIRE_PRESETS.find((p) => p.id === id);
     if (!preset) return;
+    if(solver?.adaptive&&(powerDefinition(preset)?.kind??null)!==solver.powerKind){onRemount(id);return;}
     if (benchmarkActive) cancelBenchmark = true;
     testScenario = null;
     testStopped = false;
@@ -730,6 +767,7 @@ export async function mountVolume({
         const item = await solver.frame();
         advanceTest();
         samples.push(item);
+        metrics.dataset.simTime=String(item.time);
         if (i % 30 === 0) message.textContent = `Measurement ${i} / 180`;
       }
       await gpuSessionTimeout(solver.drain(), 'benchmark completion', 15000);
@@ -766,7 +804,15 @@ export async function mountVolume({
       releaseBusy();
     }
   }
-  async function frame() {
+  const physicalClock=new SimulationClock(performance.now());
+  let traceRunning=false;
+  async function frame(now=performance.now()) {
+    // A paused/hidden interval is not a slow simulation frame. Start a fresh
+    // timing window on resume while retaining the physical clock's debt.
+    const running=scope.visible&&!paused&&!benchmarkActive&&!!solver;
+    if(running&&!traceRunning){trace.length=0;frameCount=0;}
+    traceRunning=running;
+    physicalClock.tick(now,running&&!busy);
     if (!scope.visible) {
       scope.schedule(frame);
       return;
@@ -790,7 +836,11 @@ export async function mountVolume({
         }
         solver.smoke = !!activeFire.smokeSimulation || activeFire.id === 'smoke-burst';
         solver.camera(viewUniform());
-        const result = await solver.frame(paused ? 0 : 1 / 60, { waitForCapacity: false });
+        const beforeTime=solver.time;
+        const result = await solver.frame(paused ? 0 : Math.min(physicalClock.debt,1/30), { waitForCapacity: false, realtimePacing:true });
+        if(result)physicalClock.consume(Math.max(0,solver.time-beforeTime));
+        metrics.dataset.simulationLag=String(physicalClock.debt);
+        metrics.dataset.droppedWallTime=String(physicalClock.dropped);
         if (!result) {
           queueLimitedRafs++;
           scope.schedule(frame);
@@ -800,17 +850,21 @@ export async function mountVolume({
         if (!paused) {
           advanceTest();
           trace.push(result);
+          metrics.dataset.simTime=String(result.time);
+          metrics.dataset.maxSpeed=String(result.maxSpeed??solver.maxSpeed);metrics.dataset.occupancyReduction=solver.device.features?.has?.('subgroups')?'subgroups':'packed atomics';metrics.dataset.substeps=String(result.substeps);
           if (!params.has('qa') && trace.length > 180) trace.shift();
           if (params.has('qa') && trace.length <= 5)
             await save(params.get('qa') + '-step-' + trace.length, result);
           if (++frameCount % 30 === 0) {
+            if(solver.adaptive){metrics.dataset.refinedTiles=String(result.refinedFlowTiles??'');metrics.dataset.flowMode=result.flowSparse?'refined':'dense';}
+
             const recent = trace.slice(-60),
               report = summary(recent);
             metrics.textContent = result.gpu
-              ? `GPU sample ${((result.gpu.simulation || 0) + (result.gpu.lighting || 0) + (result.gpu.render || 0)).toFixed(1)} ms · ${solver.time.toFixed(2)} s`
+              ? `GPU ${((result.gpu.simulation || 0) + (result.gpu.lighting || 0) + (result.gpu.render || 0)).toFixed(1)} ms · source ${timingText(result.gpu.source)} / flow ${timingText(result.gpu.velocity)} · pressure ${timingText(result.gpu.pressure)} · chemistry ${timingText(result.gpu.transport)} · auxiliary ${timingText(result.gpu.auxiliary)} · lighting ${timingText(result.gpu.lighting)} · render ${timingText(result.gpu.render)} ms · ${solver.time.toFixed(2)} s`
               : `GPU timing pending · ${solver.time.toFixed(2)} s`;
             $('#gpu-status').textContent =
-              `${runtimeStatus()}${solver.adapter.description || solver.adapter.device || solver.adapter.vendor} · frame cadence p95 ${report.frameIntervalMs?.p95.toFixed(1) || '—'} ms · simulation ${(report.simulationToWallRatio || 0).toFixed(2)}x realtime · pressure residual ${((result.postDivergence / Math.max(result.preDivergence, 0.00001)) * 100).toFixed(2)}% · ${result.substeps} substeps · ${queueLimitedRafs} queue-limited display ticks`;
+              `${runtimeStatus()}${solver.adapter.description || solver.adapter.device || solver.adapter.vendor} · frame cadence p95 ${report.frameIntervalMs?.p95.toFixed(1) || '—'} ms · simulation ${(report.simulationToWallRatio || 0).toFixed(2)}x realtime · projection L1 ${result.postDivergence.toExponential(2)} s⁻¹ · relative residual ${((result.postDivergence / Math.max(result.preDivergence, 0.00001)) * 100).toFixed(2)}% · ${result.substeps} substeps · ${queueLimitedRafs} queue-limited display ticks`;
             queueLimitedRafs = 0;
           }
           if (
@@ -842,16 +896,17 @@ export async function mountVolume({
     scope.schedule(frame);
   }
   try {
-    solver = await PyroSolver.create(canvas, volumeOptions(params, simulation));
+    solver = await PyroSolver.create(canvas, {...volumeOptions(params, simulation),hasPowers:!!powerDefinition(activeFire),powerKind:powerDefinition(activeFire)?.kind??null});
     solver.woodTimeScale = woodTimeScale;
     if (params.has('validate')) {
-      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-20');
+      const { pressureCheck } = await import('./pressure-check.js?v=studio-rc-37-audit');
       const report = await pressureCheck(solver.device);
       await save(params.get('qa') + '-pressure', report);
       if (!report.pass) throw Error('GPU pressure reference failed: ' + JSON.stringify(report));
     }
     configureFire();
     solver.source = sourceOrigin(activeFire);
+    placeKindling();
     if(activeFire.power){
       if(powerDefinition(activeFire)?.floor){$('#room').checked=true;}
       solver.castPower(solver.source,powerDirection(powers),powers.strength);
@@ -886,6 +941,8 @@ export async function mountVolume({
     setVisible: scope.setVisible,
     fire: applyFire,
     abilityState:()=>solver?.powerCasts?.snapshot(),
+    telemetry:()=>({...solver?.latestTelemetry,time:solver?.time}),
+    inspectState:()=>({time:solver?.time,telemetry:{...solver?.latestTelemetry},velocityGrid:solver?.N,scalarGrid:solver?.D,source:activeFire.id,resetPending}),
     snapshot: () => ({
       simulation,
       tool: activeTool,

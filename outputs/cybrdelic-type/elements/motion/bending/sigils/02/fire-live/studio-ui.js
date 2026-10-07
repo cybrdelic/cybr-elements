@@ -65,6 +65,17 @@ export function studioUI(onVisibility) {
       $('#recovery-actions').hidden = true;
       $('#view').setAttribute('aria-busy', 'true');
     },
+    sessionBlocked() {
+      badge.textContent = 'In use';
+      badge.dataset.state = 'loading';
+      $('#view-state').hidden = false;
+      $('#view-state-title').textContent = 'Fire Studio is active in another tab';
+      $('#view-state-description').textContent = 'Close the other Fire Studio tab to release its GPU resources, then retry here.';
+      $('#recovery-actions').hidden = false;
+      $('#use-original').hidden = true;
+      $('#view').setAttribute('aria-busy', 'false');
+      $('#message').textContent = 'Only one live simulation runs at a time.';
+    },
     ready() {
       badge.textContent = 'Ready';
       badge.dataset.state = 'ready';

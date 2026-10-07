@@ -30,12 +30,14 @@ test('canonical sparse links and old brick links select the real volume family',
 test('sparse mode enables only pooled chemistry regardless of stale developer flags',()=>{
   const flags=new URLSearchParams('solver=adaptive&pressureWork=1&bricks=1&lightWork=1&receivers=1');
   assert.deepEqual(volumeOptions(flags,'sparse'),{
-    adaptive:false,pressureWork:false,brickPool:true,lightWork:false,lightReceivers:false,
+    adaptive:false,pressureWork:false,brickPool:true,lightWork:false,lightReceivers:false,transport:'maccormack',
   });
   assert.equal(volumeOptions(flags,'volume').brickPool,false);
   assert.deepEqual(volumeOptions(new URLSearchParams(),'volume'),{
-    adaptive:false,pressureWork:false,brickPool:false,lightWork:false,lightReceivers:false,
+    pressureCache:true,adaptive:false,pressureWork:false,brickPool:false,lightWork:false,lightReceivers:false,transport:'maccormack',
   });
+  assert.equal(volumeOptions(new URLSearchParams('transport=conservative'),'volume').transport,'flux');
+  assert.equal(volumeOptions(new URLSearchParams('transport=conservative'),'sparse').transport,'flux');
   const loader=readFileSync(resolve(root,'runtime-loader.js'),'utf8');
   assert.match(loader,/kind === 'volume' \|\| kind === 'sparse'.*mountVolume/);
 });
@@ -51,3 +53,5 @@ test('both volume modes share source IDs and retain inspection camera model',()=
   inspection.enter({camera},'sparse');
   assert.equal(inspection.leave('legacy').camera,undefined);
 });
+
+test('pressure source cache has an explicit rollback and remains opt-in for sparse',()=>{assert.equal(volumeOptions(new URLSearchParams('pressureCache=0'),'volume').pressureCache,false);assert.equal(volumeOptions(new URLSearchParams('pressureCache=1'),'sparse').pressureCache,true);});

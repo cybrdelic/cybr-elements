@@ -1,8 +1,8 @@
 // Geometry and surface state are shared by combustion and ray tracing.
 // Static signed-distance assets contain no rendered fire or temporal frames.
-import { woodThermoWGSL, WOOD_THERMO } from '../wood-thermo.js?v=studio-rc-20';
-import {woodPoseWGSL} from '../wood-structure.js?v=studio-rc-20';
-import {woodCollisionSampleWGSL} from './wood-collision.js?v=studio-rc-20';
+import { woodThermoWGSL, WOOD_THERMO } from '../wood-thermo.js?v=studio-rc-37-audit';
+import {woodPoseWGSL} from '../wood-structure.js?v=studio-rc-37-audit';
+import {woodCollisionSampleWGSL} from './wood-collision.js?v=studio-rc-37-audit';
 
 // F32 stocks never use hardware filtering. Empty thermal cells are zeroed by
 // the update kernel: averaging them into solid stock would invent conversion.
@@ -74,7 +74,9 @@ fn surfaceFeed(x:vec3f)->f32{
 }
 fn colorEmission(spectrum:vec3f)->vec3f{
  // Color looks are art direction, not a chemical emission-line simulation.
- return select(spectrum,mix(object.tint.xyz,vec3f(1),clamp(spectrum.z,0.,1.)*.5),object.options.y>.5);
+ var natural=spectrum;
+ // Gas chemiluminescence is applied only to reacting gas in emission().
+ return select(natural,mix(object.tint.xyz,vec3f(1),clamp(spectrum.z,0.,1.)*.5),object.options.y>.5);
 }
 `;
 
@@ -83,6 +85,17 @@ fn woodCell(mat:vec4f)->bool{
  if(mat.y<=0.){return false;}
  // Porous foliage is a positive-distance lamina proxy, not solid wood.
  return select((mat.x<=0.),(mat.x<.07),(mat.w>7.5));
+}
+// Distance values in thin rasterized branches are quantized to a full cell.
+// Exposure is a material/air adjacency property, not a distance threshold.
+fn woodExposed(q:vec3i,mat:vec4f)->bool{
+ if(mat.w>7.5){return true;}
+ let faces=array<vec3i,6>(vec3i(1,0,0),vec3i(-1,0,0),vec3i(0,1,0),vec3i(0,-1,0),vec3i(0,0,1),vec3i(0,0,-1));
+ for(var j=0u;j<6u;j++){
+  let at=q+faces[j];if(any(at<vec3i(0))||any(at>=vec3i(64))){return true;}
+  if(!woodCell(textureLoad(solid,at,0))){return true;}
+ }
+ return false;
 }
 fn woodBulkHeat(s:vec4f,w:vec4f,material:f32,h:f32)->f32{
  let depth=select(.0015,.0002,material>7.5);let fraction=min(depth,h*.5)/h;
@@ -104,7 +117,7 @@ struct Params{step:vec4f,source:vec4f,shape:vec4f,effect:vec4f,dynamics:vec4f,ch
  let q=vec3i(id);let mat=textureLoad(solid,q,0);var state=textureLoad(skin,q,0);var wear=textureLoad(damage,q,0);
  if(!woodCell(mat)){textureStore(next,q,vec4f(0));textureStore(nextDamage,q,vec4f(0));return;}
  let owner=woodOwners[id.x+64u*(id.y+64u*id.z)];
- let h=3.*object.origin.w/64.;var exposed=mat.x>=-3./64.*.85||mat.w>7.5;
+ let h=3.*object.origin.w/64.;var exposed=woodExposed(q,mat);
  let at=object.origin.xyz+woodTransformRest(owner,local)*object.origin.w;
  if(woodMoved()&&!exposed){exposed=objectDistance(at+vec3f(h,0,0))>0.||objectDistance(at-vec3f(h,0,0))>0.||objectDistance(at+vec3f(0,h,0))>0.||objectDistance(at-vec3f(0,h,0))>0.||objectDistance(at+vec3f(0,0,h))>0.||objectDistance(at-vec3f(0,0,h))>0.;}
  var incoming=state.y;var oxygen=0.;var ignition=0.;
@@ -115,11 +128,14 @@ struct Params{step:vec4f,source:vec4f,shape:vec4f,effect:vec4f,dynamics:vec4f,ch
   // Source activity gates the bounded starter only. A hot solid continues
   // pyrolysis using persistent stock and gas heat after the starter is stopped.
   if(p.source.w>.5){
-   if(object.tint.w>.5&&p.step.z<2.5){
+   if(object.tint.w>.5&&p.step.z<${WOOD_THERMO.treeStarterDurationS.toFixed(1)}){
     let centre=select(vec3f(0,-1.12,0),vec3f(.16,.48,.05),object.options.w>1.5);
     ignition=${WOOD_THERMO.starterFluxWm2}.*exp(-dot(local-centre,local-centre)*22.);
-   }else if(object.tint.w<.5&&p.step.z<1.2){
-    let offset=local-vec3f(-.45,-.45,.15);
+   }else if(object.tint.w<.5&&p.step.z<${WOOD_THERMO.starterDurationS.toFixed(1)}){
+    // The house's old starter was in its empty interior, half a metre from
+    // the timber. Put the starter on the front wall; logs retain their site.
+    let centre=select(vec3f(-.45,-.45,.15),vec3f(-.45,-.30,.69),object.tint.w< -2.5&&object.tint.w> -3.5);
+    let offset=local-centre;
     ignition=select(${WOOD_THERMO.starterFluxWm2}.*exp(-dot(offset,offset)*6.),${WOOD_THERMO.starterFluxWm2}.,object.options.w>.5);
    }
   }
@@ -185,4 +201,4 @@ struct ObjectSettings{origin:vec4f,options:vec4f,tint:vec4f};
  textureStore(nextDamage,vec3i(id),vec4f(moisture,0,0,1));
 }`;
 
-export { FIRE_COLORS } from './fire-colors.js?v=studio-rc-20';
+export { FIRE_COLORS } from './fire-colors.js?v=studio-rc-37-audit';

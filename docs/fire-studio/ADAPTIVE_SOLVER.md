@@ -1,5 +1,10 @@
 # Adaptive volume candidate
 
+> Retained design/development record. Historical case results and release numbers below
+> describe their original captures, not this consolidated browser build. Bulk diagnostic
+> reports and iteration archives remain in the private recovery backup. See
+> [current known issues](../KNOWN_ISSUES.md) and [validation scope](../VALIDATION.md).
+
 An initial implementation is available behind the existing Fire Studio page.
 The sparse flow, chemistry pool and fine pressure work lists are experimental
 and disabled by default. They have not earned a replacement or mobile claim.
@@ -200,7 +205,7 @@ Native evidence is on disk under `work/adaptive-volume-qa/`:
   explicit production bind groups, pass boundaries, dispatches, source movement,
   logical fields and reduced images. GPU time uses the native timestamp period.
 
-The bounded tracked summary is [evidence/adaptive-rc11.json](evidence/adaptive-rc11.json).
+The bounded tracked summary is evidence/adaptive-rc11.json (`evidence/adaptive-rc11.json`, archived locally).
 It includes hashes of the private full reports for provenance.
 
 Replace the canonical solver only after complete-frame cost, p95, interface

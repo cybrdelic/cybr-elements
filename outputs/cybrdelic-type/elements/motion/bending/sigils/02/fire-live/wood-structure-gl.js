@@ -1,6 +1,6 @@
-import {woodStructureGLSL} from './wood-structure.js?v=studio-rc-20';
-import {SOURCE_SCALE,SOURCE_CENTER} from './pyro-gpu/objects/forest-tree/source-space.js?v=studio-rc-20';
-import {woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-20';
+import {woodStructureGLSL} from './wood-structure.js?v=studio-rc-37-audit';
+import {SOURCE_SCALE,SOURCE_CENTER} from './pyro-gpu/objects/forest-tree/source-space.js?v=studio-rc-37-audit';
+import {woodSamplingGLSL} from './wood-state-gl.js?v=studio-rc-37-audit';
 
 const COLUMNS=12,PER_ROW=4,WIDTH=COLUMNS*PER_ROW;
 const structure=woodStructureGLSL(64)
@@ -49,7 +49,21 @@ flat out vec4 rootData;
 vec3 rotateQ(vec4 q,vec3 p){vec3 t=2.*cross(q.xyz,p);return p+q.w*t+cross(q.xyz,t);}
 void main(){
  int id=gl_VertexID/2,col=gl_VertexID%2;float row=0.;rootData=vec4(0);
- if(id==0){int at=woodNodesCount-1;rootData=col==0?vec4(texelFetch(scanOld,ivec2(at%${PER_ROW},at/${PER_ROW}),0).r,0,0,0):vec4(0);}
+ if(id==0){
+  int at=woodNodesCount-1;float count=texelFetch(scanOld,ivec2(at%${PER_ROW},at/${PER_ROW}),0).r;
+  // Compute a conservative world bound once per root-list update. The gas
+  // shader can then skip all detached-piece lookups outside this box.
+  vec3 lo=vec3(1e20),hi=vec3(-1e20);
+  for(int i=0;i<woodNodesCount;i++){
+    int x=(i%${PER_ROW})*${COLUMNS},y=i/${PER_ROW};
+    vec4 pose=texelFetch(woodMechanicsTex,ivec2(x+4,y),0);if(pose.w!=float(i))continue;
+    vec3 a=texelFetch(woodMechanicsTex,ivec2(x+8,y),0).xyz,b=texelFetch(woodMechanicsTex,ivec2(x+9,y),0).xyz;
+    vec4 q=texelFetch(woodMechanicsTex,ivec2(x+5,y),0);vec3 rest=texelFetch(woodMechanicsTex,ivec2(x,y),0).xyz;
+    vec3 centre=woodRestOrigin+(pose.xyz+rotateQ(q,(a+b)*.5-rest))*woodRestScale;
+    float radius=length((b-a)*.5)*woodRestScale;lo=min(lo,centre-vec3(radius));hi=max(hi,centre+vec3(radius));
+  }
+  rootData=col==0?vec4(count,lo):vec4(hi,0);
+ }
  else {int i=id-1;float sum=texelFetch(scanOld,ivec2(i%${PER_ROW},i/${PER_ROW}),0).r,old=i>0?texelFetch(scanOld,ivec2((i-1)%${PER_ROW},(i-1)/${PER_ROW}),0).r:0.;
   if(sum==old){gl_Position=vec4(2,2,2,1);gl_PointSize=1.;return;}row=sum;
   int x=(i%${PER_ROW})*${COLUMNS},y=i/${PER_ROW};vec4 a=texelFetch(woodMechanicsTex,ivec2(x+8,y),0),b=texelFetch(woodMechanicsTex,ivec2(x+9,y),0),pose=texelFetch(woodMechanicsTex,ivec2(x+4,y),0),q=texelFetch(woodMechanicsTex,ivec2(x+5,y),0),rest=texelFetch(woodMechanicsTex,ivec2(x,y),0);
@@ -81,7 +95,9 @@ uniform float woodDelta;uniform int woodPhase;uniform vec3 woodForce;
 layout(location=0) out vec4 value;
 void main(){ivec2 id=ivec2(gl_FragCoord.xy);int i=id.y*${PER_ROW}+id.x/${COLUMNS},col=id.x%${COLUMNS};
  if(i>=woodNodesCount||col<4||col>=8){value=texelFetch(woodMechanicsTex,id,0);return;}
- WoodPose pose=woodPhase==0?woodFailure(i,woodNodeAt(i),woodPoseAt(i),woodDelta,woodRestScale,woodForce):woodPose(i,woodDelta,woodRestScale,-woodRestOrigin.y/woodRestScale);
+ WoodPose pose;
+ if(woodPhase==0){pose=woodFailure(i,woodNodeAt(i),woodPoseAt(i),woodDelta,woodRestScale,woodForce);}
+ else{pose=woodPose(i,woodDelta,woodRestScale,-woodRestOrigin.y/woodRestScale);}
  value=col==4?pose.positionDetached:col==5?pose.rotation:col==6?pose.velocityHeat:pose.angularDamage;
 }`),scanProgram=program(scanFragment),rootsProgram=program(rootFragment,rootVertex),massProgram=program(massFragment(shared));
  function texture(w,h,data=null,internal=gl.RGBA32F,format=gl.RGBA){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);for(const p of[gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,p,gl.NEAREST);for(const p of[gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,p,gl.CLAMP_TO_EDGE);gl.texImage2D(gl.TEXTURE_2D,0,internal,w,h,0,format,gl.FLOAT,data);resources.push({texture:t});return t;}

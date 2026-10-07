@@ -1,0 +1,7 @@
+{
+  "name": "fire-studio-browser-check",
+  "private": true,
+  "type": "module",
+  "scripts": { "check": "node run.mjs", "test": "node test.mjs" },
+  "dependencies": { "playwright-core": "1.63.0" }
+}

@@ -6,10 +6,33 @@
     <meta name="theme-color" content="#10100f" />
     <title>CYBRDELIC / Fire studio</title>
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="studio.css?v=studio-rc-20" />
-    <link rel="stylesheet" href="pyro-gpu/library.css?v=studio-rc-20" />
+    <link rel="stylesheet" href="studio.css?v=studio-rc-37-audit" />
+    <link rel="stylesheet" href="pyro-gpu/library.css?v=studio-rc-37-audit" />
   </head>
   <body>
+    <script>
+      // ES modules and GPU assets need an HTTP(S) origin. Give a useful message
+      // even when the browser blocks the module script on a file:// URL.
+      if (location.protocol === 'file:') {
+        document.addEventListener('DOMContentLoaded', () => {
+          const state = document.querySelector('#view-state');
+          if (!state) return;
+          state.hidden = false;
+          document.querySelector('#view-state-title').textContent = 'Open Fire Studio through localhost';
+          document.querySelector('#view-state-description').textContent =
+            'The browser blocks the simulation when index.html is opened from disk. Run cybr-elements\\tools\\fire-studio\\Start-Fire-Studio.cmd from the project folder, or use the hosted demo.';
+          const hosted = document.createElement('a');
+          hosted.href = 'https://cybrdelic.github.io/firesim/';
+          hosted.textContent = 'Open hosted Fire Studio';
+          hosted.className = 'button';
+          const actions = document.querySelector('#recovery-actions');
+          if (actions) {
+            actions.replaceChildren(hosted);
+            actions.hidden = false;
+          }
+        });
+      }
+    </script>
     <main>
       <header class="studio-header">
         <a class="brand" href="./" aria-label="Fire studio home"
@@ -169,6 +192,7 @@
                 ><input id="smoke-only" type="checkbox" />Inspect smoke</label
               ><button id="benchmark" type="button">Measure 180 frames</button>
             </div>
+            <p>Open flow domain: smoke can leave the simulation. The room is a lighting stage.</p>
             <p id="metrics">—</p>
             <p id="gpu-status" role="status"></p>
           </details>
@@ -193,7 +217,7 @@
         </details>
       </footer>
     </main>
-    <script src="scene-lights.js?v=studio-rc-20"></script>
-    <script type="module" src="studio.js?v=studio-rc-20"></script>
+    <script src="scene-lights.js?v=studio-rc-37-audit"></script>
+    <script type="module" src="studio.js?v=studio-rc-37-audit"></script>
   </body>
 </html>

@@ -1,188 +1,135 @@
-<p align="center">
-  <img src="outputs/cybrdelic-type/elements/motion/bending/sigils/02/artwork-02.png" width="480" alt="Cybrdelic custom sigil 02">
-</p>
+# CYBR ELEMENTS
 
-<h1 align="center">CYBR / ELEMENTS</h1>
+Offline elemental rendering and interactive graphics for Cybrdelic. The current
+interactive workspace is **Fire Studio**. The long-term multi-element workspace
+is **Element Studio**; it is a roadmap, not a renamed or completed application.
 
-<p align="center"><strong>Seven materials. One mark.</strong><br>
-Elemental motion, custom typography, and simulation-driven identity for Cybrdelic.</p>
+![Seven rendered elemental studies of the approved 02 sigil](docs/media/elements-02.gif)
 
-<p align="center">
-  <a href="#watch">Films</a> ·
-  <a href="#run-it-locally">Run locally</a> ·
-  <a href="#the-typefaces">Typefaces</a> ·
-  <a href="docs/PIPELINES.md">Under the hood</a> ·
-  <a href="https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0">Complete asset release</a>
-</p>
+The existing GIF shows seven offline films. The current local player includes
+the eighth, Telekinesis, with its latest and previous revisions. These films are
+rendered outputs; Fire Studio evolves and renders its gas state live.
 
-![Fire, water, earth, air, ice, lava and lightning forming the Cybrdelic 02 sigil](docs/media/elements-02.gif)
+## Start locally
 
-The same interlocked artwork becomes flame, suspended water, fractured stone,
-smoke, ice, glowing basalt and electrical discharge. Each material has its own
-motion, surface and ending. The surrounding world stays black; water and solids
-meet a visible floor when the bending releases.
-
-The GIF uses the actual delivered films. It is reduced to **10 fps** for the
-README; the individual films below are **1920 × 1080 at 30 fps**. No audio.
-
-## Watch
-
-| Element | Motion and material | Film |
-| :-- | :-- | :-- |
-| **Fire** | A travelling ignition front, sustained fuel, rising flame and burnout | [Fire · 9.8 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-02.mp4) |
-| **Water** | Sag, delayed recovery, falling droplets, then a floor impact and spreading liquid | [Water · 11.2 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/water-02-r8.mp4) |
-| **Earth** | Interlocking rock fragments, a suspended hold, then collision and settling | [Earth · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/earth-02-r6.mp4) |
-| **Air** | A turbulent smoke volume that curls through the mark and disperses | [Air · 9.8 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/air-02.mp4) |
-| **Ice** | Transmissive blue fractures, cold mist and a collapsing pile | [Ice · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/ice-02.mp4) |
-| **Lava** | Heavy basalt crust, incandescent seams, smoke and solid fragments | [Lava · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/lava-02.mp4) |
-| **Lightning** | Branching 3D discharge trees and irregular pulses illuminating a moving gas volume | [Lightning · 10 s](outputs/cybrdelic-type/elements/motion/bending/sigils/02/lightning-02-r5.mp4) |
-
-The local **02 player** switches between all seven films, downloads each one,
-compares the underlying artwork, and retains the previous water, earth and
-lightning versions. GitHub may show a download button for MP4s; the local player
-provides continuous playback.
-
-## Run it locally
-
-The current seven films, player, posters and fonts are included in the checkout.
-Viewing them needs **Python 3**, a browser, and no GPU or npm install.
+The checked-in films, fonts, player and Fire Studio assets need no asset download.
+Use Python 3.12+ and a current desktop browser:
 
 ```sh
-git clone https://github.com/cybrdelic/cybr-elements.git
-cd cybr-elements
-python -m http.server 8767 --bind 127.0.0.1 --directory outputs/cybrdelic-type
+python -m http.server 8776 --bind 127.0.0.1 --directory outputs/cybrdelic-type
 ```
 
-Open **[the 02 player](http://127.0.0.1:8767/elements/motion/bending/sigils/02/)**.
-The [font specimen](http://127.0.0.1:8767/typefaces/) also works immediately.
+- [Project launcher](http://127.0.0.1:8776/launch/)
+- [Fire Studio](http://127.0.0.1:8776/elements/motion/bending/sigils/02/fire-live/)
+- [Eight-element film player](http://127.0.0.1:8776/elements/motion/bending/sigils/02/)
+- [Typeface specimen](http://127.0.0.1:8776/typefaces/)
 
-### Restore the complete project assets
+Fire Studio Original requires WebGL 2 and floating-point targets. Volume and
+Sparse require WebGPU and sufficient GPU memory. Open the server URL, rather
+than opening HTML files directly. The historical hosted demo may lag this source;
+these commands run the local consolidated version.
 
-The full historical gallery contains hundreds of renders and cached browser
-meshes. These larger assets are published in the
-[versioned release](https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0)
-instead of inflating Git history. The downloader restores original paths,
-verifies SHA-256, skips matching files, and refuses to overwrite changed files.
-The downloader requires **Python 3.11+**.
+## Current capabilities
 
-```sh
-# All historical galleries, films, browser meshes and downloadable design packs
-python scripts/fetch_assets.py --site
+| Element | Offline source and delivered output | Interactive today |
+| --- | --- | --- |
+| Fire | Fuel/heat transport, combustion and volume rendering; 02 film | Fire Studio: Original, Volume and experimental Sparse |
+| Air / smoke | Advected gas and turbulent smoke; 02 film | Smoke presets in Fire Studio; a dedicated Air workspace is roadmap |
+| Water | Native APIC/FLIP, liquid reconstruction and Cycles optics; 02 film | Historical mesh-cache playback; archived meshes must be restored |
+| Earth | Guided assembly, rigid fragments and floor collisions; 02 film | Element Studio roadmap |
+| Ice | Rigid fractures, optical material and cold atmosphere; 02 film | Element Studio roadmap |
+| Lava | Solid basalt fragments, incandescent seams and gas; 02 film | Element Studio roadmap |
+| Lightning | Branching discharge geometry, authored pulses and lit gas; 02 film | Element Studio roadmap |
+| Telekinesis | Authored assembly/cast of the approved fractured mark; 02 film, r4 and r3 | Element Studio roadmap |
 
-# Also restore research inputs, geometry, textures and retained simulation states
-python scripts/fetch_assets.py --all
-```
+Fire Studio includes source/preset selection, 24 authored fire abilities, finite
+floor fuel, wood sources, lighting, camera controls, pause/restart, presentation,
+saved looks and shared settings. Each engine retains its existing equations and
+rendering. Experiments remain explicitly labeled. [Fire Studio guide](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/README.md).
 
-Allow several GB of free disk space for the complete archive. You do not need
-these downloads for the current 02 player. Per-frame working renders, compiled
-caches and raw solver checkpoints are intentionally excluded; the source that
-produces them is included. [Publication scope](docs/publication-scope.json) and
-[the asset manifest](docs/assets.json) list the exact contents.
+Offline renderers remain first-class authoring workflows under `work/`, with the
+native FLIP source and its license retained. [Supported workflows and source scope](docs/OFFLINE_WORKFLOWS.md).
+[Install and rebuild](docs/PIPELINES.md).
+The water browser viewer displays reconstructed cached meshes; it does not evolve
+water live. Existing offline films need no simulation or GPU to play.
 
-## The typefaces
+## Scope and limitations
 
-Two custom display families extend the original wordmarks into usable fonts:
+This publishes an inspectable graphics project, not a production physics claim.
+Thermal/source behavior, smooth or overbright power heads, refined-flow fallback,
+smoke-heavy performance and mobile acceptance remain limitations. Sparse retains
+dense backing and has no established general speed advantage. No solver rewrite,
+quality reduction or deployment is part of this consolidation.
 
-- **Cybrdelic Sigil / 01** — hooked, tapered, flowing forms.
-- **Cybrdelic Cut / 02** — angular forms, diamond cuts and pointed terminals.
-
-Both include **TTF + WOFF2**, uppercase, lowercase, figures, punctuation and
-Latin accents. Enable discretionary ligatures to turn lowercase `cybrdelic`
-into the complete wordmark, or insert **U+E000**. These are single-weight display
-faces for identity and artwork, rather than body-text families.
-
-[Font files](outputs/cybrdelic-type/typefaces/fonts/) ·
-[Usage and coverage](outputs/cybrdelic-type/typefaces/README.md) ·
-[SVG masters](outputs/cybrdelic-type/typefaces/vector/)
-
-## Under the hood
-
-This repository combines custom source fields, fluid and gas calculations,
-rigid bodies, authored bending controls, and material-specific rendering.
+[Known issues](docs/KNOWN_ISSUES.md) separates these limits from validation status.
+Tests and package checks do not establish live appearance or performance.
 
 ```mermaid
 flowchart LR
-    A[Original 01 / 02 artwork] --> B[Source fields and geometry]
-    B --> C[Material motion + bending controls]
-    C --> D[Gas / APIC-FLIP / rigid bodies / discharge trees]
-    D --> E[Surface and volume reconstruction]
-    E --> F[Cycles / Eevee / custom volume rendering]
-    F --> G[1080p films + individual player]
+    A[Approved artwork and source assets] --> B[Offline authoring and solvers]
+    B --> C[Rendered films and reconstructed meshes]
+    C --> D[Film player / historical mesh viewer]
+    A --> E[Fire Studio shared controls]
+    E --> F[Original / Volume / Sparse engines]
+    F --> G[Live gas and rendering]
+    E -. roadmap .-> H[Element Studio multi-element workspace]
 ```
 
-Water uses the native **APIC/FLIP** solver and reconstructed liquid surfaces.
-Earth, ice and lava use rigid fragments with **Bullet** collisions after release.
-Gas is advected in 3D; electricity uses branching channel geometry coupled to
-cloud lighting. Blender **Cycles** handles the current water, ice and lava
-surface rendering; the current electrical volume is rendered with **Eevee**.
+## Checks and packaging
 
-The bending is art-directed. The latest water film joins an existing opening
-to a new forward-simulated hold and release. Ice and lava are fractured material
-effects, not calibrated freezing or molten-rock phase-change solvers. The
-electrical channels are a visual discharge model, not a plasma simulation.
-[Pipeline details and rebuild notes](docs/PIPELINES.md) distinguish these parts.
-
-## Project map
-
-| Path | Contents |
-| :-- | :-- |
-| [`outputs/cybrdelic-type/`](outputs/cybrdelic-type/) | Static site, design studies, font guide and all element galleries |
-| [`outputs/cybrdelic-type/elements/motion/bending/sigils/02/`](outputs/cybrdelic-type/elements/motion/bending/sigils/02/) | Current seven-element player and full-resolution films |
-| [`outputs/cybrdelic-fonts/`](outputs/cybrdelic-fonts/) | Font handoff, outlines and build sources |
-| [`work/element-motion/`](work/element-motion/) | Simulation, material, reconstruction and rendering scripts, including earlier experiments |
-| [`work/flip-lettering/vendor/`](work/flip-lettering/vendor/) | Vendored native FLIP implementation and reconstruction tools |
-| [`work/brand-font/`](work/brand-font/) | Typeface construction and validation tools |
-| [`scripts/`](scripts/) | Asset restoration, CPU GIF assembly and publication tooling |
-| [`docs/`](docs/) | Showcase, pipeline notes, attribution and asset inventory |
-
-Earlier material and solver studies remain available as research history.
-The current delivery is the **02 player** above; older gallery entries are not
-claims of equivalent visual quality or physical accuracy.
-
-<details>
-<summary><strong>Explore the wider material library</strong></summary>
-
-The archive also includes metal, foam, sand, mud, plants, snow, glass, crystal,
-blood, steam, blue fire, combustion, healing, spirit and energy studies, along
-with lightning redirection, seismic sense, sound, flight, spirit projection,
-pressure and heat. It preserves shared-trail motion tests, both original sigil
-styles, material comparisons, and the lava/MPM research sequence.
-
-After restoring the site assets, explore the
-[motion gallery](http://127.0.0.1:8767/elements/motion/) and
-[subelement studies](http://127.0.0.1:8767/elements/motion/subelements/).
-
-</details>
-
-## Verification
-
-The four newest films were decoded completely (**1,236 frames**), visually
-reviewed, and checked for playback in the local player. Their receipts include
-resolution, timing and SHA-256. Existing fire, air and earth clips were preserved.
-
-[Completion record](work/element-motion/sigil-02-active-elements/completion.json) ·
-[Playback checks](work/element-motion/sigil-02-active-elements/browser-verification.json) ·
-[Water physics audit](work/element-motion/sigil-02-active-elements/water-full/physics-audit.json)
-
-All **50 release archives** were verified against GitHub's asset digests. A fresh,
-unauthenticated download through the included restoration script also passed.
-[Release checks](docs/release-verification.json) ·
-[Public download check](docs/public-download-verification.json)
-
-To regenerate only the README showcase, with FFmpeg and Pillow installed:
+Node.js 22+ runs the retained CPU regression suites. The following commands do
+not start a browser or initialize a native GPU adapter:
 
 ```sh
-python scripts/build_showcase.py
+node tools/check-cpu.mjs
+python tools/fire-studio/package.test.py
+python tools/fire-studio/package.py --check
+python scripts/test_asset_tools.py
 ```
 
-This assembles existing films on the CPU and does not start a simulation or GPU render.
+For a local standalone Fire Studio package, choose a new output name:
 
-## License and credits
+```sh
+python tools/fire-studio/package.py --out releases/fire-studio-local
+python tools/fire-studio/package.py --verify releases/fire-studio-local
+```
 
-The repository retains its existing [GNU GPL v2 license](LICENSE).
-Bundled components retain their own notices. The basalt scans come from
-**Poly Haven** under CC0; the original artists are credited in
-[third-party notices](docs/THIRD_PARTY.md).
+The builder refuses to replace an existing package. Browser/GPU checks require
+a separate coordinated run; see [validation](docs/VALIDATION.md). Packaging is a
+local build and does not deploy or publish anything.
 
-The bending vocabulary is inspired by *Avatar: The Last Airbender* and
-*The Legend of Korra*. This is an independent Cybrdelic visual project.
+## Historical assets and source layout
+
+Some historical gallery/mesh inputs were absent before consolidation. Their
+versioned manifest and restoration script are retained:
+
+```sh
+python scripts/fetch_assets.py --all
+```
+
+The 50 v0.1.0 release packs were checked against GitHub's reported SHA-256, sizes
+and URLs. Restoration requires network access, verifies downloaded bytes and
+refuses to replace differing files. It is optional for the current films and
+Fire Studio. [Historical archive](https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0).
+
+| Location | Purpose |
+| --- | --- |
+| `outputs/cybrdelic-type/launch/` | Local umbrella entrypoint |
+| `outputs/.../sigils/02/fire-live/` | Existing Fire Studio runtime and native assets |
+| `outputs/.../sigils/02/` | Delivered eight-element films, posters and player |
+| `work/element-motion/` | Offline source preparation, simulation and render workflows |
+| `work/flip-lettering/vendor/` | Retained native FLIP implementation |
+| `tools/fire-studio/`, `tools/fire-browser/` | Useful regression, packaging and real browser checks |
+| `docs/`, `scripts/` | Current guides, licenses and asset restoration |
+
+Accumulated diagnostics, logs, obsolete probes and duplicate iteration archives
+remain in the verified recovery backup and originals. They are excluded from
+the staged tree. This organization makes the project easier to inspect; it does
+not claim a rendering speedup.
+
+## License
+
+The existing [GNU GPL v2 license](LICENSE) is preserved. Component notices and
+Poly Haven CC0 attribution remain in [third-party notices](docs/THIRD_PARTY.md).
+Custom typefaces and approved artwork remain project assets. This independent
+project draws its bending vocabulary from *Avatar* and *The Legend of Korra*.

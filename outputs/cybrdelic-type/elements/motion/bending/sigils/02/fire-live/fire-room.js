@@ -95,7 +95,8 @@ window.createFireRoom = () => {
           +sampleVolume(chemistry,p+h*vec3(1,-1,-1)).a+sampleVolume(chemistry,p+h*vec3(-1,1,1)).a);
         density=vec4(sootExtinction(soot),0.,0.,1.);
         float weight=dot(e,vec3(.2126,.7152,.0722));
-        energy=vec4(e,weight);moment=vec4(p*weight,weight);
+        vec3 centered=(p-.5)*fireExtent/max(fireExtent.x,max(fireExtent.y,fireExtent.z));
+        energy=vec4(e,weight);moment=vec4(p*weight,dot(centered,centered)*weight);
       }`);
       this.reduce=compile(common+`
       uniform sampler2D energyTex;
@@ -166,7 +167,24 @@ window.createFireRoom = () => {
           vec3 d=center-at;float r2=dot(d,d);
           float cosine=surface?max(dot(normal,d*inversesqrt(max(r2,.0001))),0.):1.;
           if(cosine<.001)continue;
-          result+=power*(cosine*visibility(at,center)/(r2+.12));
+          vec4 energy=texelFetch(roomPowerTex,ivec2(i%8,i/8),0);
+          vec4 moment=texelFetch(roomMomentTex,ivec2(i%8,i/8),0);
+          float extentScale=max(roomExtent.x,max(roomExtent.y,roomExtent.z));
+          vec3 centered=(center-roomMin-roomExtent*.5)/extentScale;
+          float variance=max(moment.w/max(energy.a,.00001)-dot(centered,centered),0.)*extentScale*extentScale;
+          if(r2>max(.03,variance*12.)){result+=power*(cosine*visibility(at,center)/(r2+max(.04,variance)));}
+          else{
+            vec3 spread=min(roomExtent/vec3(8.,4.,1.)*.288675,vec3(sqrt(max(variance,.0001)/3.)));
+            float commonShadow=1.;if(!surface)commonShadow=visibility(at,center);
+            for(int point=0;point<4;point++){
+              vec3 signs=point==0?vec3(1,1,1):point==1?vec3(-1,-1,1):point==2?vec3(1,-1,-1):vec3(-1,1,-1);
+              vec3 emitter=clamp(center+spread*signs,roomMin,roomMin+roomExtent);
+              vec3 offset=emitter-at;float distance=max(dot(offset,offset),.001);
+              float incidence=surface?max(dot(normal,offset*inversesqrt(distance)),0.):1.;
+              float attenuation=commonShadow;if(surface)attenuation=visibility(at,emitter);
+              result+=power*(.25*incidence*attenuation/(distance+.015));
+            }
+          }
         }
         vec3 sky=vec3(at.x,7.19,at.z);
         if(dot(ambientLight,ambientLight)>.000001)result+=ambientLight*(surface?(.25+.75*max(normal.y,0.)):1.)*visibility(at,sky);
@@ -263,7 +281,7 @@ window.createFireRoom = () => {
       }
       `;
     }
-    update(vf,chem,gasFlame=0,shadeRoom=true,roomVisible=true,tint=[1,1,1],tintStrength=0,fireLightGain=1,powerFlame=0) {
+    update(vf,chem,gasFlame=0,shadeRoom=true,roomVisible=true,tint=[1,1,1],tintStrength=0,fireLightGain=1) {
       this.fireLightGain=fireLightGain;
       const gl=this.gl;
       const bind=(program,name,tex,unit)=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(program.u(name),unit);};
@@ -272,7 +290,6 @@ window.createFireRoom = () => {
       for(const unit of [9,10,11,12]) {gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,null);}
       begin(this.gather,this.levels[0]);bind(this.gather,'velocity',vf,0);bind(this.gather,'chemistry',chem,1);
       gl.uniform1f(this.gather.u('gasFlame'),gasFlame);
-      gl.uniform1f(this.gather.u('powerFlame'),powerFlame);
       gl.uniform3fv(this.gather.u('flameTint'),tint);
       gl.uniform1f(this.gather.u('tintStrength'),tintStrength);
       gl.drawArrays(gl.TRIANGLES,0,3);

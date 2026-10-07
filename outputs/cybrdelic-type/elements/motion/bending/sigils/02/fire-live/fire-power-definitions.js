@@ -71,6 +71,8 @@ export const POWER_CAST_CAPACITY=4;
 export function powerExpansion(definition,age){return definition?.blastWindows.some(w=>age>=w.from&&age<=w.until)?18:4;}
 const shaderNumber=v=>Number.isInteger(v)?v+'.':String(v);
 export const powerExpansionWGSL = 'fn powerCastExpansion(kind:f32,age:f32)->f32{'+POWER_DEFINITIONS.flatMap(d=>d.blastWindows.map(w=>`if(kind>${d.kind-.5}&&kind<${d.kind+.5}&&age>=${shaderNumber(w.from)}&&age<=${shaderNumber(w.until)}){return 18.;}`)).join('')+'return 4.;}';
+/* Legacy analytic blast helpers are kept out of the runtime exports. The
+ * compressible stage lives in pyro-gpu/shock-euler.js. */
 export function powerPhase(definition,age,held=false){
  if(!definition||age<0)return {name:'Ready',progress:0};
  if(age<definition.windup||held)return {name:held?'Charging':definition.phases[0]?.name||'Wind-up',progress:definition.windup?Math.min(age/definition.windup,1):1};

@@ -27,6 +27,8 @@ class Element extends Target{
 }
 function fixture(params=''){
  const gl={},constants='CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 SRGB8_ALPHA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER ARRAY_BUFFER ELEMENT_ARRAY_BUFFER STATIC_DRAW UNSIGNED_INT DEPTH DEPTH_COMPONENT24 DEPTH_ATTACHMENT RENDERBUFFER DEPTH_TEST LESS POINTS';constants.split(' ').forEach((name,i)=>gl[name]=i+1);
+  gl.SYNC_GPU_COMMANDS_COMPLETE=10001;gl.TIMEOUT_EXPIRED=10002;gl.WAIT_FAILED=10003;gl.ALREADY_SIGNALED=10004;
+  gl.fenceSync=()=>({});gl.clientWaitSync=()=>gl.ALREADY_SIGNALED;gl.deleteSync=()=>{};gl.flush=()=>{};
  let serial=0,boundFramebuffer=null,currentProgram=null;const textures=[],programs=[],bound=new Map(),calls={draws:0,uniforms:[],lost:0};
  for(const name of['createFramebuffer','createVertexArray','createBuffer','createRenderbuffer'])gl[name]=()=>({kind:name,id:++serial});
  gl.createProgram=()=>{const p={id:++serial,shaders:[]};programs.push(p);return p;};gl.attachShader=(p,s)=>p.shaders.push(s);
@@ -77,10 +79,9 @@ test('Original powers production runtime controls and GPU allocation lifetime',a
   assert.equal(initialAbility.capacity,4);assert.equal(initialAbility.active,1,'Startup creates one authored cast in the reusable pool');
   const kinds=uniform('powerCastKindScale[0]')[0],launch=uniform('powerCastDirectionStrength[0]')[0];
   assert.equal(kinds.length,16);assert.equal(kinds[0],definition.kind);assert.equal(kinds[2],1);assert.equal(launch[3],initial.strength,'The submitted cast record consumes initial saved settings');
-  assert.equal(uniform('powerStrength')[0],initial.strength,'The first submitted cast uses the supplied scene settings');
   const authored=FIRE_PRESETS.find(p=>p.id===id),fuel=runtime.snapshot().fuel,feed={wood:1,gas:.85,oil:1.15}[fuel];
   if(id==='radial-blast'){
-    const source=env.programs.flatMap(p=>p.shaders).find(s=>s.source?.includes('temp=powerIgnition(temp,added,sourceHeat);')).source,ignite=scalarGLSLHelper(source,'powerIgnition');
+    const source=env.programs.flatMap(p=>p.shaders).find(s=>s.source?.includes('temp=powerIgnitionHeat(temp,fuelBeforeRelease,added,sourceHeat,oxygen);')).source,ignite=scalarGLSLHelper(source,'sourceIgnition');
     for(const preheat of [.65,.72,.75]){
       const target=1.8*preheat;
       for(const heat of [0,.35,.7,1.6])for(const added of [0,.01,.3,1,10]){
@@ -93,11 +94,17 @@ test('Original powers production runtime controls and GPU allocation lifetime',a
     }
   }
   assert.equal(uniform('sourceHeat')[0],authored.chemistry[0],'Both engines consume the authored power preheat channel');
-  assert.ok(Math.abs(uniform('fuelProfile')[0]-feed*authored.chemistry[1])<1e-8,'Both engines consume the authored power fuel-dose channel');
+  assert.ok(Math.abs(uniform('fuelProfile')[0]-authored.chemistry[1])<1e-8,'Both engines consume the authored power fuel-dose channel');
   assert.equal(uniform('powerConfinement')[0],authored.dynamics[2],'Powers retain their distinct authored local-flow refinement');
   assert.equal(uniform('powerTurbulence')[0],authored.chemistry[3],'Power breakup consumes the authored gas turbulence, without display texture');
-  const optics=env.calls.uniforms.filter(u=>u.name==='powerFlame');
-  assert.ok(optics.length>=2&&optics.every(u=>u.values[0]===1),'Power light gathering and volume rendering share the same explicit optical mode');
+  assert.ok(!env.calls.uniforms.some(u=>u.name==='powerFlame'),'Powers use the same optical model as ordinary fire');
+  const render=env.programs.flatMap(p=>p.shaders).find(s=>s.source?.includes('vec3 fireEmission('));
+  assert.ok(render&&!render.source.includes('powerSpectrum'),'The linked flame shader has no alternate power palette');
+  if(id==='fireball'){
+    runtime.look({fuel:'oil',color:'crimson',smoke:true});
+    await env.elements.get('#restart').onclick();
+    const after=runtime.snapshot();assert.equal(after.fuel,'oil');assert.equal(after.color,'crimson');assert.equal(after.smoke,true);
+  }
   if(id==='floor-trail'){
     assert.equal(env.calls.fuelUploads,1,'A stationary floor source deposits only its single finite cast dose');
     const half=env.calls.fuelPacketPeaks[0],exponent=(half>>10)&31,peak=exponent?2**(exponent-15)*(1+(half&1023)/1024):(half&1023)*2**-24;
@@ -105,12 +112,10 @@ test('Original powers production runtime controls and GPU allocation lifetime',a
   }
   runtime.look({powers:{strength:1.75,heading:90,elevation:30}});await env.frame(start+260);assert.deepEqual(runtime.snapshot().powers,{strength:1.75,heading:90,elevation:30});
   const transient=!definition.continuous,settings=transient?initial:{strength:1.75,heading:90,elevation:30};
-  assert.equal(uniform('powerStrength')[0],settings.strength,transient?'Strength remains fixed for the cast in flight':'Continuous source strength updates live');const direction=uniform('powerDirection'),h=settings.heading*Math.PI/180,e=settings.elevation*Math.PI/180;assert.ok(Math.abs(direction[0]-Math.cos(h)*Math.cos(e))<1e-6&&Math.abs(direction[1]-Math.sin(e))<1e-6&&Math.abs(direction[2]-Math.sin(h)*Math.cos(e))<1e-6,transient?'An airborne cast cannot teleport when the next aim changes':'Continuous source direction updates live');
   assert.equal(env.calls.uniforms.filter(u=>u.name==='emitterKind').at(-1).values[0],21+definition.kind);assert.equal(env.elements.get('#burst').hidden,false,'Every power exposes an explicit cast control');
   env.elements.get('#extinguish').click();await env.frame(start+300);assert.equal(env.calls.uniforms.filter(u=>u.name==='brushActive').at(-1).values[0],0);
   env.elements.get('#burst').click();await env.frame(start+340);assert.equal(env.calls.uniforms.filter(u=>u.name==='brushActive').at(-1).values[0],1,'Recasting restores finite or sustained emission');
   assert.ok(uniform('burstAge')[0]<.08,'Recast resets the simulation-age release window without clearing live gas');
-  assert.equal(uniform('powerStrength')[0],1.75);assert.ok(Math.abs(uniform('powerDirection')[1]-.5)<1e-6,'The next cast consumes the edited launch settings');
   const view=env.elements.get('#view'),event=(type,clientX,clientY)=>({type,pointerId:7,pointerType:'mouse',button:0,buttons:1,clientX,clientY,preventDefault(){}});
   if(['flame-dash','eruption-chain','fire-cross'].includes(id)){
     const prior=runtime.snapshot().ability.casts.at(-1),camera=runtime.snapshot().camera,yaw=camera.angle*Math.PI/180,eye=[camera.pan[0]+Math.sin(yaw)*13,3.5+camera.pan[1],Math.cos(yaw)*13],length=Math.hypot(13,1.1),forward=[-Math.sin(yaw)*13/length,-1.1/length,-Math.cos(yaw)*13/length],right=[Math.cos(yaw),0,-Math.sin(yaw)],up=[right[1]*forward[2]-right[2]*forward[1],right[2]*forward[0]-right[0]*forward[2],right[0]*forward[1]-right[1]*forward[0]],dot=(a,b)=>a.reduce((sum,v,i)=>sum+v*b[i],0);

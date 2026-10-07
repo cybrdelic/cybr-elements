@@ -1,5 +1,10 @@
 # Fuel and inspection controls
 
+> Retained design/development record. Historical case results and release numbers below
+> describe their original captures, not this consolidated browser build. Bulk diagnostic
+> reports and iteration archives remain in the private recovery backup. See
+> [current known issues](../KNOWN_ISSUES.md) and [validation scope](../VALIDATION.md).
+
 Release candidate rc.12 adds neutral inspection lighting, visible CYBR artwork and finite floor fuel to the existing Fire Studio page. The controls work in Original and 3D volume.
 
 ## Use
@@ -46,4 +51,4 @@ Raw reproducibility reports include `work/fuel-ground-qa/original-smoke-proof/na
 
 The package runs 19 runtime fixture runners, including `fuel-ground.test.mjs`, `floor-fuel.test.mjs`, `sigil-guide.test.mjs`, `scene-light-presets.test.mjs`, `smoke-lifecycle.test.mjs` and `original-smoke.test.mjs`. They verify input/state/resource contracts separately from the native shader and image checks. Volume accumulates its existing soot decay over a fixed simulation cadence so small CFL steps cannot round away every loss; both engines clear negligible half-float residue. This adds no rendering pass or volume field.
 
-Native checks were used because automatic approval review blocked browser automation in this session. They do not establish actual browser interaction, sustained frame pacing, mobile compatibility or offline film parity. Those remain demonstration acceptance gates in [RELEASE.md](RELEASE.md).
+Native checks were used because automatic approval review blocked browser automation in this session. They do not establish actual browser interaction, sustained frame pacing, mobile compatibility or offline film parity. Those remain demonstration acceptance gates in [current known issues](../KNOWN_ISSUES.md).

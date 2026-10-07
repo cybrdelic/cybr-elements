@@ -96,7 +96,9 @@
         vec2 xy=(vec2(ip.x%${nx},ip.y%${nz})+.5)/vec2(MC_NXf,MC_NZf);
         vec3 at=vec3(xy,float(slice)/float(${depth - 1}));
         vec3 velocity=texelFetch(vfTex,ip,0).xyz+samplePressureCorrection(at);
-        vec3 back=at-velocity*delta;
+        vec3 mid=at-.5*velocity*delta;
+        vec3 midVelocity=mcField(vfTex,mid).xyz+samplePressureCorrection(mid);
+        vec3 back=at-midVelocity*delta;
         // Fuel, oxygen, temperature and soot are co-located. Velocity is only
         // needed at the arrival cell to construct the backtrace.
         outScalars=mcField(chemTex,back);
@@ -139,7 +141,9 @@
             old.r<=0.0 && old.b<=0.0 && old.a<=0.0 && old.g>=1.0) {
           return vec4(0.0,1.0,0.0,0.0);
         }
-        vec4 reverse=mcField(mcPredictorTex,at+correctedVelocity*delta);
+        vec3 mid=at+.5*correctedVelocity*delta;
+        vec3 midVelocity=mcField(vfTex,mid).xyz+samplePressureCorrection(mid);
+        vec4 reverse=mcField(mcPredictorTex,at+midVelocity*delta);
         vec4 corrected=predicted+.5*(old-reverse);
 
         vec3 q=clamp(back,vec3(0.0),vec3(1.0));

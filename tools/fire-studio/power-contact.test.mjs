@@ -32,10 +32,10 @@ test('aim points in air cannot trigger a false surface explosion',()=>{
  assert.equal(contact({y:1},{y:.24},0,.3,0),1,'contact at the flight endpoint is retained');
 });
 test('the same scalar contact routine is used by both flight work bounds and source release',()=>{
- assert.ok(source.includes('let contact:f32=abilityFloorContact(a,b,arc,radius,floorY);'));
- const count=source.split('let contact:f32=abilityFloorContact(a,b,arc,radius,floorY);').length-1;
+ assert.ok(source.includes('var contact:f32=abilityFloorContact(a,b,arc,radius,floorY);'));
+ const count=source.split('var contact:f32=abilityFloorContact(a,b,arc,radius,floorY);').length-1;
  assert.equal(count,2,'both paths share the same time of impact');
- assert.ok(source.includes('if(contact>1.){return vec4f(0);}'),'no endpoint sphere in empty air');
+ assert.ok(source.includes('if(contact<=1.&&t+dt*.5>end'),'impact release requires a real contact');
 });
 
 const app=readFileSync(resolve(root,'pyro-gpu/app.js'),'utf8');

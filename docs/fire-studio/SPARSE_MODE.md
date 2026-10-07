@@ -1,5 +1,10 @@
 # Sparse volume
 
+> Retained design/development record. Historical case results and release numbers below
+> describe their original captures, not this consolidated browser build. Bulk diagnostic
+> reports and iteration archives remain in the private recovery backup. See
+> [current known issues](../KNOWN_ISSUES.md) and [validation scope](../VALIDATION.md).
+
 Candidate rc.13 adds **Sparse volume · experimental** beside Original and 3D volume in the same Simulation select. It uses the Volume engine and source catalog, with a fixed brick atlas for heat, fuel, soot and oxygen depletion. It is an experimental storage option with open performance and quality gates.
 
 ## Use
@@ -41,4 +46,4 @@ Four short native command replays compare dense and sparse configurations on Int
 
 These are one-run native timestamps over matched frames 6–29, while chemistry is still sparse. The costs include submitted compute and drawing work; readback, presentation, browser scheduling and repeated sustained performance are not certified. Mixed costs and early fallback do not establish a general speedup. The compact evidence and exact recording/report hashes are in `RC13_SPARSE_PROOF.json`.
 
-Lossless atlas transport, offline parity and motion quality remain open. Native checks and CPU fixtures do not certify physical mobile compatibility or the demonstration browser. See [RELEASE.md](RELEASE.md) for the remaining gates and [FUEL_AND_INSPECTION.md](FUEL_AND_INSPECTION.md) for the shared inspection controls.
+Lossless atlas transport, offline parity and motion quality remain open. Native checks and CPU fixtures do not certify physical mobile compatibility or the demonstration browser. See [current known issues](../KNOWN_ISSUES.md) for the remaining gates and [FUEL_AND_INSPECTION.md](FUEL_AND_INSPECTION.md) for the shared inspection controls.

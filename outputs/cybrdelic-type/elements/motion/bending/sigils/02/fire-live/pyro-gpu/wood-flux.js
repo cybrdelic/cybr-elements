@@ -1,6 +1,6 @@
-import { objectWGSL } from './objects.js?v=studio-rc-20';
-import { woodPoseWGSL } from '../wood-structure.js?v=studio-rc-20';
-import { WOOD_THERMO } from '../wood-thermo.js?v=studio-rc-20';
+import { objectWGSL } from './objects.js?v=studio-rc-37-audit';
+import { woodPoseWGSL } from '../wood-structure.js?v=studio-rc-37-audit';
+import { WOOD_THERMO } from '../wood-thermo.js?v=studio-rc-37-audit';
 
 // The first four words are two unsigned64 counters implemented with ordinary
 // u32 atomics. Word4 is the reciprocal masked-fine-kernel integral; word5 marks
@@ -22,6 +22,13 @@ export const WOOD_FLUX = Object.freeze({ N: 128, B: 64, stride: 6,
 // vapor.y is added sensible enthalpy divided by reference rho*cp*1200 K.
 // Temperature is intensive: added vapor carries heat capacity as well as
 // energy. This is the same 1+fuel mixture-capacity model as floor fuel.
+// A solid-frame packet is delivered over the fluid CFL substeps exactly once.
+// This weights both sensible enthalpy and mass, including pressure expansion.
+export function woodPacketFraction(dt, frameDt) {
+  if (![dt, frameDt].every(Number.isFinite) || dt <= 0 || frameDt <= 0 || dt > frameDt)
+    throw Error('Invalid wood packet time partition');
+  return dt / frameDt;
+}
 export function mixWoodVaporHeat(heat, fuel, vapor) {
   if (!Array.isArray(vapor) || vapor.length !== 2 ||
       ![heat, fuel, ...vapor].every(value => Number.isFinite(value) && value >= 0))
@@ -48,11 +55,12 @@ export function woodFluxVolumeSource(words,dt,N=128){
 // clipping can only reduce delivered energy. It supplies no fuel or oxygen.
 export const WOOD_GAS_PILOT = Object.freeze({powerW:120000,allPowerW:160000,
   sigmaLocal:.12,cutoffSigma:3,gaussianFraction:.9707091134651118,
-  durationS:1.2,treeDurationS:2.5});
-export function woodGasPilotSites({origin=[0,0,0],scale=1,tree=false,ignition=0}={}){
+  durationS:WOOD_THERMO.starterDurationS,treeDurationS:WOOD_THERMO.treeStarterDurationS});
+export function woodGasPilotSites({origin=[0,0,0],scale=1,tree=false,ignition=0,objectId=''}={}){
   if(origin.length!==3||!origin.every(Number.isFinite)||!Number.isFinite(scale)||scale<=0||
     !Number.isFinite(ignition))throw Error('Invalid wood gas pilot placement');
   const local=tree?[ignition>1.5?[.16,.48,.05]:[0,-1.12,0]]:
+    objectId==='house'?(ignition>.5?[[-.45,-.30,.69],[.45,0,.69],[0,.6,.69]]:[[-.45,-.30,.69]]):
     ignition>.5?[[-.45,-.45,.15],[.45,0,.15],[0,.6,.15]]:[[-.45,-.45,.15]];
   const totalW=tree||ignition<=.5?WOOD_GAS_PILOT.powerW:WOOD_GAS_PILOT.allPowerW;
   return local.map(at=>({center:at.map((value,axis)=>axis===1?
@@ -318,6 +326,10 @@ fn woodGasPilotCenter(site:u32)->vec3f{
  else if(object.options.w>.5){
   if(site==1u){local=vec3f(.45,0,.15);}else if(site==2u){local=vec3f(0,.6,.15);}
  }
+ if(object.tint.w< -2.5&&object.tint.w> -3.5){
+  local=vec3f(-.45,-.30,.69);
+  if(object.options.w>.5){if(site==1u){local=vec3f(.45,0,.69);}else if(site==2u){local=vec3f(0,.6,.69);}}
+ }
  var center=object.origin.xyz+local*object.origin.w;center.y=max(center.y,.07);return center;
 }
 fn woodGasPilotCount()->u32{return select(1u,3u,object.tint.w<-.5&&object.options.w>.5);}
@@ -356,6 +368,13 @@ fn woodFluxDensity(world:vec3f)->vec2f{
   let offset=vec3i(x,y,z);let weights=select(vec3f(1)-f,f,offset==vec3i(1));
   value+=woodFluxCell(low+offset)*weights.x*weights.y*weights.z;
  }}}return value;
+}
+// The normalization pass marks every positive 128→256 basis sample's fine
+// brick. A zero flag proves this fine-cell gather has no delivered wood gas.
+// Keep the general sampler for coarse/world queries at other alignments.
+fn woodFluxFineDensity(world:vec3f,brick:vec3u)->vec2f{
+ if(woodFluxWords[${workBase}+brick.x+32u*(brick.y+32u*brick.z)]==0u){return vec2f(0);}
+ return woodFluxDensity(world);
 }
 fn woodFluxLive(world:vec3f,halfBrick:f32)->bool{
  let q=(world-vec3f(-3,0,-3))/(6./32.);

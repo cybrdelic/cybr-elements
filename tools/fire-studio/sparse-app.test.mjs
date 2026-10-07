@@ -42,7 +42,7 @@ function statusFixture(simulation = 'sparse', enabled = true) {
 }
 
 test('actual app solver creation uses explicit mode before the URL changes', async () => {
-  const call = /solver = await PyroSolver\.create\(canvas, volumeOptions\(params, simulation\)\);/.exec(app);
+  const call = /solver = await PyroSolver\.create\(canvas, \{\.\.\.volumeOptions\(params, simulation\),hasPowers:!!powerDefinition\(activeFire\),powerKind:powerDefinition\(activeFire\)\?\.kind\?\?null\}\);/.exec(app);
   assert.ok(call, 'production creation must consume the explicit mode policy');
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   for (const simulation of ['volume', 'sparse']) {
@@ -51,16 +51,16 @@ test('actual app solver creation uses explicit mode before the URL changes', asy
     let captured;
     const canvas = {};
     const expected = volumeOptions(params, simulation);
-    const create = new AsyncFunction('PyroSolver', 'canvas', 'params', 'simulation', 'volumeOptions',
+    const create = new AsyncFunction('PyroSolver', 'canvas', 'params', 'simulation', 'volumeOptions', 'powerDefinition', 'activeFire',
       `let solver; ${call[0]} return solver;`);
     const value = await create({ async create(target, options) {
       assert.equal(target, canvas); captured = options; return { ready: true };
-    } }, canvas, params, simulation, volumeOptions);
+    } }, canvas, params, simulation, volumeOptions, () => null, null);
     assert.equal(value.ready, true);
-    assert.deepEqual(captured, expected);
+    assert.deepEqual(captured, {...expected,hasPowers:false,powerKind:null});
     assert.equal(captured.brickPool, simulation === 'sparse');
     if (simulation === 'sparse') assert.deepEqual(captured, {
-      adaptive: false, pressureWork: false, brickPool: true, lightWork: false, lightReceivers: false,
+      hasPowers:false,powerKind:null, adaptive: false, pressureWork: false, brickPool: true, lightWork: false, lightReceivers: false, transport: 'maccormack',
     });
   }
   assert.match(app, /simulation = 'volume'/);

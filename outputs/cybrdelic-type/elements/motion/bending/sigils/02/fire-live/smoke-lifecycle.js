@@ -1,6 +1,12 @@
 // Decay at a fixed simulation cadence. Tiny CFL substeps must not round every
 // physical loss back to the same half-float density. No display-time fade.
 export const SMOKE_DECAY_TICK = 1 / 30;
+// Hot smoke retains detail; cooled smoke clears over about 4.3 s half-life.
+// This is an open-domain demo mixing model, not chemical destruction of soot.
+export function smokeDecayRate(temperature){
+ const t=Math.max(0,Math.min(1,(temperature-.15)/.65));
+ return .16+(.055-.16)*t*t*(3-2*t);
+}
 export const SMOKE_CLEAR_DENSITY = 0.00002;
 
 export function advanceSmokeDecay(remainder, dt) {

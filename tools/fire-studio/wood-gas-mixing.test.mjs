@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url';
 const root=resolve(process.env.FIRE_STUDIO_ROOT||resolve(import.meta.dirname,
   '../../outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live'));
 const load=file=>import(pathToFileURL(resolve(root,file)).href);
-const {mixWoodVaporHeat,WOOD_FLUX,woodFluxWGSL,WOOD_GAS_PILOT,
+const {mixWoodVaporHeat,woodPacketFraction,woodFluxVolumeSource,WOOD_FLUX,woodFluxWGSL,WOOD_GAS_PILOT,
   woodGasPilotSites,woodGasPilotHeat}=await load('pyro-gpu/wood-flux.js');
 const {advanceWood,gasHeatToWoodHeat,WOOD_THERMO}=await load('wood-thermo.js');
 const {simulationShaders}=await load('pyro-gpu/shaders.js');
@@ -93,7 +93,9 @@ function closedWoodGas(partitions){
 test('closed wood/gas feedback remains bounded at 1/60 and 1/180 with 12× wood time',()=>{
   const coarse=closedWoodGas(1),fine=closedWoodGas(3);
   for(const state of [coarse,fine]){
-    assert.ok(state.fuel>30,'real finite wood release is retained');
+    // Correct char shielding reduces this isolated starter's yield from the
+    // old flux-leaking result. It still releases >8% of the donor's dry mass.
+    assert.ok(state.fuel>20,'real finite wood release is retained');
     assert.ok(state.maxGasK<800&&state.maxWoodK<800,'sensible feedback must not run away');
   }
   assert.ok(Math.abs(coarse.fuel-fine.fuel)/fine.fuel<.005,'CFL partition does not manufacture extra mass');
@@ -107,7 +109,7 @@ test('dense and pooled chemistry apply identical heat mixing before optional fue
     const pooled=brickPoolScalarShaders(planBrickPool({D:256,capacity:1024}),{N:128,shaders});
     for(const family of [shaders,pooled]){
       const code=family.correctScalar;
-      assert.match(code,/let vapor=woodFluxDensity\(x\);c\.y=woodMixGas\(c\.y,c\.z,vapor\);\s*if\(p\.step\.w<\.5\)\{c\.z\+=vapor\.x;/);
+      assert.match(code,/let vapor=woodFlux(?:Fine)?Density\(x(?:,brick)?\);c\.y=woodMixGas\(c\.y,c\.z,vapor\);\s*if\(p\.step\.w<\.5\)\{c\.w=sourceOxygenDeficit\(c\.w,vapor\.x\);c\.z\+=vapor\.x;/);
       assert.doesNotMatch(code,/c\.y\+=vapor\.y/);
       // Smoke-only discards fuel storage; sensible mixing still includes
       // the incoming packet capacity. The scoped fix leaves oxygen intact.
@@ -134,8 +136,8 @@ test('gas starter is a finite physical watt budget with normalized compact suppo
   }
   assert.ok(Math.abs(integral*h/3-site.powerW*dt)<.01);
   assert.equal(woodGasPilotHeat([site.center[0]+3.01*sigma,...site.center.slice(1)],{...placement,dt}),0);
-  assert.equal(WOOD_GAS_PILOT.powerW*WOOD_GAS_PILOT.durationS,144000);
-  assert.equal(WOOD_GAS_PILOT.allPowerW*WOOD_GAS_PILOT.durationS,192000);
+  assert.equal(WOOD_GAS_PILOT.powerW*WOOD_GAS_PILOT.durationS,480000);
+  assert.equal(WOOD_GAS_PILOT.allPowerW*WOOD_GAS_PILOT.durationS,640000);
   assert.equal(WOOD_GAS_PILOT.powerW*WOOD_GAS_PILOT.treeDurationS,300000);
 });
 
@@ -143,15 +145,15 @@ test('starter stops, expires and respects real-time partitions across its finite
   const placement={origin:[0,1,0],scale:1};const [site]=woodGasPilotSites(placement);
   assert.equal(woodGasPilotHeat(site.center,{...placement,active:false,dt:1}),0);
   assert.equal(woodGasPilotHeat(site.center,{...placement,age:-.1,dt:1}),0);
-  assert.equal(woodGasPilotHeat(site.center,{...placement,age:1.2,dt:1}),0);
+  assert.equal(woodGasPilotHeat(site.center,{...placement,age:4,dt:1}),0);
   assert.equal(woodGasPilotHeat(site.center,{...placement,age:12,dt:1}),0);
   for(const partitions of [1,3,12]){
-    let total=0;const dt=1.6/(96*partitions);
+    let total=0;const dt=4.4/(96*partitions);
     for(let i=0;i<96*partitions;i++)total+=woodGasPilotHeat(site.center,{...placement,age:i*dt,dt});
-    close(total,woodGasPilotHeat(site.center,{...placement,age:0,dt:1.2}));
+    close(total,woodGasPilotHeat(site.center,{...placement,age:0,dt:4}));
   }
-  const full=woodGasPilotHeat(site.center,{...placement,age:0,dt:1.2});
-  close(woodGasPilotHeat(site.center,{...placement,age:1.19,dt:.1}),full/120);
+  const full=woodGasPilotHeat(site.center,{...placement,age:0,dt:4});
+  close(woodGasPilotHeat(site.center,{...placement,age:3.99,dt:.1}),full/400);
   const crown={origin:[0,1.9,0],tree:true,ignition:2};const [crownSite]=woodGasPilotSites(crown);
   assert.ok(woodGasPilotHeat(crownSite.center,{...crown,age:2.4,dt:.1})>0);
   assert.equal(woodGasPilotHeat(crownSite.center,{...crown,age:2.5,dt:.1}),0);
@@ -174,9 +176,11 @@ test('wood starter placements follow the bounded source and preserve the all-ign
     }
   }
   assert.throws(()=>woodGasPilotSites({scale:0}),/Invalid wood gas pilot/);
-  assert.match(surfaceWGSL,/let offset=local-vec3f\(-\.45,-\.45,\.15\)/);
+  assert.match(surfaceWGSL,/let centre=select\(vec3f\(-\.45,-\.45,\.15\),vec3f\(-\.45,-\.30,\.69\)/);
+  const [house]=woodGasPilotSites({...normal,objectId:'house'});
+  assert.deepEqual(house.center,[-.45,.34,.69]);
   assert.doesNotMatch(surfaceWGSL,/let offset=local-vec3f\(-\.45,-\.85,\.15\)/);
-  assert.match(surfaceWGSL,/p\.step\.z<1\.2/);
+  assert.match(surfaceWGSL,/p\.step\.z<4\.0/);
   assert.match(surfaceWGSL,/ignition=select\(280000\.\*exp/);
 });
 
@@ -198,4 +202,27 @@ test('external pilot energy closes at dense fuel and does not acquire 12× wood 
   assert.match(shaders.buildBricks,/woodGasPilotLive\(at,halfBrick,p\.step\.z,p\.step\.x,p\.source\.w\)/);
   assert.match(woodFluxWGSL,/let near=max\(abs\(world-woodGasPilotCenter\(site\)\)-vec3f\(halfBrick\),vec3f\(0\)\)/);
   assert.doesNotMatch(woodFluxWGSL,/seconds\s*\*\s*(12|object\.options\.z)/);
+});
+
+
+test('frame-cadence solid packets preserve gas mass, energy and integrated pressure expansion',()=>{
+ const frameDt=1/60,packet=[.8,.21],initialFuel=2,initialHeat=.7;
+ const words=new Uint32Array([80000000,0,0,0,0,0]);
+ for(const fractions of [[1],[.5,.5],[.1,.2,.3,.4],Array(12).fill(1/12)]){
+  let fuel=initialFuel,heat=initialHeat,expansion=0,weight=0;
+  for(const fraction of fractions){
+   const dt=frameDt*fraction,w=woodPacketFraction(dt,frameDt);weight+=w;
+   heat=mixWoodVaporHeat(heat,fuel,packet.map(x=>x*w));fuel+=packet[0]*w;
+   expansion+=woodFluxVolumeSource(words,dt)*w*dt;
+  }
+  close(weight,1);close(fuel,initialFuel+packet[0]);
+  close(heat*(1+fuel),initialHeat*(1+initialFuel)+packet[1]);
+  close(expansion,woodFluxVolumeSource(words,frameDt)*frameDt);
+ }
+ for(const args of [[0,frameDt],[-1,frameDt],[NaN,frameDt],[1,0],[frameDt*2,frameDt]])
+  assert.throws(()=>woodPacketFraction(...args),/partition/);
+ const shaders=simulationShaders(128,256,{woodCadence:true,hasPowers:false});
+ assert.match(shaders.correctScalar,/return woodPacket.x\*woodFluxDensity\(world\)/);
+ assert.match(shaders.correctScalar,/let fuelAfterSources=c.z/);
+ assert.match(shaders.correctVelocity,/completedVolumeSourceAt\(x,N\)/);
 });

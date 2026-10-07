@@ -22,7 +22,7 @@ const fixture=()=>{
   createBindGroup(settings){assert.equal(new Set(settings.entries.map(e=>e.binding)).size,settings.entries.length);return settings;},
   queue:{writeBuffer(){}},
  };
- const s=Object.assign(Object.create(PyroSolver.prototype),{device,N:128,D:256,pressureWork:true,resources:[],cache:new Map(),ids:new WeakMap(),nextId:0,textureId:0,
+ const s=Object.assign(Object.create(PyroSolver.prototype),{device,sourcePipelineCache:new Map(),powerKind:null,N:128,D:256,pressureWork:true,resources:[],cache:new Map(),ids:new WeakMap(),nextId:0,textureId:0,
   visibleBricks:resource('visible'),light:texture('light'),sampler:resource('sampler'),v:[texture('oldv'),texture('newv'),texture('predv')],
   c:[texture('oldc'),texture('newc'),texture('predc')],vort:texture('curl'),bricks:resource('chem-work'),indirect:resource('chem-args'),
   opticalMasks:[resource('optical-a'),resource('optical-b')],

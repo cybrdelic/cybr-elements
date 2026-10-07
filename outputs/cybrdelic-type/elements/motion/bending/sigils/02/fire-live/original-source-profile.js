@@ -1,13 +1,16 @@
 // Original's simulation-specific emitter IDs for the shared authored sources.
-import {powerDefinition} from './fire-powers.js?v=studio-rc-20';
+import {powerDefinition} from './fire-powers.js?v=studio-rc-37-audit';
 export function emitterKindFor(preset) {
   if (!preset) throw new Error('Missing Original source preset');
   const power=powerDefinition(preset.power);
   if(preset.power&&!power)throw new Error('Unregistered Original power '+preset.power);
   if(power)return 21+power.kind;
+  // The sooty plume has its own broad, low-momentum source. It uses effect 0
+  // for the generic plume family, but is not the finite burst emitter.
+  if(preset.id==='sooty-plume')return 0;
   const type = preset.effect[0];
   if (type === 0) return 6;
-  if (type === 1) return preset.id === 'torch' ? 2 : 1;
+  if (type === 1) return ['campfire','hearth','bonfire'].includes(preset.id) ? 1 : 2;
   if (type === 2) return 3;
   if (type === 3) return 5;
   if (type === 4) return 4;

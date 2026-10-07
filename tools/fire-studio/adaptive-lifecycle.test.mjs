@@ -50,13 +50,15 @@ function fixture(){
   queue:{writeBuffer(buffer,offset,value){writes.push({buffer,offset,value:value.slice()});},submit(command){calls.push({submit:command});},onSubmittedWorkDone:async()=>{}},
  };
  const s=Object.assign(Object.create(PyroSolver.prototype),{
+ emptyShockRM:{},shockRemaining:0,measureProjection:{name:"measure-final-velocity",label:"measure-final-velocity",getBindGroupLayout(){return{};}},reactionLedger:{},reactionOffset:0,
+  sourcePipelineCache:new Map(),powerKind:null,
   device,N:128,D:256,resources:[],cache:new Map(),ids:new WeakMap(),nextId:0,textureId:0,
   visibleBricks:resource('visible'),light:texture('light'),sampler:resource('sampler'),
   v:[texture('oldv'),texture('newv'),texture('predv')],c:[texture('oldc'),texture('newc'),texture('predc')],vort:texture('curl'),
   bricks:resource('chem-work'),indirect:resource('chem-args'),opticalMasks:[resource('optical-a'),resource('optical-b')],
   sigilSource:texture('sigil'),objectId:null,objectModels:{},emptyObject:texture('empty'),objectSettings:resource('object'),
   surface:[texture('surface-a'),texture('surface-b')],damage:[texture('wear-a'),texture('wear-b')],si:0,
-  canvas:{width:3,height:2},stateEpoch:0,time:0,burstAge:2,maxSpeed:1,seed:2,source:[0,.58,0],active:true,fuel:0,
+  canvas:{width:3,height:2},stateEpoch:0,time:0,burstAge:2,shockRemaining:0,maxSpeed:1,seed:2,source:[0,.58,0],active:true,fuel:0,
   effect:[0,1,.085,1],dynamics:[1,1,1,1],chemistry:[1,1,1,1],embers:true,smoke:false,color:'natural',
   view:resource('camera'),stats:resource('stats'),groupStats:resource('group-stats'),params:Array.from({length:12},()=>resource('params')),
   frameNumber:0,completedFrames:0,inFlight:[],errors:[],telemetrySlots:[],latestTelemetry:{maxSpeed:1,sampleFrame:0,gpu:null},
@@ -71,7 +73,7 @@ function fixture(){
   floorFuel:[texture('floor-a'),texture('floor-b')],floorWear:[texture('floor-wear-a'),texture('floor-wear-b')],floorDeposits:texture('floor-deposits'),floorIndex:0,hasFloorFuel:false,
   floorClear:pipeline('floor-fuel-clear'),floorWearClear:pipeline('floor-wood-wear-clear'),fuelBrush:{clear(){}},
  });
- s.pipelines=Object.fromEntries(['advectVelocity','curl','correctVelocity','rhs','project','reduceStats','buildBricks','advectScalar','correctScalar'].map(name=>[name,pipeline(name)]));
+ s.pipelines=Object.fromEntries(['diffuseScalar','advectVelocity','curl','correctVelocity','rhs','project','reduceStats','buildBricks','advectScalar','correctScalar'].map(name=>[name,pipeline(name)]));
  s.levels=[{n:128,p:[texture('pressure-a'),texture('pressure-b')],b:texture('rhs'),current:0}];
  // Pressure arithmetic is not this fixture's subject; command ownership and
  // every field consumer around the borrowed pressure pass remain actual.
@@ -181,12 +183,12 @@ test('the actual app snapshot caller uses captured dimensions after a resize',as
 test('dense and adaptive steps bind the current pooled field to surface, velocity and embers',async()=>{
  for(const adaptive of [false,true])for(const ci of [0,1]){
   const f=fixture(),{s,calls,encoder}=f,pool=await f.pool();
-  const previousPages=pool.pageTable;
+  const previousPages=pool.pageTable,previousFields=[...pool.fields];
   s.adaptive=adaptive;s.objectId='car';s.objectModels.car=f.texture('car');s.ci=ci;
   if(adaptive)await s.initAdaptive();calls.length=0;s.step(encoder,1/60,0);
   const beforeCorrection=calls.filter(x=>['surface-fuel','correctVelocity','adaptive-flow-coarseCorrect','adaptive-flow-fineCorrect'].includes(x.pipe));
   assert.equal(beforeCorrection.length,adaptive?4:2);
-  for(const call of beforeCorrection)assertCurrentField(call,call.pipe==='surface-fuel'?{...pool,pageTable:previousPages}:pool,ci);
+  for(const call of beforeCorrection)assertCurrentField(call,{...pool,fields:previousFields,pageTable:call.pipe==='surface-fuel'?previousPages:pool.pageTable},ci);
   const ember=calls.find(x=>x.pipe==='embers');assert.ok(ember);assertCurrentField(ember,pool,1-ci);
   const predict=bindings(calls.find(x=>x.pipe==='advectScalar'));
   assert.equal(predict.get(20),pool.fields[ci].view);assert.equal(predict.get(21),pool.fields[2].view);

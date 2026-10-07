@@ -15,34 +15,49 @@ from OpenGL import GL
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live"
 JS = """
-import {readFileSync} from 'node:fs';
+import {pathToFileURL} from 'node:url';
+const options=JSON.parse(process.argv[2]||'{}'),root=process.argv[1];
+const url=name=>pathToFileURL(root+'/'+name).href;
 globalThis.window={};
-await import(process.argv[1]);
-await import(process.argv[2]);
-const fire=readFileSync(new URL(process.argv[3]),'utf8');
-function body(marker){const start=fire.indexOf(marker)+marker.length;if(start<marker.length)throw Error('Missing '+marker);return fire.slice(start,fire.indexOf('`;',start));}
-const domain={extentGLSL:'vec3(14.,7.875,1.8)',minimumGLSL:'vec3(-7.,-1.05,-.9)'};
-const NX=640,NZ=360,DEPTH=32,TILES_X=8,TILES_Y=4,AW=NX*TILES_X,AH=NZ*TILES_Y;
-const shared=Function('domain','NX','NZ','DEPTH','TILES_X','AW','AH','return `'+body('const shared = `')+'`;')(domain,NX,NZ,DEPTH,TILES_X,AW,AH);
-const pressure={samplingGLSL:'vec3 samplePressureCorrection(vec3 p){return vec3(0);}'},vorticity={samplingGLSL:'vec3 vortexForce(vec3 p){return vec3(0);}'},advection={correctionGLSL:'vec4 maccormackScalars(vec3 a,vec3 b,vec3 v,bool freeMode){return vec4(0,1,0,0);}'};
-const simulation=Function('shared','pressure','vorticity','advection','window','NX','NZ','TILES_X','return `'+body('const simulation = () => `')+'`;')(shared,pressure,vorticity,advection,window,NX,NZ,TILES_X);
-const room={surfaceGLSL:`
-const vec3 fireExtent=vec3(14.,7.875,1.8),fireMin=vec3(-7.,-1.05,-.9);
-const float domainBlast=0.;
-uniform vec3 cameraEye,ambientLight;
-vec3 roomRay(vec2 uv){return vec3(0,0,-1);}
-float roomHit(vec3 eye,vec3 ray,out vec3 normal){normal=vec3(0,1,0);return 100.;}
-vec3 roomSurface(vec3 at,vec3 normal,vec3 incoming){return vec3(0);}
-vec3 smokeIrradiance(vec3 at){return vec3(1);}
-float sootExtinction(float soot){return soot*4.;}
-vec3 fireEmission(float reaction,float temperature){return vec3(reaction);}
-vec3 sootEmission(float soot,float temperature){return vec3(0);}
-void roomLight(int index,out vec3 light,out vec3 power){light=vec3(0,2,0);power=vec3(1);}
-void spotSample(int index,vec3 point,out vec3 direction,out vec3 power){direction=vec3(0,1,0);power=vec3(1);}
-`};
-const rendering=Function('shared','room','window','DEPTH','TILES_Y','return `'+body('const rendering = () => `')+'`;')(shared,room,window,DEPTH,TILES_Y);
-process.stdout.write(JSON.stringify({emitters:window.FireEmitters,props:window.FireProps,simulation,rendering}));
+const nx=options.nx??640,ny=options.ny??360,depth=options.depth??32;
+const extent=options.extent??[14,7.875,options.objectSource?3:1.8];
+const minimum=options.minimum??[-7,-1.05,-extent[2]/2];
+const vector=v=>'vec3('+v.map(x=>Number(x).toFixed(5)).join(',')+')';
+window.FireDomain={nx,ny,depth,extent,minimum,extentGLSL:vector(extent),minimumGLSL:vector(minimum),object:!!options.objectSource,blast:!!options.blast};
+for(const file of ['fire-emitters.js','fire-props.js','fire-optics.js','fire-room.js','corrected-advection.js'])await import(url(file));
+window.FireOptics=window.createFireOptics();window.createFireRoom();
+const {woodMaterialGLSL}=await import(url('wood-material.js'));
+const {POWER_DEFINITIONS}=await import(url('fire-powers.js'));
+const {createOriginalShaders}=await import(url('original-shaders.js'));
+const {woodCapacityGLSL,woodUpdateGLSL}=await import(url('wood-state-gl.js'));
+const max=21+Math.max(...POWER_DEFINITIONS.map(p=>p.kind));
+const emitters=window.createFireEmitters(max-21,4);
+const shaders=createOriginalShaders({domain:window.FireDomain,hasPowers:options.powerKind!=null,hasWood:!!options.hasWood,initialPowerKind:options.powerKind??null,
+ MAX_POWER_EMITTER:max,renderSize:[options.renderWidth??896,options.renderHeight??504],emittersGLSL:emitters,propsGLSL:window.FireProps,woodMaterialGLSL});
+const fragments=[];
+const gl=new Proxy({VERTEX_SHADER:35633,FRAGMENT_SHADER:35632,FRAMEBUFFER_COMPLETE:36053,
+ createShader:type=>type,getShaderParameter:()=>true,getProgramParameter:()=>true,checkFramebufferStatus:()=>36053,
+ shaderSource:(type,source)=>{if(type===35632)fragments.push(source)}
+},{get(target,key){return key in target?target[key]:(...args)=>1}});
+const room=window.FireRoom.setup(gl,{nx,nz:ny,depth,tilesX:8});
+const advection=Object.create(window.MacCormackAdvection.prototype);
+Object.assign(advection,{nx,nz:ny,depth,tilesX:8,tilesY:depth/8,width:nx*8,height:ny*depth/8});
+const pressureGLSL=options.pressureGLSL??'vec3 samplePressureCorrection(vec3 p){return vec3(0);}';
+const vorticityGLSL=options.vorticityGLSL??'vec3 vortexForce(vec3 p){return vec3(0);}';
+const simulation=shaders.simulation(options.powerKind??null,{pressureGLSL,vorticityGLSL,advectionGLSL:advection.makeCorrectionGLSL()});
+process.stdout.write(JSON.stringify({powerKinds:POWER_DEFINITIONS.map(d=>[d.kind,d.name]),emitters,props:window.FireProps,simulation,rendering:shaders.rendering(room.surfaceGLSL),
+ predictor:advection.makePredictorFragment(pressureGLSL),fragments,vertex:shaders.vertex,presentation:shaders.presentation,diffusion:shaders.diffusion,
+ woodCapacity:woodCapacityGLSL(shaders.shared),woodUpdate:woodUpdateGLSL(shaders.shared)}));
 """
+
+
+def assemble_sources(**options):
+    """Use the production shader factory; never extract templates from runtime text."""
+    result = subprocess.run(["node", "--input-type=module", "-e", JS,
+                             str(SOURCE), json.dumps(options)],
+                            check=True, capture_output=True, text=True, encoding="utf-8")
+    return json.loads(result.stdout)
+
 
 
 def compile_fragment(label: str, source: str) -> None:
@@ -53,48 +68,36 @@ def compile_fragment(label: str, source: str) -> None:
     log = GL.glGetShaderInfoLog(shader)
     if isinstance(log, bytes):
         log = log.decode("utf-8", "replace")
-    GL.glDeleteShader(shader)
     if not ok:
+        GL.glDeleteShader(shader)
         raise RuntimeError(f"{label} failed GLSL compilation:\n{log[:12000]}")
-    print(f"{label}: compiled")
+    # Compilation alone misses interface and sampler-budget startup failures.
+    vertex = GL.glCreateShader(GL.GL_VERTEX_SHADER)
+    GL.glShaderSource(vertex, '#version 300 es\nprecision highp float;out vec2 uv;void main(){uv=vec2(0);gl_Position=vec4(0,0,0,1);}')
+    GL.glCompileShader(vertex)
+    program = GL.glCreateProgram()
+    try:
+        GL.glAttachShader(program, vertex); GL.glAttachShader(program, shader); GL.glLinkProgram(program)
+        if not GL.glGetProgramiv(program, GL.GL_LINK_STATUS):
+            raise RuntimeError(f'{label} failed linking: {GL.glGetProgramInfoLog(program)}')
+        types = {GL.GL_SAMPLER_2D, GL.GL_SAMPLER_3D, GL.GL_SAMPLER_CUBE, GL.GL_SAMPLER_2D_SHADOW}
+        samplers = sum(int(size) for name,size,kind in (GL.glGetActiveUniform(program,i) for i in range(GL.glGetProgramiv(program,GL.GL_ACTIVE_UNIFORMS))) if kind in types)
+        if samplers > 16:
+            raise RuntimeError(f'{label} uses {samplers} samplers; WebGL baseline limit is 16')
+    finally:
+        GL.glDeleteProgram(program); GL.glDeleteShader(vertex); GL.glDeleteShader(shader)
+    print(f"{label}: compiled and linked ({samplers} samplers)")
 
 
-def real_room_sources(object_source=False) -> dict:
-    """Assemble real lighting shaders through the production room constructor."""
-    js = JS.replace("await import(process.argv[2]);", "await import(process.argv[2]);await import(process.argv[4]);await import(process.argv[5]);")
-    begin, end = js.index("const room={surfaceGLSL:"), js.index("const rendering=")
-    js = js[:begin] + """
-window.FireDomain=domain;window.FireOptics=window.createFireOptics();window.createFireRoom();
-const fragments=[];
-const gl=new Proxy({
- VERTEX_SHADER:35633,FRAGMENT_SHADER:35632,FRAMEBUFFER_COMPLETE:36053,
- createShader:type=>type,getShaderParameter:()=>true,getProgramParameter:()=>true,
- checkFramebufferStatus:()=>36053,
- shaderSource:(type,source)=>{if(type===35632)fragments.push(source)}
-},{get(target,key){return key in target?target[key]:(...args)=>1}});
-const room=window.FireRoom.setup(gl,{nx:NX,nz:NZ,depth:DEPTH,tilesX:TILES_X});
-""" + js[end:]
-    js = js.replace("{emitters:window.FireEmitters,props:window.FireProps,simulation,rendering}", "{fragments,rendering}")
-    if object_source:
-        js = js.replace('const NX=', "domain.object=true;domain.extentGLSL='vec3(14.,7.875,3.)';domain.minimumGLSL='vec3(-7.,-1.05,-1.5)';const NX=", 1)
-    result = subprocess.run([
-        "node", "--input-type=module", "-e", js,
-        (SOURCE / "fire-emitters.js").as_uri(), (SOURCE / "fire-props.js").as_uri(),
-        (SOURCE / "fire.js").as_uri(), (SOURCE / "fire-optics.js").as_uri(),
-        (SOURCE / "fire-room.js").as_uri(),
-    ], check=True, capture_output=True, text=True)
-    sources = json.loads(result.stdout)
+def real_room_sources(object_source=False):
+    sources = assemble_sources(objectSource=object_source)
     if len(sources["fragments"]) != 4:
         raise RuntimeError("Expected four production room lighting shaders")
     return sources
 
 
 def main() -> None:
-    result = subprocess.run(
-        ["node", "--input-type=module", "-e", JS, (SOURCE / "fire-emitters.js").as_uri(), (SOURCE / "fire-props.js").as_uri(), (SOURCE / "fire.js").as_uri()],
-        check=True, capture_output=True, text=True,
-    )
-    snippets = json.loads(result.stdout)
+    snippets = assemble_sources()
     if not glfw.init():
         raise RuntimeError("GLFW could not initialize")
     glfw.window_hint(glfw.VISIBLE, glfw.FALSE)
@@ -107,35 +110,25 @@ def main() -> None:
         raise RuntimeError("Hidden GL context unavailable")
     try:
         glfw.make_context_current(window)
-        preamble = """#version 300 es
-precision highp float;
-precision highp sampler2D;
-precision highp sampler3D;
-uniform sampler2D noiseTex;
-uniform sampler2D chemTex;
-uniform float clock;
-uniform vec2 brushTo;
-const vec3 simExtent=vec3(14.,7.875,3.);
-const vec3 simMin=vec3(-7.,-1.05,-1.5);
-vec4 field(sampler2D tex,vec3 pos){return vec4(pos,0.);}
-"""
-        compile_fragment("emitters", preamble + snippets["emitters"] + "\nout vec4 result; void main(){float density;vec3 jet;emitter(vec2(.1),.2,density,jet);result=vec4(jet,density);}")
-        props_header = """#version 300 es
-precision highp float;
-precision highp sampler3D;
-uniform vec3 ambientLight;
-void roomLight(int index,out vec3 light,out vec3 power){light=vec3(0,2,0);power=vec3(1);}
-void spotSample(int index,vec3 point,out vec3 direction,out vec3 power){direction=vec3(0,1,0);power=vec3(1);}
-"""
-        compile_fragment("props", props_header + snippets["props"] + "\nout vec4 result; void main(){float d=100.;vec3 c;bool hit=sourceProp(vec3(0,0,4),vec3(0,0,-1),d,c);result=vec4(c,hit?1.:0.);}")
         compile_fragment("simulation", snippets["simulation"])
         compile_fragment("rendering", snippets["rendering"])
+        compile_fragment("presentation", snippets["presentation"])
+        for kind, name in snippets["powerKinds"]:
+            power = assemble_sources(powerKind=kind, blast=True, nx=384, ny=384, depth=64,
+                                     extent=[8,8,4], minimum=[-4,-1.05,-2])
+            compile_fragment(name + " simulation", power["simulation"])
+            if kind == 2:
+                compile_fragment("power rendering", power["rendering"])
         actual = real_room_sources()
         for i, fragment in enumerate(actual["fragments"]):
             compile_fragment(f"room lighting {i + 1}", fragment)
+        compile_fragment("conservative mixing", actual["diffusion"])
         compile_fragment("assembled room rendering", actual["rendering"])
         objects = real_room_sources(object_source=True)
         compile_fragment("assembled object room rendering", objects["rendering"])
+        wood = assemble_sources(objectSource=True,hasWood=True)
+        for name in ['simulation','woodCapacity','woodUpdate','rendering']:
+            compile_fragment('wood '+name,wood[name])
     finally:
         glfw.destroy_window(window)
         glfw.terminate()
