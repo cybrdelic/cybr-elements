@@ -1,5 +1,83 @@
 # Validation of the consolidated tree
 
+## Original peak-force mitigation
+
+The baseline is merged public commit `ccbb6eda9af432bb1e07980312629152eb9089a1`.
+The tested numerical candidate is `b99e00a4e5da806a1319fb36044fb5234e57689e`;
+its `original-shaders.js` SHA-256 is
+`a37ce32a826ea4f1f53ba0f1e01314c62f234cf3c8120c630fcccce123ebab1f`.
+The final publication adds documentation, actual review media and four loader
+cache-token changes; the tested shader bytes remain identical.
+
+Only Original free-fire and fireball gas-source force peaks change. Confinement
+uses world-space acceleration magnitude limits of 6 and 4 respectively; fireball
+warm-gas curl uses the same scoped limit. These are authored, uncalibrated units.
+All weaker forces retain their original gain. There is no transported-velocity
+clamp, global damping change or clock slowdown. Source footprint/feed, chemistry,
+thermal coefficients, packet spin/carrier, aim, charge, four-cast capacity,
+native timestep/grid and rendering are unchanged. Other Original emitters and
+finite-object paths retain their force treatment; Volume/Sparse remain unchanged.
+
+Actual production Chrome captures on 2026-10-07 use cleared native time zero,
+matched fuel/camera/source inputs and deterministic authored noise textures.
+Each retained final-canvas JPEG has per-render native simulation metadata. Every
+native simulation step is recorded; baseline/candidate step sequences match.
+
+| Matched scenario | Steps / final native age | Sampled peak speed change | Sampled mean active speed change | Warmed capture throughput change |
+| --- | --- | --- | --- | --- |
+| Persistent free fire | 126 / 4.200000 s | -16.31% | -1.21% | -0.94% |
+| Held full-charge fireball release | 188 / 3.005833 s | -8.63% | -4.51% | +0.25% |
+| Four simultaneous full-charge casts | 124 / 2.015000 s | -2.73% | -6.02% | -0.13% |
+
+Held release occurs at the identical integer native step 75, actual time
+1.1924999999999994 seconds, with charge 1 and matching origin, target, strength
+and cast snapshot. Six synchronous multicast clicks at native zero produce four
+matching full-charge casts. Free fire uses the same persistent inlet and click.
+Three full depth slices of velocity/chemistry are finite at final observations.
+Sampled maxima are not whole-volume maxima. Synchronous JPEG readback/encoding is
+included in throughput; the warmed bounded observations are not GPU execution
+timings or an uninstrumented, sustained or mobile performance guarantee. An
+earlier wall-time held-release capture showed a 14.3% rate deficit with unmatched
+charge/timing; it did not reproduce in this matched, warmed pair.
+
+The [actual motion review](media/original-peak-force-review.mp4) contains free fire,
+held release and multicast in that order. It is explicitly **native-age retimed,
+not real-time playback**: nearest actually captured frames are placed on a common
+native-age timeline without interpolation or generated flames. Both actual ages
+are shown; maximum paired age difference is one 1/30-second step for free fire
+and zero for held release/multicast. [Machine-readable provenance](media/original-peak-force-review.json).
+Native wall-time recordings and all raw frame/event traces remain preserved
+separately, including prior failed harness runs.
+
+Inspected captures retain small curls, aimed packet travel and late burning
+wakes. The later free-fire plume is taller and smooth/overbright packet heads
+remain visible. The result is accepted as a modest peak-force mitigation, not
+closure of the wider uncontrolled-motion appearance goal.
+
+Actual controls at the same candidate passed pause/resume, fuel/color/smoke,
+room/fire lighting, camera, persistent free-source drag/release/stop, strength,
+heading/elevation, four-cast capacity, touch charge/aim/release/cancel and restart.
+The dedicated restart check awaited the native button handler, confirmed native
+time zero and cleared fields, then resumed one native step with the inlet off.
+All 62 CPU suite files / 433 test cases pass; package tests pass 9/9 and asset
+tool tests 4/4. All 28 Original shader assemblies preserve shared chemistry,
+diffusion, vertex and rendering bodies. Only cache tokens change in the loader
+chain after those numerical/runtime checks.
+
+Harness limitations are retained explicitly: the first held-release pair failed
+an invalid assertion requiring native time to land exactly at decimal 1.17 and
+discarded that pair before persistence. Its corrected integer-step pair saves
+frames/events incrementally before assertions. Both corrected runs record
+`Pause before reading diagnostic state` from the harness pointerdown metadata
+hook; that initial event is missing. Release snapshots, native steps and final
+canvas frames were retained and match. An earlier control harness's too-early
+restart threshold was replaced by the meaningful cleared-state check above.
+These diagnostic mistakes are not described as application failures or erased.
+
+Actual Android hardware, every fuel/power combination, whole-volume stability,
+conservation and sustained performance remain unverified. No new Volume/Sparse,
+geometry, resolution, renderer or optical-model edits are included.
+
 ## Original motion unit correction
 
 The preserved public baseline is merge `5cd55fee659afff3368f844045f3ba1541040b62`.
