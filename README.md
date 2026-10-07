@@ -56,6 +56,10 @@ Original free fire and fireball also limit exceptional confinement-force peaks,
 while retaining weaker eddies and cast timing. This is a modest motion mitigation;
 [matched native-age evidence](docs/VALIDATION.md#original-peak-force-mitigation)
 records its effect without claiming every motion or appearance concern is solved.
+Original coarse pressure now uses compatible boundary gradients and aligned fine-grid sampling.
+This scoped correction retains existing sources, chemistry and rendering;
+[fine residuals and validation limits](docs/VALIDATION.md#original-compatible-pressure-boundary-and-sampling)
+remain explicit.
 [Fire Studio guide](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/README.md).
 
 Offline renderers remain first-class authoring workflows under `work/`, with the

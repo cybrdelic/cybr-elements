@@ -1,7 +1,7 @@
 import { readLook, writeLook } from './studio-location.js?v=studio-rc-37-repair';
 import { createFireDomain } from './fire-domain.js?v=studio-rc-37-repair';
 import { inspectionState } from './inspection-state.js?v=studio-rc-37-repair';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-39-original-peaks';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-40-compatible-projection';
 import { studioUI } from './studio-ui.js?v=studio-rc-37-repair';
 import { createSimulationSession } from './simulation-session.js?v=studio-rc-37-repair';
 import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-37-repair';

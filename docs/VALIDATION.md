@@ -1,5 +1,89 @@
 # Validation of the consolidated tree
 
+## Original compatible pressure boundary and sampling
+
+The baseline is merged public commit `cb105a6b11585c747b1d79164b939e3b669f8333`.
+The frozen numerical candidate is `eb35194cac6653227c0873bd02c7695f65ee15e5`.
+Only `coarse-pressure.js` changes runtime mathematics: it retains the upper
+normal backward pressure gradients consumed by forward divergence, and aligns
+coarse restriction with the fine cell-center coordinates used by advection.
+CPU manufactured checks verify D*G equals the solved anisotropic Laplacian,
+including upper-adjacent cells, to maximum error `5.684341886080802e-14`.
+Iterations, source/fuel/soot/thermal coefficients, force units, diffusion,
+timestep, grid, floor treatment, pressure target and rendering stay unchanged.
+The publication adds documentation and three loader cache-token changes only.
+
+All 63 CPU suite files / 440 test cases passed on the frozen source. The final
+publication repeats those checks plus package tests, dependency validation and
+cache-only byte comparisons. No new GPU work is required for cache tokens/docs.
+Private capture helpers and their diagnostics are excluded from public source.
+
+Six fresh native comparisons covered torch/wood and sooty-plume/oil at six native
+seconds, and sigil/wood at three seconds. Matching controls, timestep and material
+routes passed; sampled fields were finite. The sooty baseline ended one native
+step later (6.033333 versus 6 seconds). Actual inspected frames retain a narrow
+upright torch; candidate sooty flow is shorter/more compact with smoke retained.
+Sigil geometry looks similar, but neither case shows a substantial visible flame
+at 1/2/3 seconds, so that case provides limited combustion appearance coverage.
+There is no general appearance or all-Original-fix claim.
+
+| Captured case | Baseline frames | Candidate frames | Baseline native/wall | Candidate native/wall |
+| --- | ---: | ---: | ---: | ---: |
+| Torch | 176 | 170 | 0.9602 | 0.9189 |
+| Sooty plume | 172 | 180 | 0.8959 | 1.0000 |
+| Sigil | 88 | 90 | 0.9978 | 0.9997 |
+
+These pacing observations include synchronous JPEG readback/encoding. They are
+not GPU solve timings, sustained/mobile benchmarks, or a speedup claim.
+
+A subsequent single candidate torch run captured the pressure solve at native
+5.966667 seconds and the simulation draw that consumed it at 6 seconds, with
+delta 1/30 second. Solve-input chemistry, RHS and correction were copied before
+the native draw/update could overwrite them. Reconstructed coarse RHS matched
+the captured native RHS within `2.236629370599985e-7`. Fine metrics extend that
+captured thermal target onto the fine grid using its actual input chemistry;
+they do not use the following frame's pressure or a different uniform state.
+
+| Same-stage residual population | Cells | Mean absolute before (1/s) | Mean absolute after (1/s) | rho |
+| --- | ---: | ---: | ---: | ---: |
+| Coarse interior | 52,920 | 0.0426737733 | 0.0072941225 | 0.1709275 |
+| Fine active interior above floor | 430,006 | 2.75049196 | 2.75529879 | 1.0017476 |
+
+The coarse correction works in this measured native case. Fine residual remains
+effectively unchanged: point restriction has a demonstrated fine-flow nullspace.
+The earlier baseline residuals describe a current/next-flow stage and are not
+treated as a matched same-stage candidate comparison. This correction does not
+implement fine projection, conservative transport or an internal solid boundary.
+
+Full-atlas instrumentation recorded pre-factor scalars inside the actual shader
+main, with 438,088 active material cells. Native torch consumed factor 1. Both
+uninstrumented and instrumented replay VF/chemistry outputs matched native half
+targets bitwise (zero differing values, maximum error zero). Every pre-factor
+scalar layer hash matched an independent dilution-only replay. Inputs, including
+3D textures, physics buffers and native clock remained unchanged.
+
+The counterfactual universal bounded factor changed pre-chemistry fuel inventory
+0.006721848077424572 -> 0.006886330945031685, with no immediate fuel or soot
+ceiling crossing. After chemistry, fuel rose about 2.04%, soot 2.06% and integrated
+reaction 4.14%. Guard-skipped and active exponent safeguards are separate budgets.
+These inventories are reduced-model quadrature proxies, not physical species or
+total energy conservation. Universal dilution remains rejected and is not shipped.
+
+An earlier standalone factor ledger was invalid: its plane-sized shader used
+layer-correct velocity but raw gl_FragCoord reads selected atlas slice 0 for the
+MacCormack predictor/old chemistry. The verified full-atlas replays remain valid;
+the corrected same-main probe replaces that scalar ledger. Candidate residuals
+were also omitted by the first capture's baseline-only fullDiagnostic gate;
+that omission was a measurement gap, not a candidate failure.
+
+Exact targeted input root before/after:
+`a3a45d4cf733d2257ec27723d6e75a2e72cbcec6a0e0f899a2099e7fd935bf24`.
+Native stage output hash-list SHA-256:
+`af24aa4a61571d8c304b53a06bffb49350347137a0e4484e1e307da0010f515e`.
+The targeted browser/server closed after 48.231 seconds. Native frames, raw
+planes, per-layer stage/output hashes and complete reports remain preserved in
+the isolated review evidence; they are not production dependencies.
+
 ## Original peak-force mitigation
 
 The baseline is merged public commit `ccbb6eda9af432bb1e07980312629152eb9089a1`.
