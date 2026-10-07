@@ -28,7 +28,7 @@ function loadScript(file) {
       file,
       new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = new URL(file + '?v=studio-rc-41-experimental-face', import.meta.url).href;
+        script.src = new URL(file + '?v=studio-rc-42-boundary-source-age', import.meta.url).href;
         script.onload = resolve;
         script.onerror = () => {
           scripts.delete(file);
@@ -50,5 +50,5 @@ export async function loadRuntime(kind) {
   const helpers = previousVersion ? previousScripts : legacyScripts;
   await Promise.all(helpers.map(loadScript));
   if (previousVersion) return (await import('./fire-v5.js?v=studio-v5-rollback')).mountLegacy;
-  return (await import('./fire.js?v=studio-rc-41-experimental-face')).mountLegacy;
+  return (await import('./fire.js?v=studio-rc-42-boundary-source-age')).mountLegacy;
 }

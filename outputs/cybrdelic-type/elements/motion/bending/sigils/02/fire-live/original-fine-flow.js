@@ -33,6 +33,31 @@
  class OriginalFineFlow {
   static setup(gl,options){return new OriginalFineFlow(gl,options);}
   static hierarchy=hierarchy;
+  // DD^T has three independent blocks on the clamped upper-depth plane:
+  // rectangle, x outlet edge and y outlet edge. Its corner has no tangential
+  // freedom. K=(n/extent)^2 minimizes physical velocity energy.
+  static upperBoundaryHierarchy(g,extent){
+   const levels=[];let m=g.n[0]-1,r=g.n[1]-g.floor-1,kx=(g.n[0]/extent[0])**2,ky=(g.n[1]/extent[1])**2;
+   for(;;){levels.push({m,r,kx,ky,width:m+1,height:r+1});if(m<=7&&r<=7)break;
+    const nextM=Math.max(1,Math.ceil((m+1)/2)-1),nextR=Math.max(1,Math.ceil(r/2));
+    kx*=((nextM+1)/(m+1))**2;ky*=((nextR+.5)/(r+.5))**2;m=nextM;r=nextR;
+   }return levels;
+  }
+  static upperBoundaryGLSL(g){return `precision highp float;precision highp int;precision highp sampler2D;
+   const int M=${g.m},R=${g.r};const vec2 K=vec2(${g.kx},${g.ky});layout(location=0)out vec4 result;
+   int region(ivec2 c){return (c.x==M?2:0)+(c.y==R?1:0);}
+   float value(sampler2D tex,ivec2 c,int block){
+    if(block==3)return 0.;
+    if(block==1){if(c.x<0||c.x>=M)return 0.;c.y=R;}
+    else if(block==2){if(c.y>=R)return 0.;c=ivec2(M,max(c.y,0));}
+    else {c.y=max(c.y,0);if(c.x<0||c.x>=M||c.y>=R)return 0.;}
+    return texelFetch(tex,c,0).r;
+   }
+   float diagonal(ivec2 c){return (c.x<M?2.*K.x:0.)+(c.y<R?(c.y==0?K.y:2.*K.y):0.);}
+   float operatorA(sampler2D tex,ivec2 c){int block=region(c);float p=value(tex,c,block),a=0.;
+    if(c.x<M)a+=K.x*(2.*p-value(tex,c-ivec2(1,0),block)-value(tex,c+ivec2(1,0),block));
+    if(c.y<R)a+=K.y*(2.*p-value(tex,c-ivec2(0,1),block)-value(tex,c+ivec2(0,1),block));return a;
+   }`;}
   // One normal-face reconstruction for the actual intensive-scalar trajectory
   // and its acceptance metric. Tangential values are piecewise constant; each
   // normal component is linear between the exact transport face slots.
@@ -156,6 +181,77 @@
    this.fluxProgram=this.program(transport+`uniform float uDelta,uAxis;layout(location=1)out float sootResult;void main(){ivec3 c=cell();if(!valid(c)){result=vec4(0);sootResult=0.;return;}int axis=int(uAxis);ivec3 e=ivec3(axis==0?1:0,axis==1?1:0,axis==2?1:0);vec3 next=q(c)-(uDelta/width(c,axis))*(flux(c+e,e,axis,uDelta)-flux(c,e,axis,uDelta));result=vec4(next.rg,0,0);sootResult=next.b;}`);
    this.materialTransportGLSL=transport;this.materialFusedGLSL=fused;this.materialLedgerEnabled=false;this.materialLedgerState=null;
    this.lastProjection=null;this.lastTransport=null;
+   this.setupUpperBoundary(fine);
+  }
+  setupUpperBoundary(fine){
+   const gl=this.gl,[nx,ny,nz]=fine.n,floor=fine.floor;
+   this.upperLevels=OriginalFineFlow.upperBoundaryHierarchy(fine,this.extent).map(g=>({...g,p:[this.target(g,gl.R32F),this.target(g,gl.R32F)],rhs:this.target(g,gl.R32F),residual:this.target(g,gl.R32F),current:0}));
+   this.upperVelocity=this.target({width:nx,height:ny},gl.RGBA16F);
+   const finest=this.upperLevels[0],base=OriginalFineFlow.upperBoundaryGLSL(finest);
+   const plane=`const int FLOOR=${floor};const ivec2 OFFSET=ivec2(${(nz-1)%8*nx},${Math.floor((nz-1)/8)*ny});
+    vec4 upper(sampler2D tex,ivec2 c){return texelFetch(tex,OFFSET+clamp(c,ivec2(0),ivec2(${nx-1},${ny-1})),0);}`;
+   this.upperRhsProgram=this.program(base+plane+`uniform sampler2D uProjected,uSourceVF,uSourceChem;
+    void main(){ivec2 c=ivec2(gl_FragCoord.xy);if(region(c)==3){result=vec4(0);return;}ivec2 xy=c+ivec2(0,FLOOR);
+     vec4 v=upper(uProjected,xy),vf=upper(uSourceVF,xy),q=upper(uSourceChem,xy);
+     float d=(upper(uProjected,xy+ivec2(1,0)).x-v.x)*${nx}.+(upper(uProjected,xy+ivec2(0,1)).y-v.y)*${ny}.;
+     float s=min(max(vf.a,0.)*5.5/(max(1.+q.r,1.)*max(.25+q.b,.25)),64.);result=vec4(s-d,0,0,1);
+    }`);
+   this.upperApplyProgram=this.program(base+plane+`uniform sampler2D uProjected,uP;
+    float xPhi(ivec2 c){return c.x<0||c.x>=M?0.:texelFetch(uP,c,0).r;}
+    float yPhi(ivec2 c){return c.y<0||c.y>=R?0.:texelFetch(uP,c,0).r;}
+    void main(){ivec2 xy=ivec2(gl_FragCoord.xy);vec4 v=upper(uProjected,xy);if(xy.y<FLOOR){result=v;return;}
+     ivec2 c=xy-ivec2(0,FLOOR);v.x+=${nx/(this.extent[0]**2)}*(xPhi(c-ivec2(1,0))-xPhi(c));
+     if(c.y>0)v.y+=${ny/(this.extent[1]**2)}*(yPhi(c-ivec2(0,1))-yPhi(c));result=v;
+    }`);
+   for(let i=0;i<this.upperLevels.length;i++){
+    const l=this.upperLevels[i],g=OriginalFineFlow.upperBoundaryGLSL(l);
+    l.smooth=this.program(g+`uniform sampler2D uP,uRhs;void main(){ivec2 c=ivec2(gl_FragCoord.xy);float diag=diagonal(c);if(diag==0.){result=vec4(0);return;}
+     float p=texelFetch(uP,c,0).r,next=p+(texelFetch(uRhs,c,0).r-operatorA(uP,c))/diag;result=vec4(mix(p,next,2./3.),0,0,1);}`);
+    l.residualProgram=this.program(g+`uniform sampler2D uP,uRhs;void main(){ivec2 c=ivec2(gl_FragCoord.xy);result=region(c)==3?vec4(0):vec4(texelFetch(uRhs,c,0).r-operatorA(uP,c),0,0,1);}`);
+    if(i+1<this.upperLevels.length){
+     const child=this.upperLevels[i+1],C=OriginalFineFlow.upperBoundaryGLSL(child),reducedX=l.m>child.m,reducedY=l.r>child.r;
+     child.restrict=this.program(C+`uniform sampler2D uFine;const int FM=${l.m},FR=${l.r};
+      float residual(ivec2 c,int block){if(block==1){if(c.x<0||c.x>=FM)return 0.;c.y=FR;}
+       else if(block==2){if(c.y>=FR)return 0.;c=ivec2(FM,max(c.y,0));}
+       else {c.y=max(c.y,0);if(c.x<0||c.x>=FM||c.y>=FR)return 0.;}return texelFetch(uFine,c,0).r;}
+      vec4 weights(float a){return vec4(.25*(1.-a),.5-.25*a,.25+.25*a,.25*a);}
+      void main(){ivec2 c=ivec2(gl_FragCoord.xy);int block=region(c);if(block==3){result=vec4(0);return;}
+       vec2 q=vec2((float(c.x)+1.)*float(FM+1)/float(M+1)-1.,(float(c.y)+.5)*(float(FR)+.5)/(float(R)+.5)-.5);
+       if(block==1)q.y=float(FR);if(block==2)q.x=float(FM);ivec2 lo=ivec2(floor(q));vec2 a=fract(q);vec4 wx=${reducedX?'weights(a.x)':'vec4(1,0,0,0)'},wy=${reducedY?'weights(a.y)':'vec4(1,0,0,0)'};
+       float sum=0.;for(int y=0;y<${reducedY?4:1};y++)for(int x=0;x<${reducedX?4:1};x++){
+        if((block==1&&y>0)||(block==2&&x>0))continue;
+        ivec2 at=lo+ivec2(block==2?0:x-${reducedX?1:0},block==1?0:y-${reducedY?1:0});sum+=residual(at,block)*(block==2?1.:wx[x])*(block==1?1.:wy[y]);
+       }result=vec4(sum,0,0,1);
+      }`);
+     l.prolong=this.program(g+`uniform sampler2D uP,uCoarse;const int CM=${child.m},CR=${child.r};
+      float cp(ivec2 c,int block){if(block==1){if(c.x<0||c.x>=CM)return 0.;c.y=CR;}
+       else if(block==2){if(c.y>=CR)return 0.;c=ivec2(CM,max(c.y,0));}
+       else {c.y=max(c.y,0);if(c.x<0||c.x>=CM||c.y>=CR)return 0.;}return texelFetch(uCoarse,c,0).r;}
+      void main(){ivec2 c=ivec2(gl_FragCoord.xy);int block=region(c);if(block==3){result=vec4(0);return;}
+       vec2 q=vec2((float(c.x)+1.)*float(CM+1)/float(M+1)-1.,(float(c.y)+.5)*(float(CR)+.5)/(float(R)+.5)-.5);
+       if(block==1)q.y=float(CR);if(block==2)q.x=float(CM);ivec2 lo=ivec2(floor(q));vec2 a=fract(q);float correction=0.;
+       for(int y=0;y<2;y++)for(int x=0;x<2;x++){vec2 w=mix(1.-a,a,vec2(x,y));correction+=cp(lo+ivec2(x,y),block)*w.x*w.y;}
+       result=vec4(texelFetch(uP,c,0).r+correction,0,0,1);
+      }`);
+    }
+   }
+  }
+  smoothUpper(l,count){for(let j=0;j<count;j++){const next=1-l.current;this.draw(l.smooth,l.p[next],{uP:l.p[l.current].texture,uRhs:l.rhs.texture});l.current=next;}}
+  cycleUpper(i=0){const l=this.upperLevels[i];if(i===this.upperLevels.length-1){this.smoothUpper(l,48);return;}
+   this.smoothUpper(l,2);this.draw(l.residualProgram,l.residual,{uP:l.p[l.current].texture,uRhs:l.rhs.texture});const child=this.upperLevels[i+1];
+   this.draw(child.restrict,child.rhs,{uFine:l.residual.texture});child.current=0;this.clear(child.p[0]);this.cycleUpper(i+1);
+   const next=1-l.current;this.draw(l.prolong,l.p[next],{uP:l.p[l.current].texture,uCoarse:child.p[child.current].texture});l.current=next;this.smoothUpper(l,2);
+  }
+  prepareUpperBoundary(vf,chem){const l=this.upperLevels[0];l.current=0;this.clear(l.p[0]);
+   this.draw(this.upperRhsProgram,l.rhs,{uProjected:this.projected.texture,uSourceVF:vf,uSourceChem:chem});
+   for(let cycle=0;cycle<4;cycle++)this.cycleUpper();
+  }
+  copyUpperBoundary(){const gl=this.gl,[nx,ny,nz]=this.grid,l=this.upperLevels[0];
+   // Only x/y are independent of the interior pressure cycles. Read each new
+   // projected plane again so its current z component and alpha are retained.
+   this.draw(this.upperApplyProgram,this.upperVelocity,{uProjected:this.projected.texture,uP:l.p[l.current].texture});
+   gl.bindFramebuffer(gl.READ_FRAMEBUFFER,this.upperVelocity.fbo);gl.readBuffer(gl.COLOR_ATTACHMENT0);
+   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,this.projected.texture);gl.copyTexSubImage2D(gl.TEXTURE_2D,0,(nz-1)%8*nx,Math.floor((nz-1)/8)*ny,0,0,nx,ny);
   }
   target(g,internal){const gl=this.gl,texture=gl.createTexture(),fbo=gl.createFramebuffer();this.textures.push(texture);this.fbos.push(fbo);gl.bindTexture(gl.TEXTURE_2D,texture);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,internal===gl.RGBA16F?gl.LINEAR:gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,internal===gl.RGBA16F?gl.LINEAR:gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.texImage2D(gl.TEXTURE_2D,0,internal,g.width,g.height,0,internal===gl.R32F?gl.RED:internal===gl.RG32F?gl.RG:gl.RGBA,internal===gl.RGBA16F?gl.HALF_FLOAT:gl.FLOAT,null);gl.bindFramebuffer(gl.FRAMEBUFFER,fbo);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,texture,0);gl.drawBuffers([gl.COLOR_ATTACHMENT0]);if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw Error('Fine flow target unavailable');return {texture,fbo,width:g.width,height:g.height};}
   transportTarget(fuelHeat,soot){const gl=this.gl,fbo=gl.createFramebuffer();this.fbos.push(fbo);gl.bindFramebuffer(gl.FRAMEBUFFER,fbo);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,fuelHeat.texture,0);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT1,gl.TEXTURE_2D,soot.texture,0);const attachments=[gl.COLOR_ATTACHMENT0,gl.COLOR_ATTACHMENT1];gl.drawBuffers(attachments);if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw Error('Hancock MRT target unavailable');return {texture:fuelHeat.texture,fuelHeat:fuelHeat.texture,soot:soot.texture,fbo,width:fuelHeat.width,height:fuelHeat.height,attachments};}
@@ -169,8 +265,8 @@
   readReduction(target){const gl=this.gl,out=new Float32Array(4);gl.bindFramebuffer(gl.READ_FRAMEBUFFER,target.fbo);gl.readBuffer(gl.COLOR_ATTACHMENT0);gl.readPixels(0,0,1,1,gl.RGBA,gl.FLOAT,out);return Array.from(out);}
   reduce(texture,options={}){return this.readReduction(this.reduceTexture(texture,options));}
   project(vf,chem,coarse,delta=1/30){const start=performance.now(),l=this.levels[0],scratch=this.reduceTargets[0],inputs={uVf:vf,uChem:chem,pressureCorrectionTex:coarse,uProjected:this.projected.texture,uRhs:l.rhs.texture},warmStart=this.warmValid,probeZero=warmStart||!this.lastProjection||this.lastProjection.cycles===0;this.invalidateMaterialLedger();this.warmValid=false;l.current=0;if(warmStart)this.draw(this.pressureCopyProgram,l.p[0],{uInput:this.warmPressure.texture});else this.clear(l.p[0]);this.draw(this.rhsProgram,l.rhs,inputs);let metrics,midpoint,midpointCycle=-1,cycles=0,centerPre,midpointPre,decision,extraStart=null;const history=[];
-   const accepted=m=>OriginalFineFlow.projectionScore(m)<=1;
-   const measureCenter=()=>{this.draw(this.applyProgram,this.projected,{...inputs,uP:l.p[l.current].texture});this.draw(this.metricsProgram,scratch,inputs,{uReusePre:centerPre?1:0});const m=this.reduce(scratch.texture,{alreadyFirst:true});if(centerPre){m[0]=centerPre[0];m[2]=centerPre[1];}else centerPre=[m[0],m[2]];return m;};
+   const accepted=m=>OriginalFineFlow.projectionScore(m)<=1;let upperReady=false;
+   const measureCenter=()=>{this.draw(this.applyProgram,this.projected,{...inputs,uP:l.p[l.current].texture});if(!upperReady){this.prepareUpperBoundary(vf,chem);upperReady=true;}this.copyUpperBoundary();this.draw(this.metricsProgram,scratch,inputs,{uReusePre:centerPre?1:0});const m=this.reduce(scratch.texture,{alreadyFirst:true});if(centerPre){m[0]=centerPre[0];m[2]=centerPre[1];}else centerPre=[m[0],m[2]];return m;};
    const measureMidpoint=()=>{this.draw(this.midpointProgram,scratch,inputs,{uDelta:delta,uReusePre:midpointPre?1:0});const m=this.reduce(scratch.texture,{alreadyFirst:true});if(midpointPre){m[0]=midpointPre[0];m[2]=midpointPre[1];}else midpointPre=[m[0],m[2]];midpointCycle=cycles;return m;};
    let warmFallback=false;if(probeZero){metrics=measureCenter();if(warmStart&&(!Number.isFinite(metrics[1])||metrics[1]>metrics[0])){this.clear(l.p[0]);metrics=measureCenter();warmFallback=true;}if(accepted(metrics))midpoint=measureMidpoint();}
    if(!metrics||!accepted(metrics)||!midpoint||!accepted(midpoint))for(;;){const correctionStart=performance.now();this.cycle(0);cycles++;metrics=measureCenter();if(accepted(metrics)||cycles>=4)midpoint=measureMidpoint();else midpoint=null;history.push({cycles,centerScore:OriginalFineFlow.projectionScore(metrics),midpointScore:midpoint?OriginalFineFlow.projectionScore(midpoint):null,wallMs:performance.now()-correctionStart});decision=OriginalFineFlow.correctionDecision(history,extraStart===null?0:performance.now()-extraStart);if(decision.action!=='correct')break;if(cycles===4)extraStart=performance.now();}

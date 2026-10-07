@@ -73,7 +73,7 @@ function recordingGL(floatLinear=true,colorBufferFloat=true) {
   const gl = {};
   const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F RG32F RG R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 SRGB8_ALPHA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER ARRAY_BUFFER ELEMENT_ARRAY_BUFFER STATIC_DRAW UNSIGNED_INT DEPTH DEPTH_COMPONENT24 DEPTH_ATTACHMENT RENDERBUFFER DEPTH_TEST LESS POINTS';
   constants.split(' ').forEach((name, index) => gl[name] = index + 1);
-  gl.SYNC_GPU_COMMANDS_COMPLETE=10001;gl.TIMEOUT_EXPIRED=10002;gl.WAIT_FAILED=10003;gl.ALREADY_SIGNALED=10004;
+  gl.SYNC_GPU_COMMANDS_COMPLETE=10001;gl.TIMEOUT_EXPIRED=10002;gl.WAIT_FAILED=10003;gl.ALREADY_SIGNALED=10004;gl.READ_FRAMEBUFFER=10005;
   gl.fenceSync=()=>({});gl.clientWaitSync=()=>gl.ALREADY_SIGNALED;gl.deleteSync=()=>{};gl.flush=()=>{};
   let serial = 0;
   const textures = [], shaders = [],programs=[];
@@ -107,11 +107,11 @@ function recordingGL(floatLinear=true,colorBufferFloat=true) {
   gl.useProgram=p=>{currentProgram=p;};
   gl.drawArrays = () => {calls.draws++;const fragment=currentProgram?.shaders?.find(s=>s.type===gl.FRAGMENT_SHADER)?.source||'';if(fragment.includes('out vec4 capacity;'))calls.woodResets=(calls.woodResets||0)+1;if(fragment.includes('out vec4 nextStock;'))calls.woodSteps=(calls.woodSteps||0)+1;if(fragment.includes('uniform float woodDelta;'))calls.woodMechanicsDraws=(calls.woodMechanicsDraws||0)+1;};
   gl.clearBufferfv=(buffer,index)=>{calls.clears++;const texture=boundFramebuffer?.attachments?.get(gl.COLOR_ATTACHMENT0+index);if(texture)calls.clearedTextures.push(texture.id);};
-  gl.readBuffer=()=>{};
+  gl.readBuffer=()=>{};gl.copyTexSubImage2D=(...args)=>{(calls.upperCopies??=[]).push(args);};
   // This call-recording fixture does not execute GLSL. Native float readback
   // and projection residuals are validated separately in the browser.
   gl.readPixels=(x,y,width,height,format,type,values)=>values.fill(0);
-  gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);if(location?.name==='woodTimeScale')(calls.woodTimeScales??=[]).push(value);if(location?.name==='powerFlame')(calls.powerOptics??=[]).push(value);};
+  gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);if(location?.name==='woodTimeScale')(calls.woodTimeScales??=[]).push(value);if(location?.name==='powerFlame')(calls.powerOptics??=[]).push(value);if(['woodAge','woodClock','woodStarter','woodPilotSeconds','woodSigilDt'].includes(location?.name))(calls.woodIgnition??=[]).push({name:location.name,value});};
   for (const name of 'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei uniform1i uniform2f uniform3f uniform3fv uniform4fv uniform4i viewport bindRenderbuffer renderbufferStorage framebufferRenderbuffer bindBuffer bufferData enableVertexAttribArray vertexAttribPointer vertexAttribIPointer deleteBuffer deleteRenderbuffer enable disable depthFunc drawElements'.split(' ')) gl[name] = () => {};
   gl.drawElements=()=>{calls.woodMeshDraws=(calls.woodMeshDraws||0)+1;};
   return { gl, calls, textures, shaders,programs };
@@ -398,6 +398,21 @@ test('Original production startup and failure regression', async t => {
     await assert.rejects(()=>env.mountLegacy({initialPreset:'sigil'}),/Floating point GPU targets are unavailable/);
     assert.equal(env.textures.length,0);assert.equal(env.programs.length,0);
     assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);assert.equal(env.calls.lost,1);
+  });
+
+  await t.test('Sigil starts at its source age, stops both starters and restarts deliberately', async () => {
+    const env = await prepare('sigil', 'wood');
+    const runtime = await env.mountLegacy({ initialPreset: 'sigil', onFailure: error => env.failures.push(String(error)) });
+    const stop=env.elements.get('#extinguish');assert.equal(stop.hidden,false);assert.equal(stop.disabled,false);assert.equal(stop.textContent,'Stop ignition');
+    const start=performance.now()+40;await env.frame(start);
+    assert(env.calls.woodIgnition.some(u=>u.name==='woodAge'&&u.value>=0&&u.value<1));
+    assert(env.calls.woodIgnition.some(u=>u.name==='woodPilotSeconds'&&u.value>0));
+    assert(env.calls.woodIgnition.some(u=>u.name==='woodSigilDt'&&u.value>0));
+    stop.click();env.calls.woodIgnition=[];await env.frame(start+80);
+    for(const name of ['woodStarter','woodPilotSeconds','woodSigilDt']){const values=env.calls.woodIgnition.filter(u=>u.name===name);assert(values.length>0);assert(values.every(u=>u.value===0),name);}
+    env.elements.get('#restart').click();await new Promise(resolve=>setImmediate(resolve));env.calls.woodIgnition=[];await env.frame(start+160);
+    assert(env.calls.woodIgnition.some(u=>u.name==='woodAge'&&u.value>=0&&u.value<1));assert(env.calls.woodIgnition.some(u=>u.name==='woodClock'&&u.value>=0&&u.value<1));assert(env.calls.woodIgnition.some(u=>u.name==='woodPilotSeconds'&&u.value>0));
+    await runtime.dispose();assert.deepEqual(env.failures,[]);
   });
 
   await t.test('Previous v5 Original remains available through the actual loader', async () => {

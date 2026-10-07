@@ -1,7 +1,7 @@
 import { readLook, writeLook } from './studio-location.js?v=studio-rc-37-repair';
 import { createFireDomain } from './fire-domain.js?v=studio-rc-37-repair';
 import { inspectionState } from './inspection-state.js?v=studio-rc-37-repair';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-41-experimental-face';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-42-boundary-source-age';
 import { studioUI } from './studio-ui.js?v=studio-rc-37-repair';
 import { createSimulationSession } from './simulation-session.js?v=studio-rc-37-repair';
 import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-37-repair';
@@ -18,6 +18,8 @@ const versionLink = $('#runtime-version-link');
 if (versionLink) {
   const previousVersion = params.get('runtime') === 'v5';
   $('#version-label').textContent = previousVersion ? 'Previous v5 Original' : 'Experimental Original';
+  const runtimeLimit = $('#runtime-limit-text');
+  if (runtimeLimit) runtimeLimit.textContent = previousVersion ? 'Previous v5 Original. Thermal and performance limits remain.' : "Short tests pass beyond 7.8 s and for Stop/Restart. Ignition and speed remain limited; long sessions are unverified.";
   const versionURL = new URL(location.href);
   if (previousVersion) versionURL.searchParams.delete('runtime');
   else versionURL.searchParams.set('runtime', 'v5');

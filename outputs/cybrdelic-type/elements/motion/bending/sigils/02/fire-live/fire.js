@@ -262,7 +262,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     // These independent passes read the same accepted fields as before. Defer
     // their updates until every candidate pass succeeds, making rejection atomic.
     configureWood(profile);
-    woodState.step(acceptedChem,sourceTexture,objectTexture,dt,{clock:elapsed,age:elapsed-burstStart,starter:!freeMode||brush.active,timeScale:woodTimeScale,mechanics:woodMechanics});
+    woodState.step(acceptedChem,sourceTexture,objectTexture,dt,{clock:elapsed-burstStart,age:elapsed-burstStart,starter:brush.active,timeScale:woodTimeScale,mechanics:woodMechanics});
     if(woodState.enabled)woodMechanics.step(woodState,dt);
     if(profile?.kindling&&brush.active&&elapsed-burstStart>=0&&elapsed-burstStart<WOOD_THERMO.starterDurationS)groundFuel.ignite();
     groundFuel.step(acceptedChem,dt,fuelBrush.consume(),!profile?.smokeSimulation&&activePreset!=='smoke-burst',{wood:fuelControl.value==='wood',timeScale:woodTimeScale});
@@ -502,7 +502,7 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     freeMode=!!profile?.object||!['sigil','sigil-cybr','violet-sigil'].includes(key);
     pointer.down=false;pointer.id=null;pointer.active=false;endPan();setTool(false);
     reset();burstStart=-100;powerOriginZ=profile?.source?.[2]??0;powerTrailLast=null;powerAimTarget=null;powerAimDirection=null;
-    extinguishButton.hidden=!freeMode;
+    extinguishButton.hidden=false;
     burstButton.hidden=emitterKind!==6&&!powerKind();
     restartButton.textContent=key==='free'?'Clear fire':'Restart';
     focusButton.disabled=true;
@@ -515,6 +515,8 @@ export async function mountLegacy({initialPreset='sigil',initialPowers,onRemount
     if(freeMode && key!=='free'){if(powerKind())castPower();else ignite();}
     else if(freeMode){extinguishButton.disabled=true;describeSource();message.textContent='Free fire · click to ignite';}
     else {
+      // One finite pilot and authored stroke clock; stopping disables both.
+      brush.active=true;burstStart=elapsed;extinguishButton.disabled=false;extinguishButton.textContent='Stop ignition';
       message.textContent='Live GPU sigil · click to create fire';
       help.textContent='Choose a source above, or click the canvas to create and drag your own fire.';
       canvas.setAttribute('aria-label','Live GPU-simulated volumetric fire forming the Cybrdelic 02 mark. Click to create your own fire.');
