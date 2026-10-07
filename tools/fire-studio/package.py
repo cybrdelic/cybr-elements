@@ -15,6 +15,7 @@ VERSION = '0.1.0-rc.37'
 TEXT_EXTENSIONS = {'.js', '.html', '.css', '.svg', '.md', '.json'}
 WOOD_DIRECTORIES = ['forest-tree/structure', 'logs', 'house', 'wood-sigil']
 OPEN_GATES = [
+    'Experimental Original: Sigil midpoint rejection around 7.8 seconds, ignition defects and slow frame performance',
     'Live browser motion and sustained completed-frame performance on the demo GPU',
     'Mobile GPU memory, compatibility and sustained performance',
     'Original/offline detail comparison and Volume smoke/flame motion review',
@@ -68,8 +69,7 @@ def local_references(text, suffix):
     if suffix == '.css':
         refs += re.findall(r'''url\(\s*['"]?([^'"\s)]+)['"]?\s*\)''', text)
     # The Original runtime loads these classic shader modules by name.
-    script_list = re.search(r'\blegacyScripts\s*=\s*\[([^]]*)\]', text)
-    if script_list:
+    for script_list in re.finditer(r'\b(?:legacyScripts|previousScripts)\s*=\s*\[([^]]*)\]', text):
         refs += re.findall(r'''['"]([^'"]+\.js)['"]''', script_list[1])
     return list(dict.fromkeys(refs))
 
@@ -190,8 +190,9 @@ def packaged_bytes(path, token, data=None):
     text = data.decode('utf-8-sig')
     # Also covers the runtime-loader's computed classic-script URL suffix.
     text = re.sub(r'([?&]v=)[A-Za-z0-9_.-]+', lambda m: m[1] + token, text)
-    script_list = re.search(r'\blegacyScripts\s*=\s*\[([^]]*)\]', text)
-    computed_scripts = set(re.findall(r'''['"]([^'"]+\.js)['"]''', script_list[1])) if script_list else set()
+    computed_scripts = set()
+    for script_list in re.finditer(r'\b(?:legacyScripts|previousScripts)\s*=\s*\[([^]]*)\]', text):
+        computed_scripts.update(re.findall(r'''['"]([^'"]+\.js)['"]''', script_list[1]))
     deferred = re.findall(r'''\bnew URL\s*\(\s*['"]([^'"]+)['"]\s*,\s*base\s*\)''', text)
     for ref in list(dict.fromkeys(local_references(text, path.suffix) + deferred)):
         if ref in computed_scripts:

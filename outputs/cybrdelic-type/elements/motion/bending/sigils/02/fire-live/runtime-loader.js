@@ -2,7 +2,18 @@
 const scripts = new Map();
 const legacyScripts = [
   'coarse-pressure.js',
+  'original-fine-flow.js',
   'corrected-advection.js',
+  'vorticity.js',
+  'fire-optics.js',
+  'smoke-light.js',
+  'fire-room.js',
+  'fire-emitters.js',
+  'fire-props.js',
+];
+const previousScripts = [
+  'coarse-pressure.js',
+  'corrected-advection-v5.js',
   'vorticity.js',
   'fire-optics.js',
   'smoke-light.js',
@@ -17,7 +28,7 @@ function loadScript(file) {
       file,
       new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = new URL(file + '?v=studio-rc-40-compatible-projection', import.meta.url).href;
+        script.src = new URL(file + '?v=studio-rc-41-experimental-face', import.meta.url).href;
         script.onload = resolve;
         script.onerror = () => {
           scripts.delete(file);
@@ -35,6 +46,9 @@ export async function loadRuntime(kind) {
   if (kind === 'volume' || kind === 'sparse') return (await import('./pyro-gpu/app.js?v=studio-rc-37-repair')).mountVolume;
   const { woodMaterialGLSL } = await import('./wood-material.js?v=studio-rc-37-repair');
   window.WoodMaterialGLSL = woodMaterialGLSL;
-  await Promise.all(legacyScripts.map(loadScript));
-  return (await import('./fire.js?v=studio-rc-39-original-peaks')).mountLegacy;
+  const previousVersion = typeof location !== 'undefined' && new URL(location.href).searchParams.get('runtime') === 'v5';
+  const helpers = previousVersion ? previousScripts : legacyScripts;
+  await Promise.all(helpers.map(loadScript));
+  if (previousVersion) return (await import('./fire-v5.js?v=studio-v5-rollback')).mountLegacy;
+  return (await import('./fire.js?v=studio-rc-41-experimental-face')).mountLegacy;
 }

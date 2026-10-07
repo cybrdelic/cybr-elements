@@ -71,7 +71,7 @@ class FixtureElement extends FixtureTarget {
 
 function recordingGL(floatLinear=true,colorBufferFloat=true) {
   const gl = {};
-  const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 SRGB8_ALPHA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER ARRAY_BUFFER ELEMENT_ARRAY_BUFFER STATIC_DRAW UNSIGNED_INT DEPTH DEPTH_COMPONENT24 DEPTH_ATTACHMENT RENDERBUFFER DEPTH_TEST LESS POINTS';
+  const constants = 'CLAMP_TO_EDGE COLOR COLOR_ATTACHMENT0 COLOR_ATTACHMENT1 COMPILE_STATUS FLOAT FRAGMENT_SHADER FRAMEBUFFER FRAMEBUFFER_COMPLETE HALF_FLOAT LINEAR LINEAR_MIPMAP_LINEAR LINK_STATUS MAX_TEXTURE_SIZE NEAREST R16F R32F RG32F RG R8 RED REPEAT RGBA RGBA16F RGBA32F RGBA8 SRGB8_ALPHA8 TEXTURE_2D TEXTURE_3D TEXTURE_MAG_FILTER TEXTURE_MIN_FILTER TEXTURE_WRAP_R TEXTURE_WRAP_S TEXTURE_WRAP_T TEXTURE0 TEXTURE1 TEXTURE2 TEXTURE3 TEXTURE5 TEXTURE7 TEXTURE8 TEXTURE14 TEXTURE15 TRIANGLES UNPACK_ALIGNMENT UNSIGNED_BYTE VERTEX_SHADER ARRAY_BUFFER ELEMENT_ARRAY_BUFFER STATIC_DRAW UNSIGNED_INT DEPTH DEPTH_COMPONENT24 DEPTH_ATTACHMENT RENDERBUFFER DEPTH_TEST LESS POINTS';
   constants.split(' ').forEach((name, index) => gl[name] = index + 1);
   gl.SYNC_GPU_COMMANDS_COMPLETE=10001;gl.TIMEOUT_EXPIRED=10002;gl.WAIT_FAILED=10003;gl.ALREADY_SIGNALED=10004;
   gl.fenceSync=()=>({});gl.clientWaitSync=()=>gl.ALREADY_SIGNALED;gl.deleteSync=()=>{};gl.flush=()=>{};
@@ -107,6 +107,10 @@ function recordingGL(floatLinear=true,colorBufferFloat=true) {
   gl.useProgram=p=>{currentProgram=p;};
   gl.drawArrays = () => {calls.draws++;const fragment=currentProgram?.shaders?.find(s=>s.type===gl.FRAGMENT_SHADER)?.source||'';if(fragment.includes('out vec4 capacity;'))calls.woodResets=(calls.woodResets||0)+1;if(fragment.includes('out vec4 nextStock;'))calls.woodSteps=(calls.woodSteps||0)+1;if(fragment.includes('uniform float woodDelta;'))calls.woodMechanicsDraws=(calls.woodMechanicsDraws||0)+1;};
   gl.clearBufferfv=(buffer,index)=>{calls.clears++;const texture=boundFramebuffer?.attachments?.get(gl.COLOR_ATTACHMENT0+index);if(texture)calls.clearedTextures.push(texture.id);};
+  gl.readBuffer=()=>{};
+  // This call-recording fixture does not execute GLSL. Native float readback
+  // and projection residuals are validated separately in the browser.
+  gl.readPixels=(x,y,width,height,format,type,values)=>values.fill(0);
   gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);if(location?.name==='woodTimeScale')(calls.woodTimeScales??=[]).push(value);if(location?.name==='powerFlame')(calls.powerOptics??=[]).push(value);};
   for (const name of 'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei uniform1i uniform2f uniform3f uniform3fv uniform4fv uniform4i viewport bindRenderbuffer renderbufferStorage framebufferRenderbuffer bindBuffer bufferData enableVertexAttribArray vertexAttribPointer vertexAttribIPointer deleteBuffer deleteRenderbuffer enable disable depthFunc drawElements'.split(' ')) gl[name] = () => {};
   gl.drawElements=()=>{calls.woodMeshDraws=(calls.woodMeshDraws||0)+1;};
@@ -176,7 +180,7 @@ function fixture(preset, fuel = 'wood', {floatLinear=true,colorBufferFloat=true}
 }
 
 test('Original production startup and failure regression', async t => {
-  const keys = ['window', 'document', 'location', 'HTMLElement', 'Option', 'requestAnimationFrame', 'cancelAnimationFrame', 'addEventListener', 'fetch', 'SceneLights', 'FireDomain', 'FireOptics', 'createFireOptics', 'createFireRoom', 'FireRoom', 'CoarsePressure', 'MacCormackAdvection', 'FireVorticity', 'SmokeLight', 'FireEmitters', 'FireProps','WoodMaterialGLSL'];
+  const keys = ['window', 'document', 'location', 'HTMLElement', 'Option', 'requestAnimationFrame', 'cancelAnimationFrame', 'addEventListener', 'fetch', 'SceneLights', 'FireDomain', 'FireOptics', 'createFireOptics', 'createFireRoom', 'FireRoom', 'CoarsePressure', 'OriginalFineFlow', 'MacCormackAdvection', 'FireVorticity', 'SmokeLight', 'FireEmitters', 'FireProps','WoodMaterialGLSL'];
   const previous = new Map(keys.map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of previous) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key]; });
   globalThis.window = globalThis;
@@ -201,7 +205,7 @@ test('Original production startup and failure regression', async t => {
       writeFileSync(resolve(directory,'startup-'+preset+'.json'),JSON.stringify({preset,runtimeRoot:root,domain:window.FireDomain,programs:env.programs.map(p=>({id:p.id,
         vertex:p.shaders.find(s=>s.type===env.gl.VERTEX_SHADER)?.source,fragment:p.shaders.find(s=>s.type===env.gl.FRAGMENT_SHADER)?.source}))}));
     }
-    if (preset === 'sigil') assert.equal(env.loadedScripts.length, 8, 'Actual runtime loader loaded all eight production helper scripts');
+    if (preset === 'sigil') {assert.equal(env.loadedScripts.length, 9, 'Actual runtime loader loaded all nine production helper scripts');assert.ok(env.loadedScripts.some(file=>file.endsWith('original-fine-flow.js')),'Fine flow is loaded through the actual runtime loader');}
     assert.equal(runtime.snapshot().fire, 'legacy:' + preset);
     assert.ok(env.requested.includes('source/source-native.rgba8.bin'));
     assert.ok(env.requested.includes('source/halfwidth-native.r8.bin'));
@@ -345,6 +349,31 @@ test('Original production startup and failure regression', async t => {
     await runtime.dispose();assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);
   });
 
+  for(const stage of ['fine projection','transport schedule','conservative transport','oxygen predictor'])await t.test(stage+' rejection restores accepted chemistry aliases/clock and leaves auxiliary state unchanged',async()=>{
+    const env=await prepare('sigil','wood');let boundFramebuffer;const framebuffers=new Set(),originalBind=env.gl.bindFramebuffer,originalDraw=env.gl.drawArrays,originalBuffers=env.gl.drawBuffers;
+    env.gl.bindFramebuffer=(target,fbo)=>{boundFramebuffer=fbo;if(fbo)framebuffers.add(fbo);return originalBind(target,fbo);};
+    env.gl.drawBuffers=buffers=>{if(boundFramebuffer)boundFramebuffer.selected=Array.from(buffers);return originalBuffers(buffers);};
+    env.gl.drawArrays=(...args)=>{for(const attachment of boundFramebuffer?.selected||[]){const texture=boundFramebuffer.attachments?.get(attachment);if(texture)texture.writes=(texture.writes||0)+1;}return originalDraw(...args);};
+    const runtime=await env.mountLegacy({initialPreset:'sigil',onFailure:error=>env.failures.push(String(error))});
+    const flowProto=window.OriginalFineFlow.prototype,advectionProto=window.MacCormackAdvection.prototype,originalProject=flowProto.project;let acceptedTime=0,failedInputChem,failedInputVF,capturedFlow;
+    flowProto.project=function(vf,chem,coarse,dt){capturedFlow=this;failedInputChem=chem;failedInputVF=vf;const result=originalProject.call(this,vf,chem,coarse,dt);acceptedTime+=dt;return result;};
+    const start=performance.now()+80;await env.frame(start);const priorTime=acceptedTime,woodSteps=env.calls.woodSteps,mechanics=env.calls.woodMechanicsDraws;
+    capturedFlow.warmPressure=capturedFlow.target(capturedFlow.levels[0],env.gl.R32F);capturedFlow.warmValid=true;capturedFlow.materialLedgerState={valid:true};
+    const writes=new Map(env.textures.map(texture=>[texture,texture.writes||0]));
+    const domain=window.FireDomain,aliases=new Map([...framebuffers].filter(fbo=>fbo.attachments?.size===2&&fbo.attachments.get(env.gl.COLOR_ATTACHMENT0)?.internal===env.gl.RGBA16F&&fbo.attachments.get(env.gl.COLOR_ATTACHMENT0)?.width===domain.nx*8).map(fbo=>[fbo,fbo.attachments.get(env.gl.COLOR_ATTACHMENT1)]));assert.equal(aliases.size,2);
+    const method=stage==='fine projection'?'project':stage==='transport schedule'?'prepareTransport':stage==='conservative transport'?'transport':'step',prototype=stage==='oxygen predictor'?advectionProto:flowProto,saved=prototype[method];
+    prototype[method]=function(...args){if(method==='project'){failedInputVF=args[0];failedInputChem=args[1];}throw Error('Injected '+stage+' failure');};
+    try{
+      await env.frame(start+80);const failure=runtime.snapshot().failure;
+      assert.equal(failure.stage,stage);assert.equal(failure.acceptedTime,priorTime);assert(failure.attemptedTime>failure.acceptedTime);assert.equal(env.frames.size,0);assert.equal(env.calls.woodSteps,woodSteps);assert.equal(env.calls.woodMechanicsDraws,mechanics);
+      assert.equal(capturedFlow.warmValid,false,'Rejected acceleration history is discarded');assert.equal(capturedFlow.materialLedgerState.valid,false,'Rejected material ledger is unavailable');
+      assert.equal(failedInputChem.writes||0,writes.get(failedInputChem));assert.equal(failedInputVF.writes||0,writes.get(failedInputVF));
+      for(const [fbo,texture]of aliases)assert.equal(fbo.attachments.get(env.gl.COLOR_ATTACHMENT1),texture,'Diffusion alias swaps must roll back both framebuffer attachments');
+      assert.equal(env.elements.get('#pause').disabled,true);assert.equal(env.elements.get('#session-status').dataset.state,'error');assert.match(env.elements.get('#message').textContent,/last accepted state is preserved/);
+      env.elements.get('#pause').click();assert.equal(env.frames.size,0,'A rejected state cannot be resumed');
+    }finally{prototype[method]=saved;flowProto.project=originalProject;await runtime.dispose();}
+    assert.equal(env.listeners(),0);
+  });
   await t.test('Core half-float filtering survives absence of the optional 32-bit float extension',async()=>{
     const env=await prepare('sigil','wood',{floatLinear:false});
     assert.equal(env.gl.getExtension('OES_texture_float_linear'),null);
@@ -369,6 +398,30 @@ test('Original production startup and failure regression', async t => {
     await assert.rejects(()=>env.mountLegacy({initialPreset:'sigil'}),/Floating point GPU targets are unavailable/);
     assert.equal(env.textures.length,0);assert.equal(env.programs.length,0);
     assert.equal(env.frames.size,0);assert.equal(env.listeners(),0);assert.equal(env.calls.lost,1);
+  });
+
+  await t.test('Previous v5 Original remains available through the actual loader', async () => {
+    const candidateAdvection = window.MacCormackAdvection;
+    try {
+      const env = fixture('sigil', 'wood');
+      location.href += '&runtime=v5';
+      const { loadRuntime: loadPrevious } = await import(moduleURL('runtime-loader.js') + '?fixture=v5');
+      const mountPrevious = await loadPrevious('legacy');
+      assert.ok(env.loadedScripts.some(file => file.endsWith('corrected-advection-v5.js')));
+      assert.ok(!env.loadedScripts.some(file => file.endsWith('original-fine-flow.js')));
+      env.elements.get('#preset').replaceChildren(...LEGACY_PRESETS.map(preset => new Option(preset.name, preset.id.replace(/^legacy:/, ''))));
+      window.FireDomain = createFireDomain('sigil');
+      window.FireOptics = window.createFireOptics();
+      window.createFireRoom();
+      const runtime = await mountPrevious({ initialPreset: 'sigil', onFailure: error => env.failures.push(String(error)) });
+      assert.deepEqual(env.failures, []);
+      await env.frame(performance.now() + 40);
+      await runtime.dispose();
+      assert.equal(env.frames.size, 0);
+      assert.equal(env.listeners(), 0);
+    } finally {
+      window.MacCormackAdvection = candidateAdvection;
+    }
   });
 
   await t.test('Removing the half-float filtering declaration reproduces the reported ReferenceError', async () => {

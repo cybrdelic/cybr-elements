@@ -137,8 +137,18 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     vec4 vf=field(vfTex,back);
     vf.xyz+=samplePressureCorrection(back);
     vec4 scalars=maccormackScalars(at,back,oldVF.xyz,sourceEnabled<.5&&emitterKind>0);
-    // Conservative fuel/soot/heat-proxy transport already accounts for flow.
-    // Applying a separate Eulerian exponential would add/remove inventory.
+    // Match concentration change to the divergence of the projected flow.
+    // Original velocities are normalized domain units, so derivatives use
+    // normalized voxel spacing (the extents cancel in divergence).
+    if(sourceEnabled<.5 && (emitterKind==6||emitterKind>=22) && scalars.r+scalars.a>.00001){
+    vec3 dh=vec3(1./NXf,1./NZf,1./(DEPTHf-1.));
+    vec3 vp=field(vfTex,at+vec3(dh.x,0,0)).xyz+samplePressureCorrection(at+vec3(dh.x,0,0));
+    vec3 vq=field(vfTex,at+vec3(0,dh.y,0)).xyz+samplePressureCorrection(at+vec3(0,dh.y,0));
+    vec3 vr=field(vfTex,at+vec3(0,0,dh.z)).xyz+samplePressureCorrection(at+vec3(0,0,dh.z));
+    float flowDivergence=(vp.x-oldVF.x)/dh.x+(vq.y-oldVF.y)/dh.y+(vr.z-oldVF.z)/dh.z;
+    float dilution=exp(-clamp(flowDivergence*delta,-.5,.5));
+    scalars.ra*=dilution;
+    }
     float fuel=scalars.r;
     float oxygen=scalars.g;
     float temp=scalars.b, soot=scalars.a;

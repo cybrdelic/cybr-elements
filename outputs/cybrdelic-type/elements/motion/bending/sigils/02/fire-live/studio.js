@@ -1,7 +1,7 @@
 import { readLook, writeLook } from './studio-location.js?v=studio-rc-37-repair';
 import { createFireDomain } from './fire-domain.js?v=studio-rc-37-repair';
 import { inspectionState } from './inspection-state.js?v=studio-rc-37-repair';
-import { loadRuntime } from './runtime-loader.js?v=studio-rc-40-compatible-projection';
+import { loadRuntime } from './runtime-loader.js?v=studio-rc-41-experimental-face';
 import { studioUI } from './studio-ui.js?v=studio-rc-37-repair';
 import { createSimulationSession } from './simulation-session.js?v=studio-rc-37-repair';
 import { DEMO_PRESETS } from './demo-presets.js?v=studio-rc-37-repair';
@@ -14,6 +14,16 @@ import { powerDefinition, normalizePowerSettings } from './fire-powers.js?v=stud
 
 const $ = (selector) => document.querySelector(selector);
 const params = new URL(location.href).searchParams;
+const versionLink = $('#runtime-version-link');
+if (versionLink) {
+  const previousVersion = params.get('runtime') === 'v5';
+  $('#version-label').textContent = previousVersion ? 'Previous v5 Original' : 'Experimental Original';
+  const versionURL = new URL(location.href);
+  if (previousVersion) versionURL.searchParams.delete('runtime');
+  else versionURL.searchParams.set('runtime', 'v5');
+  versionLink.href = versionURL.href;
+  versionLink.textContent = previousVersion ? 'Use experimental Original' : 'Use previous v5 Original';
+}
 const remembered = new Map();
 let runtime,
   engine = '',

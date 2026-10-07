@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {NativeVolumeStream} from './native-volume-stream.mjs';
 
 const root=fileURLToPath(new URL('../../',import.meta.url));
+fs.mkdirSync(path.join(root,'work/adaptive-volume-qa'),{recursive:true});
 const folder=fs.mkdtempSync(path.join(root,'work/adaptive-volume-qa/control-cpu-'));
 function fixture(name,code){const file=path.join(folder,name+'.mjs');fs.writeFileSync(file,code);return file;}
 test('numerical-rejection exit retains the final host-success acknowledgement',async()=>{
