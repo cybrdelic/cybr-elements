@@ -12,6 +12,16 @@ import {GAS_CHEMISTRY,sourceMixingGLSL} from './reduced-chemistry.js?v=studio-rc
 import {powerSourceFor} from './fire-powers.js?v=studio-rc-37-repair';
 import {POWER_CAST_CAPACITY} from './fire-power-definitions.js?v=studio-rc-37-repair';
 
+// The cursor inlet and fireball use world-space source momentum. Their ambient
+// curl and planar swirl must use the same units before entering normalized vf.
+// Retain the authored motion of every other Original source.
+export const originalAmbientScaleGLSL = `
+float originalAmbientScale(int emitter,int effect,float sourceMode,float extent){
+ bool worldMotion=sourceMode<.5&&((emitter==0&&effect<0)||emitter==23);
+ return worldMotion?1./extent:1.;
+}
+`;
+
 export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind,MAX_POWER_EMITTER,renderSize,emittersGLSL,propsGLSL,woodMaterialGLSL}){
  const NX=domain.nx,NZ=domain.ny,DEPTH=domain.depth,TILES_X=8,TILES_Y=DEPTH/8,AW=NX*TILES_X,AH=NZ*TILES_Y;
  const [RW,RH]=renderSize;
@@ -90,6 +100,7 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
   float powerTimeStep(){return delta;}
   ${hasPowers ? powerSourceFor(kind,'glsl') : ''}
   ${emittersGLSL}
+  ${originalAmbientScaleGLSL}
   ${advectionGLSL}
   ${groundInjectionGLSL}
   layout(location=0) out vec4 outVF;
@@ -269,7 +280,8 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     float n1=texture(noiseTex,p*vec2(1.6,1.2)+vec2(clock*.037,depth*.41)).r;
     float n2=texture(noiseTex,p*vec2(4.2,3.0)+vec2(-clock*.08,depth*.83)).g;
     float curl=(n1-n2)*(.035+.13*temp);
-    vf.x+=curl*delta*(sourceEnabled<.5&&emitterKind==2?.8:5.0);
+    vec2 ambientScale=vec2(originalAmbientScale(emitterKind,sourceEffectKind,sourceEnabled,simExtent.x),originalAmbientScale(emitterKind,sourceEffectKind,sourceEnabled,simExtent.y));
+    vf.x+=curl*delta*(sourceEnabled<.5&&emitterKind==2?.8:5.0)*ambientScale.x;
     float buoyancy=sourceEnabled>.5?6.5:emitterKind==1?3.2*sourceLift:emitterKind==2?3.:emitterKind==3||emitterKind==4?.35:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind<=0?2.1:emitterKind>=7?presetBuoyancy:6.5;
     if(sourceEnabled<.5 && emitterKind==6)buoyancy=mix(.3,3.6,smoothstep(.2,1.2,burstAge));
     vf.y+=(densityBuoyancy(temp,buoyancy)-smokeWeight(soot,temp))*delta/simExtent.y;
@@ -325,8 +337,8 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     float swirl=(.05+.35*clamp(temp,0.0,2.0))*delta*(1.0-.7*support)
                  *mix(.15,1.0,sourceEnabled);
     if(sourceEnabled<.5&&emitterKind==2)swirl*=.15;
-    vf.x+=sin(waveX)*cos(waveZ)*swirl;
-    vf.y-=cos(waveX)*sin(waveZ)*swirl;
+    vf.x+=sin(waveX)*cos(waveZ)*swirl*ambientScale.x;
+    vf.y-=cos(waveX)*sin(waveZ)*swirl*ambientScale.y;
     // Depth shear belongs to the evolving velocity, never the display shader.
     vf.z+=(sin(worldX*3.7+worldZ*4.3+clock*2.1)*(n2-.5))
           *delta*(.15+.55*clamp(temp+soot,0.,1.))/simExtent.z;

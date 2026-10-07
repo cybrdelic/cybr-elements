@@ -36,5 +36,5 @@ export async function loadRuntime(kind) {
   const { woodMaterialGLSL } = await import('./wood-material.js?v=studio-rc-37-repair');
   window.WoodMaterialGLSL = woodMaterialGLSL;
   await Promise.all(legacyScripts.map(loadScript));
-  return (await import('./fire.js?v=studio-rc-37-repair')).mountLegacy;
+  return (await import('./fire.js?v=studio-rc-38-original-motion')).mountLegacy;
 }
