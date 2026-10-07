@@ -5,7 +5,8 @@ The parent reports PR #12 merged as `af796b9ec707e774b7a96be8a7dc4faa9f5db2ee`
 and Site v6 deployed successfully at 2026-10-07 20:02:01.533 UTC from
 `6e1ffcf5ad37c7b8d165b1ddb663f10aa4aa99f4`. That publication, the previous-v5
 runtime option and the independently saved whole-site v5 rollback are preserved.
-This follow-up is not published or native-validated.
+This follow-up has bounded native validation on a GeForce RTX 4060 Laptop GPU;
+publication is coordinated separately. CPU and native evidence are scoped below.
 
 ## Boundary operator and integration
 
@@ -25,7 +26,11 @@ This is an approximate solve of the replay-supported operator, not the exact
 CPU spectral solver. The default hierarchy has eight levels and adds 6,113,600
 requested texture bytes (5.83 MiB), including one half-float upper-plane buffer.
 It adds 390 small-plane draws for the initial application, plus one application
-and one tile copy for each later interior pressure cycle. Native cost is unknown.
+and one tile copy for each later interior pressure cycle. In the bounded Sigil
+check, coast median GPU time was 1.10 ms for the upper solve, 0.0184 ms for
+application/copy and 3.21 ms per interior cycle. Whole-projection CPU wall
+median was 57.5 ms with private observers and reduction/readback overhead;
+it is not a matched total-projection GPU comparison.
 There are no added CPU readbacks or full-volume velocity targets.
 
 Only the upper plane's x/y normal-face components are corrected. Its z component
@@ -49,8 +54,11 @@ operator, including both clamped edges and the floor. Tests establish physical
 energy minimality for the exact operator, representable-source closure,
 unrepresentable-corner behavior and signed fuel/heat/soot inventory closure.
 Control fixtures verify one boundary RHS per projection, current-normal retention,
-correct tile bounds and unchanged failure handling. Native shader execution,
-Float32 contraction, copy behavior, timing and visual quality remain unverified.
+correct tile bounds and unchanged failure handling. A native half-float fixture
+changed 204 tangential slots while preserving normal velocity, source alpha,
+interior atlas cells, floor slots and interior center divergence exactly.
+Shared-face shaders and all fixture programs compiled and linked. These bounded
+checks do not establish long-duration stability or visual quality.
 Both copy buffers use RGBA16F, matching the sized-format component constraint in
 the [WebGL 2 specification](https://registry.khronos.org/webgl/specs/latest/2.0/#BACKWARDS_INCOMPATIBILITY).
 
@@ -60,12 +68,21 @@ The frozen-field midpoint replay gave numerator 89,506.828125, eta/rho
 0.02607189837; center numerator remained exactly 92,381.421875 and all interior
 arrival velocities remained identical. The previous native midpoint eta was
 0.100804730043. This CPU replay passes the unchanged targets on one preserved
-field; it does not prove live Sigil advancement beyond 7.8 seconds or conservation
-of the full reacting/material system.
+field. The subsequent native Sigil check advanced through 8.4333 s, beyond the
+previous rejection. At 8.4 s, center eta/rho was 0.0576788 and midpoint eta/rho
+was 0.0644853, passing unchanged targets. One actual conservative-transport
+step closed signed fuel/heat-proxy/soot inventory plus outward flux with
+relative errors [-1.31424e-7, -4.93066e-8, 0], within 16 Float32 epsilons.
+That ledger excludes reaction, source, diffusion and oxygen stages; it does
+not establish conservation of the full reacting/material system.
 
 ## Sigil source clock and finite ignition budget
 
-Legacy Sigil selection now begins a finite starter at age zero. Wood receives
+Legacy Sigil selection now resets its finite starter origin to age zero.
+The production frame advances the clock before stepping, so the first wood
+step observes age and clock 1/30 s. Native checks verified initial and Restart
+origins, positive actual source uniforms after Restart, both source uniforms
+zero after Stop, and continued accepted advancement after Restart. Wood receives
 elapsed time relative to that explicit ignition event, so Restart or relight
 restarts its authored stroke clock consistently. Stop ignition is visible and
 disables both the generic pilot and authored starter; previously `!freeMode`
@@ -81,4 +98,16 @@ Transport, cooling and fuel heat capacity reduce the pilot's isolated effect.
 The authored starter supplies a separate unchanged 280 kW/m2 budget for 1.2
 seconds per stroke to gas and substrate. Its combined delivery and material
 thermal state were not captured, so correcting source age does not establish
-ignition. Actual positive burn and temperature evidence are still required.
+ignition. The bounded native planes had zero sampled soot and normalized gas
+temperature below the fresh ignition threshold; sustained ignition remains
+unproved. Actual positive burn and temperature evidence are still required.
+
+## Remaining limits
+
+This evidence covers one Sigil to 8.4333 s and short source-control checks.
+It does not cover long sessions, Fireball or Sooty on native hardware. Physical
+clock advancement was about 0.26 to 0.51 native seconds per wall second in the
+bounded observed phases, so real-time performance remains unresolved. Thermal
+and source-delivery limits remain disclosed; no heat, duration, threshold,
+transport or rendering coefficients were tuned by this follow-up. The previous
+v5 runtime option and separately preserved v5 rollback remain available.

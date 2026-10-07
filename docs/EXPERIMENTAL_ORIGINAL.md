@@ -1,54 +1,58 @@
 # Experimental Original publication
 
-Frozen numerical source: `cb2fc8d2395a8b10851ba1ed4464414cdb0d2c36`.
-Public base: `eaba4e093aab6145212ef5d0f74394ac75c5f111` (prior v5).
+Tested numerical source: `5ce5a7f80e52e99fb20db751aa6ed9d9e17f2034`.
+Public base: `af796b9ec707e774b7a96be8a7dc4faa9f5db2ee` (merged PR #12).
 
-The final candidate difference from the public base is curated into one commit.
-Private intermediate history, raw diagnostic field dumps, browser profiles,
-environment files and unrelated experiments are excluded. The candidate remains
-preserved separately. Numerical code is unchanged by publication preparation;
-only loader cache tokens, a visible version/limits notice and a previous-v5
-runtime choice are added around it.
+The focused follow-up adds an upper-depth tangential correction and repairs
+Sigil source age and Stop/Restart controls. Its two numerical runtime files are
+byte-identical to the tested source. Publication adds separate documentation,
+an accurate experimental notice and loader cache tokens. Private overlays,
+field dumps, browser profiles, environment files and unrelated experiments
+are excluded. No heat budget, threshold, transport or rendering is retuned.
 
-## Checks and their limits
+## Checks and limits
 
-The final publication checkout passed all 487 CPU cases across 68 suite files,
-all 9 package tests and all 4 asset-tool tests. Runtime closure covers 184 files
-with content build `41d07a98c158cb0b`. The actual loader's previous-v5 path also
-passed startup, first-frame execution and disposal in the CPU WebGL fixture.
-No browser or GPU run was added for publication preparation.
+The numerical candidate passed 493 CPU cases across 69 suites, nine package
+tests, four asset-tool tests and 184-file runtime closure. Publication repeats
+the CPU/package/closure checks after notice and cache changes, without GPU work.
 
-The frozen candidate passed 486 CPU tests, 9 package tests, 4 asset-tool tests
-and the runtime closure check. The reserved GLSL identifier correction was then
-checked in 31 targeted CPU tests, with all 61 assembled shader programs compared:
-three changed only the identifier. Native candidate startup compiled, and shared
-normal-face diagnostics agreed with the CPU reference. The native Sigil run
-stopped before Fireball, Sooty or the conservation ledger, so those checks remain
-incomplete. Full native validation is not a passing release gate.
+Native startup and shared-face shader consistency passed. A native half-float
+fixture changed 204 tangential slots with zero changes to normal velocity,
+source alpha, interior atlas cells, floor slots and interior center divergence.
+Sigil advanced through 8.4333 seconds beyond its former attempted-7.8-second
+boundary failure. At 8.4 seconds, center eta/rho was 0.0576788 and midpoint
+eta/rho was 0.0644853, passing unchanged 0.1 eta and 0.2 rho limits.
 
-The last accepted Sigil time was 7.76667 seconds. Attempted 7.8 seconds failed
-midpoint eta 0.100804730043 against the unchanged 0.1 limit. The rejected state
-was not published into simulation history. Four normal cycles were used and
-extra-cycle admission failed its existing contraction budget. The saved Sigil
-gas field had zero burn/soot and a maximum temperature around 447 K; visible
-ignition remains defective.
+One actual conservative transport step closed signed fuel/heat-proxy/soot
+inventory plus outward boundary flux with relative errors
+[-1.31424e-7, -4.93066e-8, 0], within 16 Float32 epsilons. This excludes source,
+reaction, diffusion and oxygen stages; it does not certify the full reacting
+or material system. Native controls verified Restart at time zero, its first
+step age/clock at 1/30 second, positive pilot/starter uniforms, both uniforms
+zero after Stop, and continued accepted advancement after Restart.
 
-Short instrumented windows measured feed projection 23.17 ms, feed wall-frame
-97.76 ms, coast-prefix projection 33.13 ms and coast-prefix wall-frame 177.27 ms.
-Waits overlap GPU work, so they must not be added together. These windows do not
-establish sustained frame rate, mobile behavior or all-preset correctness.
+Sustained ignition remains unproved. Bounded native planes had zero sampled
+soot and gas temperature below the fresh ignition threshold. Thermal/source
+delivery limits remain. No wattage, duration, geometry or threshold tuning is
+included. Native Fireball, Sooty, long-session and mobile checks are incomplete.
 
-Publication is authorized with these limitations accepted. Safeguards remain
-enabled. No CPU boundary counterfactual or additional numerical change is included.
+Coast median GPU times were 1.10 ms for the upper solve, 0.0184 ms for apply/copy
+and 3.21 ms per interior cycle. Whole-projection CPU wall median was 57.5 ms
+with private observer and readback overhead. Physical clock advancement was
+about 0.26–0.51 native seconds per wall second in bounded phases. These are
+single-device observations, not a matched total-projection GPU comparison or
+a sustained performance claim. Real-time performance remains unresolved.
 
-## Previous version and rollback
+## Previous versions and rollback
 
-The version notice switches Original to `?runtime=v5`. Its fire, shader and
-corrected-advection code is preserved from the public base. The v5 shader import
-uses a distinct filename so both versions coexist; numerical expressions remain
-identical. Other assets are shared unchanged. The candidate is the default.
+`?runtime=v5` selects the preserved previous Original runtime. Its numerical
+files remain unchanged. The default is the tested experimental follow-up.
 
-Whole-site rollback is also available from saved Site version 5, source commit
-`0d1f9cad31b48f7ad1a236bbf6554ff265dc9cfe`, archive SHA-256
+The prior v6 candidate `cb2fc8d2395a8b10851ba1ed4464414cdb0d2c36` is preserved
+separately. Archive-backed Site version 6 remains available from source
+`6e1ffcf5ad37c7b8d165b1ddb663f10aa4aa99f4`, archive SHA-256
+`f68151e544e6db260da96b61728b87085cb7b122b6fda9598dd226e03e28756a`.
+
+Saved Site version 5 remains independently available for whole-site rollback:
+source `0d1f9cad31b48f7ad1a236bbf6554ff265dc9cfe`, archive SHA-256
 `a1a553b2a0a7b54e1d3cfe176525a6f071b0672be0bc1bfaed1642e9ff62bc49`.
-That copy is retained independently of the new publication.
