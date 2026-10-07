@@ -1,0 +1,410 @@
+{
+  "schema": 1,
+  "preparedAt": "2026-10-07T06:28:57.393450+00:00",
+  "baselineCommit": "ccbb6eda9af432bb1e07980312629152eb9089a1",
+  "testedNumericalCommit": "b99e00a4e5da806a1319fb36044fb5234e57689e",
+  "candidateShaderSHA256": "a37ce32a826ea4f1f53ba0f1e01314c62f234cf3c8120c630fcccce123ebab1f",
+  "forcePeakLimits": {
+    "free": 6,
+    "fireball": 4
+  },
+  "reviewVideo": {
+    "file": "original-peak-force-review.mp4",
+    "sha256": "fb6ba25a97054f0a96bda2761acc670ee10873538baf8d2ac993d9d524c23fa1",
+    "bytes": 1452187,
+    "durationSeconds": 9.2,
+    "dimensions": [
+      1792,
+      584
+    ],
+    "frames": 276,
+    "fps": 30,
+    "label": "NATIVE-AGE RETIMED REVIEW - NOT REAL-TIME",
+    "scenarioOrder": [
+      "free",
+      "release",
+      "multicast"
+    ],
+    "method": "Nearest actually captured render selected for a common native-age timeline. No interpolation or generated flame frames. Both native ages printed. Maximum paired age mismatch: free1/30second, held-release0, multicast0."
+  },
+  "scenarios": [
+    {
+      "scenario": "free",
+      "nativeSteps": [
+        126,
+        126
+      ],
+      "recordedFrames": [
+        122,
+        121
+      ],
+      "finalNativeAges": [
+        4.199999999999995,
+        4.199999999999995
+      ],
+      "sampledPeakWorldSpeeds": [
+        5.125771847919643,
+        4.289803666248151
+      ],
+      "sampledMeanActiveWorldSpeeds": [
+        0.2926076906812313,
+        0.2890662320524933
+      ],
+      "peakChangePercent": -16.309118050402105,
+      "meanChangePercent": -1.2103094831489192,
+      "instrumentedNativeSecondsPerWallSecond": [
+        0.9416921351613856,
+        0.9328753763304063
+      ],
+      "instrumentedThroughputChangePercent": -0.9362676507294276,
+      "sampledDepthLayers": [
+        8,
+        16,
+        24
+      ],
+      "nativeStepSequencesIdentical": true,
+      "initialSnapshot": {
+        "native": {
+          "time": 0,
+          "woodTimeScale": 1
+        },
+        "snapshot": {
+          "fire": "legacy:free",
+          "fuel": "wood",
+          "smoke": false,
+          "color": "natural",
+          "fireLight": 24,
+          "woodTimeScale": 1,
+          "powers": {
+            "strength": 1,
+            "heading": 0,
+            "elevation": 9
+          },
+          "ability": {
+            "active": 0,
+            "capacity": 4,
+            "held": false,
+            "phase": {
+              "name": "Ready",
+              "progress": 0
+            },
+            "casts": []
+          },
+          "room": true,
+          "sourceGuide": true,
+          "tool": "fire",
+          "camera": {
+            "zoom": 1.25,
+            "angle": 16,
+            "pan": [
+              0,
+              0
+            ]
+          }
+        }
+      },
+      "releaseOrMulticastEvents": [],
+      "diagnosticMessages": [
+        [],
+        []
+      ]
+    },
+    {
+      "scenario": "release",
+      "nativeSteps": [
+        188,
+        188
+      ],
+      "recordedFrames": [
+        187,
+        186
+      ],
+      "finalNativeAges": [
+        3.0058333333333325,
+        3.0058333333333325
+      ],
+      "sampledPeakWorldSpeeds": [
+        2.8016586434081234,
+        2.5599591783206246
+      ],
+      "sampledMeanActiveWorldSpeeds": [
+        0.18455122360017434,
+        0.17623530378501742
+      ],
+      "peakChangePercent": -8.627013346403956,
+      "meanChangePercent": -4.506022584371017,
+      "instrumentedNativeSecondsPerWallSecond": [
+        0.9979005554131948,
+        1.0004129534352537
+      ],
+      "instrumentedThroughputChangePercent": 0.2517683759599265,
+      "sampledDepthLayers": [
+        16,
+        32,
+        48
+      ],
+      "nativeStepSequencesIdentical": true,
+      "initialSnapshot": {
+        "native": {
+          "time": 0,
+          "woodTimeScale": 1
+        },
+        "snapshot": {
+          "fire": "legacy:fireball",
+          "fuel": "gas",
+          "smoke": false,
+          "color": "natural",
+          "fireLight": 24,
+          "woodTimeScale": 1,
+          "powers": {
+            "strength": 1,
+            "heading": 0,
+            "elevation": 9
+          },
+          "ability": {
+            "active": 0,
+            "capacity": 4,
+            "held": false,
+            "phase": {
+              "name": "Ready",
+              "progress": 0
+            },
+            "casts": []
+          },
+          "room": true,
+          "sourceGuide": true,
+          "tool": "fire",
+          "camera": {
+            "zoom": 1.25,
+            "angle": 16,
+            "pan": [
+              0,
+              0
+            ]
+          }
+        }
+      },
+      "releaseOrMulticastEvents": [
+        {
+          "name": "native-full-charge-release",
+          "stepIndex": 75,
+          "nativeClock": 1.1924999999999994,
+          "canvasPoint": [
+            0.7,
+            0.68
+          ],
+          "ability": {
+            "active": 1,
+            "capacity": 4,
+            "held": false,
+            "phase": {
+              "name": "Travel",
+              "progress": 0
+            },
+            "casts": [
+              {
+                "kind": 2,
+                "age": 0.22,
+                "held": false,
+                "origin": [
+                  -1.6,
+                  1.1000000000000003,
+                  0
+                ],
+                "target": [
+                  1.4986918618950211,
+                  1.1900485703693773,
+                  0
+                ],
+                "strength": 1,
+                "charge": 1
+              }
+            ]
+          }
+        }
+      ],
+      "diagnosticMessages": [
+        [
+          "Pause before reading diagnostic state"
+        ],
+        [
+          "Pause before reading diagnostic state"
+        ]
+      ]
+    },
+    {
+      "scenario": "multicast",
+      "nativeSteps": [
+        124,
+        124
+      ],
+      "recordedFrames": [
+        122,
+        122
+      ],
+      "finalNativeAges": [
+        2.0149999999999952,
+        2.0149999999999952
+      ],
+      "sampledPeakWorldSpeeds": [
+        3.450012124427278,
+        3.3557859899191933
+      ],
+      "sampledMeanActiveWorldSpeeds": [
+        0.26505185433229567,
+        0.2490863891166435
+      ],
+      "peakChangePercent": -2.7311827063137284,
+      "meanChangePercent": -6.023525191276824,
+      "instrumentedNativeSecondsPerWallSecond": [
+        1.0033889294731284,
+        1.002123705858806
+      ],
+      "instrumentedThroughputChangePercent": -0.12609503425424773,
+      "sampledDepthLayers": [
+        16,
+        32,
+        48
+      ],
+      "nativeStepSequencesIdentical": true,
+      "initialSnapshot": {
+        "native": {
+          "time": 0,
+          "woodTimeScale": 1
+        },
+        "snapshot": {
+          "fire": "legacy:fireball",
+          "fuel": "gas",
+          "smoke": false,
+          "color": "natural",
+          "fireLight": 24,
+          "woodTimeScale": 1,
+          "powers": {
+            "strength": 1,
+            "heading": 0,
+            "elevation": 9
+          },
+          "ability": {
+            "active": 0,
+            "capacity": 4,
+            "held": false,
+            "phase": {
+              "name": "Ready",
+              "progress": 0
+            },
+            "casts": []
+          },
+          "room": true,
+          "sourceGuide": true,
+          "tool": "fire",
+          "camera": {
+            "zoom": 1.25,
+            "angle": 16,
+            "pan": [
+              0,
+              0
+            ]
+          }
+        }
+      },
+      "releaseOrMulticastEvents": [
+        {
+          "name": "six-clicks-four-full-charge-casts",
+          "nativeClock": 0,
+          "ability": {
+            "active": 4,
+            "capacity": 4,
+            "held": false,
+            "phase": {
+              "name": "Wind-up",
+              "progress": 0
+            },
+            "casts": [
+              {
+                "kind": 2,
+                "age": 0,
+                "held": false,
+                "origin": [
+                  -1.6,
+                  1.1000000000000003,
+                  0
+                ],
+                "target": [
+                  1.4618338558449269,
+                  1.584946841624716,
+                  0
+                ],
+                "strength": 1,
+                "charge": 1
+              },
+              {
+                "kind": 2,
+                "age": 0,
+                "held": false,
+                "origin": [
+                  -1.6,
+                  1.1000000000000003,
+                  0
+                ],
+                "target": [
+                  1.4618338558449269,
+                  1.584946841624716,
+                  0
+                ],
+                "strength": 1,
+                "charge": 1
+              },
+              {
+                "kind": 2,
+                "age": 0,
+                "held": false,
+                "origin": [
+                  -1.6,
+                  1.1000000000000003,
+                  0
+                ],
+                "target": [
+                  1.4618338558449269,
+                  1.584946841624716,
+                  0
+                ],
+                "strength": 1,
+                "charge": 1
+              },
+              {
+                "kind": 2,
+                "age": 0,
+                "held": false,
+                "origin": [
+                  -1.6,
+                  1.1000000000000003,
+                  0
+                ],
+                "target": [
+                  1.4618338558449269,
+                  1.584946841624716,
+                  0
+                ],
+                "strength": 1,
+                "charge": 1
+              }
+            ]
+          }
+        }
+      ],
+      "diagnosticMessages": [
+        [],
+        []
+      ]
+    }
+  ],
+  "acceptance": "Modest force-peak mitigation with preserved fine curls, native timing, controls and packet travel. Wider uncontrolled-motion and smooth/overbright packet-head appearance remain open.",
+  "limits": [
+    "Three sampled full depth slices, not whole-volume maxima/stability/conservation",
+    "Synchronous JPEG readback/encoding included; bounded warmed desktop throughput, not a sustained/mobile/uninstrumented benchmark",
+    "Earlier exact-decimal1.17 held-release assertion failed; original report/evidence retained privately",
+    "Corrected held-release pair retained matched release/step/frame evidence but pointerdown diagnostic hook reported Pause before reading diagnostic state in both runs; initial event absent",
+    "Earlier unmatched wall-time held-release14.3%rate deficit did not reproduce in matched warmed capture"
+  ],
+  "GPUStartedDuringPreparation": false
+}

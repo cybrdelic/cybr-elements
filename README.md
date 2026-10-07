@@ -52,6 +52,10 @@ Original free fire and fireball now convert ambient curl and planar swirl into
 the same world units as their source momentum. The scoped correction retains
 the inlet, heat, fuel, damping and cast timing; [actual before/after evidence](docs/VALIDATION.md#original-motion-unit-correction)
 records its effect and validation limits.
+Original free fire and fireball also limit exceptional confinement-force peaks,
+while retaining weaker eddies and cast timing. This is a modest motion mitigation;
+[matched native-age evidence](docs/VALIDATION.md#original-peak-force-mitigation)
+records its effect without claiming every motion or appearance concern is solved.
 [Fire Studio guide](outputs/cybrdelic-type/elements/motion/bending/sigils/02/fire-live/README.md).
 
 Offline renderers remain first-class authoring workflows under `work/`, with the

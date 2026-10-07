@@ -22,6 +22,23 @@ float originalAmbientScale(int emitter,int effect,float sourceMode,float extent)
 }
 `;
 
+
+// Limit added force peaks in world acceleration units, retaining weak eddies.
+// These authored scene limits apply only to Original cursor fire/fireball.
+// No transported velocity, source momentum, timestep or render value is clamped.
+export const ORIGINAL_MOTION_PEAK_ACCELERATION = Object.freeze({free:6,fireball:4});
+export const originalPeakForceGLSL = `
+bool originalPeakForceTarget(int emitter,int effect,float sourceMode){
+ return sourceMode<.5&&((emitter==0&&effect<0)||emitter==23);
+}
+float originalPeakForceMaximum(int emitter){
+ return emitter==23?${ORIGINAL_MOTION_PEAK_ACCELERATION.fireball.toFixed(1)}:${ORIGINAL_MOTION_PEAK_ACCELERATION.free.toFixed(1)};
+}
+float originalPeakForceScale(float worldMagnitude,float maximum){
+ return min(1.,max(maximum,0.)/max(worldMagnitude,.00001));
+}
+`;
+
 export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind,MAX_POWER_EMITTER,renderSize,emittersGLSL,propsGLSL,woodMaterialGLSL}){
  const NX=domain.nx,NZ=domain.ny,DEPTH=domain.depth,TILES_X=8,TILES_Y=DEPTH/8,AW=NX*TILES_X,AH=NZ*TILES_Y;
  const [RW,RH]=renderSize;
@@ -101,6 +118,7 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
   ${hasPowers ? powerSourceFor(kind,'glsl') : ''}
   ${emittersGLSL}
   ${originalAmbientScaleGLSL}
+  ${originalPeakForceGLSL}
   ${advectionGLSL}
   ${groundInjectionGLSL}
   layout(location=0) out vec4 outVF;
@@ -134,7 +152,14 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
     float fuel=scalars.r;
     float oxygen=scalars.g;
     float temp=scalars.b, soot=scalars.a;
-    if(temp+soot>.00001) vf.xyz+=vortexForce(at)*delta*(sourceEnabled<.5&&emitterKind==6?2.2:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind<=0?3.5:emitterKind>=22&&emitterKind<=${MAX_POWER_EMITTER}?powerConfinement:1.);
+    if(temp+soot>.00001){
+      vec3 force=vortexForce(at);
+      float confinement=sourceEnabled<.5&&emitterKind==6?2.2:sourceEnabled<.5&&emitterKind==0&&sourceEffectKind<=0?3.5:emitterKind>=22&&emitterKind<=${MAX_POWER_EMITTER}?powerConfinement:1.;
+      if(originalPeakForceTarget(emitterKind,sourceEffectKind,sourceEnabled)){
+        confinement*=originalPeakForceScale(length(force*simExtent)*confinement,originalPeakForceMaximum(emitterKind));
+      }
+      vf.xyz+=force*delta*confinement;
+    }
     // The source field enters as fresh gas. It never clips existing fire to glyph edges.
     float worldX=simMin.x+p.x*simExtent.x, worldZ=simMin.y+p.y*simExtent.y, worldY=(depth-.5)*simExtent.z;
     woodFuelGas(vec3(worldX,worldZ,worldY),delta,fuel,oxygen,temp);
@@ -309,7 +334,11 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
       // resource, or display-space detail is introduced.
       vec3 q=vec3(worldX,worldZ-clock*.65,worldY)+vec3(clock*.16,0,-clock*.13);
       float energy=smoothstep(.35,1.1,temp)*clamp(powerTurbulence,.6,1.2);
-      vf.xyz+=curlNoise(q,.20)*3.4*energy*delta/simExtent;
+      if(emitterKind==23){
+        vec3 eddy=curlNoise(q,.20)*3.4*energy;
+        eddy*=originalPeakForceScale(length(eddy),originalPeakForceMaximum(emitterKind));
+        vf.xyz+=eddy*delta/simExtent;
+      }else vf.xyz+=curlNoise(q,.20)*3.4*energy*delta/simExtent;
     }
     // Sculpted fire uses a circulating force field, not a screen-space mask.
     // Fuel, heat and soot still advect and cool through the same solver.

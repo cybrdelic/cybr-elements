@@ -13,11 +13,17 @@ It does not close existing numerical, appearance or performance findings.
   and wider visual acceptance remain open. A scoped ambient-force unit correction
   has passed bounded actual browser motion/control checks for Original free fire
   and fireball; those checks do not certify every fuel or appearance combination.
+  A subsequent scoped force-peak limiter reduces sampled peak speeds in matched
+  free-fire and fireball captures. It retains weaker eddies, but the free-fire
+  plume can still grow taller and the wider uncontrolled-motion visual goal
+  remains open. It is not a whole-volume stability or conservation guarantee.
 - **Power appearance:** smooth or overbright packet heads and limited fine flame
   breakup remain visual concerns. Original and Volume use their own flow and
   optical models; matching controls do not imply matching pixels. Fireball's
   authored packet spin and warm-gas turbulence remain active; the unit correction
   produced a smaller motion change for fireball than for free fire.
+  The peak-force mitigation retains the smooth packet head and authored travel;
+  it does not replace the optical model or promise fine breakup in every scene.
 - **Refined/adaptive flow:** the coarse/fine path is experimental and can fall
   back to dense flow immediately. It has not established a general speed gain.
 - **Sparse:** pooled chemistry retains dense fallback resources. Sparse adds
@@ -26,6 +32,9 @@ It does not close existing numerical, appearance or performance findings.
 - **Performance:** smoke-heavy scenes can exceed the 16.7 ms budget for 60 FPS.
   Prior short windows and native stage timings are not a current browser or
   mobile performance certification. Cleanup alone does not accelerate rendering.
+  Warmed, instrumented matched captures show throughput changes below one percent
+  for the peak-force mitigation. Synchronous image readback is included; these
+  short desktop observations are not a general performance certification.
 - **Startup and compatibility:** WebGPU presence does not guarantee a usable
   adapter. Limits, driver state, memory and contention can prevent startup.
   Keep recovery controls and test actual supported scenes on the intended device.
