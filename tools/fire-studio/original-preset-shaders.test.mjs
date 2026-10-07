@@ -20,7 +20,7 @@ for(const grid of ['', '896'])for(const preset of presets){globalThis.location={
 delete globalThis.location;
 const captured=[...domains.values()].map(x=>({...x,...capture(x.domain)}));
 test('Fireball fragment changes only its two invalid integer multiplication literals',async()=>{
- const previous=await readFile(new URL('./fixtures/fireball-v7-upper-apply.glsl',import.meta.url),'utf8'),actual=captured.find(x=>x.domain.blast).upper;
+ const previous=(await readFile(new URL('./fixtures/fireball-v7-upper-apply.glsl',import.meta.url),'utf8')).replaceAll('\r\n','\n'),actual=captured.find(x=>x.domain.blast).upper;
  assert.match(previous,/v\.x\+=6\*/);assert.match(previous,/v\.y\+=6\*/);
  assert.equal(actual,previous.replace('v.x+=6*','v.x+=6.0*').replace('v.y+=6*','v.y+=6.0*'));
 });
