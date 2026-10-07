@@ -56,3 +56,22 @@ separately. Archive-backed Site version 6 remains available from source
 Saved Site version 5 remains independently available for whole-site rollback:
 source `0d1f9cad31b48f7ad1a236bbf6554ff265dc9cfe`, archive SHA-256
 `a1a553b2a0a7b54e1d3cfe176525a6f071b0672be0bc1bfaed1642e9ff62bc49`.
+
+## Fireball startup typing correction
+
+The blast domain generated integer `6` coefficients multiplied by floating-point
+pressure differences, preventing Original Fireball startup. The focused follow-up
+emits `6.0` instead. Numeric values, solver equations, acceptance/CFL limits,
+clock, sources, reaction and render quality are unchanged. All normal/object
+shader stages retain their prior bytes.
+
+The native-tested source is `1c5a66f3efe55c974a8628f6b55ac23e5c38f8ca`.
+CPU/static checks cover 76 preset identities, five domain forms and 718 generated
+shader stages. Full validation passed 496 CPU tests across 70 suites, nine
+package tests, four asset-tool tests and the 184-file runtime closure. A brief
+RTX 4060 Laptop / ANGLE D3D11 check linked all 64 fine-flow programs, advanced
+Fireball to 0.1125 physical seconds with center/midpoint eta 0.0648961 and rho
+0.1180095, and passed deliberate transport-failure rollback with zero changed
+accepted-state values. This verifies startup and a short prefix, not sustained
+Fireball behavior or realtime performance. The separate transport-stencil and
+decision-batching experiments are not included.
