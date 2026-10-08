@@ -241,7 +241,8 @@ export function createOriginalShaders({domain,hasPowers,hasWood,initialPowerKind
       temp=sourceSensibleHeat(temp,fuel,added,${((PLUME_THERMAL.fuelTemperatureK-GAS_THERMO.ambientK)/GAS_THERMO.temperatureScaleK).toFixed(8)});
       vec3 q=vec3(local.x,local.y,worldY)/sourceScale;
       vec3 pilotQ=(q-vec3(${PLUME_THERMAL.pilotOffset.join(',')}))/vec3(${PLUME_THERMAL.pilotWidth.join(',')});
-      float dose=boundedPilotDose(burstAge,delta,${PLUME_THERMAL.pilotHeatingRate}.,${PLUME_THERMAL.startupHeatingRate}.,${PLUME_THERMAL.startupDurationS});
+      // Original advances its host clock before this step; integrate from the step start.
+      float dose=boundedPilotDose(burstAge-delta,delta,${PLUME_THERMAL.pilotHeatingRate}.,${PLUME_THERMAL.startupHeatingRate}.,${PLUME_THERMAL.startupDurationS});
       temp+=dose*sourceHeat/${PLUME_THERMAL.referencePilotHeat}*exp(-dot(pilotQ,pilotQ))/(1.+fuel+added);
      }else{
       temp=sourceSensibleHeat(temp,fuel,added,.85*sourceHeat);

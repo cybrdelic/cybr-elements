@@ -113,6 +113,13 @@ function recordingGL(floatLinear=true,colorBufferFloat=true) {
   gl.readPixels=(x,y,width,height,format,type,values)=>values.fill(0);
   gl.uniform1f=(location,value)=>{if(location?.name==='groundIgnition'&&value>.5)calls.ignitionPasses=(calls.ignitionPasses||0)+1;if(location?.name==='groundCombustion')(calls.groundCombustion??=[]).push(value);if(location?.name==='woodTimeScale')(calls.woodTimeScales??=[]).push(value);if(location?.name==='powerFlame')(calls.powerOptics??=[]).push(value);if(['woodAge','woodClock','woodStarter','woodPilotSeconds','woodSigilDt'].includes(location?.name))(calls.woodIgnition??=[]).push({name:location.name,value});};
   for (const name of 'activeTexture bindVertexArray compileShader deleteFramebuffer deleteProgram deleteShader deleteTexture deleteVertexArray drawBuffers generateMipmap linkProgram pixelStorei uniform1i uniform2f uniform3f uniform3fv uniform4fv uniform4i viewport bindRenderbuffer renderbufferStorage framebufferRenderbuffer bindBuffer bufferData enableVertexAttribArray vertexAttribPointer vertexAttribIPointer deleteBuffer deleteRenderbuffer enable disable depthFunc drawElements'.split(' ')) gl[name] = () => {};
+  const captureSourceUniform=(location,value)=>{
+    if(['emitterKind','sourceEffectKind','burstAge','delta','brushActive','sourceEnabled'].includes(location?.name)&&location.program.shaders.some(s=>s.source?.includes('outChem')&&s.source?.includes('boundedPilotDose(')))
+      (calls.sourceUniforms??=[]).push({name:location.name,value});
+  };
+  const priorUniform1f=gl.uniform1f;
+  gl.uniform1f=(location,value)=>{priorUniform1f(location,value);captureSourceUniform(location,value);};
+  gl.uniform1i=captureSourceUniform;
   gl.drawElements=()=>{calls.woodMeshDraws=(calls.woodMeshDraws||0)+1;};
   return { gl, calls, textures, shaders,programs };
 }
@@ -413,6 +420,38 @@ test('Original production startup and failure regression', async t => {
     env.elements.get('#restart').click();await new Promise(resolve=>setImmediate(resolve));env.calls.woodIgnition=[];await env.frame(start+160);
     assert(env.calls.woodIgnition.some(u=>u.name==='woodAge'&&u.value>=0&&u.value<1));assert(env.calls.woodIgnition.some(u=>u.name==='woodClock'&&u.value>=0&&u.value<1));assert(env.calls.woodIgnition.some(u=>u.name==='woodPilotSeconds'&&u.value>0));
     await runtime.dispose();assert.deepEqual(env.failures,[]);
+  });
+
+  await t.test('Sooty plume submits end-age on first step, coasts without a pilot and resets on restart',async()=>{
+    const env=await prepare('sooty-plume','oil');
+    const runtime=await env.mountLegacy({initialPreset:'sooty-plume',onFailure:error=>env.failures.push(String(error))});
+    const steps=()=>{const rows=[];for(const u of env.calls.sourceUniforms||[]){if(u.name==='emitterKind')rows.push({});if(rows.length)rows.at(-1)[u.name]=u.value;}return rows;};
+    let now=performance.now()+40;await env.frame(now);
+    const first=steps()[0];assert(first.delta>0);assert(Math.abs(first.burstAge-first.delta)<1e-12);assert.equal(first.brushActive,1);assert.equal(first.emitterKind,0);assert.equal(first.sourceEffectKind,0);
+    assert(env.shaders.some(s=>s.source?.includes('if(woodEnabled<.5 && brushActive>.5')&&s.source?.includes('boundedPilotDose(burstAge-delta,delta,')));
+    env.elements.get('#pause').click();const count=steps().length;await env.frame(now+=80);assert.equal(steps().length,count,'Pause submits no source step');
+    env.elements.get('#extinguish').click();env.calls.sourceUniforms=[];await env.frame(now+=80);assert(steps().length>0);assert(steps().every(s=>s.brushActive===0),'Coasting chemistry receives no source pilot');
+    env.elements.get('#restart').click();await new Promise(resolve=>setImmediate(resolve));env.calls.sourceUniforms=[];await env.frame(now+=80);
+    const restarted=steps()[0];assert(restarted);assert.equal(restarted.brushActive,1);assert(Math.abs(restarted.burstAge-restarted.delta)<1e-12,'Restart resets source age before the host advances');
+    await runtime.dispose();assert.deepEqual(env.failures,[]);
+  });
+
+  await t.test('Free fire reset waits for ignition and burst recasting retains its independent end-age contract',async()=>{
+    const env=await prepare('free','wood');
+    const runtime=await env.mountLegacy({initialPreset:'free',onFailure:error=>env.failures.push(String(error))});
+    let now=performance.now()+40;await env.frame(now);
+    assert(env.calls.sourceUniforms.some(u=>u.name==='brushActive'&&u.value===0));assert(!env.calls.sourceUniforms.some(u=>u.name==='brushActive'&&u.value===1));
+    await runtime.dispose();
+    const burst=await prepare('explosion','oil'),burstRuntime=await burst.mountLegacy({initialPreset:'explosion',onFailure:error=>burst.failures.push(String(error))});
+    const latest=name=>burst.calls.sourceUniforms.filter(u=>u.name===name).at(-1)?.value;
+    now=performance.now()+40;await burst.frame(now);assert.equal(latest('emitterKind'),6);assert.equal(latest('brushActive'),1);
+    burst.elements.get('#extinguish').click();await burst.frame(now+=80);assert.equal(latest('brushActive'),0);
+    burst.elements.get('#burst').click();burst.calls.sourceUniforms=[];await burst.frame(now+=80);
+    const age=burst.calls.sourceUniforms.find(u=>u.name==='burstAge')?.value,delta=burst.calls.sourceUniforms.find(u=>u.name==='delta')?.value;
+    assert(delta>0);assert(Math.abs(age-delta)<1e-12);assert.equal(latest('brushActive'),1);
+    const shader=burst.shaders.find(s=>s.source?.includes('outChem')&&s.source?.includes('boundedPilotDose(')).source;
+    assert(!shader.slice(shader.indexOf('}else if(emitterKind==6){'),shader.indexOf('float pulse=.72')).includes('boundedPilotDose('),'The burst injection branch does not use the plume pilot');
+    await burstRuntime.dispose();assert.deepEqual(burst.failures,[]);
   });
 
   await t.test('Previous v5 Original remains available through the actual loader', async () => {

@@ -50,5 +50,5 @@ export async function loadRuntime(kind) {
   const helpers = previousVersion ? previousScripts : legacyScripts;
   await Promise.all(helpers.map(loadScript));
   if (previousVersion) return (await import('./fire-v5.js?v=studio-v5-rollback')).mountLegacy;
-  return (await import('./fire.js?v=studio-rc-43-fireball-float-typing')).mountLegacy;
+  return (await import('./fire.js?v=studio-rc-44-plume-pilot-age')).mountLegacy;
 }
