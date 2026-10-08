@@ -1,6 +1,6 @@
 import {advanceSmokeDecay} from './smoke-lifecycle.js?v=studio-rc-37-repair';
 import {SimulationClock} from './simulation-clock.js?v=studio-rc-37-repair';
-import {createOriginalShaders} from './original-shaders.js?v=studio-rc-41-experimental-face';
+import {createOriginalShaders} from './original-shaders.js?v=studio-rc-44-plume-pilot-age';
 import {runtimeScope} from './runtime-scope.js?v=studio-rc-37-repair';
 import {createGLFrameQueue} from './gl-frame-queue.js?v=studio-rc-37-repair';
 import {legacyProbe} from './legacy-qa.js?v=studio-rc-37-repair';
