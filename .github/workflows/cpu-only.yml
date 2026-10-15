@@ -1,0 +1,60 @@
+name: CPU-only companion
+on:
+  push:
+    branches: [feat/cpu-only-flow]
+    paths: ['cpu/**', '.github/workflows/cpu-only.yml']
+  pull_request:
+    paths: ['cpu/**', '.github/workflows/cpu-only.yml']
+permissions:
+  contents: read
+concurrency:
+  group: cpu-only-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  cpu-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CUDA_VISIBLE_DEVICES: ''
+      HIP_VISIBLE_DEVICES: ''
+      ROCR_VISIBLE_DEVICES: ''
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU-only runtime
+        run: |
+          python -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy pillow
+      - name: Assert no CUDA runtime and verify real source availability
+        run: |
+          python - <<'PY'
+          import pathlib, torch
+          assert torch.version.cuda is None, torch.version.cuda
+          assert not torch.cuda.is_available()
+          for name in ('fire', 'air'):
+              assert pathlib.Path(f'work/element-motion/sigil_02_{name}_v2.py').is_file()
+          print('CPU-only PyTorch', torch.__version__)
+          PY
+      - name: Run unit and original-solver integration tests
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m unittest discover -s cpu -p 'test_*.py' -v 2>&1 | tee cpu-tests.txt
+      - name: Retain verification evidence and exact sources
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpu-source-and-test-evidence
+          retention-days: 14
+          path: |
+            cpu-tests.txt
+            cpu/
+            work/element-motion/sigil_02_fire_v2.py
+            work/element-motion/sigil_02_air_v2.py
+            work/element-motion/sigil_02_source.py
+            outputs/cybrdelic-type/exploration-v6/cybrdelic-brandmark-refined.png

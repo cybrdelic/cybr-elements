@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "date": "2026-09-20",
+  "baseCommit": "280770daa8b78274339d26ad45a58f62aeeda39b",
+  "localTests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "blenderChecks": "mocked and structural; no native Blender run"
+  },
+  "firstGitHubCIRun": {
+    "id": 35544388827,
+    "passedTests": 17,
+    "cudaRuntimePresent": false,
+    "conclusion": "success"
+  },
+  "smokeRenders": {
+    "fire": {
+      "profile": "smoke",
+      "device": "cpu",
+      "torchVersion": "2.10.0+cpu",
+      "grid": [128, 24, 72],
+      "frames": 30,
+      "fps": 30,
+      "substeps": 3,
+      "sourceSha256": "99b19f9725a755244f623433bdc8beb128bc1535d02f83d12b094dc204104005",
+      "artworkSha256": "171ab385e515ef2b375b0c2cb291095e55d5cc00489341a3aa431ae62cf5e961",
+      "validation": {
+        "decodedFrames": 30,
+        "width": 640,
+        "height": 360,
+        "sha256": "fc005556209a6160a88fdc8976121a867845ac345fb314f6c7bad8e20777a8e2"
+      },
+      "finalDivergenceRMS": 1.1701018109988581e-07,
+      "elapsedSeconds": 23.263573534999978,
+      "finiteStateCheckedEveryFrame": true,
+      "originalSolverAndOpticsFunctionsPreserved": true,
+      "explicitDiagnosticResize": [640, 360],
+      "humanReviewed": false,
+      "visualParityVerified": false
+    },
+    "air": {
+      "profile": "smoke",
+      "device": "cpu",
+      "torchVersion": "2.10.0+cpu",
+      "grid": [128, 24, 72],
+      "frames": 30,
+      "fps": 30,
+      "substeps": 3,
+      "sourceSha256": "eeb20a00aa788379dcfbd3ede4d2e41eb29ff7c2a429b78c04aa024cfdce7f02",
+      "artworkSha256": "171ab385e515ef2b375b0c2cb291095e55d5cc00489341a3aa431ae62cf5e961",
+      "validation": {
+        "decodedFrames": 30,
+        "width": 640,
+        "height": 360,
+        "sha256": "e8a2566cf11a4cf7f0de6847c0e5b7afeb0dbb8187a5bfa491473a70849d67a5"
+      },
+      "finalDivergenceRMS": 1.0216693624442996e-07,
+      "elapsedSeconds": 23.442002269,
+      "finiteStateCheckedEveryFrame": true,
+      "originalSolverAndOpticsFunctionsPreserved": true,
+      "explicitDiagnosticResize": [640, 360],
+      "humanReviewed": false,
+      "visualParityVerified": false
+    }
+  },
+  "originalIntegrity": {"originalFilesChecked": 10, "changed": [], "unchanged": true},
+  "fullProductionRendered": false,
+  "nativeBlenderRendered": false,
+  "visualParityVerified": false
+}
