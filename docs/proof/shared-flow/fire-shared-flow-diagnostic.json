@@ -1,0 +1,26 @@
+{
+  "kind": "reduced-grid diagnostic, not full-film parity",
+  "element": "fire",
+  "size": [
+    1920,
+    1080
+  ],
+  "solverGrid": [
+    160,
+    24,
+    90
+  ],
+  "steps": 165,
+  "simulationFps": 24,
+  "substeps": 3,
+  "simulationSeconds": 2.2916666666666665,
+  "elapsedSeconds": 2.0,
+  "divergenceRms": 2.968095316191466e-07,
+  "image": "fire-shared-flow-diagnostic.png",
+  "imageSha256": "1b17ba3714badc4b9fdb55589892017950e77c97d0876aeeb4c8bf250dc91f85",
+  "stateSha256": "791755582519445565b265ddb3d7daa9f3f71546faa8c9efbca21fdaaf9e9e64",
+  "sourceFieldsSha256": "e0c2e79d15b6d3097e2219c22bae028b82cd9c9f0a7cb55663fb2f7de5127262",
+  "sourceResampling": "nearest, full world extent retained",
+  "diagnosticWind": 0,
+  "fullFilmCompared": false
+}

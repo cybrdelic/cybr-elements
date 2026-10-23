@@ -1,0 +1,92 @@
+{
+  "referenceCommit": "79ae673eee773cda972aaf4a56d1f0f0e1cd79a0",
+  "referenceSourceSha256": {
+    "fire": "99b19f9725a755244f623433bdc8beb128bc1535d02f83d12b094dc204104005",
+    "air": "eeb20a00aa788379dcfbd3ede4d2e41eb29ff7c2a429b78c04aa024cfdce7f02"
+  },
+  "device": "cpu",
+  "cases": [
+    {
+      "element": "fire",
+      "simulationFps": 24,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.468713766276778e-07,
+      "renderPixelMaxError": 0,
+      "renderSize": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "element": "fire",
+      "simulationFps": 24,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.318095759321295e-07
+    },
+    {
+      "element": "fire",
+      "simulationFps": 30,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.833542786604085e-07
+    },
+    {
+      "element": "fire",
+      "simulationFps": 30,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.633747832689551e-07
+    },
+    {
+      "element": "air",
+      "simulationFps": 24,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.413243115981459e-07,
+      "renderPixelMaxError": 0,
+      "renderSize": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "element": "air",
+      "simulationFps": 24,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.370277449401328e-07
+    },
+    {
+      "element": "air",
+      "simulationFps": 30,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 6.023075229677488e-07
+    },
+    {
+      "element": "air",
+      "simulationFps": 30,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.813318466607598e-07
+    }
+  ],
+  "fullStepComparisons": 24,
+  "constantScalarTransport": true,
+  "projectionBefore": 3.2842724323272705,
+  "projectionAfter": 3.0931994388083695e-07,
+  "fullFilmCompared": false,
+  "physicalValidation": false,
+  "torchVersion": "2.6.0+cu124",
+  "gpu": null
+}
