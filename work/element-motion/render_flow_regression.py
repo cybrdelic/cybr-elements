@@ -13,9 +13,38 @@ import subprocess
 import time
 
 from PIL import Image
+import numpy as np
 import torch
 
 from verify_element_flow import ROOT, BASE, baseline, namespace, pixels
+
+
+def state_digest(state):
+    """Hash C-order state bytes with bounded host memory (under 13 MiB/slab).
+
+    Iteration follows batch, channel, z, y, x, exactly matching the original
+    contiguous whole-state readback. No quantization or numerical conversion.
+    """
+    digest=hashlib.sha256()
+    for batch in state:
+        for channel in batch:
+            for start in range(0,channel.shape[0],64):
+                slab=channel[start:start+64].contiguous().cpu()
+                digest.update(memoryview(slab.numpy()))
+                del slab
+    return digest.hexdigest()
+
+
+def validate_source(source_fields):
+    """Full-film runs never silently resize an incomplete/reduced-grid input."""
+    with np.load(source_fields) as source:
+        for name in ('support','sdf','arrival','dirx','dirz'):
+            value=source[name]
+            if value.shape!=(504,896) or value.dtype!=np.float32 or not np.isfinite(value).all():
+                raise ValueError(f'Full-grid float32 finite source field required: {name}')
+        for name,expected in (('lo',[-7.,-.6,-1.05]),('extent',[14.,1.2,7.875])):
+            if not np.array_equal(source[name].astype(np.float32),np.asarray(expected,np.float32)):
+                raise ValueError(f'Source world-coordinate contract mismatch: {name}')
 
 
 def run(args):
@@ -27,24 +56,30 @@ def run(args):
         raise FileExistsError('Use a new output directory; existing evidence is preserved')
     args.output.mkdir(parents=True)
     source = baseline(args.element) if args.version=='baseline' else (ROOT/f'sigil_02_{args.element}_v2.py').read_text(encoding='utf-8')
-    ns = namespace(source,size=(896,56,504),device='cuda',fps=args.simulation_fps)
+    source_fields=args.source_fields or ROOT/'sigil-02-v2/source.npz'
+    validate_source(source_fields)
+    ns = namespace(source,size=(896,56,504),device='cuda',fps=args.simulation_fps,source_path=source_fields)
     ns['a'].wind = 0
     video = args.output/f'{args.element}-{args.version}.mp4'
+    reference = None
+    if args.reference:
+        reference = [json.loads(line) for line in args.reference.read_text().splitlines()]
+        if len(reference)!=294:raise ValueError('Reference must contain all 294 frames')
     encoder = subprocess.Popen([
         'ffmpeg','-hide_banner','-loglevel','error','-n','-f','rawvideo',
         '-pix_fmt','rgb24','-s','1920x1080','-r','30','-i','-','-an',
         '-c:v','libx264','-threads','2','-preset','fast','-crf','17',
         '-pix_fmt','yuv420p','-movflags','+faststart',str(video),
     ],stdin=subprocess.PIPE)
-    reference = None
-    if args.reference:
-        reference = [json.loads(line) for line in args.reference.read_text().splitlines()]
-        if len(reference)!=294:raise ValueError('Reference must contain all 294 frames')
     started = time.monotonic()
     metadata = dict(element=args.element,version=args.version,referenceCommit=BASE,
+                    runnerSha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                    harnessSha256=hashlib.sha256((ROOT/'verify_element_flow.py').read_bytes()).hexdigest(),
                     sourceSha256=hashlib.sha256(source.encode()).hexdigest(),
                     sharedCoreSha256=hashlib.sha256((ROOT/'element_flow.py').read_bytes()).hexdigest() if args.version=='shared' else None,
-                    sourceFieldsSha256=hashlib.sha256((ROOT/'sigil-02-v2/source.npz').read_bytes()).hexdigest(),
+                    sourceFieldsSha256=hashlib.sha256(source_fields.read_bytes()).hexdigest(),
+                    sourceKind='custom example' if args.source_fields else 'approved style-02',
+                    stateHashReadback='exact C-order float32 bytes, streamed in 64-plane slabs',
                     solverGrid=[896,56,504],size=[1920,1080],frames=294,encodedFps=30,
                     simulationFps=args.simulation_fps,substeps=3,simulationSeconds=294/args.simulation_fps,
                     historicalInvocationRecovered=False,wind=0,control='none',
@@ -60,9 +95,7 @@ def run(args):
                     div=ns['step']((frame+sub/3)/args.simulation_fps)
                 if not torch.isfinite(ns['state']).all():raise RuntimeError(f'Nonfinite state at {frame}')
                 if torch.cuda.max_memory_allocated()>6.8*1024**3:raise RuntimeError('Original GPU memory budget exceeded')
-                cpu_state = ns['state'].cpu()
-                state_sha = hashlib.sha256(memoryview(cpu_state.numpy())).hexdigest()
-                del cpu_state
+                state_sha = state_digest(ns['state'])
                 image = pixels(ns)
                 pixel_sha = hashlib.sha256(memoryview(image)).hexdigest()
                 encoder.stdin.write(image.tobytes())
@@ -108,4 +141,5 @@ if __name__=='__main__':
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--gate-file',type=Path,required=True)
     p.add_argument('--reference',type=Path,help='Baseline frames.jsonl for the shared run')
+    p.add_argument('--source-fields',type=Path,help='Optional explicit NPZ for a new source example; original source stays untouched')
     run(p.parse_args())

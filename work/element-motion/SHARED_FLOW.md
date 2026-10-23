@@ -71,3 +71,38 @@ The scripts require CUDA for their production bake, ffmpeg on PATH, and the
 retained `sigil-02-v2/source.npz`. CPU CI tests the operators and render math;
 it does not certify full production films, CUDA support on macOS, or physical
 combustion. No full-resolution film rerender has yet been claimed here.
+
+### Serial full-grid receipts
+
+`render_flow_regression.py` executes the actual pinned/current consumer
+functions in an isolated namespace, bypassing only their argument parsing and
+fixed output filenames. It preserves the full simulation, original optics,
+encoding settings and frame-135 visual review gate. Each frame records hashes
+of all float32 state bytes and the exact RGB pixels before lossy video encoding.
+State hashing streams the same C-order bytes in small slabs to bound host RAM.
+
+```sh
+python work/element-motion/render_flow_regression.py --element fire --version baseline --simulation-fps 24 --output proof/fire-baseline --gate-file proof/continue-fire-baseline
+python work/element-motion/render_flow_regression.py --element fire --version shared --simulation-fps 24 --output proof/fire-shared --gate-file proof/continue-fire-shared --reference proof/fire-baseline/frames.jsonl
+```
+
+At each frame-135 gate, inspect the saved PNG before creating the specified
+continuation file. Repeat the pair with `--element air` and separate output/gate
+paths. Run one GPU process at a time. Existing output directories are rejected.
+These explicit-clock rerenders do not claim to reproduce the undocumented
+invocation of an older published MP4.
+
+### New source example, existing solver
+
+The example generator below creates two counter-rotating circular inflow
+paths. It supplies only source support, arrival times and tangents. The existing
+Air consumer still supplies passive-density injection, shared transport/pressure
+and its native optical renderer; no additional solver or downstream path is added.
+
+```sh
+python work/element-motion/examples/counter_rotating_sources.py --output proof/counter-rotating-source.npz
+python work/element-motion/render_flow_regression.py --element air --version shared --simulation-fps 24 --source-fields proof/counter-rotating-source.npz --output proof/air-counter-rotating --gate-file proof/continue-air-counter-rotating
+```
+
+The example uses the same full grid, 294 frames and 1080p output. Its rendering
+must be run and inspected before describing its visual result as verified.

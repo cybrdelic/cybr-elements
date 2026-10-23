@@ -40,9 +40,9 @@ class SourceFields(dict):
         pass
 
 
-def fields(size):
+def fields(size, source_path=None):
     """Only verification grids are resampled; production inputs stay untouched."""
-    with np.load(ROOT/'sigil-02-v2/source.npz') as source:
+    with np.load(source_path or ROOT/'sigil-02-v2/source.npz') as source:
         result = SourceFields()
         for name in ('support', 'arrival', 'dirx', 'dirz', 'sdf'):
             value = torch.from_numpy(source[name])[None, None]
@@ -51,9 +51,9 @@ def fields(size):
         return result
 
 
-def namespace(source, *, size, device, fps=24, control='none'):
+def namespace(source, *, size, device, fps=24, control='none', source_path=None):
     ns = dict(torch=torch, F=F, np=np, math=math, Image=Image,
-              CollocatedFlow=CollocatedFlow, fixture_fields=fields(size),
+              CollocatedFlow=CollocatedFlow, fixture_fields=fields(size, source_path),
               device=device, ROOT=ROOT,
               a=SimpleNamespace(size=size, fps=fps, substeps=3, padded_domain=False,
                                 gesture_version='19', control=control,
