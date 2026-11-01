@@ -1,0 +1,118 @@
+{
+  "referenceCommit": "79ae673eee773cda972aaf4a56d1f0f0e1cd79a0",
+  "referenceSourceSha256": {
+    "fire": "99b19f9725a755244f623433bdc8beb128bc1535d02f83d12b094dc204104005",
+    "air": "eeb20a00aa788379dcfbd3ede4d2e41eb29ff7c2a429b78c04aa024cfdce7f02"
+  },
+  "device": "cuda",
+  "cases": [
+    {
+      "element": "fire",
+      "simulationFps": 24,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.461120053951163e-07,
+      "renderPixelMaxError": 0,
+      "renderSize": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "element": "fire",
+      "simulationFps": 24,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.203272053222463e-07
+    },
+    {
+      "element": "fire",
+      "simulationFps": 30,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.899531743125408e-07
+    },
+    {
+      "element": "fire",
+      "simulationFps": 30,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.792858814857027e-07
+    },
+    {
+      "element": "air",
+      "simulationFps": 24,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.362960564525565e-07,
+      "renderPixelMaxError": 0,
+      "renderSize": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "element": "air",
+      "simulationFps": 24,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.111299401505676e-07
+    },
+    {
+      "element": "air",
+      "simulationFps": 30,
+      "control": "none",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.836597551933664e-07
+    },
+    {
+      "element": "air",
+      "simulationFps": 30,
+      "control": "directed",
+      "ticks": 3,
+      "maxAbsoluteStateError": 0.0,
+      "divergenceRms": 5.654765118379146e-07
+    }
+  ],
+  "fullStepComparisons": 24,
+  "constantScalarTransport": true,
+  "projectionBefore": 3.2725651264190674,
+  "projectionAfter": 2.7795744017566903e-07,
+  "fullFilmCompared": false,
+  "physicalValidation": false,
+  "torchVersion": "2.6.0+cu124",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "diagnostic": {
+    "kind": "reduced-grid diagnostic, not full-film parity",
+    "element": "fire",
+    "size": [
+      1920,
+      1080
+    ],
+    "solverGrid": [
+      160,
+      24,
+      90
+    ],
+    "steps": 165,
+    "simulationFps": 24,
+    "substeps": 3,
+    "simulationSeconds": 2.2916666666666665,
+    "elapsedSeconds": 2.0,
+    "divergenceRms": 2.968095316191466e-07,
+    "image": "fire-shared-flow-diagnostic.png",
+    "imageSha256": "1b17ba3714badc4b9fdb55589892017950e77c97d0876aeeb4c8bf250dc91f85",
+    "stateSha256": "791755582519445565b265ddb3d7daa9f3f71546faa8c9efbca21fdaaf9e9e64",
+    "sourceFieldsSha256": "e0c2e79d15b6d3097e2219c22bae028b82cd9c9f0a7cb55663fb2f7de5127262",
+    "sourceResampling": "nearest, full world extent retained",
+    "diagnosticWind": 0,
+    "fullFilmCompared": false
+  }
+}

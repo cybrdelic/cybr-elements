@@ -31,6 +31,7 @@
 /work/**/*.mp4
 /work/**/*.exr
 !/work/element-motion/sigil-02-v2/source.npz
+!/work/element-motion/sigil-native/c-stroke.npz
 
 # Historical bulk asset packs are restored through scripts/fetch_assets.py.
 /outputs/**/*.zip

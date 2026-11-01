@@ -1,5 +1,10 @@
 # CYBR ELEMENTS
 
+[Current shared-runtime review, reproduction and limits](docs/SHARED_RUNTIME_REVIEW.md).
+
+The offline style-02 Fire and Air consumers now execute shared Torch transport
+and projection operators. See [shared flow and differential checks](work/element-motion/SHARED_FLOW.md)
+for the exact scope, numerical proof and outstanding full-film regression gate.
 
 ## Experimental Original snapshot — 2026-10-07
 
