@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "source": "Authentic original asset; restored byte-for-byte, not regenerated or approximated.",
+  "asset": {
+    "path": "work/element-motion/sigil-native/c-stroke.npz",
+    "bytes": 6417,
+    "sha256": "613009fb76653b0c15ddc99cc8b33496028b2511a3744dbfcd8bee4990884d67",
+    "pack": "project-assets-047.zip",
+    "member": "work/element-motion/sigil-native/c-stroke.npz"
+  },
+  "pack": {
+    "name": "project-assets-047.zip",
+    "bytes": 97742057,
+    "sha256": "c4a0789e311d592ec3af9e7b64a57301f5e970502cb33096d1ffeb2f68ea3279"
+  },
+  "release": {
+    "release_url": "https://github.com/cybrdelic/cybr-elements/releases/tag/v0.1.0",
+    "release_id": 390467138,
+    "tag": "v0.1.0",
+    "target_commitish": "09e585b709096fd1145df5b3945bd867684aca89",
+    "published_at": "2026-09-17T06:20:52Z",
+    "asset": {
+      "id": 569604827,
+      "name": "project-assets-047.zip",
+      "size": 97742057,
+      "digest": "sha256:c4a0789e311d592ec3af9e7b64a57301f5e970502cb33096d1ffeb2f68ea3279",
+      "browser_download_url": "https://github.com/cybrdelic/cybr-elements/releases/download/v0.1.0/project-assets-047.zip"
+    }
+  },
+  "upstream_manifest": "docs/assets.json",
+  "manifest_sha256": "974bfec6bca71a3243ab81af9ed78cd305eace86971597938273d1e36d41ae99",
+  "data_contract": {
+    "points_shape": [
+      283,
+      2
+    ],
+    "times_shape": [
+      283
+    ],
+    "dtype": "float64",
+    "finite": true,
+    "times_strictly_increasing": true
+  },
+  "scope": "Required default sigil_native_fire_fed motion input only; no simulation, visual quality, CUDA or film-completion qualification."
+}

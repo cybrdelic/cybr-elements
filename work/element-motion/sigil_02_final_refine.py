@@ -21,7 +21,8 @@ s=(R/'sigil_02_earth_sim_v2.py').read_text().replace('earth-source-v2','earth-so
 s=(R/'sigil_02_earth_render_v2.py').read_text().replace('earth-frames-v2','earth-frames-v3').replace('earth-motion-v2','earth-motion-v3').replace('earth-pilot-v2','earth-pilot-v3');(R/'sigil_02_earth_render_v3.py').write_text(s)
 # Lighter tracer supply and faster constant physical mist loss. This alters
 # concentration in the transported field, never the composited image opacity.
-s=(R/'sigil_02_air.py').read_text().replace('air-frames','air-frames-v2').replace('air-02.mp4','air-02-v2.mp4').replace('air-report.json','air-report-v2.json').replace('continue-air','continue-air-v2')
-s=s.replace('torch.ones_like(soot)*.85','torch.ones_like(soot)*.55').replace('soot.mul_(math.exp(-.65*dt))','soot.mul_(math.exp(-1.35*dt))')
-(R/'sigil_02_air_v2.py').write_text(s)
+from element_scenes import SCENES
+assert SCENES['sigil_02_air_v2'].tracer_density==.55
+assert SCENES['sigil_02_air_v2'].tracer_decay==1.35
+# The maintained air consumer is a scene policy; never overwrite its runner.
 print('Earth bodies:',len(r),'median radius:',float(np.median(r)),'largest:',float(r.max()),'; lighter air field prepared')
