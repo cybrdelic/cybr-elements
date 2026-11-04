@@ -1,0 +1,78 @@
+{
+  "scope": "CPU execution validation, not production GPU/CPU visual parity",
+  "unitTests": {
+    "passed": 43,
+    "failed": 0,
+    "command": "python -m unittest discover -s cpu/tests -v"
+  },
+  "environment": {
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "packages": {
+      "torch": "2.10.0+cpu",
+      "numpy": "2.3.5",
+      "scipy": "1.17.0",
+      "pillow": "12.3.0",
+      "numba": "0.65.1",
+      "scikit-image": "0.26.0"
+    },
+    "memoryLimitBytes": 4294967296,
+    "blenderAvailable": false
+  },
+  "gasIntegration": {
+    "elements": [
+      "fire",
+      "air"
+    ],
+    "framesEach": 144,
+    "fps": 30,
+    "size": [
+      320,
+      180
+    ],
+    "grid": [
+      128,
+      16,
+      72
+    ],
+    "sourceField": "Resampled copy of the original sigil-02-v2 source.npz",
+    "allFramesDecoded": true,
+    "sourceFilesUnchanged": true,
+    "films": {
+      "fire": {
+        "sha256": "526fbf33de34244feb2692cd63b693d24b6594d022b33b47d77d270dfb304796",
+        "frames": 144
+      },
+      "air": {
+        "sha256": "8c7b8de167f461d66141f9688ed3c66414adc70da42cb9798bc8175d687a5cac",
+        "frames": 144
+      }
+    },
+    "command": "python cpu/run.py smoke --elements fire air --frames 144 --output /mnt/data/elements-cpu-final-proof --input-cache /mnt/data/original-inputs --timeout 600",
+    "stages": [
+      {
+        "name": "fire-simulate-render",
+        "elapsedSeconds": 51.974,
+        "sampledSumOfParentPeakRssMiB": 302.4765625
+      },
+      {
+        "name": "air-simulate-render",
+        "elapsedSeconds": 44.106,
+        "sampledSumOfParentPeakRssMiB": 301.23046875
+      }
+    ]
+  },
+  "notValidated": [
+    "Complete production-resolution films",
+    "GPU/CPU pixel parity",
+    "Full native water solve/mesh/render sequence",
+    "Blender production scene execution",
+    "Software Eevee production scene rendering"
+  ],
+  "visualAcceptance": "pending",
+  "workflowHashes": {
+    "run.py": "1120e439bb59477dc18e8a3f9e125b1499c948be2d3dc8e765306ea390b913cb",
+    "adapter.py": "4f8ce36ee076ab07fe77c9a55edea54d06c22c967d2b44ecfaa90e3d386e95ae",
+    "assets.py": "67c769c8aaba5d7f523900313baa1b5a814582079b127e9b57625b7aeda8532f",
+    "upstream.json": "e1bddb98e9c780aec5a1f7011c43b41cc416ccc6af5d57030c7f5fd25037cb6b"
+  }
+}
